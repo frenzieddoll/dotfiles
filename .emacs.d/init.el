@@ -1,37 +1,104 @@
-;; keymap change
-;; C-m : newline-and-indent
-(global-set-key (kbd "C-m") 'newline-and-indent)
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
 
+
+;; リポジトリの追加
+(require 'package)
+;;MELPA を追加
+(add-to-list 'package-archives '("melpa"."https://melpa.org/packages/")t)
+(package-initialize)
+
+;; 右から左に読む言語に対応させないことで描画高速化
+(setq-default bidi-display-reordering nil)
+
+;; splash screen を無効化
+(setq inhibit-splash-screen t)
+
+;; 同じ内容を履歴に記録しない
+(setq history-delete-duplicates t)
+
+;; 複数のディレクトリで同じファイル名のファイルを開いたときのバッファ名を調整する
+(require 'uniquify)
+;; filename<dir> 形式のバッファ名にする
+(setq uniquify-buffer-name-style 'post-forward-angle-brackets)
+(setq uniquify-ignore-buffer-re "[^*]+")
+
+;; ファイルの開いた位置を保持する
+;; (require 'saveplace)
+;; (setq-dafault save-place t)
+;; (setq save-place-file (concat user-emacs-directory "places")
+
+;; 対応する括弧を光らせる
+(show-paren-mode 1)
+(setq show-paren-delay 0.125)
+
+;; GCを減らして軽くする
+(setq gc-cons-threshold (* 10 gc-cons-threshold))
+
+;; cooding set
+(set-default-coding-systems 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-buffer-file-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
+
+;; バックアップファイ及び、自動セーブの無効
+(setq make-backup-files nil)
+(setq delete-auto-save-files t)
+(setq auto-save-default nil)
+
+;; メニューバー、ツールバー、スクロールバーの非表示
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+
+;; emacs-mozc
+(set-language-environment 'Japanese)
+(require 'mozc)
+(setq default-input-method "Japanese-mozc")
+(global-set-key (kbd "C-c j") 'mozc-mode)
+
+;; keymap change
+;; C-m : 改行プラスインデント
+(global-set-key (kbd "C-m") 'newline-and-indent)
 ;;C-h : backspace
 (define-key key-translation-map (kbd "C-h") (kbd "<DEL>"))
-
 ;; C-x ? : help
 (define-key global-map (kbd "C-x ?") 'help-command)
-
-;;orikaeshitogurukomaxndo
-(define-key global-map (kbd "C-c l") 'toggle-truncate-lines)
-
-;; C-t : change windows (moto transpose-chars)
+;; C-t : ウィンドウ間の移動 (元 transpose-chars)
 (define-key global-map (kbd "C-t") 'other-window)
 
-;; moji code set
+;;折り返しトグルコマンド
+(define-key global-map (kbd "C-c l") 'toggle-truncate-lines)
+
+;; ddskk のキーバインド
+
+;;(global-set-key (kbd "C-c C-j") 'skk-mode)
+
+;; 文字コードセット
 (set-language-environment "Japanese")
 (prefer-coding-system 'utf-8)
 
-;; columns number display
-(column-number-mode t)
-
-;; fully path of a file is displaied at title bar
-(setq frame-title-format "%f")
-
-;; columns number always displaied
+;; 行番号を表示(軽量化あり)
 (global-linum-mode t)
+(setq linum-delay t)
+(defadvice linum-schedule (around my-linum-schedule () activate)
+  (run-with-idle-timer 0.2 nil #'linum-update-current))
+
+;; 列番号表示
+;; (column-number-mode t)
+
+;; タイトルバーにフルパス表示
+(setq frame-title-format "%f")
 
 ;;スペース、タブなどを可視化する
 (global-whitespace-mode 1)
 
 ;; カーソル行をハイライトする
-(global-hl-line-mode t)
+;; (global-hl-line-mode nil)
+(blink-cursor-mode 1)
 
 ;; スタートアップメッセージを表示させない
 (setq inhibit-startup-message t)
@@ -42,33 +109,40 @@
 ;; タブにスペースを使用する
 (setq-default tab-width 4 indent-tabs-mode nil)
 
-;; 対応する括弧を光らせる
-(show-paren-mode 1)
-
 ;; ウィンドウ内に収まらないときだけ格好内も光らせる
-(setq show-paren-style 'mixed)
+;; (setq show-paren-style 'mixed)
 
 ;; カーソルの点滅をやめる
 (blink-cursor-mode 0)
 
-;; menu bar delete
-(menu-bar-mode -1)
+;; コピーを使い安くする
+;; (setq dired-dwim-target t)
 
-;; tool bar delete
-(tool-bar-mode -1)
+;; スクロールを一行ずつにする
+(setq scroll-step 1)
 
-;; scratch initila message delete
-(setq initial-scratch-message "")
+;; バッファの最後でnewlineで新規行を追加するのを禁止する
+(setq next-line-add-newlines nil)
 
-;; scroll bar delete
-(scroll-bar-mode -1)
+;; スマートなウィンドウ切り替え
+(when (fboundp 'windmove-default-keybindings)
+  (windmove-default-keybindings))
 
-;; mitame
-;;color theme
-;; (load-theme 'monokai t)
+;; 検索エンジンの変更
+(setq eww-sarch-prefix "https://www.google.co.jp/search?btnl&q=")
 
-;; alpha
-;; (if window-system
-;;     (grogn
-;;      (set-frame-parameter nil 'alpha 95)))
+;; テーマの設定
+(load-theme 'misterioso)
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages (quote (ddskk))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

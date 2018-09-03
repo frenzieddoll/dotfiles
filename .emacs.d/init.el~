@@ -50,3 +50,25 @@
 
 ;; カーソルの点滅をやめる
 (blink-cursor-mode 0)
+
+;; menu bar delete
+(menu-bar-mode -1)
+
+;; tool bar delete
+(tool-bar-mode -1)
+
+;; scratch initila message delete
+(setq initial-scratch-message "")
+
+;; scroll bar delete
+(scroll-bar-mode -1)
+
+;; mitame
+;;color theme
+;; (load-theme 'monokai t)
+
+;; alpha
+;; (if window-system
+;;     (grogn
+;;      (set-frame-parameter nil 'alpha 95)))
+
