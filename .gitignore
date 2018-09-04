@@ -3,6 +3,7 @@
 .*~
 *~
 /.emacs.d/*
+/.xkeysnail/*
 
 # gitで管理する
 !/.emacs.d/init.el

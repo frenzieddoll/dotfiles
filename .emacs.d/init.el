@@ -129,7 +129,7 @@
   (windmove-default-keybindings))
 
 ;; 検索エンジンの変更
-(setq eww-sarch-prefix "https://www.google.co.jp/search?btnl&q=")
+;; (setq eww-sarch-prefix "https://www.google.co.jp/search?btnl&q=")
 
 ;; テーマの設定
 (load-theme 'misterioso)
