@@ -103,12 +103,23 @@
 ;; スタートアップメッセージを表示させない
 (setq inhibit-startup-message t)
 
+;; 起動時に*scratch*バッファを表示する
+(setq initial-buffer-choice t)
+
+;; 高速起動用のミニマムメジャーモードを適用
+;; (defun buffer-mode ()
+;;   "Buffer Mode"
+;;   (interactive)
+;;   (setq mode-name "Buffer")
+;;   (setq major-mode 'buffer-mode')
+;;   (run-hooks 'buffer-mode-hook))
+
 ;; beep音を消す
 (setq ring-bell-function 'ignore)
 
 ;; タブにスペースを使用する
 (setq-default tab-width 4 indent-tabs-mode nil)
-
+1
 ;; ウィンドウ内に収まらないときだけ格好内も光らせる
 (setq show-paren-style 'mixed)
 
@@ -122,14 +133,34 @@
 (setq scroll-step 1)
 
 ;; バッファの最後でnewlineで新規行を追加するのを禁止する
-(setq next-line-add-newlines nil)
+;; (setq next-line-add-newlines nil)
 
 ;; スマートなウィンドウ切り替え
 (when (fboundp 'windmove-default-keybindings)
   (windmove-default-keybindings))
 
+;;eww の設定
 ;; 検索エンジンの変更
 ;; (setq eww-sarch-prefix "https://www.google.co.jp/search?btnl&q=")
+(require 'eww)
+(defun eww-disable-images()
+  "ewwで画像は表示させない"
+  (interactive)
+  (setq-local shr-put-image-function 'shr-put-image-alt)
+  (eww-reload))
+(defun eww-enable-image()
+  "ewwで画像を表示させる"
+  (interactive)
+  (setq-local shr-put-image-function 'shr-put-image)
+  (eww-reload))
+(defun shr-put-image-alt (spec alt&optional flags)
+  (insert alt))
+
+(provide 'mylisp-eww-image)
+
+(defun eww-mode-hook--disable-image ()
+  (setq-local shr-put-image-function 'shr-put-image-alt))
+(add-hook 'eww-mode-hook 'eww-mode-hook--disable-image)
 
 ;; テーマの設定
 (load-theme 'misterioso)
