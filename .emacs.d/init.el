@@ -88,7 +88,7 @@
   (run-with-idle-timer 0.2 nil #'linum-update-current))
 
 ;; 列番号表示
-;; (column-number-mode t)
+(column-number-mode t)
 
 ;; タイトルバーにフルパス表示
 (setq frame-title-format "%f")
@@ -97,8 +97,8 @@
 (global-whitespace-mode 1)
 
 ;; カーソル行をハイライトする
-;; (global-hl-line-mode nil)
-(blink-cursor-mode 1)
+(global-hl-line-mode nil)
+;; (blink-cursor-mode 1)
 
 ;; スタートアップメッセージを表示させない
 (setq inhibit-startup-message t)
@@ -110,13 +110,13 @@
 (setq-default tab-width 4 indent-tabs-mode nil)
 
 ;; ウィンドウ内に収まらないときだけ格好内も光らせる
-;; (setq show-paren-style 'mixed)
+(setq show-paren-style 'mixed)
 
 ;; カーソルの点滅をやめる
 (blink-cursor-mode 0)
 
 ;; コピーを使い安くする
-;; (setq dired-dwim-target t)
+(setq dired-dwim-target t)
 
 ;; スクロールを一行ずつにする
 (setq scroll-step 1)
@@ -134,6 +134,10 @@
 ;; テーマの設定
 (load-theme 'misterioso)
 
+;; diredの設定
+;; ２画面ファイラー
+(setq dired-dwim-target t)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -146,3 +150,4 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+

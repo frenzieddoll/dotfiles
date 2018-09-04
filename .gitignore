@@ -1,9 +1,10 @@
-git de kaxnrishinai
+# gitで管理しない
 
 .*~
 *~
 /.emacs.d/*
 
-git de kaxnrisuru
+# gitで管理する
 !/.emacs.d/init.el
 !/.emacs.d/conf
+!/.xkeysnail
