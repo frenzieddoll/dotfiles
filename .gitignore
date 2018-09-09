@@ -8,4 +8,7 @@
 # gitで管理する
 !/.emacs.d/init.el
 !/.emacs.d/conf
+!/.emacs.d/elisp
+!/.emacs.d/elpa
+!/.emacs.d/public_repos
 !/.xkeysnail

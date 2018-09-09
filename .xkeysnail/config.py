@@ -9,9 +9,9 @@ from xkeysnail.transform import *
 # })
 
 # [Conditional modmap] Change modifier keys in certain applications
-define_conditional_modmap(re.compile(r'Emacs'), {
-    Key.RIGHT_CTRL: Key.ESC,
-})
+# define_conditional_modmap(re.compile(r'Emacs'), {
+#     Key.RIGHT_CTRL: Key.ESC,
+# })
 
 # [Multipurpose modmap] Give a key two meanings. A normal key when pressed and
 # released, and a modifier key when held down with another key. See Xcape,
@@ -20,7 +20,7 @@ define_multipurpose_modmap(
     # Enter is enter when pressed and released. Control when held down.
     {Key.ENTER: [Key.ENTER, Key.RIGHT_CTRL]}
 
-    # Capslock is escape when pressed and released. Control when held down.
+    # Capslock is escape when pressed and releaseffd. Control when held down.
     # {Key.CAPSLOCK: [Key.ESC, Key.LEFT_CTRL]
     # To use this example, you can't remap capslock with define_modmap.
 )
@@ -44,7 +44,7 @@ define_keymap(re.compile("Zeal"), {
 }, "Zeal")
 
 # Emacs-like keybindings in non-Emacs applications
-define_keymap(lambda wm_class: wm_class not in ("Emacs", "URxvt", "genome-terminal"), {
+define_keymap(lambda wm_class: wm_class not in ("Emacs", "URxvt", "genome-terminal", "UXTerm", "Termite"), {
     # Cursor
     K("C-b"): with_mark(K("left")),
     K("C-f"): with_mark(K("right")),

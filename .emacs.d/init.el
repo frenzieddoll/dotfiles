@@ -3,6 +3,17 @@
 ;; just comment it out by adding a semicolon to the start of the line.
 ;; You may delete these explanatory comments.
 
+;; ロードパスの設定
+(defun add-to-load-path (&rest paths)
+  (let (path)
+    (dolist (path paths paths)
+      (let ((default-directory
+              (expand-file-name (concat user-emacs-directory path))))
+        (add-to-list 'load-path default-directory)
+        (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
+            (normal-top-level-add-subdirs-to-load-path))))))
+;; 引数のディレクトリとそのサブディレクトリをload-pathに追加
+(add-to-load-path "elisp" "conf" "public_repos")
 
 ;; リポジトリの追加
 (require 'package)
@@ -47,7 +58,7 @@
 ;; バックアップファイ及び、自動セーブの無効
 (setq make-backup-files nil)
 (setq delete-auto-save-files t)
-(setq auto-save-default nil)
+;; (setq auto-save-default nil)
 
 ;; メニューバー、ツールバー、スクロールバーの非表示
 (menu-bar-mode -1)
@@ -55,10 +66,19 @@
 (scroll-bar-mode -1)
 
 ;; emacs-mozc
-(set-language-environment 'Japanese)
-(require 'mozc)
-(setq default-input-method "Japanese-mozc")
-(global-set-key (kbd "C-c j") 'mozc-mode)
+;; (set-language-environment 'Japanese)
+;; (require 'mozc)
+;; (setq default-input-method "Japanese-mozc")
+;; (global-set-key (kbd "C-c j") 'mozc-mode)
+
+;; ddskk のキーバインド
+;; (require 'skk)
+;; (global-set-key (kbd "C-c C-j") 'skk-mode)
+;; skkの設定
+(when (require 'skk nil t)
+  (global-set-key (kbd "C-c j") 'skk-auto-fill-mode) ;;良い感じに改行を自動入力してくれる機能
+  (setq default-input-method "japanese-skk")         ;;emacs上での日本語入力にskkをつかう
+  (require 'skk-study))
 
 ;; keymap change
 ;; C-m : 改行プラスインデント
@@ -68,14 +88,10 @@
 ;; C-x ? : help
 (define-key global-map (kbd "C-x ?") 'help-command)
 ;; C-t : ウィンドウ間の移動 (元 transpose-chars)
-(define-key global-map (kbd "C-t") 'other-window)
+;; (define-key global-map (kbd "C-t") 'other-window)
 
 ;;折り返しトグルコマンド
 (define-key global-map (kbd "C-c l") 'toggle-truncate-lines)
-
-;; ddskk のキーバインド
-
-;;(global-set-key (kbd "C-c C-j") 'skk-mode)
 
 ;; 文字コードセット
 (set-language-environment "Japanese")
@@ -129,19 +145,57 @@
 ;; コピーを使い安くする
 (setq dired-dwim-target t)
 
-;; スクロールを一行ずつにする
+;;nn スクロールを一行ずつにする
 (setq scroll-step 1)
 
 ;; バッファの最後でnewlineで新規行を追加するのを禁止する
-;; (setq next-line-add-newlines nil)
+(setq next-line-add-newlines nil)
 
 ;; スマートなウィンドウ切り替え
-(when (fboundp 'windmove-default-keybindings)
-  (windmove-default-keybindings))
+;; (when (fboundp 'windmove-default-keybindings)
+;;   (windmove-default-keybindings)
+(global-set-key (kbd "C-c n") 'windmove-down)
+(global-set-key (kbd "C-c f") 'windmove-right)
+(global-set-key (kbd "C-c b") 'windmove-left)
+(global-set-key (kbd "C-c p") 'windmove-up)
+(setq windmove-wrap-around t)
+
+;; ウィンドウのサイズ変更
+(defun window-resizer ()
+  "Control window size and position."
+  (interactive)
+  (let ((window-obj (selected-window))
+        (current-width (window-width))
+        (current-height (window-height))
+        (dx (if (= (nth 0 (window-edges)) 0) 1
+              -1))
+        (dy (if (= (nth 1 (window-edges)) 0) 1
+              -1))
+        c)
+    (catch 'end-flag
+      (while t
+        (message "size[%dx%d]"
+                 (window-width) (window-height))
+        (setq c (read-char))
+        (cond ((= c ?f)
+               (enlarge-window-horizontally dx))
+              ((= c ?b)
+               (shrink-window-horizontally dx))
+              ((= c ?n)
+               (enlarge-window dy))
+              ((= c ?p)
+               (shrink-window dy))
+              ;; otherwise
+              (t
+               (message "Quit")
+               (throw 'end-flag t)))))))
+
+;; ウィンドウサイズの変更のキーバインド
+(global-set-key (kbd "s-R") 'window-resizer)
 
 ;;eww の設定
 ;; 検索エンジンの変更
-;; (setq eww-sarch-prefix "https://www.google.co.jp/search?btnl&q=")
+(setq eww-search-prefix "https://www.google.co.jp/search?btnl&q=")
 (require 'eww)
 (defun eww-disable-images()
   "ewwで画像は表示させない"
@@ -155,9 +209,8 @@
   (eww-reload))
 (defun shr-put-image-alt (spec alt&optional flags)
   (insert alt))
-
+;; デフォルトで画像を表示させない
 (provide 'mylisp-eww-image)
-
 (defun eww-mode-hook--disable-image ()
   (setq-local shr-put-image-function 'shr-put-image-alt))
 (add-hook 'eww-mode-hook 'eww-mode-hook--disable-image)
@@ -169,16 +222,26 @@
 ;; ２画面ファイラー
 (setq dired-dwim-target t)
 
+;; フォント設定
+(add-to-list 'default-frame-alist '(font. "SourceHanCodeJP-Regular-12"))
+
+;; exwmの設定
+(require 'exwm)
+(require 'exwm-config)
+(exwm-config-default)
+;; (define-key key-translation-map [?\C-h] [?\C-?])
+;; (push ?\C-h exwm-input-prefix-keys)
+;; (exwm-input-set-simulation-keys '(([?\C-?] . backspace)))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages (quote (ddskk))))
+ '(package-selected-packages (quote (exwm edit-server ddskk))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-
