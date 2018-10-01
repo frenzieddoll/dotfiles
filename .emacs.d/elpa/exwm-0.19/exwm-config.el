@@ -62,7 +62,8 @@
           ([?\M-v] . [prior])
           ([?\C-v] . [next])
           ([?\C-d] . [delete])
-          ([?\C-k] . [S-end delete])))
+          ([?\C-k] . [S-end delete])
+          ([?\C-h] . [left delete])))
   ;; Enable EXWM
   (exwm-enable)
   ;; Configure Ido

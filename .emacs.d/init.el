@@ -58,7 +58,7 @@
 ;; バックアップファイ及び、自動セーブの無効
 (setq make-backup-files nil)
 (setq delete-auto-save-files t)
-;; (setq auto-save-default nil)
+(setq auto-save-default nil)
 
 ;; メニューバー、ツールバー、スクロールバーの非表示
 (menu-bar-mode -1)
@@ -66,19 +66,34 @@
 (scroll-bar-mode -1)
 
 ;; emacs-mozc
-;; (set-language-environment 'Japanese)
-;; (require 'mozc)
-;; (setq default-input-method "Japanese-mozc")
-;; (global-set-key (kbd "C-c j") 'mozc-mode)
+(set-language-environment 'Japanese)
+(require 'mozc)
+(setq default-input-method "Japanese-mozc")
+(global-set-key (kbd "C-c j") 'mozc-mode)
+
+;; migemo
+(require 'migemo)
+;; (when (and (executable-find "cmigemo")
+;;            (require 'migemo nil t))
+(setq migemo-command "cmigemo")
+(setq migemo-options '("-q" "--emacs"))
+;; 辞書ファイル
+(setq migemo-dictionary "/usr/share/migemo/utf-8/migemo-dict")
+(setq migemo-user-dicitonary nil)
+(setq migemo-regex-dictionary nil)
+(setq migemo-coding-system 'utf-8-unix)
+(load-library "migemo")
+(migemo-init)
+
 
 ;; ddskk のキーバインド
 ;; (require 'skk)
 ;; (global-set-key (kbd "C-c C-j") 'skk-mode)
 ;; skkの設定
-(when (require 'skk nil t)
-  (global-set-key (kbd "C-c j") 'skk-auto-fill-mode) ;;良い感じに改行を自動入力してくれる機能
-  (setq default-input-method "japanese-skk")         ;;emacs上での日本語入力にskkをつかう
-  (require 'skk-study))
+;; (when (require 'skk nil t)
+;;   (global-set-key (kbd "C-c j") 'skk-auto-fill-mode) ;;良い感じに改行を自動入力してくれる機能
+;;   (setq default-input-method "japanese-skk")         ;;emacs上での日本語入力にskkをつかう
+;;   (require 'skk-study))
 
 ;; keymap change
 ;; C-m : 改行プラスインデント
@@ -89,12 +104,11 @@
 (define-key global-map (kbd "C-x ?") 'help-command)
 ;; C-t : ウィンドウ間の移動 (元 transpose-chars)
 ;; (define-key global-map (kbd "C-t") 'other-window)
-
 ;;折り返しトグルコマンド
 (define-key global-map (kbd "C-c l") 'toggle-truncate-lines)
 
 ;; 文字コードセット
-(set-language-environment "Japanese")
+
 (prefer-coding-system 'utf-8)
 
 ;; 行番号を表示(軽量化あり)
@@ -145,15 +159,12 @@
 ;; コピーを使い安くする
 (setq dired-dwim-target t)
 
-;;nn スクロールを一行ずつにする
-(setq scroll-step 1)
-
 ;; バッファの最後でnewlineで新規行を追加するのを禁止する
 (setq next-line-add-newlines nil)
 
 ;; スマートなウィンドウ切り替え
 ;; (when (fboundp 'windmove-default-keybindings)
-;;   (windmove-default-keybindings)
+;;   (windmove-default-keybindings);
 (global-set-key (kbd "C-c n") 'windmove-down)
 (global-set-key (kbd "C-c f") 'windmove-right)
 (global-set-key (kbd "C-c b") 'windmove-left)
@@ -191,9 +202,38 @@
                (throw 'end-flag t)))))))
 
 ;; ウィンドウサイズの変更のキーバインド
-(global-set-key (kbd "s-R") 'window-resizer)
+(global-set-key (kbd "C-c r") 'window-resizer)
+
+;; 補完で大文字小文字無視
+(setq read-file-name-completion-ignore-case t)
+
+;; set alpha
+(add-to-list 'default-frame-alist '(alpha . 80))
+
+;; set font and screen
+;; (progn
+;;   ;; 文字の色を設定します。
+;;   (add-to-list 'default-frame-alist '(foreground-color . "azure1"))
+;;   ;; 背景色を設定します。
+;;   (add-to-list 'default-frame-alist '(background-color . "black"))
+;;   ;; カーソルの色を設定します。
+;;   (add-to-list 'default-frame-alist '(cursor-color . "green"))
+;;   ;; マウスポインタの色を設定します。
+;;   (add-to-list 'default-frame-alist '(mouse-color . "green"))
+;;   ;; モードラインの文字の色を設定します。
+;;   (set-face-foreground 'modeline "white")
+;;   ;; モードラインの背景色を設定します。
+;;   (set-face-background 'modeline "DimGrey")
+;;   ;; 選択中のリージョンの色を設定します。
+;;   (set-face-background 'region "Blue")
+;;   ;; モードライン（アクティブでないバッファ）の文字色を設定します。
+;;   (set-face-foreground 'mode-line-inactive "gray30")
+;;   ;; モードライン（アクティブでないバッファ）の背景色を設定します。
+;;   (set-face-background 'mode-line-inactive "gray85")
+;; )
 
 ;;eww の設定
+;; --------------------------------------------------------------------------------------
 ;; 検索エンジンの変更
 (setq eww-search-prefix "https://www.google.co.jp/search?btnl&q=")
 (require 'eww)
@@ -215,8 +255,76 @@
   (setq-local shr-put-image-function 'shr-put-image-alt))
 (add-hook 'eww-mode-hook 'eww-mode-hook--disable-image)
 
+;; 外部ブラウザで開く
+(setq eww-browse-with-external-link t)
+
+;; 現在のurlをewwで開く
+(defun browse-url-with-eww ()
+  (interactive)
+  (let ((url-region (bounds-of-thing-at-point 'url)))
+    ;; url
+    (if url-region
+      (eww-browse-url (buffer-substring-no-properties (car url-region)
+                              (cdr url-region))))
+    ;; org-link
+    (setq browse-url-browser-function 'eww-browse-url)
+    (org-open-at-point)))
+(global-set-key (kbd "C-c e") 'browse-url-with-eww)
+
+;; ------------------------------------------------------------------------------------
 ;; テーマの設定
-(load-theme 'misterioso)
+;; (load-theme 'misterioso)
+(require 'powerline)
+
+(defun powerline-my-theme ()
+  "Setup the my mode-line."
+  (interactive)
+  (setq powerline-current-separator 'utf-8)
+  (setq-default mode-line-format
+                '("%e"
+                  (:eval
+                   (let* ((active (powerline-selected-window-active))
+                          (mode-line (if active 'mode-line 'mode-line-inactive))
+                          (face1 (if active 'mode-line-1-fg 'mode-line-2-fg))
+                          (face2 (if active 'mode-line-1-arrow 'mode-line-2-arrow))
+                          (separator-left (intern (format "powerline-%s-%s"
+                                                          (powerline-current-separator)
+                                                          (car powerline-default-separator-dir))))
+                          (lhs (list (powerline-raw " " face1)
+                                     (powerline-major-mode face1)
+                                     (powerline-raw " " face1)
+                                     (funcall separator-left face1 face2)
+                                     (powerline-buffer-id nil )
+                                     (powerline-raw " [ ")
+                                     (powerline-raw mode-line-mule-info nil)
+                                     (powerline-raw "%*")
+                                     (powerline-raw " |")
+                                     (powerline-process nil)
+                                     (powerline-vc)
+                                     (powerline-raw " ]")
+                                     ))
+                          (rhs (list (powerline-raw "%4l")
+                                     (powerline-raw ":")
+                                     (powerline-raw "%2c")
+                                     (powerline-raw " | ")
+                                     (powerline-raw "%6p")
+                                     (powerline-raw " ")
+                                     )))
+                     (concat (powerline-render lhs)
+                             (powerline-fill nil (powerline-width rhs))
+                             (powerline-render rhs)))))))
+
+(defun make/set-face (face-name fg-color bg-color weight)
+  (make-face face-name)
+  (set-face-attribute face-name nil
+                      :foreground fg-color :background bg-color :box nil :weight weight))
+(make/set-face 'mode-line-1-fg "#282C34" "#EF8300" 'bold)
+(make/set-face 'mode-line-2-fg "#AAAAAA" "#2F343D" 'bold)
+(make/set-face 'mode-line-1-arrow  "#AAAAAA" "#3E4451" 'bold)
+(make/set-face 'mode-line-2-arrow  "#AAAAAA" "#3E4451" 'bold)
+
+(powerline-my-theme)
+(load-theme 'atom-one-dark t)
 
 ;; diredの設定
 ;; ２画面ファイラー
@@ -225,20 +333,50 @@
 ;; フォント設定
 (add-to-list 'default-frame-alist '(font. "SourceHanCodeJP-Regular-12"))
 
+;; スクロールの設定;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; スクロールを一行ずつにする
+;; (setq scroll-step 1)
+
+;; スクロールした際のカーソルの移動行数
+(setq scroll-conservatively 1)
+
+;; スクロール開始のマージン
+(setq scroll-margin 10)
+
+;; 1画面スクロール時に重複させる行数
+(setq next-screen-context-lines 10)
+
+;; 1画面スクロール時にカーソルの画面上の位置をなるべく変えない
+(setq scroll-preserve-screen-position t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ;; exwmの設定
-(require 'exwm)
-(require 'exwm-config)
-(exwm-config-default)
+;; (require 'exwm)
+;; (require 'exwm-config)
+;; (exwm-config-default)
 ;; (define-key key-translation-map [?\C-h] [?\C-?])
 ;; (push ?\C-h exwm-input-prefix-keys)
 ;; (exwm-input-set-simulation-keys '(([?\C-?] . backspace)))
+;; exwm-initの読み込み
+(load "init-exwm")
+
+;; multi-termの設定
+;; (when (require 'multi-term nil t)
+;;   ;; 使用するシェルを指定
+;;   (setq multi-term-program "/bin/bash"))
+
+;; jupyter notebookを使う
+(require 'ein)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages (quote (exwm edit-server ddskk))))
+ '(package-selected-packages
+   (quote
+    (ein migemo rainbow-delimiters atom-one-dark-theme powerline multi-term exwm edit-server ddskk))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
