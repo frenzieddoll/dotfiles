@@ -1,0 +1,16 @@
+(setq skk-rom-kana-rule-list
+      (append skk-rom-kana-rule-list
+              '(
+              ("xn" nil ("ン" . "ん"))
+              ("xx" nil "っ")
+              ("!" nil "!")
+              ("," nil "、")
+              ("." nil "。")
+              (":" nil ":")
+              (";" nil ";")
+              ("?" nil "?")
+              )))
+
+(setq skk-kakutei-key (kbd "C-c C-j"))
+(setq skk-tut-file "~/.emacs.d/etc/SKK.tut")
+(setq skk-sticky-key ";")
