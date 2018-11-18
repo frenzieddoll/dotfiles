@@ -5,6 +5,7 @@
 /.emacs.d/*
 /.xkeysnail/*
 /.config/*
+/.ddskk/*
 
 # gitで管理する
 !/.emacs.d/init.el
@@ -12,6 +13,9 @@
 !/.emacs.d/elisp
 !/.emacs.d/elpa
 !/.emacs.d/public_repos
+!/.ddskk/init
+!/.ddskk/jisyo
+!/.ddskk/study
 !/.xkeysnail
 #!/.config/.config.py
 #!/.config/i3

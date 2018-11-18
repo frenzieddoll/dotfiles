@@ -50,9 +50,6 @@
 
 ;; cooding set
 (set-default-coding-systems 'utf-8)
-(set-keyboard-coding-system 'utf-8)
-(set-terminal-coding-system 'utf-8)
-(set-buffer-file-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
 
 ;; バックアップファイ及び、自動セーブの無効
@@ -65,11 +62,41 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
+;; ddskk のキーバインド
+;; (require 'skk)
+;; (global-set-key (kbd "C-c C-j") 'skk-mode)
+;; skkの設定
+;; (when (require 'skk nil t)
+;;   (global-set-key (kbd "C-c j") 'skk-auto-fill-mode) ;;良い感じに改行を自動入力してくれる機能
+;;   (setq default-input-method "japanese-skk")         ;;emacs上での日本語入力にskkをつかう
+;;   (require 'skk-study))
+(global-set-key (kbd "C-x C-j") 'skk-mode)
+(global-set-key (kbd "C-x j") 'skk-auto-fill-mode)
+(setq skk-user-directory "~/.ddskk")
+(setq skk-large-jisyo "~/.emacs.d/skk-get-jisyo/SKK-JISYO.L")
+
+
+
+
+
 ;; emacs-mozc
-(set-language-environment 'Japanese)
-(require 'mozc)
-(setq default-input-method "Japanese-mozc")
-(global-set-key (kbd "C-c j") 'mozc-mode)
+;; (set-language-environment 'Japanese)
+;; (require 'mozc)
+;; (setq default-input-method "Japanese-mozc")
+;; (global-set-key (kbd "C-c j") 'mozc-mode)
+
+
+;; ;; endキーでon
+;; (global-set-key (kbd "<end>")
+;;                 (lambda () (interactive)
+;;                   (when (null current-input-method) (mozc-mode))))
+
+;; homeキーでon
+;; (global-set-key (kbd "<end>")
+;;                 (lambda () (interactive)
+;;                   (inactivate-input-method))
+
+
 
 ;; migemo
 (require 'migemo)
@@ -86,48 +113,51 @@
 (migemo-init)
 
 
-;; ddskk のキーバインド
-;; (require 'skk)
-;; (global-set-key (kbd "C-c C-j") 'skk-mode)
-;; skkの設定
-;; (when (require 'skk nil t)
-;;   (global-set-key (kbd "C-c j") 'skk-auto-fill-mode) ;;良い感じに改行を自動入力してくれる機能
-;;   (setq default-input-method "japanese-skk")         ;;emacs上での日本語入力にskkをつかう
-;;   (require 'skk-study))
 
 ;; keymap change
 ;; C-m : 改行プラスインデント
 (global-set-key (kbd "C-m") 'newline-and-indent)
 ;;C-h : backspace
-(define-key key-translation-map (kbd "C-h") (kbd "<DEL>"))
+;; (define-key key-translation-map (kbd "C-h") (kbd "<DEL>"))
+(global-set-key (kbd "C-h") 'delete-backward-char)
+(defun minibuffer-delete-backward-char ()
+  (local-set-key (kbd "C-h") 'delete-backward-char))
+(add-hook 'minibuffer-setup-hook 'minibuffer-delete-backward-char)
+(define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char)
 ;; C-x ? : help
-(define-key global-map (kbd "C-x ?") 'help-command)
-;; C-t : ウィンドウ間の移動 (元 transpose-chars)
-;; (define-key global-map (kbd "C-t") 'other-window)
+(define-key global-map (kbd "C-c C-?") 'help-command)
 ;;折り返しトグルコマンド
 (define-key global-map (kbd "C-c l") 'toggle-truncate-lines)
+;; eshell start
+;; (global-set-key (kbd "C-c e") 'eshell)
+;; ウィンドウサイズの変更のキーバインド
+(global-set-key (kbd "C-c r") 'window-resizer)
 
 ;; 文字コードセット
-
 (prefer-coding-system 'utf-8)
 
+;; フォント
+(set-default-font "SourceHanCodeJP R")
 ;; 行番号を表示(軽量化あり)
-(global-linum-mode t)
+;; (global-linum-mode t)
+(global-set-key (kbd "C-c C-l") 'global-linum-mode)
 (setq linum-delay t)
 (defadvice linum-schedule (around my-linum-schedule () activate)
-  (run-with-idle-timer 0.2 nil #'linum-update-current))
+  (run-with-idle-timer 0.5 nil #'linum-update-current))
+
+(global-set-key (kbd "C-c C-w") 'global-whitespace-mode)
 
 ;; 列番号表示
 (column-number-mode t)
 
 ;; タイトルバーにフルパス表示
-(setq frame-title-format "%f")
+;; (setq frame-title-format "%f")
 
 ;;スペース、タブなどを可視化する
-(global-whitespace-mode 1)
+;; (global-whitespace-mode 1)
 
 ;; カーソル行をハイライトする
-(global-hl-line-mode nil)
+;; (global-hl-line-mode nil)
 ;; (blink-cursor-mode 1)
 
 ;; スタートアップメッセージを表示させない
@@ -136,14 +166,6 @@
 ;; 起動時に*scratch*バッファを表示する
 (setq initial-buffer-choice t)
 
-;; 高速起動用のミニマムメジャーモードを適用
-;; (defun buffer-mode ()
-;;   "Buffer Mode"
-;;   (interactive)
-;;   (setq mode-name "Buffer")
-;;   (setq major-mode 'buffer-mode')
-;;   (run-hooks 'buffer-mode-hook))
-
 ;; beep音を消す
 (setq ring-bell-function 'ignore)
 
@@ -151,13 +173,10 @@
 (setq-default tab-width 4 indent-tabs-mode nil)
 1
 ;; ウィンドウ内に収まらないときだけ格好内も光らせる
-(setq show-paren-style 'mixed)
+;; (setq show-paren-style 'mixed)
 
 ;; カーソルの点滅をやめる
 (blink-cursor-mode 0)
-
-;; コピーを使い安くする
-(setq dired-dwim-target t)
 
 ;; バッファの最後でnewlineで新規行を追加するのを禁止する
 (setq next-line-add-newlines nil)
@@ -201,14 +220,8 @@
                (message "Quit")
                (throw 'end-flag t)))))))
 
-;; ウィンドウサイズの変更のキーバインド
-(global-set-key (kbd "C-c r") 'window-resizer)
-
 ;; 補完で大文字小文字無視
 (setq read-file-name-completion-ignore-case t)
-
-;; set alpha
-(add-to-list 'default-frame-alist '(alpha . 80))
 
 ;; set font and screen
 ;; (progn
@@ -235,41 +248,41 @@
 ;;eww の設定
 ;; --------------------------------------------------------------------------------------
 ;; 検索エンジンの変更
-(setq eww-search-prefix "https://www.google.co.jp/search?btnl&q=")
-(require 'eww)
-(defun eww-disable-images()
-  "ewwで画像は表示させない"
-  (interactive)
-  (setq-local shr-put-image-function 'shr-put-image-alt)
-  (eww-reload))
-(defun eww-enable-image()
-  "ewwで画像を表示させる"
-  (interactive)
-  (setq-local shr-put-image-function 'shr-put-image)
-  (eww-reload))
-(defun shr-put-image-alt (spec alt&optional flags)
-  (insert alt))
-;; デフォルトで画像を表示させない
-(provide 'mylisp-eww-image)
-(defun eww-mode-hook--disable-image ()
-  (setq-local shr-put-image-function 'shr-put-image-alt))
-(add-hook 'eww-mode-hook 'eww-mode-hook--disable-image)
+;; (setq eww-search-prefix "https://www.google.co.jp/search?btnl&q=")
+;; (require 'eww)
+;; (defun eww-disable-images()
+;;   "ewwで画像は表示させない"
+;;   (interactive)
+;;   (setq-local shr-put-image-function 'shr-put-image-alt)
+;;   (eww-reload))
+;; (defun eww-enable-image()
+;;   "ewwで画像を表示させる"
+;;   (interactive)
+;;   (setq-local shr-put-image-function 'shr-put-image)
+;;   (eww-reload))
+;; (defun shr-put-image-alt (spec alt&optional flags)
+;;   (insert alt))
+;; ;; デフォルトで画像を表示させない
+;; (provide 'mylisp-eww-image)
+;; (defun eww-mode-hook--disable-image ()
+;;   (setq-local shr-put-image-function 'shr-put-image-alt))
+;; (add-hook 'eww-mode-hook 'eww-mode-hook--disable-image)
 
-;; 外部ブラウザで開く
-(setq eww-browse-with-external-link t)
+;; ;; 外部ブラウザで開く
+;; (setq eww-browse-with-external-link t)
 
-;; 現在のurlをewwで開く
-(defun browse-url-with-eww ()
-  (interactive)
-  (let ((url-region (bounds-of-thing-at-point 'url)))
-    ;; url
-    (if url-region
-      (eww-browse-url (buffer-substring-no-properties (car url-region)
-                              (cdr url-region))))
-    ;; org-link
-    (setq browse-url-browser-function 'eww-browse-url)
-    (org-open-at-point)))
-(global-set-key (kbd "C-c e") 'browse-url-with-eww)
+;; ;; 現在のurlをewwで開く
+;; (defun browse-url-with-eww ()
+;;   (interactive)
+;;   (let ((url-region (bounds-of-thing-at-point 'url)))
+;;     ;; url
+;;     (if url-region
+;;       (eww-browse-url (buffer-substring-no-properties (car url-region)
+;;                               (cdr url-region))))
+;;     ;; org-link
+;;     (setq browse-url-browser-function 'eww-browse-url)
+;;     (org-open-at-point)))
+;; (global-set-key (kbd "C-c e") 'browse-url-with-eww)
 
 ;; ------------------------------------------------------------------------------------
 ;; テーマの設定
@@ -329,9 +342,20 @@
 ;; diredの設定
 ;; ２画面ファイラー
 (setq dired-dwim-target t)
+;; filter
+(require 'dired-filter)
+(define-key dired-mode-map (kbd "/") dired-filter-map)
+;; wdired set to "e"
+(require 'wdired)
+(setq wdired-allow-to-change-premissions t)
+(define-key dired-mode-map "e" 'wdired-change-to-wdired-mode)
+;; コピーを使い安くする
+(setq dired-dwim-target t)
+;; (setq dired-launch-mailcap-friend '("env" "xdg-open"))
+;; (dired-launch-enable)
 
 ;; フォント設定
-(add-to-list 'default-frame-alist '(font. "SourceHanCodeJP-Regular-12"))
+;; (add-to-list 'default-frame-alist '(font. "SourceHanCodeJP-Regular-12"))
 
 ;; スクロールの設定;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; スクロールを一行ずつにする
@@ -351,15 +375,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; exwmの設定
-;; (require 'exwm)
-;; (require 'exwm-config)
-;; (exwm-config-default)
-;; (define-key key-translation-map [?\C-h] [?\C-?])
-;; (push ?\C-h exwm-input-prefix-keys)
-;; (exwm-input-set-simulation-keys '(([?\C-?] . backspace)))
-;; exwm-initの読み込み
-(load "init-exwm")
+;;(load "init-tex")
 
 ;; multi-termの設定
 ;; (when (require 'multi-term nil t)
@@ -369,14 +385,178 @@
 ;; jupyter notebookを使う
 (require 'ein)
 
+;; helm
+(require 'helm-config)
+(helm-mode 1)
+(global-set-key (kbd "M-x") 'helm-M-x)
+(setq helm-M-x-fuzzy-match t)
+(global-set-key (kbd "M-y") 'helm-show-kill-ring)
+(global-set-key (kbd "C-x b") 'helm-mini)
+(global-set-key (kbd "C-x C-b") 'helm-for-files)
+(setq helm-buffers-fuzzy-matching t
+      helm-recentf-fuzzy-match t)
+(global-set-key (kbd "C-x C-f") 'helm-find-files)
+(global-set-key (kbd "C-c h") 'helm-find)
+;; (global-set-key (kbd "C-x d") 'h
+;; (define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action)
+
+;; (require 'helm-migemo)
+;;; この修正が必要
+;; (eval-after-load "helm-migemo"
+;;   '(defun helm-compile-source--candidates-in-buffer (source)
+;;      (helm-aif (assoc 'candidates-in-buffer source)
+;;          (append source
+;;                  `((candidates
+;;                     . ,(or (cdr it)
+;;                            (lambda ()
+;;                              ;; Do not use `source' because other plugins
+;;                              ;; (such as helm-migemo) may change it
+;;                              (helm-candidates-in-buffer (helm-get-current-source)))))
+;;                    (volatile) (match identity)))
+;;        source)))
+
+(require 'zoom-window)
+(global-set-key (kbd "C-c 1") 'zoom-window-zoom)
+(setq zoom-window-mode-line-color "DarkGreen")
+
+;; company setting
+(require 'company)
+(global-company-mode) ; 全バッファで有効にする
+(setq company-transformers '(company-sort-by-backend-importance)) ;; ソート順
+(setq company-idle-delay 0) ; デフォルトは0.5
+(setq company-minimum-prefix-length 3) ; デフォルトは4
+(setq company-selection-wrap-around t) ; 候補の一番下でさらに下に行こうとすると一番上に戻る
+(setq completion-ignore-case t)
+(setq company-dabbrev-downcase nil)
+(global-set-key (kbd "C-M-i") 'company-complete)
+;; C-n, C-pで補完候補を次/前の候補を選択
+(define-key company-active-map (kbd "C-n") 'company-select-next)
+(define-key company-active-map (kbd "C-p") 'company-select-previous)
+(define-key company-search-map (kbd "C-n") 'company-select-next)
+(define-key company-search-map (kbd "C-p") 'company-select-previous)
+(define-key company-active-map (kbd "C-s") 'company-filter-candidates) ;; C-sで絞り込む
+(define-key company-active-map (kbd "C-i") 'company-complete-selection) ;; TABで候補を設定
+(define-key company-active-map [tab] 'company-complete-selection) ;; TABで候補を設定
+(define-key company-active-map (kbd "C-f") 'company-complete-selection) ;; C-fで候補を設定
+(define-key emacs-lisp-mode-map (kbd "C-M-i") 'company-complete) ;; 各種メジャーモードでも C-M-iで company-modeの補完を使う
+
+;; ;; org-modeの設定
+;; ; カレンダーの日付を英語表記にする
+;; (setq system-time-locale "C")
+
+;; ; アジェンダ
+;; (define-key global-map "\C-c a" 'org-agenda)
+;; (setq org-agenda-files
+;;       ("~/notes.org" "~/calendar.org" ))
+;; ; refile( C-c C-w )
+;; (setq org-refile-targets
+;;       ( ("~/notes.org" :level . 2 )
+;; ("~/calendar.org" :level . 2 )))
+
+;; ;; 下で設定した状態は、
+;; ;; C-S-<right>/<left> or C-u C-u C-c C-t でキーワードグループ変更
+;; ;; S-<right>/<left> で全てのキーワードを順送り
+;; (setq org-todo-keywords
+;;       (sequence "TODO" "NEXT" "REPEAT" "REMEMBER" "|" "DONE")
+;;       (sequence "WAITING" "|" "CANCELED" "DEFFERED"))
+
+;; exwmの設定
+(require 'exwm)
+(require 'exwm-cm)
+;; (require 'exwm-config)
+;; (exwm-config-default)
+;; exwm-initの読み込み
+(require 'init-exwm)
+;; (when (require 'exwm nil t) (require 'init-exwm))
+;; (exwm_conf)
+
+;; (global-set-key (kbd "C-c w") 'w3m)
+(setq browse-url-browser-function 'browse-url-generic
+      browse-url-generic-program "google-chrome-unstable")
+
+(eval-after-load "esh-module"
+  '(setq eshell-modules-list (delq 'eshell-ls (delq 'eshell-unix eshell-modules-list))))
+
+;; 音量ショートカットキー
+(defconst taiju/audio-volume-modifier 3)
+(defun taiju/audio-toggle ()
+  (interactive)
+  (start-process-shell-command
+   "audio-toggle"
+   nil
+   "amixer -c 0 sset Master toggle | grep -q '\\[on\\]' && amixer -c 0 sset Headphone unmute && amixer -c 0 sset Speaker unmute"))
+
+(defun taiju/audio-lower-volume ()
+  (interactive)
+  (start-process-shell-command
+   "audio-lower-volume"
+   nil
+   (format "amixer -c 0 set Master %d%%-" taiju/audio-volume-modifier)))
+
+(defun taiju/audio-raise-volume ()
+  (interactive)
+  (start-process-shell-command
+   "audio-raise-volume"
+   nil
+   (format "amixer -c 0 set Master %d%%+" taiju/audio-volume-modifier)))
+
+(defun taiju/audio-mic-toggle ()
+  (interactive)
+  (start-process-shell-command
+   "audio-mic-toggle"
+   nil
+   "amixer -c 0 sset Capture toggle"))
+
+(global-set-key (kbd "C-c u") 'taiju/audio-raise-volume)
+(global-set-key (kbd "C-c d") 'taiju/audio-lower-volume)
+;; (global-set-key (kbd "C-c t") nil)
+
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(helm-external-programs-associations
+   (quote
+    (("exe" . "wine")
+     ("rar" . "mcomix")
+     ("pdf" . "mcomix")
+     ("zip" . "mcomix"))))
  '(package-selected-packages
    (quote
-    (ein migemo rainbow-delimiters atom-one-dark-theme powerline multi-term exwm edit-server ddskk))))
+    (vlf dired-open w3m dired-launch dired-filter company zoom-window fish-mode helm-migemo helm ein migemo rainbow-delimiters atom-one-dark-theme powerline multi-term exwm edit-server ddskk)))
+ '(skk-auto-insert-paren nil)
+ '(skk-auto-okuri-process nil)
+ '(skk-auto-start-henkan t)
+ '(skk-check-okurigana-on-touroku nil)
+ '(skk-delete-implies-kakutei t)
+ '(skk-egg-like-newline t)
+ '(skk-henkan-okuri-strictly nil)
+ '(skk-henkan-strict-okuri-precedence nil)
+ '(skk-j-mode-function-key-usage nil)
+ '(skk-japanese-message-and-error nil)
+ '(skk-kakutei-early t)
+ '(skk-preload nil)
+ '(skk-share-private-jisyo nil)
+ '(skk-show-annotation nil)
+ '(skk-show-candidates-always-pop-to-buffer nil)
+ '(skk-show-icon nil)
+ '(skk-show-inline nil)
+ '(skk-show-japanese-menu t)
+ '(skk-show-tooltip nil)
+ '(skk-use-color-cursor t)
+ '(skk-use-face t)
+ '(skk-use-jisx0201-input-method nil)
+ '(skk-use-look nil)
+ '(skk-use-numeric-conversion t)
+ '(skk-verbose nil))
+;; (custom-set-faces
+;;  ;; custom-set-faces was added by Custom.
+;;  ;; If you edit it by hand, you could mess it up, so be careful.
+;;  ;; Your init file should contain only one such instance.
+;;  ;; If there is more than one, they won't work right.
+;;  )
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

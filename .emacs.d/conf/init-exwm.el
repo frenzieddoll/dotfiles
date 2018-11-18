@@ -1,78 +1,93 @@
-;; system tray
+;;; EXWM
+
+;;; When stating the client from .xinitrc, `save-buffer-kill-terminal' will
+;;; force-kill Emacs before it can run through `kill-emacs-hook'.
+;; (global-set-key (kbd "C-x C-c") 'save-buffers-kill-emacs)
+
+;;; REVIEW: Athena+Xaw3d confuses xcape when binding Caps-lock to both L_Ctrl
+;;; escape, in which case it will procude <C-escape> in Emacs. In practice, it
+;;; means that `C-` keys will works but `<escape>` will need a fast double tap
+;;; on Caps Lock.
+;;;
+;;; See https://github.com/ch11ng/exwm/issues/285
+;;; and https://gitlab.com/interception/linux/plugins/caps2esc/issues/2.
+
+;;; REVIEW: Pressing "s-a" ('emms-smart-browse) loses the cursor.
+;;; Sometimes waiting helps.  Calling emms-smart-browse manually does not trigger the issue.
+;;; https://github.com/ch11ng/exwm/issues/366
+
+;;; REVIEW: helm-mini with follow-mode hangs when using EXWM.
+;;; https://github.com/emacs-helm/helm/issues/1889
+
+;;; Rename buffer to window title.
+;; (defun ambrevar/exwm-rename-buffer-to-title () (exwm-workspace-rename-buffer exwm-title))
+;; (add-hook 'exwm-update-title-hook 'ambrevar/exwm-rename-buffer-to-title)
+
+;; (add-hook 'exwm-floating-setup-hook 'exwm-layout-hide-mode-line)
+;; (add-hook 'exwm-floating-exit-hook 'exwm-layout-show-mode-line)
+
+;;; Allow non-floating resizing with mouse.
+;; (setq window-divider-default-bottom-width 2
+;;       window-divider-default-right-width 2)
+;; (window-divider-mode)
+
+;;; System tray
 (require 'exwm-systemtray)
 (exwm-systemtray-enable)
+;; (setq exwm-systemtray-height 16)
 
-;; Load EXWM.
 (require 'exwm)
 
-;; Fix problems with Ido (if you use it).
-;; (require 'exwm-config)
-;; (exwm-config-ido)
-
-;; Set the initial number of workspaces (they can also be created later).
 (setq exwm-workspace-number 4)
-
-;; All buffers created in EXWM mode are named "*EXWM*". You may want to
-;; change it in `exwm-update-class-hook' and `exwm-update-title-hook', which
-;; are run when a new X window class name or title is available.  Here's
-;; some advice on this topic:
-;; + Always use `exwm-workspace-rename-buffer` to avoid naming conflict.
-;; + For applications with multiple windows (e.g. GIMP), the class names of
-;    all windows are probably the same.  Using window titles for them makes
-;;   more sense.
-;; In the following example, we use class names for all windows expect for
-;; Java applications and GIMP.
+;; Make class name the buffer name
 (add-hook 'exwm-update-class-hook
           (lambda ()
-            (unless (or (string-prefix-p "sun-awt-X11-" exwm-instance-name)
-                        (string= "gimp" exwm-instance-name))
-              (exwm-workspace-rename-buffer exwm-class-name))))
-(add-hook 'exwm-update-title-hook
-          (lambda ()
-            (when (or (not exwm-instance-name)
-                      (string-prefix-p "sun-awt-X11-" exwm-instance-name)
-                      (string= "gimp" exwm-instance-name))
-              (exwm-workspace-rename-buffer exwm-title))))
+            (exwm-workspace-rename-buffer exwm-class-name)))
+;; 's-r': Reset
+(exwm-input-set-key (kbd "s-r") #'exwm-reset)
+;; 's-w': Switch workspace
+(exwm-input-set-key (kbd "s-s") #'exwm-workspace-switch)
+;; transport other windows
+(exwm-input-set-key (kbd "s-<tab>") #'other-window)
+;; 's-N': Switch to certain workspace
+(dotimes (i 10)
+  (exwm-input-set-key (kbd (format "s-%i" i))
+                      `(lambda ()
+                         (interactive)
+                         (exwm-workspace-switch-create ,i))))
+;; 's-&': Launch application
+(exwm-input-set-key (kbd "s-d")
+                    (lambda (command)
+                      (interactive (list (read-shell-command "$ ")))
+                      (start-process-shell-command command nil command)))
 
-;; Global keybindings can be defined with `exwm-input-global-keys'.
-;; Here are a few examples:
-(setq exwm-input-global-keys
-      `(
-        ;; Bind "s-r" to exit char-mode and fullscreen mode.
-        ([?\s-r] . exwm-reset)
-        ;; Bind "s-w" to switch workspace interactively.
-        ([?\s-t] . exwm-workspace-switch)
-        ;; Bind "s-0" to "s-9" to switch to a workspace by its index.
-        ,@(mapcar (lambda (i)
-                    `(,(kbd (format "s-%d" i)) .
-                      (lambda ()
-                        (interactive)
-                        (exwm-workspace-switch-create ,i))))
-                  (number-sequence 0 9))
-        ;; Bind "s-&" to launch applications ('M-&' also works if the output
-        ;; buffer does not bother you).
-        ([?\s-d] . (lambda (command)
-                     (interactive (list (read-shell-command "$ ")))
-                     (start-process-shell-command command nil command)))
-        ;; Bind "s-<f2>" to "slock", a simple X display locker.
-        ([s-f2] . (lambda ()
-                    (interactive)
-                    (start-process "" nil "/usr/bin/slock")))))
+;;; Those cannot be set globally: if Emacs would be run in another WM, the "s-"
+;;; prefix will conflict with the WM bindings.
+;; (exwm-input-set-key (kbd "s-R") #'exwm-reset)
+;; (exwm-input-set-key (kbd "s-x") #'exwm-input-toggle-keyboard)
+;; (exwm-input-set-key (kbd "s-b") #'windmove-left)
+;; (exwm-input-set-key (kbd "s-n") #'windmove-down)
+;; (exwm-input-set-key (kbd "s-p") #'windmove-up)
+;; (exwm-input-set-key (kbd "s-f") #'windmove-right)
+;; (exwm-input-set-key (kbd "s-D") #'kill-this-buffer)
+;; (exwm-input-set-key (kbd "s-b") #'list-buffers)
+;; (exwm-input-set-key (kbd "s-f") #'find-file)
 
-;; To add a key binding only available in line-mode, simply define it in
-;; `exwm-mode-map'.  The following example shortens 'C-c q' to 'C-q'.
-(define-key exwm-mode-map [?\C-q] #'exwm-input-send-next-key)
 
-;; define prefix key
-;; (define-key key-translation-map (kbd "C-h") (kbd "C-?"))
-(push ?\C-h exwm-input-prefix-keys)
-;; (push ?\C-m exwm-input-prefix-keys)
+;; ;; The following can only apply to EXWM buffers, else it could have unexpected effects.
+;; (push ?\s-  exwm-input-prefix-keys)
+;; (define-key exwm-mode-map (kbd "s-SPC") #'exwm-floating-toggle-floating)
 
-;; The following example demonstrates how to use simulation keys to mimic
-;; the behavior of Emacs.  The value of `exwm-input-simulation-keys` is a
-;; list of cons cells (SRC . DEST), where SRC is the key sequence you press
-;; and DEST is what EXWM actually sends to application.  Note that both SRC
-;; and DEST should be key sequences (vector or string).
+;; (exwm-input-set-key (kbd "s-i") #'follow-delete-other-windows-and-split)
+;; ;; (exwm-input-set-key (kbd "s-o") #'ambrevar/toggle-single-window)
+;; (exwm-input-set-key (kbd "s-O") #'exwm-layout-toggle-fullscreen)
+
+;; 's-&': Launch application
+(exwm-input-set-key (kbd "s-d")
+                    (lambda (command)
+                      (interactive (list (read-shell-command "$ ")))
+                      (start-process-shell-command command nil command)))
+
 (setq exwm-input-simulation-keys
       '(
         ;; movement
@@ -90,16 +105,15 @@
         ([?\C-k] . [S-end ?\C-x])
         ([?\M-<] . [C-home])
         ([?\M->] . [C-end])
-        ([?\M-w] . [C-w])
-        ([?\C-?] . [backspace])
+        ([?\C-/] . [C-z])
+        ([?\C-h] . [backspace])
         ([?\C-m] . [return])
         ;; cut/paste.
         ([?\C-w] . [?\C-x])
         ([?\M-w] . [?\C-c])
         ([?\C-y] . [?\C-v])
-        ([?\C-y] . [?\C-v])
-        ([?\C-x ?h] . [?\C-a])
-;;        ([?\M-d] . [C-S-right ?\C-x])
+        ([?\C-x ?\h] . [?\C-a])
+        ([?\M-d] . [C-S-right ?\C-x])
         ([M-backspace] . [C-S-left ?\C-x])
         ;; search
         ([?\C-s] . [?\C-f])
@@ -113,16 +127,14 @@
         ([?\C-g] . escape)
         ;; tab move
         ([?\s-w] . [C-w])
-        ([?\s-n] . [C-tab])
-        ([?\s-p] . [C-S-tab])
+        ([?\s-n] . [C-S-tab])
+        ([?\s-p] . [C-tab])
         ([?\s-t] . [C-t])
         ([?\s-x] . [C-T])
+        ([?\s-b] . [M-right])
+        ([?\s-f] . [M-left])
         ))
 
-;; You can hide the minibuffer and echo area when they're not used, by
-;; uncommenting the following line.
-;(setq exwm-workspace-minibuffer-position 'bottom)
-
-;; Do not forget to enable EXWM. It will start by itself when things are
-;; ready.  You can put it _anywhere_ in your configuration.
 (exwm-enable)
+
+(provide 'init-exwm)
