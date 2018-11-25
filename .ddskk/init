@@ -9,8 +9,40 @@
               (":" nil ":")
               (";" nil ";")
               ("?" nil "?")
-              )))
+              ("la" nil "ぁ" )
+              ("le" nil "ぇ" )
+              ("li" nil "ぃ" )
+              ("lo" nil "ぉ" )
+              ("lu" nil "ぅ" )
+            )))
 
-(setq skk-kakutei-key (kbd "C-c C-j"))
+
+;; (setq skk-kakutei-key (kbd "C-;"))
 (setq skk-tut-file "~/.emacs.d/etc/SKK.tut")
-(setq skk-sticky-key ";")
+;; (setq skk-sticky-key ";")
+
+
+(defun skk-hiragana-set nil
+  (interactive)
+  (cond (skk-katakana
+         (skk-toggle-kana nil))
+        (t
+         (skk-kakutei))))
+
+(defun skk-katakana-set nil
+  (interactive)
+  (cond (skk-katakana
+         (lambda))
+        (skk-j-mode
+         (skk-toggle-kana nil))
+        (skk-latin-mode
+         (dolist (skk-kakutei (skk-toggle-kana nil))))))
+
+(global-unset-key (kbd "C-o"))
+(global-set-key (kbd "C-o j") 'skk-hiragana-set)
+(global-set-key (kbd "C-o q") 'skk-katakana-set)
+(global-set-key (kbd "C-o l") 'skk-latin-mode)
+
+(global-unset-key (kbd "C-j"))
+(global-set-key (kbd "C-j") 'skk-hiragana-set)
+(global-set-key (kbd "C-l") 'skk-latin-mode)

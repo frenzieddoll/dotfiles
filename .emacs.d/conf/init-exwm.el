@@ -88,6 +88,12 @@
                       (interactive (list (read-shell-command "$ ")))
                       (start-process-shell-command command nil command)))
 
+(push ?\C-o exwm-input-prefix-keys)
+(exwm-input-set-key (kbd "C-c n") 'windmove-down)
+(exwm-input-set-key (kbd "C-c f") 'windmove-right)
+(exwm-input-set-key (kbd "C-c b") 'windmove-left)
+(exwm-input-set-key (kbd "C-c p") 'windmove-up)
+
 (setq exwm-input-simulation-keys
       '(
         ;; movement
@@ -108,21 +114,22 @@
         ([?\C-/] . [C-z])
         ([?\C-h] . [backspace])
         ([?\C-m] . [return])
+        ([?\C-/] . [C-z])
         ;; cut/paste.
         ([?\C-w] . [?\C-x])
         ([?\M-w] . [?\C-c])
         ([?\C-y] . [?\C-v])
-        ([?\C-x ?\h] . [?\C-a])
+        ;; ([?\C-x ?\h] . [?\C-a])
         ([?\M-d] . [C-S-right ?\C-x])
         ([M-backspace] . [C-S-left ?\C-x])
         ;; search
         ([?\C-s] . [?\C-f])
         ;; others
-        ([?\C-c ?s] . [?\C-s])
-        ([?\C-c ?p] . [?\C-p])
-        ([?\C-c ?n] . [?\C-n])
-        ([?\C-c ?h] . [?\C-h])
-        ([?\C-c ?b] . [?\C-b])
+        ;; ([?\C-c ?s] . [?\C-s])
+        ;; ([?\C-c ?p] . [?\C-p])
+        ;; ([?\C-c ?n] . [?\C-n])
+        ;; ([?\C-c ?h] . [?\C-h])
+        ;; ([?\C-c ?b] . [?\C-b])
         ;; escape
         ([?\C-g] . escape)
         ;; tab move
@@ -133,6 +140,10 @@
         ([?\s-x] . [C-T])
         ([?\s-b] . [M-right])
         ([?\s-f] . [M-left])
+        ;; skk switch change
+        ([?\C-j] . [C-&])
+        ([?\C-l] . [C-^])
+        ([?\s-l] . [C-l])
         ))
 
 (exwm-enable)

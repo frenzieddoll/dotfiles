@@ -18,8 +18,14 @@
 ;; リポジトリの追加
 (require 'package)
 ;;MELPA を追加
-(add-to-list 'package-archives '("melpa"."https://melpa.org/packages/")t)
+;; (add-to-list 'package-archives '("melpa"."https://melpa.org/packages/")t)
+;; (package-initialize)
+
 (package-initialize)
+(setq package-archives
+      '(("gnu" . "http://elpa.gnu.org/packages/")
+        ("melpa" . "http://melpa.org/packages/")
+        ("org" . "http://orgmode.org/elpa/")))
 
 ;; 右から左に読む言語に対応させないことで描画高速化
 (setq-default bidi-display-reordering nil)
@@ -85,19 +91,6 @@
 ;; (setq default-input-method "Japanese-mozc")
 ;; (global-set-key (kbd "C-c j") 'mozc-mode)
 
-
-;; ;; endキーでon
-;; (global-set-key (kbd "<end>")
-;;                 (lambda () (interactive)
-;;                   (when (null current-input-method) (mozc-mode))))
-
-;; homeキーでon
-;; (global-set-key (kbd "<end>")
-;;                 (lambda () (interactive)
-;;                   (inactivate-input-method))
-
-
-
 ;; migemo
 (require 'migemo)
 ;; (when (and (executable-find "cmigemo")
@@ -125,7 +118,7 @@
 (add-hook 'minibuffer-setup-hook 'minibuffer-delete-backward-char)
 (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char)
 ;; C-x ? : help
-(define-key global-map (kbd "C-c C-?") 'help-command)
+(define-key global-map (kbd "C-c ?") 'help-command)
 ;;折り返しトグルコマンド
 (define-key global-map (kbd "C-c l") 'toggle-truncate-lines)
 ;; eshell start
@@ -145,6 +138,9 @@
 (defadvice linum-schedule (around my-linum-schedule () activate)
   (run-with-idle-timer 0.5 nil #'linum-update-current))
 
+;;スペース、タブなどを可視化する
+;; (global-whitespace-mode 1)
+;;スペース、改行、タブを表示する
 (global-set-key (kbd "C-c C-w") 'global-whitespace-mode)
 
 ;; 列番号表示
@@ -152,9 +148,6 @@
 
 ;; タイトルバーにフルパス表示
 ;; (setq frame-title-format "%f")
-
-;;スペース、タブなどを可視化する
-;; (global-whitespace-mode 1)
 
 ;; カーソル行をハイライトする
 ;; (global-hl-line-mode nil)
@@ -171,7 +164,7 @@
 
 ;; タブにスペースを使用する
 (setq-default tab-width 4 indent-tabs-mode nil)
-1
+
 ;; ウィンドウ内に収まらないときだけ格好内も光らせる
 ;; (setq show-paren-style 'mixed)
 
@@ -184,10 +177,10 @@
 ;; スマートなウィンドウ切り替え
 ;; (when (fboundp 'windmove-default-keybindings)
 ;;   (windmove-default-keybindings);
-(global-set-key (kbd "C-c n") 'windmove-down)
-(global-set-key (kbd "C-c f") 'windmove-right)
-(global-set-key (kbd "C-c b") 'windmove-left)
-(global-set-key (kbd "C-c p") 'windmove-up)
+;; (global-set-key (kbd "C-c n") 'windmove-down)
+;; (global-set-key (kbd "C-c f") 'windmove-right)
+;; (global-set-key (kbd "C-c b") 'windmove-left)
+;; (global-set-key (kbd "C-c p") 'windmove-up)
 (setq windmove-wrap-around t)
 
 ;; ウィンドウのサイズ変更
@@ -351,11 +344,13 @@
 (define-key dired-mode-map "e" 'wdired-change-to-wdired-mode)
 ;; コピーを使い安くする
 (setq dired-dwim-target t)
-;; (setq dired-launch-mailcap-friend '("env" "xdg-open"))
-;; (dired-launch-enable)
+(setq dired-launch-mailcap-friend '("env" "xdg-open"))
+(dired-launch-enable)
+;; 再帰的にコピーする
+(setq dired-recursive-copies 'always)
+;; .zipで終るファイルをZキーで展開できるように
+(add-to-list 'dired-compress-file-suffixes '("\\.zip\\" ".zip" "unzip"))
 
-;; フォント設定
-;; (add-to-list 'default-frame-alist '(font. "SourceHanCodeJP-Regular-12"))
 
 ;; スクロールの設定;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; スクロールを一行ずつにする
@@ -510,6 +505,13 @@
 (global-set-key (kbd "C-c u") 'taiju/audio-raise-volume)
 (global-set-key (kbd "C-c d") 'taiju/audio-lower-volume)
 ;; (global-set-key (kbd "C-c t") nil)
+;; (defun speaker ()
+;;   (interactive)
+;;   (shell-command-to-string "pactl move-sink-input 9 4"))
+;; (defun earbunds ()
+;;   (interactive)
+;;   (shell-command-to-string "pactl move-sink-input 9 0"))
+
 
 
 (custom-set-variables
