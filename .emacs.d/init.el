@@ -69,21 +69,15 @@
 (scroll-bar-mode -1)
 
 ;; ddskk のキーバインド
-;; (require 'skk)
-;; (global-set-key (kbd "C-c C-j") 'skk-mode)
-;; skkの設定
-;; (when (require 'skk nil t)
-;;   (global-set-key (kbd "C-c j") 'skk-auto-fill-mode) ;;良い感じに改行を自動入力してくれる機能
-;;   (setq default-input-method "japanese-skk")         ;;emacs上での日本語入力にskkをつかう
-;;   (require 'skk-study))
 (global-set-key (kbd "C-x C-j") 'skk-mode)
 (global-set-key (kbd "C-x j") 'skk-auto-fill-mode)
 (setq skk-user-directory "~/.ddskk")
 (setq skk-large-jisyo "~/.emacs.d/skk-get-jisyo/SKK-JISYO.L")
+(define-key minibuffer-local-map (kbd "C-j") 'skk-kakutei)
 
-
-
-
+(add-hook 'isearch-mode-hook 'skk-isearch-mode-setup)
+(add-hook 'isearch-mode-end-hook 'skk-isearch-mode-cleanup)
+(setq skk-isearch-start-mode 'latin)
 
 ;; emacs-mozc
 ;; (set-language-environment 'Japanese)
@@ -91,19 +85,19 @@
 ;; (setq default-input-method "Japanese-mozc")
 ;; (global-set-key (kbd "C-c j") 'mozc-mode)
 
-;; migemo
-(require 'migemo)
-;; (when (and (executable-find "cmigemo")
-;;            (require 'migemo nil t))
-(setq migemo-command "cmigemo")
-(setq migemo-options '("-q" "--emacs"))
-;; 辞書ファイル
-(setq migemo-dictionary "/usr/share/migemo/utf-8/migemo-dict")
-(setq migemo-user-dicitonary nil)
-(setq migemo-regex-dictionary nil)
-(setq migemo-coding-system 'utf-8-unix)
-(load-library "migemo")
-(migemo-init)
+;; ;; migemo
+;; (require 'migemo)
+;; ;; (when (and (executable-find "cmigemo")
+;; ;;            (require 'migemo nil t))
+;; (setq migemo-command "cmigemo")
+;; (setq migemo-options '("-q" "--emacs"))
+;; ;; 辞書ファイル
+;; (setq migemo-dictionary "/usr/share/migemo/utf-8/migemo-dict")
+;; (setq migemo-user-dicitonary nil)
+;; (setq migemo-regex-dictionary nil)
+;; (setq migemo-coding-system 'utf-8-unix)
+;; (load-library "migemo")
+;; (migemo-init)
 
 
 
@@ -121,16 +115,51 @@
 (define-key global-map (kbd "C-c ?") 'help-command)
 ;;折り返しトグルコマンド
 (define-key global-map (kbd "C-c l") 'toggle-truncate-lines)
-;; eshell start
-;; (global-set-key (kbd "C-c e") 'eshell)
 ;; ウィンドウサイズの変更のキーバインド
 (global-set-key (kbd "C-c r") 'window-resizer)
+
+;; eshell setting
+;; ショートカットキー
+(global-set-key (kbd "C-c e") 'eshell)
+(global-set-key (kbd "C-c C-e") 'eshell/make-new-eshell)
+;; prompt のフォーマットの設定
+;; (setq eshell-prompt-function
+;;       (lambda ()
+;;         (concat "["
+;;                 (eshell/pwd)
+;;                 (if (= (user-uid) 0) "]\n# " "]\n$ "))))
+
+
+(setq eshell-command-aliases-list
+      (append
+       (list
+        (list "ll" "ls -ltrh")
+        (list "la" "ls -a")
+        (list "o" "xdg-open")
+        (list "emacs" "find-file $1")
+        (list "m" "find-file $1")
+        (list "mc" "find-file $1")
+        (list "d" "dired .")
+        (list "l" "eshell/less $1"))))
+;; 新しいシェルを開く
+(defun eshell/make-new-eshell (name)
+  "Create a shell buffer named NAME."
+  (interactive "sName")
+  (setq name (concat "eshell" name))
+  (eshell)
+  (rename-buffer name))
 
 ;; 文字コードセット
 (prefer-coding-system 'utf-8)
 
 ;; フォント
-(set-default-font "SourceHanCodeJP R")
+;; (set-default-font "SourceHanCodeJP R")
+;; (set-frame-font "Ricty" 15)
+(set-face-attribute 'default nil
+                    :family "Ricty"
+                    :height 150)
+
+
 ;; 行番号を表示(軽量化あり)
 ;; (global-linum-mode t)
 (global-set-key (kbd "C-c C-l") 'global-linum-mode)
@@ -350,6 +379,7 @@
 (setq dired-recursive-copies 'always)
 ;; .zipで終るファイルをZキーで展開できるように
 (add-to-list 'dired-compress-file-suffixes '("\\.zip\\" ".zip" "unzip"))
+(setq dired-listing-switches (purecopy "-alh"))
 
 
 ;; スクロールの設定;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -458,6 +488,7 @@
 ;; exwmの設定
 (require 'exwm)
 (require 'exwm-cm)
+(exwm-cm-enable)
 ;; (require 'exwm-config)
 ;; (exwm-config-default)
 ;; exwm-initの読み込み
@@ -521,7 +552,8 @@
  ;; If there is more than one, they won't work right.
  '(helm-external-programs-associations
    (quote
-    (("exe" . "wine")
+    (("wmv" . "mplayer")
+     ("exe" . "wine")
      ("rar" . "mcomix")
      ("pdf" . "mcomix")
      ("zip" . "mcomix"))))

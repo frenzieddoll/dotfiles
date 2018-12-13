@@ -3,9 +3,11 @@
               '(
               ("xn" nil ("ン" . "ん"))
               ("xx" nil "っ")
+              ("z," nil ",")
+              ("z." nil ".")
               ("!" nil "!")
-              ("," nil "、")
               ("." nil "。")
+              ("," nil "、")
               (":" nil ":")
               (";" nil ";")
               ("?" nil "?")
@@ -17,9 +19,9 @@
             )))
 
 
-;; (setq skk-kakutei-key (kbd "C-;"))
+
 (setq skk-tut-file "~/.emacs.d/etc/SKK.tut")
-;; (setq skk-sticky-key ";")
+(setq skk-initial-search-jisyo "~/.ddskk/user.dict")
 
 
 (defun skk-hiragana-set nil
@@ -45,4 +47,5 @@
 
 (global-unset-key (kbd "C-j"))
 (global-set-key (kbd "C-j") 'skk-hiragana-set)
+(global-set-key (kbd "C-q") 'skk-katakana-set)
 (global-set-key (kbd "C-l") 'skk-latin-mode)
