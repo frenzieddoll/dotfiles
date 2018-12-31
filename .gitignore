@@ -15,5 +15,6 @@
 !/.emacs.d/public_repos
 !/.ddskk/init
 !/.config/libskk
+!/.config/fcitx
 #!/.xkeysnail
 #!/.config/.config.py
