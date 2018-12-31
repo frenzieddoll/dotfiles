@@ -14,6 +14,6 @@
 !/.emacs.d/elpa
 !/.emacs.d/public_repos
 !/.ddskk/init
+!/.config/libskk
 #!/.xkeysnail
 #!/.config/.config.py
-#!/.config/i3
