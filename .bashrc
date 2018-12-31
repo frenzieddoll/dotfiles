@@ -15,6 +15,6 @@ alias open='xdg-open'
 
 PS1='[\u@\h \W]\$ '
 
-exec fish
+# exec fish
 
-export LANG=en_US.UTF-8
+# export LANG=en_US.UTF-8

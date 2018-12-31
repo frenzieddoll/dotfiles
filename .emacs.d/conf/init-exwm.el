@@ -48,7 +48,7 @@
 ;; 's-w': Switch workspace
 (exwm-input-set-key (kbd "s-s") #'exwm-workspace-switch)
 ;; transport other windows
-(exwm-input-set-key (kbd "s-<tab>") #'other-window)
+;; (exwm-input-set-key (kbd "s-<tab>") #'other-window)
 ;; 's-N': Switch to certain workspace
 (dotimes (i 10)
   (exwm-input-set-key (kbd (format "s-%i" i))
@@ -89,14 +89,31 @@
                       (start-process-shell-command command nil command)))
 
 (push ?\C-o exwm-input-prefix-keys)
-(exwm-input-set-key (kbd "C-c n") 'windmove-down)
-(exwm-input-set-key (kbd "C-c f") 'windmove-right)
-(exwm-input-set-key (kbd "C-c b") 'windmove-left)
-(exwm-input-set-key (kbd "C-c p") 'windmove-up)
+;; (exwm-input-set-key (kbd "C-c n") 'windmove-down)
+;; (exwm-input-set-key (kbd "C-c f") 'windmove-right)
+;; (exwm-input-set-key (kbd "C-c b") 'windmove-left)
+;; (exwm-input-set-key (kbd "C-c p") 'windmove-up)
+(exwm-input-set-key (kbd "s-n") 'windmove-down)
+(exwm-input-set-key (kbd "s-f") 'windmove-right)
+(exwm-input-set-key (kbd "s-b") 'windmove-left)
+(exwm-input-set-key (kbd "s-p") 'windmove-up)
+(exwm-input-set-key (kbd "s-<tab>") 'other-window)
+(exwm-input-set-key (kbd "s-a") 'helm-mini)
+(exwm-input-set-key (kbd "C-M-v") 'scroll-other-window)
+(exwm-input-set-key (kbd "C-M-S-v") 'scroll-other-window-down)
+(exwm-input-set-key (kbd "M-<tab>") 'switch-to-next-buffer)
+(exwm-input-set-key (kbd "<f9>") 'output_toggle)
+(exwm-input-set-key (kbd "<f10>") 'mute_toggle)
+(exwm-input-set-key (kbd "<f11>") 'lower_volume)
+(exwm-input-set-key (kbd "<f12>") 'upper_volume)
+
+
+
 
 (setq exwm-input-simulation-keys
       '(
-        ;; movement
+        ;; like emacs
+        ;; charactor
         ([?\C-b] . [left])
         ([?\M-b] . [C-left])
         ([?\C-f] . [right])
@@ -131,21 +148,26 @@
         ;; ([?\C-c ?h] . [?\C-h])
         ;; ([?\C-c ?b] . [?\C-b])
         ;; escape
-        ([?\C-g] . escape)
-        ;; tab move
+        ([?\C-g] . [escape])
+        ;; like mac
         ([?\s-w] . [C-w])
-        ([?\s-n] . [C-S-tab])
-        ([?\s-p] . [C-tab])
+        ([s-left] . [C-S-tab])
+        ([s-right] . [C-tab])
+        ;; ([s-up] . [C-tab])
+        ;; ([s-down] . [C-tab])
         ([?\s-t] . [C-t])
-        ([?\s-x] . [C-T])
-        ([?\s-b] . [M-right])
-        ([?\s-f] . [M-left])
+        ([?\s-T] . [C-T])
+        ;; ([?\s-n] . [C-n])
+        ([?\s-N] . [C-N])
+        ;; ([?\s-p] . [C-p])
+        ;; ([?\s-r] . [C-r])
         ;; skk switch change
         ([?\C-j] . [C-&])
         ([?\C-l] . [C-^])
         ([?\s-l] . [C-l])
         ([?\s-k] . [C-k])
         ))
+
 
 (exwm-enable)
 

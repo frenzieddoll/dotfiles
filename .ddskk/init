@@ -11,17 +11,26 @@
               (":" nil ":")
               (";" nil ";")
               ("?" nil "?")
-              ("la" nil "ぁ" )
-              ("le" nil "ぇ" )
-              ("li" nil "ぃ" )
-              ("lo" nil "ぉ" )
-              ("lu" nil "ぅ" )
+              ;; ("la" nil "ぁ" )
+              ;; ("le" nil "ぇ" )
+              ;; ("li" nil "ぃ" )
+              ;; ("lo" nil "ぉ" )
+              ;; ("lu" nil "ぅ" )
             )))
 
 
 
 (setq skk-tut-file "~/.emacs.d/etc/SKK.tut")
 (setq skk-initial-search-jisyo "~/.ddskk/user.dict")
+(setq skk-large-jisyo "~/.emacs.d/skk-get-jisyo/SKK-JISYO.L")
+(setq skk-extra-jisyo-file-list
+      (list
+       '("~/.emacs.d/skk-get-jisyo/SKK-JISYO.JIS3_4")))
+(global-set-key (kbd "C-x j") 'skk-mode)
+(define-key minibuffer-local-map (kbd "C-j") 'skk-kakutei)
+
+
+
 
 
 (defun skk-hiragana-set nil
