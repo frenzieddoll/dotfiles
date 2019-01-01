@@ -6,6 +6,8 @@
 /.xkeysnail/*
 /.config/*
 /.ddskk/*
+/.config/fcitx/skk/user.dict
+/.ddskk/jisyo
 
 # gitで管理する
 !/.emacs.d/init.el
