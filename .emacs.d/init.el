@@ -43,6 +43,7 @@
 ;; (require 'exwm-cm)
 ;; (exwm-cm-enable)
 (load "init-exwm")
+
 ;; (require 'exwm-config)
 ;; (exwm-config-default)
 ;; exwm-initの読み込み
@@ -103,6 +104,8 @@
 ;; init-company.el
 (load "init-company")
 
+(require 'magit)
+
 ;; ;; org-modeの設定
 ;; ; カレンダーの日付を英語表記にする
 ;; (setq system-time-locale "C")
@@ -138,7 +141,7 @@
      ("zip" . "mcomix"))))
  '(package-selected-packages
    (quote
-    (org-plus-contrib org-ref org-preview-html ace-link vlf dired-open w3m dired-launch dired-filter company zoom-window fish-mode helm-migemo helm ein migemo rainbow-delimiters atom-one-dark-theme powerline multi-term exwm edit-server ddskk)))
+    (org-plus-contrib org-ref org-preview-html ace-link vlf dired-open w3m dired-launch dired-filter company zoom-window fish-mode helm ein rainbow-delimiters atom-one-dark-theme powerline multi-term exwm edit-server ddskk)))
  '(skk-auto-insert-paren nil)
  '(skk-auto-okuri-process nil)
  '(skk-auto-start-henkan t)

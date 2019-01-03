@@ -60,7 +60,7 @@
 ;; (set-frame-font "Ricty" 15)
 (set-face-attribute 'default nil
                     :family "Ricty"
-                    :height 150)
+                    :height 220)
 
 ;; モードラインに関する設定
 ;; (size-indication-mode t)
@@ -97,3 +97,6 @@
 
 ;; yes or noをy,nにする
 (fset 'yes-or-no-p 'y-or-n-p)
+
+;; 補完で大文字小文字無視
+(setq read-file-name-completion-ignore-case t)

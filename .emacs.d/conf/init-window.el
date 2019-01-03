@@ -1,6 +1,6 @@
 ;; window関係
 ;; スマートなウィンドウ切り替え
-;; exwmの設定に書き替え-----
+;; exwmの設定に書き替え
 ;; (when (fboundp 'windmove-default-keybindings)
 ;;   (windmove-default-keybindings);
 (global-set-key (kbd "C-c n") 'windmove-down)
@@ -42,8 +42,6 @@
                (message "Quit")
                (throw 'end-flag t)))))))
 
-;; 補完で大文字小文字無視
-(setq read-file-name-completion-ignore-case t)
 
 ;; スクロールの設定;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; スクロールを一行ずつにする
@@ -51,7 +49,7 @@
 ;; スクロールした際のカーソルの移動行数
 (setq scroll-conservatively 1)
 ;; スクロール開始のマージン
-(setq scroll-margin 10)
+(setq scroll-margin 5)
 ;; 1画面スクロール時に重複させる行数
 (setq next-screen-context-lines 10)
 ;; 1画面スクロール時にカーソルの画面上の位置をなるべく変えない
@@ -59,4 +57,4 @@
 ;; windowを一時的に最大化
 (require 'zoom-window)
 (global-set-key (kbd "C-c 1") 'zoom-window-zoom)
-(setq zoom-window-mode-line-color "DarkGreen")
+(setq zoom-window-mode-line-color "DarkBlue")

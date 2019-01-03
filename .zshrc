@@ -46,8 +46,8 @@ bindkey "^[[3~" delete-char
 # エイリアス
 alias la='ls -a'
 alias ll='ls -lh'
-
 alias rm='rm -i'
+alias manga='wine /mnt/sdc/frenz/Documents/Software/picture/MangaMeeya_73/MangaMeeya.exe'
 
 # グローバルエイリアス
 alias -g L='| less'
@@ -58,13 +58,17 @@ alias -s mkv=mplayer
 alias -s mp4=mplayer
 alias -s avi=mplayer
 alias -s wav=mplayer
+alias -s exe=wine
 
-autoload -Uz promptinit
-promptinit
+autoload -U promptinit; promptinit
+prompt pure
 
-# This will set the default prompt to the walters theme
-prompt walters
+# autoload -Uz promptinit
+# promptinit
 
-# PS1="%{$fg[cyan]%}[${USER}@${HOST%%.*} %1~]%(!.#.$)${reset_color} "
-PROMPT="%{$fg[cyan]%}[@%m]%(!.#.$)${reset_color}"
-RPROMPT="%~"
+# # This will set the default prompt to the walters theme
+# prompt walters
+
+# # PS1="%{$fg[cyan]%}[${USER}@${HOST%%.*} %1~]%(!.#.$)${reset_color} "
+# PROMPT="%{$fg[cyan]%}[@%m]%(!.#.$)${reset_color}"
+# RPROMPT="%~"

@@ -31,14 +31,31 @@
 ;;       window-divider-default-right-width 2)
 ;; (window-divider-mode)
 
+(require 'exwm)
+
 ;;; System tray
 (require 'exwm-systemtray)
 (exwm-systemtray-enable)
 ;; (setq exwm-systemtray-height 16)
 
-(require 'exwm)
+;; コンポジットマネージャー
+;; (require 'exwm-cm)
 
-(setq exwm-workspace-number 4)
+;; マルチモニターの設定
+(require 'exwm-randr)
+(setq exwm-randr-workspace-output-plist '(0 "DP-0" 1 "HDMI-0" 2 "DP-0" 3 "HDMI-0" 4 "DP-0" 5 "HDMI-0" 6 "DP-0" 7 "HDMI-0" 8 "DP-0" 9  "HDMI-0"))
+(add-hook 'exwm-randr-screen-change-hook
+          (lambda ()
+            (start-process-shell-command
+             "xrandr" nil "xrandr --output DP-0 --right-of HDMI-0 --auto")))
+             ;; "xrandr" nil "xrandr --output HDMI-0 --left-of DP-0  --auto --primary")))
+(exwm-randr-enable)
+;; (add-hook 'exwm-randr-screen-change-hook
+;;           (lambda ()
+;;             (start-process-shell-command
+;;              "xrandr --output HDMI-0  --rotate left")))
+
+(setq exwm-workspace-number 2)
 ;; Make class name the buffer name
 (add-hook 'exwm-update-class-hook
           (lambda ()
@@ -47,58 +64,44 @@
 (exwm-input-set-key (kbd "s-r") #'exwm-reset)
 ;; 's-w': Switch workspace
 (exwm-input-set-key (kbd "s-s") #'exwm-workspace-switch)
-;; transport other windows
-;; (exwm-input-set-key (kbd "s-<tab>") #'other-window)
-;; 's-N': Switch to certain workspace
+
+;; Switch to certain workspace
 (dotimes (i 10)
   (exwm-input-set-key (kbd (format "s-%i" i))
                       `(lambda ()
                          (interactive)
                          (exwm-workspace-switch-create ,i))))
-;; 's-&': Launch application
+;; Launch application
 (exwm-input-set-key (kbd "s-d")
                     (lambda (command)
                       (interactive (list (read-shell-command "$ ")))
                       (start-process-shell-command command nil command)))
 
-;;; Those cannot be set globally: if Emacs would be run in another WM, the "s-"
-;;; prefix will conflict with the WM bindings.
-;; (exwm-input-set-key (kbd "s-R") #'exwm-reset)
-;; (exwm-input-set-key (kbd "s-x") #'exwm-input-toggle-keyboard)
-;; (exwm-input-set-key (kbd "s-b") #'windmove-left)
-;; (exwm-input-set-key (kbd "s-n") #'windmove-down)
-;; (exwm-input-set-key (kbd "s-p") #'windmove-up)
-;; (exwm-input-set-key (kbd "s-f") #'windmove-right)
-;; (exwm-input-set-key (kbd "s-D") #'kill-this-buffer)
-;; (exwm-input-set-key (kbd "s-b") #'list-buffers)
-;; (exwm-input-set-key (kbd "s-f") #'find-file)
-
-
-;; ;; The following can only apply to EXWM buffers, else it could have unexpected effects.
-;; (push ?\s-  exwm-input-prefix-keys)
-;; (define-key exwm-mode-map (kbd "s-SPC") #'exwm-floating-toggle-floating)
-
-;; (exwm-input-set-key (kbd "s-i") #'follow-delete-other-windows-and-split)
-;; ;; (exwm-input-set-key (kbd "s-o") #'ambrevar/toggle-single-window)
-;; (exwm-input-set-key (kbd "s-O") #'exwm-layout-toggle-fullscreen)
-
-;; 's-&': Launch application
+;; Launch application
 (exwm-input-set-key (kbd "s-d")
                     (lambda (command)
                       (interactive (list (read-shell-command "$ ")))
                       (start-process-shell-command command nil command)))
 
 (push ?\C-o exwm-input-prefix-keys)
-;; (exwm-input-set-key (kbd "C-c n") 'windmove-down)
-;; (exwm-input-set-key (kbd "C-c f") 'windmove-right)
-;; (exwm-input-set-key (kbd "C-c b") 'windmove-left)
-;; (exwm-input-set-key (kbd "C-c p") 'windmove-up)
+
+;; 関数の定義
+(defun exwm-workspace-toggle ()
+  "exwm workspace toggle 0 or 1"
+  (interactive)
+  (if (= exwm-workspace-current-index 0)
+      (exwm-workspace-switch 1)
+    (exwm-workspace-switch 0)))
+
+;;; Those cannot be set globally: if Emacs would be run in another WM, the "s-"
+;;; prefix will conflict with the WM bindings.
 (exwm-input-set-key (kbd "s-n") 'windmove-down)
 (exwm-input-set-key (kbd "s-f") 'windmove-right)
 (exwm-input-set-key (kbd "s-b") 'windmove-left)
 (exwm-input-set-key (kbd "s-p") 'windmove-up)
-(exwm-input-set-key (kbd "s-<tab>") 'other-window)
-(exwm-input-set-key (kbd "s-a") 'helm-mini)
+(exwm-input-set-key (kbd "s-<tab>") 'exwm-workspace-toggle)
+(exwm-input-set-key (kbd "s-a") 'exwm-workspace-switch-to-buffer)
+(exwm-input-set-key (kbd "s-R") 'exwm-restart)
 (exwm-input-set-key (kbd "C-M-v") 'scroll-other-window)
 (exwm-input-set-key (kbd "C-M-S-v") 'scroll-other-window-down)
 (exwm-input-set-key (kbd "M-<tab>") 'switch-to-next-buffer)
@@ -106,8 +109,9 @@
 (exwm-input-set-key (kbd "<f10>") 'mute_toggle)
 (exwm-input-set-key (kbd "<f11>") 'lower_volume)
 (exwm-input-set-key (kbd "<f12>") 'upper_volume)
-
-
+(exwm-input-set-key (kbd "s-q") 'kill-buffer)
+(exwm-input-set-key (kbd "s-h") 'delete-window)
+(define-key exwm-mode-map (kbd "s-SPC") 'exwm-floating-toggle-floating)
 
 
 (setq exwm-input-simulation-keys
@@ -164,11 +168,15 @@
         ;; skk switch change
         ([?\C-j] . [C-&])
         ([?\C-l] . [C-^])
-        ([?\s-l] . [C-l])
-        ([?\s-k] . [C-k])
+        ([?\s-l] . [C-k])
+        ([?\s-k] . [C-l])
         ))
 
 
 (exwm-enable)
 
 (provide 'init-exwm)
+
+;;サイドモニターを回転
+(side-monitor-rotate)
+(DP-0_primary)

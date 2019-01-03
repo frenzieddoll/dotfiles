@@ -27,30 +27,45 @@
   (start-process-shell-command
    "output-toggle"
    nil
-   (format "~/.emacs.d/conf/output_toggle.sh")))
+   (format "~/.emacs.d/script/output_toggle.sh")))
 
 (defun upper_volume ()
   (interactive)
   (start-process-shell-command
    "upper_volume"
    nil
-   (format "~/.emacs.d/conf/upper_volume.sh")))
+   (format "~/.emacs.d/script/upper_volume.sh")))
 
 (defun lower_volume ()
   (interactive)
   (start-process-shell-command
    "lower_volume"
    nil
-   (format "~/.emacs.d/conf/lower_volume.sh")))
+   (format "~/.emacs.d/script/lower_volume.sh")))
 
 (defun mute_toggle ()
   (interactive)
   (start-process-shell-command
    "mute_toggle"
    nil
-   (format "~/.emacs.d/conf/mute_toggle.sh")))
+   (format "~/.emacs.d/script/mute_toggle.sh")))
 
 (global-set-key (kbd "<f9>") 'lower_volume)
 (global-set-key (kbd "<f10>") 'upper_volume)
 (global-set-key (kbd "<f11>") 'mute_toggle)
 (global-set-key (kbd "<f12>") 'output_toggle)
+
+(defun side-monitor-rotate ()
+  (interactive)
+  "side-monitor-rotate"
+  (shell-command-to-string "xrandr --output HDMI-0 --rotate left"))
+
+(defun side-monitor-normal ()
+  (interactive)
+  "side-monitor-rotate"
+  (shell-command-to-string "xrandr --output HDMI-0 --rotate normal"))
+
+(defun DP-0_primary ()
+  (interactive)
+  "side-monitor-rotate"
+  (shell-command-to-string "xrandr --output DP-0 --primary"))

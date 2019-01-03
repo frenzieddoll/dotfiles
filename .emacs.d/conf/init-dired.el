@@ -20,3 +20,13 @@
 (add-to-list 'dired-compress-file-suffixes '("\\.zip\\" ".zip" "unar"))
 ;; diredでlsオプションをつかう
 (setq dired-listing-switches (purecopy "-alh"))
+
+;; 外部アプリで開く
+(require 'dired-open)
+(setq dired-open-extensions
+      '(("mkv" . "mplayer -fixed-vo")
+        ("mp4" . "mplayer -fixed-vo")
+        ("avi" . "mplayer -fixed-vo")
+        ("list" . "mplayer -fixed-vo")
+        ("exe" . "wine")
+        ))

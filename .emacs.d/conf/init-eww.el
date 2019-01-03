@@ -36,7 +36,6 @@
     ;; org-link
     (setq browse-url-browser-function 'eww-browse-url)
     (org-open-at-point)))
-;; (global-set-key (kbd "C-c e") 'browse-url-with-eww)
 
 (defvar eww-disable-colorize t)
 (defun shr-colorize-region--disable (orig start end fg &optional bg &rest _)
@@ -56,4 +55,14 @@
   (eww-reload))
 
 ;; (define-key eww-link-keymap "f" 'ace-link-eww)
-(define-key eww-mode-map "f" 'ace-link-eww)
+(define-key eww-mode-map (kbd "f") 'ace-link-eww)
+
+;; (define-key eww-mode-map (kbd "H") 'eww-back-url)
+;; (define-key eww-mode-map (kbd "L") 'eww-next-url)
+(define-key eww-mode-map (kbd "s-l") 'eww-search-words)
+(define-key eww-mode-map (kbd "M") 'eww-open-in-new-buffer)
+(define-key eww-mode-map (kbd "s-w") 'eww-buffer-kill)
+(define-key eww-mode-map (kbd "C-s-v") 'eww-enable-images)
+(define-key eww-mode-map (kbd "s-v") 'eww-disable-images)
+(global-set-key (kbd "C-c m") 'browse-url-with-eww)
+(define-key eww-mode-map (kbd "s-e") 'eww-browse-with-external-browser)

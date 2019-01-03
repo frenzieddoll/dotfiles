@@ -19,11 +19,14 @@
              ))
 
 ;; multi-termを呼び出す
-(global-set-key (kbd "C-c q") 'multi-term)
+;; (global-set-key (kbd "C-c q") 'multi-term)
 ;; ショートカットキーからの呼び出しは既存のバッファを開く
-;; (global-set-key (kbd "C-c q")
-;;                 '(lambda ()
-;;                    (interactive)
-;;                    (if (get-buffer "*terminal<1>*")
-;;                        (switch-to-buffer "*terminal<1>*")
-;;                      (multi-term))))
+(global-set-key (kbd "C-c q")
+                '(lambda ()
+                   (interactive)
+                   (if (get-buffer "*terminal<1>*")
+                       (switch-to-buffer "*terminal<1>*")
+                     (multi-term))))
+
+;; (setenv "LANG" "ja_JP.UTF-8")
+;; (set-language-environment "Japanese")
