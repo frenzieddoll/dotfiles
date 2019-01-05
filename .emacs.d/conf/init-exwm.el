@@ -43,7 +43,9 @@
 
 ;; マルチモニターの設定
 (require 'exwm-randr)
-(setq exwm-randr-workspace-output-plist '(0 "DP-0" 1 "HDMI-0" 2 "DP-0" 3 "HDMI-0" 4 "DP-0" 5 "HDMI-0" 6 "DP-0" 7 "HDMI-0" 8 "DP-0" 9  "HDMI-0"))
+;; (setq exwm-randr-workspace-output-plist '(0 "DP-0" 1 "HDMI-0" 2 "DP-0" 3 "HDMI-0" 4 "DP-0" 5 "HDMI-0" 6 "DP-0" 7 "HDMI-0" 8 "DP-0" 9  "HDMI-0"))
+(setq exwm-randr-workspace-output-plist '(0 "DP-0" 1 "HDMI-0" 2 "DP-0" 3 "DP-0" 4 "DP-0" 5 "DP-0"))
+
 (add-hook 'exwm-randr-screen-change-hook
           (lambda ()
             (start-process-shell-command
@@ -66,7 +68,7 @@
 (exwm-input-set-key (kbd "s-s") #'exwm-workspace-switch)
 
 ;; Switch to certain workspace
-(dotimes (i 10)
+(dotimes (i 6)
   (exwm-input-set-key (kbd (format "s-%i" i))
                       `(lambda ()
                          (interactive)
@@ -83,7 +85,7 @@
                       (interactive (list (read-shell-command "$ ")))
                       (start-process-shell-command command nil command)))
 
-(push ?\C-o exwm-input-prefix-keys)
+; (push ?\s-x exwm-input-prefix-keys)
 
 ;; 関数の定義
 (defun exwm-workspace-toggle ()
@@ -100,18 +102,24 @@
 (exwm-input-set-key (kbd "s-b") 'windmove-left)
 (exwm-input-set-key (kbd "s-p") 'windmove-up)
 (exwm-input-set-key (kbd "s-<tab>") 'exwm-workspace-toggle)
+;; (exwm-input-set-key (kbd "s-m") 'exwm-workspace-move-window)
 (exwm-input-set-key (kbd "s-a") 'exwm-workspace-switch-to-buffer)
 (exwm-input-set-key (kbd "s-R") 'exwm-restart)
 (exwm-input-set-key (kbd "C-M-v") 'scroll-other-window)
 (exwm-input-set-key (kbd "C-M-S-v") 'scroll-other-window-down)
-(exwm-input-set-key (kbd "M-<tab>") 'switch-to-next-buffer)
-(exwm-input-set-key (kbd "<f9>") 'output_toggle)
-(exwm-input-set-key (kbd "<f10>") 'mute_toggle)
-(exwm-input-set-key (kbd "<f11>") 'lower_volume)
-(exwm-input-set-key (kbd "<f12>") 'upper_volume)
+;; (exwm-input-set-key (kbd "<f9>") 'output_toggle)
+;; (exwm-input-set-key (kbd "<f10>") 'mute_toggle)
+;; (exwm-input-set-key (kbd "<f11>") 'lower_volume)
+;; (exwm-input-set-key (kbd "<f12>") 'upper_volume)
+(exwm-input-set-key (kbd "C-s-i") 'output_toggle)
+(exwm-input-set-key (kbd "C-s-m") 'mute_toggle)
+(exwm-input-set-key (kbd "C-s-n") 'lower_volume)
+(exwm-input-set-key (kbd "C-s-p") 'upper_volume)
 (exwm-input-set-key (kbd "s-q") 'kill-buffer)
 (exwm-input-set-key (kbd "s-h") 'delete-window)
 (define-key exwm-mode-map (kbd "s-SPC") 'exwm-floating-toggle-floating)
+(exwm-input-set-key (kbd "C-<down-mouse-1>") 'exwm-input-move-event)
+(exwm-input-set-key (kbd "C-<down-mouse-3>") 'exwm-input-resize-event)
 
 
 (setq exwm-input-simulation-keys
@@ -178,5 +186,4 @@
 (provide 'init-exwm)
 
 ;;サイドモニターを回転
-(side-monitor-rotate)
 (DP-0_primary)

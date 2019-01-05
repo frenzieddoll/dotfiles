@@ -24,9 +24,28 @@
 ;; 外部アプリで開く
 (require 'dired-open)
 (setq dired-open-extensions
-      '(("mkv" . "mplayer -fixed-vo")
-        ("mp4" . "mplayer -fixed-vo")
-        ("avi" . "mplayer -fixed-vo")
-        ("list" . "mplayer -fixed-vo")
+      '(("mkv" . "mpv")
+        ("mp4" . "mpv")
+        ("avi" . "mpv")
+        ("wmv" . "mpv")
+        ("playlist" . "mpv --playlist")
         ("exe" . "wine")
         ))
+
+(require 'dired-subtree)
+
+;;; iを置き換え
+(define-key dired-mode-map (kbd "j") 'dired-subtree-insert)
+;;; org-modeのようにTABで折り畳む
+(define-key dired-mode-map (kbd "<tab>") 'dired-subtree-remove)
+;;; C-x n nでsubtreeにナローイング
+(define-key dired-mode-map (kbd "C-x n n") 'dired-subtree-narrow)
+
+
+;;; [2014-12-30 Tue]^をdired-subtreeに対応させる
+(defun dired-subtree-up-dwim (&optional arg)
+  "subtreeの親ディレクトリに移動。そうでなければ親ディレクトリを開く(^の挙動)。"
+  (interactive "p")
+  (or (dired-subtree-up arg)
+      (dired-up-directory)))
+(define-key dired-mode-map (kbd "^") 'dired-subtree-up-dwim)

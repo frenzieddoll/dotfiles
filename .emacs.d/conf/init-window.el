@@ -58,3 +58,6 @@
 (require 'zoom-window)
 (global-set-key (kbd "C-c 1") 'zoom-window-zoom)
 (setq zoom-window-mode-line-color "DarkBlue")
+
+(require 'smooth-scroll)
+(smooth-scroll-mode t)

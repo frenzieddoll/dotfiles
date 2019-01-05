@@ -23,7 +23,7 @@
 	    ((:keywords "languages" "ada")
 	     (:url . "http://www.nongnu.org/ada-mode/"))])
  (ada-ref-man .
-	      [(2012 3)
+	      [(2012 4)
 	       nil "Ada Reference Manual 2012" tar
 	       ((:keywords "languages" "ada")
 		(:url . "http://stephe-leake.org/ada/arm.html"))])

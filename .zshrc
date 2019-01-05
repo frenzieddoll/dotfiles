@@ -72,3 +72,7 @@ prompt pure
 # # PS1="%{$fg[cyan]%}[${USER}@${HOST%%.*} %1~]%(!.#.$)${reset_color} "
 # PROMPT="%{$fg[cyan]%}[@%m]%(!.#.$)${reset_color}"
 # RPROMPT="%~"
+
+function mm() {
+    mpv --no-video --ytdl-format=bestaudio ytdl://ytsearch10:"$@"
+    }

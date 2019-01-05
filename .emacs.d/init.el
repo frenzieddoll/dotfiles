@@ -84,7 +84,7 @@
 
 ;; latexの設定を読み込む関数
 ;;(load "init-tex")
-(add-hook 'org-mode-hook 'load-tex)
+(eval-after-load 'org-mode-hook 'load-tex)
 (defun load-tex ()
   "load tex setting"
   (interactive)
@@ -106,26 +106,12 @@
 
 (require 'magit)
 
-;; ;; org-modeの設定
-;; ; カレンダーの日付を英語表記にする
-;; (setq system-time-locale "C")
+;; init-pdftools.el
+(when (eq system-type 'gnu/linux)
+  (load "init-pdftools"))
 
-;; ; アジェンダ
-;; (define-key global-map "\C-c a" 'org-agenda)
-;; (setq org-agenda-files
-;;       ("~/notes.org" "~/calendar.org" ))
-;; ; refile( C-c C-w )
-;; (setq org-refile-targets
-;;       ( ("~/notes.org" :level . 2 )
-;; ("~/calendar.org" :level . 2 )))
-
-;; ;; 下で設定した状態は、
-;; ;; C-S-<right>/<left> or C-u C-u C-c C-t でキーワードグループ変更
-;; ;; S-<right>/<left> で全てのキーワードを順送り
-;; (setq org-todo-keywords
-;;       (sequence "TODO" "NEXT" "REPEAT" "REMEMBER" "|" "DONE")
-;;       (sequence "WAITING" "|" "CANCELED" "DEFFERED"))
-
+;; init-googletranslate.el
+(load "init-googletranslate")
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -141,7 +127,7 @@
      ("zip" . "mcomix"))))
  '(package-selected-packages
    (quote
-    (org-plus-contrib org-ref org-preview-html ace-link vlf dired-open w3m dired-launch dired-filter company zoom-window fish-mode helm ein rainbow-delimiters atom-one-dark-theme powerline multi-term exwm edit-server ddskk)))
+    (smooth-scroll dired-subtree counsel dracula-theme kosmos-theme let-alist material-theme google-translate mpv org-plus-contrib org-ref org-preview-html ace-link vlf dired-open w3m dired-launch dired-filter company zoom-window fish-mode helm ein rainbow-delimiters atom-one-dark-theme powerline multi-term exwm edit-server ddskk)))
  '(skk-auto-insert-paren nil)
  '(skk-auto-okuri-process nil)
  '(skk-auto-start-henkan t)

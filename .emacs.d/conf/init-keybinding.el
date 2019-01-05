@@ -55,6 +55,9 @@
 (global-set-key (kbd "<f11>") 'mute_toggle)
 (global-set-key (kbd "<f12>") 'output_toggle)
 
+(global-unset-key (kbd "s-c"))
+(exwm-input-set-key (kbd "s-c s-m") 'exwm-workspace-move-window)
+
 (defun side-monitor-rotate ()
   (interactive)
   "side-monitor-rotate"

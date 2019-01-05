@@ -1,5 +1,4 @@
 ;; テーマの設定
-;; (load-theme 'misterioso)
 (require 'powerline)
 
 (defun powerline-my-theme ()
@@ -50,4 +49,7 @@
 (make/set-face 'mode-line-2-arrow  "#AAAAAA" "#3E4451" 'bold)
 
 (powerline-my-theme)
-(load-theme 'atom-one-dark t)
+;; (load-theme 'atom-one-dark t)
+;; (load-theme 'material t)
+;; (load-theme 'kosmos t)
+(load-theme 'dracula t)
