@@ -27,4 +27,6 @@
      (if asciip "en" "ja")
      (if asciip "ja" "en")
      string)))
-(global-set-key (kbd "C-c z") 'google-translate-enja-or-jaen)
+(global-unset-key (kbd "C-o"))
+(global-set-key (kbd "C-o") 'google-translate-enja-or-jaen)
+(exwm-input-set-key (kbd "C-o") 'google-translate-enja-or-jaen)

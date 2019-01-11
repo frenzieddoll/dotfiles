@@ -60,7 +60,7 @@
 ;; (set-frame-font "Ricty" 15)
 (set-face-attribute 'default nil
                     :family "Ricty"
-                    :height 220)
+                    :height 230)
 
 ;; モードラインに関する設定
 ;; (size-indication-mode t)
@@ -76,6 +76,7 @@
 
 ;; 起動時に*scratch*バッファを表示する
 (setq initial-buffer-choice t)
+(setq initial-scratch-message "")
 
 ;; beep音を消す
 (setq ring-bell-function 'ignore)
@@ -91,7 +92,7 @@
 ;; 保存時に行末のスペースを削除
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 ;; 開き括弧を挿入すると自動で閉じ括弧を挿入
-(setq electric-pair-mode t)
+;; (setq electric-pair-mode t)
 ;; auto-fill-modeを切る
 (auto-fill-mode 0)
 
@@ -100,3 +101,13 @@
 
 ;; 補完で大文字小文字無視
 (setq read-file-name-completion-ignore-case t)
+
+;; 括弧をカラフルに
+(add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
+
+;; 選択範囲の色
+(set-face-background 'region "#555")
+
+;; ミニバッファの履歴を保存する
+(savehist-mode 1)
+(setq history-length 3000)

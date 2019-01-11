@@ -9,8 +9,7 @@
 (add-hook 'term-mode-hook
           '(lambda ()
              ;; C-hをterm内文字削除にする
-             (define-key term-raw-map (kbd "C-h")
-               'term-send-backspace)
+             (define-key term-raw-map (kbd "C-h") 'term-send-backspace)
              ;; C-yをterm内ペーストにする
              (define-key term-raw-map (kbd "C-y") 'term-paste)
              (define-key term-raw-map (kbd "C-j") 'skk-hiragana-set)

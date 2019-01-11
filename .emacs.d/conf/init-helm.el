@@ -4,8 +4,9 @@
 (global-set-key (kbd "M-x") 'helm-M-x)
 (setq helm-M-x-fuzzy-match t)
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)
-;; (global-set-key (kbd "C-x b") 'helm-mini)
-(global-set-key (kbd "C-x b") 'helm-for-files)
+(global-set-key (kbd "C-x b") 'helm-mini)
+;; (global-set-key (kbd "C-x b") 'helm-buffers-list)
+(global-set-key (kbd "C-x C-b") 'helm-for-files)
 (setq helm-buffers-fuzzy-matching t
       helm-recentf-fuzzy-match t)
 (global-set-key (kbd "C-x C-f") 'helm-find-files)

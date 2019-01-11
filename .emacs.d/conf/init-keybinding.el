@@ -72,3 +72,5 @@
   (interactive)
   "side-monitor-rotate"
   (shell-command-to-string "xrandr --output DP-0 --primary"))
+
+(global-unset-key (kbd "C-z"))

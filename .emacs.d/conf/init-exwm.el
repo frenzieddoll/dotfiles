@@ -94,6 +94,12 @@
   (if (= exwm-workspace-current-index 0)
       (exwm-workspace-switch 1)
     (exwm-workspace-switch 0)))
+(defun start-pavucontrol ()
+  (interactive)
+  (start-process-shell-command
+   "start pavucontrol"
+   nil
+   (format "pavucontrol")))
 
 ;;; Those cannot be set globally: if Emacs would be run in another WM, the "s-"
 ;;; prefix will conflict with the WM bindings.
@@ -103,7 +109,8 @@
 (exwm-input-set-key (kbd "s-p") 'windmove-up)
 (exwm-input-set-key (kbd "s-<tab>") 'exwm-workspace-toggle)
 ;; (exwm-input-set-key (kbd "s-m") 'exwm-workspace-move-window)
-(exwm-input-set-key (kbd "s-a") 'exwm-workspace-switch-to-buffer)
+(exwm-input-set-key (kbd "s-m") 'exwm-workspace-switch-to-buffer)
+(exwm-input-set-key (kbd "s-a") 'zoom-window-zoom)
 (exwm-input-set-key (kbd "s-R") 'exwm-restart)
 (exwm-input-set-key (kbd "C-M-v") 'scroll-other-window)
 (exwm-input-set-key (kbd "C-M-S-v") 'scroll-other-window-down)
@@ -118,8 +125,11 @@
 (exwm-input-set-key (kbd "s-q") 'kill-buffer)
 (exwm-input-set-key (kbd "s-h") 'delete-window)
 (define-key exwm-mode-map (kbd "s-SPC") 'exwm-floating-toggle-floating)
-(exwm-input-set-key (kbd "C-<down-mouse-1>") 'exwm-input-move-event)
+(exwm-input-set-key (kbd "C-<down-mouse-8>") 'start-pavucontrol)
 (exwm-input-set-key (kbd "C-<down-mouse-3>") 'exwm-input-resize-event)
+
+
+
 
 
 (setq exwm-input-simulation-keys

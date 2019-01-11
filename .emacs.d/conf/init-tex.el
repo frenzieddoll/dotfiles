@@ -7,7 +7,7 @@
 
 (add-to-list 'org-latex-classes
              '("bxjsarticle"
-               "\\documentclass[autodetect-engine,dvi=dvipdfmx,12pt,a4paper,ja=standard]{bxjsarticle}
+               "\\documentclass[autodetect-engine,dvi=dvipdfmx,11pt,a4paper,ja=standard]{bxjsarticle}
 [NO-DEFAULT-PACKAGES]
 \\usepackage{amsmath}
 \\usepackage{newtxtext,newtxmath}
@@ -117,8 +117,8 @@
         "xelatex -interaction nontopmode -output-directory %o %f"
         "xelatex -interaction nonstopmode -output-directory %o %f"))
 
-(setq org-file-apps
-      '(("pdf" . "evince %s")))
+;; (setq org-file-apps
+;;       '(("pdf" . "evince %s")))
 
 ;; (setq org-latex-pdf-process '("platex %b" "mendex %b" "platex %b" "dvipdfmx %b"))
 
@@ -130,7 +130,10 @@
 ;;         "platex %f"
 ;;         "dvipdfmx %b.dvi"))
 
-(define-key org-mode-map (kbd "C-c [") 'org-reftex-citation)
+(autoload 'helm-bibtex "helm-bibtex" "" t)
+(setq bibtex-completion-bibliography
+      '("~/tex/reference.bib"))
+(define-key org-mode-map (kbd "C-c [") 'helm-bibtex)
 
 
 (defun org-mode-reftex-setup ()
@@ -140,17 +143,17 @@
        (file-exists-p (buffer-file-name))
        (reftex-parse-all))
   (define-key org-mode-map (kbd "C-c )") 'reftex-citation))
-(add-hook 'org-mode-hook 'reftex-mode)
+(add-hook 'org-mode-hook 'org-mode-reftex-setup)
 
 (require 'ox-bibtex)
 (require 'org-ref)
-(setq reftex-default-bibliography '("~/reference.bib"))
+(setq reftex-default-bibliography '("~/tex/reference.bib"))
 
 ;; ノート、bib ファイル、PDF のディレクトリなどを設定
-(setq org-ref-default-bibliography '("~/reference.bib"))
+(setq org-ref-default-bibliography '("~/tex/reference.bib"))
 
 
 ;;; helm-bibtex を使う場合は以下の変数も設定しておく
-(setq bibtex-completion-bibliography "~/reference.bib")
+(setq bibtex-completion-bibliography "~/tex/reference.bib")
       ;; bibtex-completion-library-path "~/Dropbox/bibliography/bibtex-pdfs"
       ;; bibtex-completion-notes-path "~/Dropbox/bibliography/helm-bibtex-notes")
