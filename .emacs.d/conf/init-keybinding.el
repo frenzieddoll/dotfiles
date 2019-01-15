@@ -3,6 +3,10 @@
 (global-set-key (kbd "C-m") 'newline-and-indent)
 ;;C-h : backspace
 ;; (define-key key-translation-map (kbd "C-h") (kbd "<DEL>"))
+;; (cond ((equal system-type 'gnu/linux)
+;;        (global-set-key (kbd "C-h") 'delete-backward-char))
+;;       ((equal system-type 'darwin)
+;;        (global-set-key (kbd "C-h") (kbd "<DEL>"))))
 (global-set-key (kbd "C-h") 'delete-backward-char);;exwmを使う時はこっち
 (defun minibuffer-delete-backward-char ()
   (local-set-key (kbd "C-h") 'delete-backward-char))
@@ -56,7 +60,6 @@
 (global-set-key (kbd "<f12>") 'output_toggle)
 
 (global-unset-key (kbd "s-c"))
-(exwm-input-set-key (kbd "s-c s-m") 'exwm-workspace-move-window)
 
 (defun side-monitor-rotate ()
   (interactive)

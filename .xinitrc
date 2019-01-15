@@ -48,33 +48,35 @@ if [ -d /etc/X11/xinit/xinitrc.d ] ; then
  unset f
 fi
 
-# exec i3
-# exec emacs
-
 export DefaultIMModule=fcitx
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
 fcitx-autostart  &
 
+# exec i3
+
+xset r rate 200 30
+# exec dbus-launch --exit-with-session emacs
+exec emacs
 
 #以下コピペ
 # You may need to comment out the next line to disable access control.
 #xhost +SI:localuser:$USER
 
-# Set themes, etc.
-gnome-settings-daemon &
+# # Set themes, etc.
+# gnome-settings-daemon &
 
-# Set fallback cursor.
-xsetroot -cursor_name left_ptr
+# # Set fallback cursor.
+# xsetroot -cursor_name left_ptr
 
-# Set keyboard repeat rate.
-xset r rate 200 30
+# # Set keyboard repeat rate.
+# xset r rate 200 30
 
-# If Emacs is started in server mode, `emacsclient` is a convenient way to
-# edit files in place (used by e.g. `git commit`).
-export VISUAL=emacsclient
-export EDITOR="$VISUAL"
+# # If Emacs is started in server mode, `emacsclient` is a convenient way to
+# # edit files in place (used by e.g. `git commit`).
+# export VISUAL=emacsclient
+# export EDITOR="$VISUAL"
 
-# Finally launch emacs.
-exec dbus-launch --exit-with-session emacs
+# # Finally launch emacs.
+# exec dbus-launch --exit-with-session emacs

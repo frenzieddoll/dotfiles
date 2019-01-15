@@ -9,6 +9,7 @@
 (define-key minibuffer-local-map (kbd "C-l") 'skk-latin-mode)
 
 
+
 ;; (setq skk-rom-kana-rule-list
 ;;       (append skk-rom-kana-rule-list
 ;;               '(

@@ -33,13 +33,33 @@
 
 (require 'exwm)
 
+
 ;;; System tray
 (require 'exwm-systemtray)
 (exwm-systemtray-enable)
 ;; (setq exwm-systemtray-height 16)
 
+;; フローティングモードで右下をドラックするとサイズ変更
+(setq window-divider-default-right-width 1)
+(window-divider-mode)
+
+;; workspaceでバッファを共有
+(setq exwm-workspace-show-all-buffers t)
+(setq exwm-layout-show-all-buffers t)
+
+;; 時間を表示
+(setq display-time-default-load-average nil)
+(setq display-time-day-and-date t)
+(display-time-mode 1)
+
+
 ;; コンポジットマネージャー
 ;; (require 'exwm-cm)
+
+;; ido でworkspaceの切り替え
+(require 'exwm-config)
+(exwm-config-ido)
+;; (exwm-enable-ido-workaround)
 
 ;; マルチモニターの設定
 (require 'exwm-randr)
@@ -80,10 +100,10 @@
                       (start-process-shell-command command nil command)))
 
 ;; Launch application
-(exwm-input-set-key (kbd "s-d")
-                    (lambda (command)
-                      (interactive (list (read-shell-command "$ ")))
-                      (start-process-shell-command command nil command)))
+;; (exwm-input-set-key (kbd "s-d")
+;;                     (lambda (command)
+;;                       (interactive (list (read-shell-command "$ ")))
+;;                       (start-process-shell-command command nil command)))
 
 ; (push ?\s-x exwm-input-prefix-keys)
 
@@ -108,10 +128,10 @@
 (exwm-input-set-key (kbd "s-b") 'windmove-left)
 (exwm-input-set-key (kbd "s-p") 'windmove-up)
 (exwm-input-set-key (kbd "s-<tab>") 'exwm-workspace-toggle)
-;; (exwm-input-set-key (kbd "s-m") 'exwm-workspace-move-window)
-(exwm-input-set-key (kbd "s-m") 'exwm-workspace-switch-to-buffer)
+;; (exwm-input-set-key (kbd "s-m") #'exwm-workspace-move-window)
+;; (exwm-input-set-key (kbd "s-m") 'exwm-workspace-switch-to-buffer)
 (exwm-input-set-key (kbd "s-a") 'zoom-window-zoom)
-(exwm-input-set-key (kbd "s-R") 'exwm-restart)
+;; (exwm-input-set-key (kbd "s-R") 'exwm-restart)
 (exwm-input-set-key (kbd "C-M-v") 'scroll-other-window)
 (exwm-input-set-key (kbd "C-M-S-v") 'scroll-other-window-down)
 ;; (exwm-input-set-key (kbd "<f9>") 'output_toggle)
@@ -128,8 +148,11 @@
 (exwm-input-set-key (kbd "C-<down-mouse-8>") 'start-pavucontrol)
 (exwm-input-set-key (kbd "C-<down-mouse-3>") 'exwm-input-resize-event)
 
-
-
+;; chomeの起動
+(exwm-input-set-key (kbd "s-c")
+                    (lambda ()
+                      (interactive)
+                      (start-process-shell-command "google-chrome-stable" nil "google-chrome-stable")))
 
 
 (setq exwm-input-simulation-keys

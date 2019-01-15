@@ -1,4 +1,3 @@
-
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
@@ -30,88 +29,82 @@
 
 
 ;; init-system.el
-(load "init-system")
+(load "init-system" t)
 
 ;; init-keybinding.el
-(load "init-keybinding")
+(load "init-keybinding" t)
 
 ;; init-cua.el
-(load "init-cua")
+(load "init-cua" t)
 
 ;; exwmの設定
-;; (require 'exwm)
-;; (require 'exwm-cm)
-;; (exwm-cm-enable)
-(load "init-exwm")
+;; (load "init-exwm" t)
+(when (eq system-type 'gnu/linux)
+  (if window-system (progn
+                      (load "init-exwm" t)
+                      )))
 
-;; (require 'exwm-config)
-;; (exwm-config-default)
-;; exwm-initの読み込み
-;; (when (require 'exwm nil t) (require 'init-exwm))
-;; (exwm_conf)
 
 ;; ddskk の設定
 ;; init-ddskk.el
-(load "init-skk")
-;; (setq skk-user-directory "~/.emacs.d/ddskk")
-;; (setq skk-large-jisyo "~/.emacs.d/skk-get-jisyo/SKK-JISYO.L")
-;; (global-set-key (kbd "C-x j") 'skk-mode)
-;; ;; (global-set-key (kbd "C-x j") 'skk-auto-fill-mode)
-;; (define-key minibuffer-local-map (kbd "C-j") 'skk-kakutei)
+(load "init-skk" t)
 
 ;; multi-termの設定
-(load "init-term")
+(load "init-term" t)
 
 ;; init-eshell.el
-(load "init-eshell")
+(load "init-eshell" t)
+
+;; ido setting
+(load "init-ido" t)
 
 ;; init-window.el
-(load "init-window")
+(load "init-window" t)
 
 ;; init-eww.el
-(load "init-eww")
+(load "init-eww" t)
 
 ;; init-visual.el
 ;; (load "init-visual")
 ;; GUI環境でのみ見た目の設定を読み込む
 (if window-system (progn
-                    (load "init-visual")
+                    (load "init-visual" t)
                     ))
+
+;; init-googletranslate.el
+(load "init-googletranslate" t)
 
 
 ;; init-dired.el
-(load "init-dired")
+(load "init-dired" t)
 
 ;; latexの設定を読み込む関数
 ;;(load "init-tex")
-(eval-after-load 'org-mode-hook 'load-tex)
 (defun load-tex ()
   "load tex setting"
   (interactive)
-  (load "init-tex"))
-
-;; (defun load-org-tex ()
-;;   "load org-tex setting"
-;;   (interactive)
-;;   (load "init-org"))
-
-;; jupyter notebookを使う
-(require 'ein)
+  (load "init-tex" t))
 
 ;; init-helm.el
-(load "init-helm")
+;; (load "init-helm")
 
 ;; init-company.el
-(load "init-company")
+(load "init-company" t)
 
-(require 'magit)
-
-;; init-pdftools.el
+;; linux環境でのみ読み込み
 (when (eq system-type 'gnu/linux)
+  (require 'magit)
+  (require 'ein)
   (load "init-pdftools"))
 
-;; init-googletranslate.el
-(load "init-googletranslate")
+
+;; (require 'magit)
+;; ;; jupyter notebookを使う
+;; (require 'ein)
+;; ;; init-pdftools.el
+;; (when (eq system-type 'gnu/linux)
+;;   (load "init-pdftools" t))
+
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -127,7 +120,7 @@
      ("zip" . "mcomix"))))
  '(package-selected-packages
    (quote
-    (smooth-scroll dired-subtree counsel dracula-theme kosmos-theme let-alist material-theme google-translate mpv org-plus-contrib org-ref org-preview-html ace-link vlf dired-open w3m dired-launch dired-filter company zoom-window fish-mode helm ein rainbow-delimiters atom-one-dark-theme powerline multi-term exwm edit-server ddskk)))
+    (ido-occasional imenus browse-kill-ring ido-select-window ido-completing-read+ smex ido-vertical-mode smooth-scroll dired-subtree counsel dracula-theme kosmos-theme let-alist material-theme google-translate mpv org-plus-contrib org-ref org-preview-html ace-link vlf dired-open w3m dired-launch dired-filter company zoom-window fish-mode helm ein rainbow-delimiters atom-one-dark-theme powerline multi-term exwm edit-server ddskk)))
  '(skk-auto-insert-paren nil)
  '(skk-auto-okuri-process nil)
  '(skk-auto-start-henkan t)
