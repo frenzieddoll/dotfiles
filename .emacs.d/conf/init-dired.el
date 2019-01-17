@@ -19,7 +19,9 @@
 ;; .zipで終るファイルをZキーで展開できるように
 (add-to-list 'dired-compress-file-suffixes '("\\.zip\\" ".zip" "unar"))
 ;; diredでlsオプションをつかう
-(setq dired-listing-switches (purecopy "-alh"))
+(setq dired-listing-switches (purecopy "-AoghLp"))
+;; 常にシンボリックリンク辿る
+(setq-default find-file-visit-truename t)
 
 ;; 外部アプリで開く
 (require 'dired-open)

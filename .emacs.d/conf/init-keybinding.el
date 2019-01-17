@@ -64,12 +64,12 @@
 (defun side-monitor-rotate ()
   (interactive)
   "side-monitor-rotate"
-  (shell-command-to-string "xrandr --output HDMI-0 --rotate left"))
+  (shell-command-to-string "xrandr --output DP-3 --rotate left"))
 
 (defun side-monitor-normal ()
   (interactive)
   "side-monitor-rotate"
-  (shell-command-to-string "xrandr --output HDMI-0 --rotate normal"))
+  (shell-command-to-string "xrandr --output DP-3 --rotate normal"))
 
 (defun DP-0_primary ()
   (interactive)

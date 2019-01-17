@@ -64,12 +64,12 @@
 ;; マルチモニターの設定
 (require 'exwm-randr)
 ;; (setq exwm-randr-workspace-output-plist '(0 "DP-0" 1 "HDMI-0" 2 "DP-0" 3 "HDMI-0" 4 "DP-0" 5 "HDMI-0" 6 "DP-0" 7 "HDMI-0" 8 "DP-0" 9  "HDMI-0"))
-(setq exwm-randr-workspace-output-plist '(0 "DP-0" 1 "HDMI-0" 2 "DP-0" 3 "DP-0" 4 "DP-0" 5 "DP-0"))
+(setq exwm-randr-workspace-output-plist '(0 "DP-0" 1 "DP-3" 2 "DP-0" 3 "DP-0" 4 "DP-0" 5 "DP-0"))
 
 (add-hook 'exwm-randr-screen-change-hook
           (lambda ()
             (start-process-shell-command
-             "xrandr" nil "xrandr --output DP-0 --right-of HDMI-0 --auto")))
+             "xrandr" nil "xrandr --output DP-0 --right-of DP-3 --auto")))
              ;; "xrandr" nil "xrandr --output HDMI-0 --left-of DP-0  --auto --primary")))
 (exwm-randr-enable)
 ;; (add-hook 'exwm-randr-screen-change-hook

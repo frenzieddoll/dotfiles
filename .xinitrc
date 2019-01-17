@@ -54,11 +54,12 @@ export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
 fcitx-autostart  &
 
-# exec i3
+
 
 xset r rate 200 30
-# exec dbus-launch --exit-with-session emacs
+# exec i3
 exec emacs
+# exec dbus-launch --exit-with-session emacs
 
 #以下コピペ
 # You may need to comment out the next line to disable access control.

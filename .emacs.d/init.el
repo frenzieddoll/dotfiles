@@ -80,10 +80,19 @@
 
 ;; latexの設定を読み込む関数
 ;;(load "init-tex")
+;; (defun load-tex ()
+;;   "load tex setting"
+;;   (interactive)
+;;   (load "init-tex" t))
+
 (defun load-tex ()
   "load tex setting"
   (interactive)
-  (load "init-tex" t))
+  (cond
+   ((eq system-type 'gnu/linux)
+    (load "init-tex" t))
+   ((eq system-type 'darwin)
+    (load "init-tex_for_mac"))))
 
 ;; init-helm.el
 ;; (load "init-helm")
