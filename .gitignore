@@ -7,6 +7,8 @@
 /.config/*
 /.ddskk/*
 /.config/fcitx/skk/user.dict
+/.emacs.d/ddskk/*
+
 
 # gitで管理する
 !/.emacs.d/init.el
@@ -15,8 +17,9 @@
 !/.emacs.d/elpa
 !/.emacs.d/public_repos
 !/.emacs.d/script
-!/.ddskk/init
+#!/.ddskk/init
 !/.config/libskk
 !/.config/fcitx
+!/.emacs/ddskk/init
 #!/.xkeysnail
 #!/.config/.config.py
