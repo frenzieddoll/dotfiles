@@ -3,10 +3,19 @@
 ;; exwmの設定に書き替え
 ;; (when (fboundp 'windmove-default-keybindings)
 ;;   (windmove-default-keybindings);
-(global-set-key (kbd "C-c n") 'windmove-down)
-(global-set-key (kbd "C-c f") 'windmove-right)
-(global-set-key (kbd "C-c b") 'windmove-left)
-(global-set-key (kbd "C-c p") 'windmove-up)
+(when (eq system-type 'darwin)
+  (global-set-key (kbd "C-c n") 'windmove-down)
+  (global-set-key (kbd "C-c f") 'windmove-right)
+  (global-set-key (kbd "C-c b") 'windmove-left)
+  (global-set-key (kbd "C-c p") 'windmove-up)
+  (global-set-key (kbd "s-n") 'windmove-down)
+  (global-set-key (kbd "s-f") 'windmove-right)
+  (global-set-key (kbd "s-b") 'windmove-left)
+  (global-set-key (kbd "s-p") 'windmove-up)
+  (global-set-key (kbd "s-a") 'zoom-window-zoom)
+  (global-set-key (kbd "s-q") 'kill-buffer)
+  (global-set-key (kbd "s-h") 'delete-window))
+
 ;; ------------------------------------------
 
 ;; window間の移動をループ

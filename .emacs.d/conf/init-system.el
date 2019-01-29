@@ -65,7 +65,20 @@
 (when (eq system-type 'gnu/linux)
   (set-face-attribute 'default nil
                       :family "Ricty"
-                      :height 170))
+                      :height 170)
+  (defun ricty_250 ()
+    (interactive)
+    (set-face-attribute 'default nil
+                      :family "Ricty"
+                      :height 250))
+    (defun ricty_170 ()
+    (interactive)
+    (set-face-attribute 'default nil
+                      :family "Ricty"
+                      :height 170)
+
+  ))
+
 
 (when (eq system-type 'darwin)
   (global-set-key [s-mouse-1] 'browse-url-at-mouse)
@@ -141,3 +154,12 @@
 ;; ミニバッファの履歴を保存する
 (savehist-mode 1)
 (setq history-length 3000)
+
+;; root権限で開き直す
+(defun reopen-with-sudo ()
+  "Reopen current buffer-file with sudo using tramp."
+  (interactive)
+  (let ((file-name (buffer-file-name)))
+    (if file-name
+        (find-alternate-file (concat "/sudo::" file-name))
+      (error "Cannot get a file name"))))

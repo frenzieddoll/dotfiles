@@ -44,7 +44,6 @@
                       (load "init-exwm" t)
                       )))
 
-
 ;; ddskk の設定
 ;; init-ddskk.el
 (load "init-skk" t)
@@ -55,8 +54,13 @@
 ;; init-eshell.el
 (load "init-eshell" t)
 
+;; 補完パッケージ
 ;; ido setting
-(load "init-ido" t)
+;; (load "init-ido" t)
+;; init-ivy.el
+(load "init-ivy" t)
+;; init-helm.el
+;; (load "init-helm")
 
 ;; init-window.el
 (load "init-window" t)
@@ -94,18 +98,25 @@
    ((eq system-type 'darwin)
     (load "init-tex_for_mac"))))
 
-;; init-helm.el
-;; (load "init-helm")
 
 ;; init-company.el
 (load "init-company" t)
+
+;; flycheck
+(add-hook 'after-init-hook #'global-flycheck-mode)
+
+(load "init-rust" t)
+;; (defun load-rust ()
+;;   "load rust-mode setting"
+;;   (interactive)
+;;   (load "init-rust" t))
+
 
 ;; linux環境でのみ読み込み
 (when (eq system-type 'gnu/linux)
   (require 'magit)
   (require 'ein)
   (load "init-pdftools"))
-
 
 ;; (require 'magit)
 ;; ;; jupyter notebookを使う
@@ -129,7 +140,7 @@
      ("zip" . "mcomix"))))
  '(package-selected-packages
    (quote
-    (ido-occasional imenus browse-kill-ring ido-select-window ido-completing-read+ smex ido-vertical-mode smooth-scroll dired-subtree counsel dracula-theme kosmos-theme let-alist material-theme google-translate mpv org-plus-contrib org-ref org-preview-html ace-link vlf dired-open w3m dired-launch dired-filter company zoom-window fish-mode helm ein rainbow-delimiters atom-one-dark-theme powerline multi-term exwm edit-server ddskk)))
+    (company-racer flycheck-rust racer ido-occasional imenus browse-kill-ring ido-select-window ido-completing-read+ smex ido-vertical-mode smooth-scroll dired-subtree counsel dracula-theme kosmos-theme let-alist material-theme google-translate mpv org-plus-contrib org-ref org-preview-html ace-link vlf dired-open w3m dired-launch dired-filter company zoom-window fish-mode helm ein rainbow-delimiters atom-one-dark-theme powerline multi-term exwm edit-server ddskk)))
  '(skk-auto-insert-paren nil)
  '(skk-auto-okuri-process nil)
  '(skk-auto-start-henkan t)

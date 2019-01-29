@@ -57,8 +57,8 @@
 ;; (require 'exwm-cm)
 
 ;; ido でworkspaceの切り替え
-(require 'exwm-config)
-(exwm-config-ido)
+;; (require 'exwm-config)
+;; (exwm-config-ido)
 ;; (exwm-enable-ido-workaround)
 
 ;; マルチモニターの設定
