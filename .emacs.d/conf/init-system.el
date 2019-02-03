@@ -1,3 +1,7 @@
+;;; init-system.el --- setting for emacs's system
+;;; Commentary:
+
+;;; Code:
 ;; 日本語設定
 ;; 文字コードセット
 ;; (prefer-coding-system 'utf-8)
@@ -27,7 +31,7 @@
 (require 'uniquify)
 ;; filename<dir> 形式のバッファ名にする
 (setq uniquify-buffer-name-style 'post-forward-angle-brackets)
-(setq uniquify-ignore-buffer-re "[^*]+")
+(defvar uniquify-ignore-buffer-re "[^*]+")
 
 ;; ファイルの開いた位置を保持する
 ;; (require 'saveplace)
@@ -36,7 +40,7 @@
 
 ;; 対応する括弧を光らせる
 (show-paren-mode 1)
-(setq show-paren-delay 0.125)
+(defvar show-paren-delay 0.125)
 
 ;; GCを減らして軽くする
 (setq gc-cons-threshold (* 10 gc-cons-threshold))
@@ -163,3 +167,6 @@
     (if file-name
         (find-alternate-file (concat "/sudo::" file-name))
       (error "Cannot get a file name"))))
+
+
+;;; init-system.el ends here

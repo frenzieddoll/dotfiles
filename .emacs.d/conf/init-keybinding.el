@@ -1,4 +1,8 @@
-;; key-bind
+;;; init-keybinding.el --- setting for keybinding
+;;; Commentary:
+;;; Code:
+
+
 ;; C-m : 改行プラスインデント
 (global-set-key (kbd "C-m") 'newline-and-indent)
 ;;C-h : backspace
@@ -27,6 +31,7 @@
 
 ;; audio操作の関数
 (defun output_toggle ()
+  "exchange output source"
   (interactive)
   (start-process-shell-command
    "output-toggle"

@@ -1,5 +1,4 @@
 # gitで管理しない
-
 .*~
 *~
 /.emacs.d/*
@@ -7,6 +6,7 @@
 /.config/*
 /.ddskk/*
 /.config/fcitx/skk/user.dict
+
 
 # gitで管理する
 !/.emacs.d/init.el
@@ -19,8 +19,3 @@
 !/.emacs.d/recentf
 !/.config/libskk
 !/.config/fcitx
-
-# 管理を辞めたやつ
-#!/.ddskk/init
-#!/.xkeysnail
-#!/.config/.config.py
