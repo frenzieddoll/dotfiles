@@ -28,6 +28,12 @@
 (global-set-key (kbd "C-c w") 'whitespace-mode)
 ;; 検索結果のリストアップ
 (global-set-key (kbd "C-c o") 'occur)
+;; S式の評価
+(global-set-key (kbd "C-c C-j") 'eval-print-last-sexp)
+;; quick run
+(global-set-key (kbd "M-s") 'quickrun)
+;; buffer list
+(global-set-key (kbd "C-c k") 'list-buffers)
 
 ;; audio操作の関数
 (defun output_toggle ()

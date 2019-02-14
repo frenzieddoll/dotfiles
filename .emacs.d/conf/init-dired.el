@@ -10,7 +10,7 @@
 (define-key dired-mode-map "e" 'wdired-change-to-wdired-mode)
 ;; コピーを使い安くする
 (setq dired-dwim-target t)
-;; (setq dired-launch-mailcap-friend '("env" "xdg-open"))
+(setq dired-launch-mailcap-friend '("env" "xdg-open"))
 (dired-launch-enable)
 ;; 再帰的にコピーする
 (setq dired-recursive-copies 'always)
@@ -19,9 +19,7 @@
 ;; .zipで終るファイルをZキーで展開できるように
 (add-to-list 'dired-compress-file-suffixes '("\\.zip\\" ".zip" "unar"))
 ;; diredでlsオプションをつかう
-(setq dired-listing-switches (purecopy "-AoghLp"))
-;; 常にシンボリックリンク辿る
-(setq-default find-file-visit-truename t)
+(setq dired-listing-switches (purecopy "-alh"))
 
 ;; 外部アプリで開く
 (require 'dired-open)
@@ -38,15 +36,20 @@
 (when (eq system-type 'darwin)
   (setq dired-open-extensions
         '(("key" . "open")
-          ("img" . "open"))))
+          ("docx" . "open")
+          ("pdf" . "open")
+          ("cmdf" . "open")
+          ("xlsx" . "open")
+          ("pxp" . "open")
+          )))
 
 
 (require 'dired-subtree)
 
 ;;; iを置き換え
-(define-key dired-mode-map (kbd "C-s-f") 'dired-subtree-insert)
+(define-key dired-mode-map (kbd "<right>") 'dired-subtree-insert)
 ;;; org-modeのようにTABで折り畳む
-(define-key dired-mode-map (kbd "C-s-b") 'dired-subtree-remove)
+(define-key dired-mode-map (kbd "<left>") 'dired-subtree-remove)
 ;;; C-x n nでsubtreeにナローイング
 (define-key dired-mode-map (kbd "C-x n n") 'dired-subtree-narrow)
 

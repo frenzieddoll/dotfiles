@@ -1,4 +1,9 @@
-(setq skk-user-directory "~/.emacs.d/ddskk")
+;;; init-skk.el --- ivy settings
+;;
+;;; Commentary:
+
+;;; Code:
+(defvar skk-user-directory "~/.emacs.d/ddskk")
 
 (global-set-key (kbd "C-x j") 'skk-mode)
 (global-unset-key (kbd "C-j"))
@@ -93,3 +98,5 @@
 
 ;; ;;カタカナを変換候補に
 ;; (setq skk-search-katakana t)
+
+;;; init-skk.el ends here

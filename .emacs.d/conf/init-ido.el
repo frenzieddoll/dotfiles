@@ -1,3 +1,6 @@
+;;; init-ido.el -- setting for ido
+;;; Commentary:
+;;; Code:
 
 ;; config
 (ido-mode 1)
@@ -70,3 +73,5 @@
 ;;   (multi-occur buffers
 ;;                (format "\\_<%s\\_>"
 ;;                        (regexp-quote (replace-regexp-in-string "^.*|" "" input)))))
+
+;;; init-ido.el ends here

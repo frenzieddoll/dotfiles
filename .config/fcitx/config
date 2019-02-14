@@ -1,6 +1,6 @@
 [Hotkey]
 # 入力メソッドのオンオフ
-TriggerKey=CTRL_SUPER_LCTRL
+TriggerKey=CTRL_SUPER_LCTRL CTRL_SUPER_LCTRL
 # アクティブでない時だけその他のトリガーキーを使用する
 # Available Value:
 # True False
@@ -95,7 +95,7 @@ ShareStateAmongWindow=PerProgram
 # 数字の後に半角句読点を入力
 # Available Value:
 # True False
-#HalfPuncAfterNumber=True
+HalfPuncAfterNumber=False
 # リマインドモードでページを無効に
 # Available Value:
 # True False
@@ -119,7 +119,7 @@ PhraseTips=False
 # 入力メソッドを切換後に入力メソッドのヒントを表示
 # Available Value:
 # True False
-ShowInputWindowAfterTriggering=False
+#ShowInputWindowAfterTriggering=True
 # 入力メソッドを切換え、フォーカスした際に入力メソッドのヒントを表示
 # Available Value:
 # True False

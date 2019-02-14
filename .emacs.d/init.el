@@ -62,6 +62,10 @@
 ;; init-helm.el
 ;; (load "init-helm")
 
+;; init-shackle
+(load "init-shackle" t)
+
+
 ;; init-window.el
 (load "init-window" t)
 
@@ -114,9 +118,12 @@
 
 ;; linux環境でのみ読み込み
 (when (eq system-type 'gnu/linux)
-  (require 'magit)
-  (require 'ein)
-  (load "init-pdftools"))
+ (require 'magit)
+ (require 'ein)
+ (load "init-pdftools" t))
+
+(add-hook 'picture-mode-hook 'picture-mode-init)
+(autoload 'picture-mode-init "init-picture")
 
 ;; (require 'magit)
 ;; ;; jupyter notebookを使う
@@ -138,9 +145,10 @@
      ("rar" . "mcomix")
      ("pdf" . "mcomix")
      ("zip" . "mcomix"))))
+ '(org-agenda-files nil)
  '(package-selected-packages
    (quote
-    (company-racer flycheck-rust racer ido-occasional imenus browse-kill-ring ido-select-window ido-completing-read+ smex ido-vertical-mode smooth-scroll dired-subtree counsel dracula-theme kosmos-theme let-alist material-theme google-translate mpv org-plus-contrib org-ref org-preview-html ace-link vlf dired-open w3m dired-launch dired-filter company zoom-window fish-mode helm ein rainbow-delimiters atom-one-dark-theme powerline multi-term exwm edit-server ddskk)))
+    (shackle popwin quickrun company-racer flycheck-rust racer ido-occasional imenus browse-kill-ring ido-select-window ido-completing-read+ smex ido-vertical-mode smooth-scroll dired-subtree counsel dracula-theme kosmos-theme let-alist material-theme google-translate mpv org-plus-contrib org-ref org-preview-html ace-link vlf dired-open w3m dired-launch dired-filter company zoom-window fish-mode helm ein rainbow-delimiters atom-one-dark-theme powerline multi-term exwm edit-server ddskk)))
  '(skk-auto-insert-paren nil)
  '(skk-auto-okuri-process nil)
  '(skk-auto-start-henkan t)

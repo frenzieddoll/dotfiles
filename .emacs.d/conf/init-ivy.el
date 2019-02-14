@@ -1,16 +1,32 @@
-;;; init-ivy.el --- ivy settings
-;;
+;;; init-ivy.el -- setting for ivy/counsel
 ;;; Commentary:
-
-;;
-
-
 ;;; Code:
-(require 'ivy)
-(ivy-mode 1) ;; デフォルトの入力補完がivyになる
-;; M-x, C-x ?C-fなどのEmacsの基本的な組み込みコマンドをivy版にリマップする
 
-;; 定義した関数
+(require 'ivy)
+;; デフォルトの入力補完がivyになる
+(ivy-mode 1)
+;; M-x, C-x C-fなどのEmacsの基本的な組み込みコマンドをivy版にリマップする
+
+(setq ivy-use-virtual-buffers t)
+(setq enable-recursive-minibuffers t)
+(setq ivy-height 30)
+(setq ivy-extra-directories nil)
+(setq ivy-re-builders-alist
+      '((t . ivy--regex-plus)))
+
+;; counsel設定
+(global-set-key (kbd "M-x") 'counsel-M-x)
+(global-set-key (kbd "C-x C-f") 'counsel-find-file)
+(defvar counsel-find-file-ignore-regexp (regexp-opt '("./" "../")))
+(global-set-key (kbd "C-c h") 'counsel-recentf)
+(define-key ivy-minibuffer-map (kbd "C-f") 'ivy-alt-done)
+(define-key ivy-minibuffer-map (kbd "C-i") 'ivy-immediate-done)
+(global-set-key (kbd "C-c i") 'imenus)
+
+(global-set-key (kbd "C-;") 'swiper)
+(defvar swiper-include-line-number-in-search t) ;; line-numberでも検索可能
+(global-set-key (kbd "C-x b") 'ivy-switch-buffer)
+
 (defun bjm/ivy-dired-recent-dirs ()
   "Present a list of recently used directories and open the selected one in dired"
   (interactive)
@@ -27,31 +43,14 @@
                          :initial-input nil)))
       (dired dir))))
 
-
-;; 設定
-;; ivyの設定
-(setq ivy-use-virtual-buffers t)
-(setq enable-recursive-minibuffers t)
-(setq ivy-height 20) ;; minibufferのサイズを拡大！（重要）
-(setq ivy-extra-directories nil)
-(setq ivy-re-builders-alist
-      '((t . ivy--regex-plus)))
-(global-set-key (kbd "C-x b") 'ivy-switch-buffer)
-(global-set-key (kbd "C-x C-b") 'ivy-switch-buffer)
-(global-set-key (kbd "C-c h") 'ivy-recentf)
-
-;; counselの設定
-(global-set-key (kbd "M-x") 'counsel-M-x)
-(global-set-key (kbd "C-x C-f") 'counsel-find-file) ;; find-fileもcounsel任せ！
-(defvar counsel-find-file-ignore-regexp (regexp-opt '("./" "../")))
-(global-set-key (kbd "C-x d") 'dired)
 (global-set-key (kbd "C-x C-d") 'bjm/ivy-dired-recent-dirs)
 
-;; swiperの設定
-(global-set-key (kbd "C-;") 'swiper)
-;; (define-key ivy-mode-map (kbd "C-j") 'skk-hiragana-set)
-;; (define-key ivy-mode-map (kbd "C-l") 'skk-latin-mode)
-(defvar swiper-include-line-number-in-search t) ;; line-numberでも検索可能
+
+;; ;; migemo + swiper（日本語をローマ字検索できるようになる）
+;; (require 'avy-migemo)
+;; (avy-migemo-mode 1)
+;; (require 'avy-migemo-e.g.swiper)
+
 
 ;; ;;; 下記は任意で有効化
 ;; (global-set-key "\C-s" 'swiper)
