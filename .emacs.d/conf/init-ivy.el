@@ -19,7 +19,7 @@
 (global-set-key (kbd "C-x C-f") 'counsel-find-file)
 (defvar counsel-find-file-ignore-regexp (regexp-opt '("./" "../")))
 (global-set-key (kbd "C-c h") 'counsel-recentf)
-(define-key ivy-minibuffer-map (kbd "C-f") 'ivy-alt-done)
+(define-key ivy-minibuffer-map (kbd "C-m") 'ivy-alt-done)
 (define-key ivy-minibuffer-map (kbd "C-i") 'ivy-immediate-done)
 (global-set-key (kbd "C-c i") 'imenus)
 
@@ -71,5 +71,60 @@
 ;; (global-set-key (kbd "<f1> l") 'counsel-load-library)
 ;; (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
 ;; (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
+
+(defun yank-browse (string)
+      "Browse the `kill-ring' to choose which entry to yank."
+      (interactive
+       (minibuffer-with-setup-hook #'minibuffer-completion-help
+         (let* ((kills (delete-dups (append kill-ring-yank-pointer kill-ring nil)))
+                (entries
+                 (mapcar (lambda (string)
+                           (let ((pos 0))
+                             ;; FIXME: Maybe we should start by removing
+                             ;; all properties.
+                             (setq string (copy-sequence string))
+                             (while (string-match "\n" string pos)
+                               ;; FIXME: Maybe completion--insert-strings should
+                               ;; do that for us.
+                               (put-text-property
+                                (match-beginning 0) (match-end 0)
+                                'display (eval-when-compile
+                                           (propertize "\\n" 'face 'escape-glyph))
+                                string)
+                               (setq pos (match-end 0)))
+                             ;; FIXME: We may use the window-width of the
+                             ;; wrong window.
+                             (when (>= (* 3 (string-width string))
+                                       (* 2 (window-width)))
+                               (let ((half (- (/ (window-width) 3) 1)))
+                                 ;; FIXME: We're using char-counts rather than
+                                 ;; width-count.
+                                 (put-text-property
+                                  half (- (length string) half)
+                                  'display (eval-when-compile
+                                             (propertize "……" 'face 'escape-glyph))
+                                  string)))
+                             string))
+                         kills))
+                (table (lambda (string pred action)
+                         (cond
+                          ((eq action 'metadata)
+                           '(metadata (category . kill-ring)))
+                          (t
+                           (complete-with-action action entries string pred))))))
+           ;; FIXME: We should return the entry from the kill-ring rather than
+           ;; the entry from the completion-table.
+           ;; FIXME: substring completion doesn't work well because it only matches
+           ;; subtrings before the first \n.
+           ;; FIXME: completion--insert-strings assumes that boundaries of
+           ;; candidates are obvious enough, but with kill-ring entries this is not
+           ;; true, so we'd probably want to display them with «...» around them.
+           (list (completing-read "Yank: " table nil t)))))
+      (setq this-command 'yank)
+      (insert-for-yank string))
+
+
+(global-set-key (kbd "M-y") 'yank-browse)
+
 
 ;;; init-ivy.el ends here

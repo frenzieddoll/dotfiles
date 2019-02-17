@@ -1,3 +1,7 @@
+;;; init-ehsell.el -- setting for eshell
+;;; Commentary:
+;;; Code:
+
 ;; eshell setting
 ;; ショートカットキー
 (global-set-key (kbd "C-c e") 'eshell)
@@ -22,3 +26,5 @@
           (list "manga" "wine ~/Documents/Software/picture/MangaMeeya_73/MangaMeeya.exe")))))
 ;; eshell起動時にエイリアスを読み込む
 (add-hook 'eshell-mode-hook 'eshell-alias)
+
+;;; init-eshell.el ends here

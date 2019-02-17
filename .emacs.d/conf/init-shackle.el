@@ -1,7 +1,7 @@
 (require 'shackle)
 (setq shackle-rules
       '(;; *compilation*は下部に2割の大きさで表示
-        (compilation-mode :align below :ratio 0.2)
+        ;; (compilation-mode :align left :ratio 0.2)
         ;; ヘルプバッファは右側に表示
         ("*Help*" :align left :ratio 0.3)
         ;; 補完バッファは下部に3割の大きさで表示

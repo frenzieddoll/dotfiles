@@ -1,3 +1,7 @@
+;;; init-dired.el -- setting for dired
+;;; Commentary:
+;;; Code:
+
 ;; diredの設定
 ;; ２画面ファイラー
 (setq dired-dwim-target t)
@@ -61,3 +65,5 @@
   (or (dired-subtree-up arg)
       (dired-up-directory)))
 (define-key dired-mode-map (kbd "^") 'dired-subtree-up-dwim)
+
+;;; init-dired.el ends here

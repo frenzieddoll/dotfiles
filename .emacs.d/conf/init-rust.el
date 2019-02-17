@@ -9,8 +9,8 @@
 
 ;; setting for rust-mode
 ;; rust-modeでrust-format-on-saveをtにすると自動でrustfmtが走る
-(eval-after-load "rust-mode"
-  '(setq-default rust-format-on-save t))
+;; (eval-after-load "rust-mode"
+;;   '(setq-default rust-format-on-save t))
 ;;; rustのファイルを編集するときにracerとflycheckを起動する
 (add-hook 'rust-mode-hook (lambda ()
                             (racer-mode)
@@ -30,6 +30,6 @@
 
 (require 'rust-mode)
 (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
-(setq company-tooltip-align-annotations t)
+(defvar company-tooltip-align-annotations t)
 
 ;;; init-rust.el ends here
