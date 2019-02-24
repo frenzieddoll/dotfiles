@@ -35,9 +35,10 @@
 ;; buffer list
 (global-set-key (kbd "C-c k") 'list-buffers)
 
+
 ;; audio操作の関数
 (defun output_toggle ()
-  "exchange output source"
+  "Exchange output source."
   (interactive)
   (start-process-shell-command
    "output-toggle"
@@ -45,6 +46,7 @@
    (format "~/.emacs.d/script/output_toggle.sh")))
 
 (defun upper_volume ()
+  "Volume up."
   (interactive)
   (start-process-shell-command
    "upper_volume"
@@ -52,6 +54,7 @@
    (format "~/.emacs.d/script/upper_volume.sh")))
 
 (defun lower_volume ()
+  "Volume down."
   (interactive)
   (start-process-shell-command
    "lower_volume"
@@ -59,25 +62,34 @@
    (format "~/.emacs.d/script/lower_volume.sh")))
 
 (defun mute_toggle ()
+  "Volume mute."
   (interactive)
   (start-process-shell-command
    "mute_toggle"
    nil
    (format "~/.emacs.d/script/mute_toggle.sh")))
 
-(global-set-key (kbd "<f9>") 'lower_volume)
-(global-set-key (kbd "<f10>") 'upper_volume)
-(global-set-key (kbd "<f11>") 'mute_toggle)
-(global-set-key (kbd "<f12>") 'output_toggle)
+;; (global-set-key (kbd "<f9>") 'lower_volume)
+;; (global-set-key (kbd "<f10>") 'upper_volume)
+;; (global-set-key (kbd "<f11>") 'mute_toggle)
+;; (global-set-key (kbd "<f12>") 'output_toggle)
+(exwm-input-set-key (kbd "<print>") 'lower_volume)
+(exwm-input-set-key (kbd "<Scroll_Lock>") 'upper_volume)
+(exwm-input-set-key (kbd "<pause>") 'mute_toggle)
+(exwm-input-set-key (kbd "<f7>") 'output_toggle)
+(exwm-input-set-key (kbd "C-<mouse-9>") 'upper_volume)
+(exwm-input-set-key (kbd "C-<mouse-8>") 'lower_volume)
 
-(global-unset-key (kbd "s-c"))
+;; (global-unset-key (kbd "s-c"))
 
 (defun side-monitor-rotate ()
+  "Side monitor ratate."
   (interactive)
   "side-monitor-rotate"
   (shell-command-to-string "xrandr --output DP-3 --rotate left"))
 
 (defun side-monitor-normal ()
+  "Side monitor ratate cancel."
   (interactive)
   "side-monitor-rotate"
   (shell-command-to-string "xrandr --output DP-3 --rotate normal"))
@@ -87,4 +99,6 @@
   "side-monitor-rotate"
   (shell-command-to-string "xrandr --output DP-0 --primary"))
 
-(global-unset-key (kbd "C-z"))
+;; (global-unset-key (kbd "C-z"))
+
+;;; init-keybinding.el ends here

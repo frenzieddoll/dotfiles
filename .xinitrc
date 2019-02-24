@@ -58,8 +58,8 @@ fcitx-autostart  &
 
 xset r rate 200 30
 # exec i3
+# exec RUST_BACKTRACE=1 ~/Downloads/remacs/remacs/src/remacs
 exec emacs
-# exec dbus-launch --exit-with-session emacs
 
 #以下コピペ
 # You may need to comment out the next line to disable access control.

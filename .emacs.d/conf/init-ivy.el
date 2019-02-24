@@ -14,19 +14,7 @@
 (setq ivy-re-builders-alist
       '((t . ivy--regex-plus)))
 
-;; counsel設定
-(global-set-key (kbd "M-x") 'counsel-M-x)
-(global-set-key (kbd "C-x C-f") 'counsel-find-file)
-(defvar counsel-find-file-ignore-regexp (regexp-opt '("./" "../")))
-(global-set-key (kbd "C-c h") 'counsel-recentf)
-(define-key ivy-minibuffer-map (kbd "C-m") 'ivy-alt-done)
-(define-key ivy-minibuffer-map (kbd "C-i") 'ivy-immediate-done)
-(global-set-key (kbd "C-c i") 'imenus)
-
-(global-set-key (kbd "C-;") 'swiper)
-(defvar swiper-include-line-number-in-search t) ;; line-numberでも検索可能
-(global-set-key (kbd "C-x b") 'ivy-switch-buffer)
-
+;; define function
 (defun bjm/ivy-dired-recent-dirs ()
   "Present a list of recently used directories and open the selected one in dired"
   (interactive)
@@ -43,6 +31,20 @@
                          :initial-input nil)))
       (dired dir))))
 
+(global-set-key (kbd "C-x C-d") 'bjm/ivy-dired-recent-dirs)
+
+;; counsel設定
+(global-set-key (kbd "M-x") 'counsel-M-x)
+(global-set-key (kbd "C-x C-f") 'counsel-find-file)
+(defvar counsel-find-file-ignore-regexp (regexp-opt '("./" "../")))
+(global-set-key (kbd "C-c h") 'counsel-recentf)
+(define-key ivy-minibuffer-map (kbd "C-m") 'ivy-alt-done)
+(define-key ivy-minibuffer-map (kbd "C-i") 'ivy-immediate-done)
+(global-set-key (kbd "C-c i") 'imenus)
+(global-set-key (kbd "M-y") 'counsel-yank-pop)
+(global-set-key (kbd "C-x b") 'ivy-switch-buffer)
+(global-set-key (kbd "C-;") 'swiper)
+(defvar swiper-include-line-number-in-search t) ;; line-numberでも検索可能
 (global-set-key (kbd "C-x C-d") 'bjm/ivy-dired-recent-dirs)
 
 
@@ -124,7 +126,7 @@
       (insert-for-yank string))
 
 
-(global-set-key (kbd "M-y") 'yank-browse)
+;; (global-set-key (kbd "M-y") 'yank-browse)
 
 
 ;;; init-ivy.el ends here

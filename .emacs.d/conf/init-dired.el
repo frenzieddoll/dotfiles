@@ -4,17 +4,17 @@
 
 ;; diredの設定
 ;; ２画面ファイラー
-(setq dired-dwim-target t)
+(defvar dired-dwim-target t)
 ;; filter
 (require 'dired-filter)
 (define-key dired-mode-map (kbd "/") dired-filter-map)
 ;; wdired set to "e"
 (require 'wdired)
-(setq wdired-allow-to-change-premissions t)
+(defvar wdired-allow-to-change-premissions t)
 (define-key dired-mode-map "e" 'wdired-change-to-wdired-mode)
 ;; コピーを使い安くする
 (setq dired-dwim-target t)
-(setq dired-launch-mailcap-friend '("env" "xdg-open"))
+(defvar dired-launch-mailcap-friend '("env" "xdg-open"))
 (dired-launch-enable)
 ;; 再帰的にコピーする
 (setq dired-recursive-copies 'always)
@@ -33,6 +33,9 @@
           ("mp4" . "mpv")
           ("avi" . "mpv")
           ("wmv" . "mpv")
+          ("webm" . "mpv")
+          ("mpg" . "mpv")
+          ("flv" . "mpv")
           ("playlist" . "mpv --playlist")
           ("exe" . "wine")
           )))
@@ -60,7 +63,7 @@
 
 ;;; [2014-12-30 Tue]^をdired-subtreeに対応させる
 (defun dired-subtree-up-dwim (&optional arg)
-  "subtreeの親ディレクトリに移動。そうでなければ親ディレクトリを開く(^の挙動)。"
+  "Subtreeの親ディレクトリに移動。そうでなければ親ディレクトリを開く(^の挙動)。."
   (interactive "p")
   (or (dired-subtree-up arg)
       (dired-up-directory)))

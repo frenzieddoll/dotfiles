@@ -155,8 +155,6 @@
 (exwm-input-set-key (kbd "s-q") 'kill-buffer)
 (exwm-input-set-key (kbd "s-h") 'delete-window)
 (define-key exwm-mode-map (kbd "s-SPC") 'exwm-floating-toggle-floating)
-(exwm-input-set-key (kbd "C-<down-mouse-8>") 'start-pavucontrol)
-(exwm-input-set-key (kbd "C-<down-mouse-3>") 'exwm-input-resize-event)
 
 ;; chomeの起動
 (exwm-input-set-key (kbd "s-c")

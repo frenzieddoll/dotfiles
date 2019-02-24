@@ -8,7 +8,7 @@
 (global-set-key (kbd "C-x j") 'skk-mode)
 (global-unset-key (kbd "C-j"))
 (global-set-key (kbd "C-j") 'skk-hiragana-set)
-(global-set-key (kbd "C-q") 'skk-katakana-set)
+;; (global-set-key (kbd "C-q") 'skk-katakana-set)
 (global-set-key (kbd "C-l") 'skk-latin-mode)
 (define-key minibuffer-local-map (kbd "C-j") 'skk-kakutei)
 (define-key minibuffer-local-map (kbd "C-l") 'skk-latin-mode)
