@@ -111,16 +111,16 @@
 )
 
 
-(setq org-latex-pdf-process
-      '("xelatex -interaction nonstopmode -output-directory %o %f"
-        "bibtex %b"
-        "xelatex -interaction nontopmode -output-directory %o %f"
-        "xelatex -interaction nonstopmode -output-directory %o %f"))
+;; (setq org-latex-pdf-process
+;;       '("xelatex -interaction nonstopmode -output-directory %o %f"
+;;         "bibtex %b"
+;;         "xelatex -interaction nontopmode -output-directory %o %f"
+;;         "xelatex -interaction nonstopmode -output-directory %o %f"))
 
 ;; (setq org-file-apps
 ;;       '(("pdf" . "evince %s")))
 
-;; (setq org-latex-pdf-process '("platex %b" "mendex %b" "platex %b" "dvipdfmx %b"))
+(setq org-latex-pdf-process '("platex %b" "mendex %b" "platex %b" "dvipdfmx %b"))
 
 ;; (setq org-latex-pdf-process
 ;;       '("platex %f"

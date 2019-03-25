@@ -36,6 +36,8 @@
           ("webm" . "mpv")
           ("mpg" . "mpv")
           ("flv" . "mpv")
+          ("m4v" . "mpv")
+          ("mp3" . "mpv")
           ("playlist" . "mpv --playlist")
           ("exe" . "wine")
           )))

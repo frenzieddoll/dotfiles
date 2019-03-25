@@ -31,6 +31,8 @@
 ;;       window-divider-default-right-width 2)
 ;; (window-divider-mode)
 
+;;; Code:
+
 (require 'exwm)
 
 
@@ -48,9 +50,9 @@
 (setq exwm-layout-show-all-buffers t)
 
 ;; 時間を表示
-(setq display-time-default-load-average nil)
-(setq display-time-day-and-date t)
-(display-time-mode 1)
+;; (setq display-time-default-load-average nil)
+;; (setq display-time-day-and-date t)
+;; (display-time-mode 1)
 
 
 ;; コンポジットマネージャー
@@ -64,7 +66,7 @@
 ;; マルチモニターの設定
 (require 'exwm-randr)
 ;; (setq exwm-randr-workspace-output-plist '(0 "DP-0" 1 "HDMI-0" 2 "DP-0" 3 "HDMI-0" 4 "DP-0" 5 "HDMI-0" 6 "DP-0" 7 "HDMI-0" 8 "DP-0" 9  "HDMI-0"))
-(setq exwm-randr-workspace-output-plist '(0 "DP-0" 1 "DP-3" 2 "DP-0" 3 "DP-0" 4 "DP-0" 5 "DP-0"))
+(setq exwm-randr-workspace-output-plist '(0 "DP-0" 1 "HDMI-0" 2 "DP-0" 3 "DP-0" 4 "DP-0" 5 "DP-0"))
 
 (add-hook 'exwm-randr-screen-change-hook
           (lambda ()
@@ -94,10 +96,11 @@
                          (interactive)
                          (exwm-workspace-switch-create ,i))))
 ;; Launch application
-(exwm-input-set-key (kbd "s-d")
-                    (lambda (command)
-                      (interactive (list (read-shell-command "$ ")))
-                      (start-process-shell-command command nil command)))
+;; (exwm-input-set-key (kbd "s-d")
+;;                     (lambda (command)
+;;                       (interactive (list (read-shell-command "$ ")))
+;;                       (start-process-shell-command command nil command)))
+(exwm-input-set-key (kbd "s-d") 'counsel-linux-app)
 
 
 ;; browser start
@@ -131,6 +134,11 @@
    nil
    (format "pavucontrol")))
 
+(defun application-lunch (command)
+  "Application lunch. command"
+  (interactive (list (read-shell-command "$ ")))
+  (start-process-shell-command command nil command))
+
 ;;; Those cannot be set globally: if Emacs would be run in another WM, the "s-"
 ;;; prefix will conflict with the WM bindings.
 (exwm-input-set-key (kbd "s-n") 'windmove-down)
@@ -152,15 +160,15 @@
 (exwm-input-set-key (kbd "C-s-m") 'mute_toggle)
 (exwm-input-set-key (kbd "C-s-n") 'lower_volume)
 (exwm-input-set-key (kbd "C-s-p") 'upper_volume)
-(exwm-input-set-key (kbd "s-q") 'kill-buffer)
+(exwm-input-set-key (kbd "s-q") 'kill-current-buffer)
 (exwm-input-set-key (kbd "s-h") 'delete-window)
 (define-key exwm-mode-map (kbd "s-SPC") 'exwm-floating-toggle-floating)
 
 ;; chomeの起動
-(exwm-input-set-key (kbd "s-c")
-                    (lambda ()
-                      (interactive)
-                      (start-process-shell-command "google-chrome-stable" nil "google-chrome-stable")))
+;; (exwm-input-set-key (kbd "s-c")
+;;                     (lambda ()
+;;                       (interactive)
+;;                       (start-process-shell-command "google-chrome-stable" nil "google-chrome-stable")))
 
 
 (setq exwm-input-simulation-keys
@@ -227,4 +235,7 @@
 (provide 'init-exwm)
 
 ;;サイドモニターを回転
-(DP-0_primary)
+;; (DP-0_primary)
+
+
+;;; init-exwm.el ends here.

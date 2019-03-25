@@ -86,17 +86,16 @@
   "Side monitor ratate."
   (interactive)
   "side-monitor-rotate"
-  (shell-command-to-string "xrandr --output DP-3 --rotate left"))
+  (shell-command-to-string "xrandr --output HDMI-0 --rotate right"))
 
 (defun side-monitor-normal ()
   "Side monitor ratate cancel."
   (interactive)
-  "side-monitor-rotate"
-  (shell-command-to-string "xrandr --output DP-3 --rotate normal"))
+  (shell-command-to-string "xrandr --output HDMI-0 --rotate normal"))
 
 (defun DP-0_primary ()
+  "Side-monitor-rotate."
   (interactive)
-  "side-monitor-rotate"
   (shell-command-to-string "xrandr --output DP-0 --primary"))
 
 ;; (global-unset-key (kbd "C-z"))
