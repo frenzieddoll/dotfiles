@@ -168,7 +168,70 @@
 
 
 
-(load-theme 'atom-one-dark t)
+;; (load-theme 'atom-one-dark t)
 ;; (load-theme 'material t)
 ;; (load-theme 'kosmos t)
-;; (load-theme 'dracula t)
+(load-theme 'dracula t)
+
+;; (require 'doom-modeline)
+;; (doom-modeline-mode 1)
+
+
+(require 'doom-themes)
+
+;; Global settings (defaults)
+(setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+      doom-themes-enable-italic t) ; if nil, italics is universally disabled
+
+;; Load the theme (doom-one, doom-molokai, etc); keep in mind that each theme
+;; may have their own settings.
+(load-theme 'doom-one t)
+
+;; Enable flashing mode-line on errors
+;; (doom-themes-visual-bell-config)
+
+;; Enable custom neotree theme (all-the-icons must be installed!)
+;; (doom-themes-neotree-config)
+;; or for treemacs users
+;; (doom-themes-treemacs-config)
+
+;; Corrects (and improves) org-mode's native fontification.
+;; (doom-themes-org-config)
+
+;; ;; モードラインを隠す
+;; (set-default 'my-mode-line-format mode-line-format)
+;; (defun my-mode-line-off ()
+;;   "Turn off mode line."
+;;   (setq my-mode-line-format mode-line-format)
+;;   (setq mode-line-format nil))
+;; (defun my-toggle-mode-line ()
+;;   "Toggle mode line."
+;;   (interactive)
+;;   (when mode-line-format
+;;     (setq my-mode-line-format mode-line-format))
+;;   (if mode-line-format
+;;       (setq mode-line-format nil)
+;;     (setq mode-line-format my-mode-line-format)
+;;     (redraw-display))
+;;   (message "%s" (if mode-line-format "( ╹ ◡╹)ｂ ON !" "( ╹ ^╹)ｐ OFF!")))
+;; (add-hook 'find-file-hook #'my-mode-line-off)
+
+
+;; カレントバッファ以外を暗くする
+(when (require 'dimmer nil t)
+  (setq dimmer-fraction 0.6)
+  (setq dimmer-exclusion-regexp "^\\*helm\\|^ \\*Minibuf\\|^\\*Calendar")
+  (dimmer-mode 1))
+(with-eval-after-load "dimmer"
+  (defun dimmer-off ()
+    (dimmer-mode -1)
+    (dimmer-process-all))
+  (defun dimmer-on ()
+    (dimmer-mode 1)
+    (dimmer-process-all))
+  (add-hook 'focus-out-hook #'dimmer-off)
+  (add-hook 'focus-in-hook #'dimmer-on))
+
+;; バッファの終わりをフリンジで確認
+(setq-default indicate-buffer-boundaries
+              '((top . nil) (bottom . right) (down . right)))

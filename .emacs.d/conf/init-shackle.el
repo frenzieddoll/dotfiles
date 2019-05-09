@@ -3,13 +3,13 @@
       '(;; *compilation*は下部に2割の大きさで表示
         ;; (compilation-mode :align left :ratio 0.2)
         ;; ヘルプバッファは右側に表示
-        ("*Help*" :align left :ratio 0.3)
+        ("*Help*" :align left :ratio 0.2)
         ;; 補完バッファは下部に3割の大きさで表示
         ("*Completions*" :align below :ratio 0.3)
         ;; M-x helm-miniは下部に7割の大きさで表示
-        ("*helm mini*" :align below :ratio 0.3)
-        ;; 他のhelmコマンドは右側に表示 (バッファ名の正規表現マッチ)
-        ("\*helm" :regexp t :align below :ratio 0.2)
+        ;; ("*helm mini*" :align below :ratio 0.3)
+        ;; ;; 他のhelmコマンドは右側に表示 (バッファ名の正規表現マッチ)
+        ;; ("\*helm" :regexp t :align below :ratio 0.2)
         ("*quickrun*" :align below :ratio 0.3)
         ("*Google Translate*" :align below :ratio 0.3)
         ("\*Agenda" :regexp t :align below :ratio 0.3)

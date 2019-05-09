@@ -104,10 +104,10 @@
 
 
 ;; browser start
-(exwm-input-set-key (kbd "s-<return>")
-                    (lambda ()
-                      (interactive)
-                      (start-process-shell-command "yandex-browser-beta --force-device-scale-factor=1.5" nil "yandex-browser-beta --force-device-scale-factor=1.5")))
+;; (exwm-input-set-key (kbd "s-<return>")
+;;                     (lambda ()
+;;                       (interactive)
+;;                       (start-process-shell-command "yandex-browser-beta --force-device-scale-factor=1.5" nil "yandex-browser-beta --force-device-scale-factor=1.5")))
 
 
 

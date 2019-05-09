@@ -139,7 +139,7 @@
 ;; 保存時に行末のスペースを削除
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 ;; 開き括弧を挿入すると自動で閉じ括弧を挿入
-;; (setq electric-pair-mode t)
+(setq electric-pair-mode t)
 ;; auto-fill-modeを切る
 (auto-fill-mode 0)
 
@@ -157,7 +157,7 @@
 
 ;; ミニバッファの履歴を保存する
 (savehist-mode 1)
-(setq history-length 3000)
+(setq history-length 30000)
 
 ;; root権限で開き直す
 (defun reopen-with-sudo ()
@@ -168,5 +168,11 @@
         (find-alternate-file (concat "/sudo::" file-name))
       (error "Cannot get a file name"))))
 
+;; pathを引き継ぐ
+(when (require 'exec-path-from-shell nil t)
+  (exec-path-from-shell-initialize))
+
+;; 折り返し禁止
+(setq-default truncate-lines t)
 
 ;;; init-system.el ends here

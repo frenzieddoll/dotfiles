@@ -107,9 +107,16 @@
 (load "init-company" t)
 
 ;; flycheck
-(add-hook 'after-init-hook #'global-flycheck-mode)
+;; (add-hook 'after-init-hook #'global-flycheck-mode)
 
-(load "init-rust" t)
+(defun load-lang-mode ()
+  (interactive)
+  (load "init-flycheck" t)
+  (load "init-rust" t)
+  (load "init-haskell" t)
+  (load "init-pdftools" t)
+  (require 'ein)
+  (require 'magit))
 ;; (defun load-rust ()
 ;;   "load rust-mode setting"
 ;;   (interactive)
@@ -117,10 +124,10 @@
 
 
 ;; linux環境でのみ読み込み
-(when (eq system-type 'gnu/linux)
- (require 'magit)
- (require 'ein)
- (load "init-pdftools" t))
+;; (when (eq system-type 'gnu/linux)
+;;  (require 'magit)
+;;  (require 'ein))
+
 
 
 
@@ -150,7 +157,7 @@
  '(org-agenda-files nil)
  '(package-selected-packages
    (quote
-    (company-ghc flycheck-haskell haskell-mode ox-pandoc company-jedi shackle popwin quickrun company-racer flycheck-rust racer ido-occasional imenus browse-kill-ring ido-select-window ido-completing-read+ smex ido-vertical-mode smooth-scroll dired-subtree counsel dracula-theme kosmos-theme let-alist material-theme google-translate mpv org-plus-contrib org-ref org-preview-html ace-link vlf dired-open w3m dired-launch dired-filter company zoom-window fish-mode helm ein rainbow-delimiters atom-one-dark-theme powerline multi-term exwm edit-server ddskk)))
+    (image+ dimmer company-box ivy-rich exec-path-from-shell use-package doom-modeline doom-themes eglot flycheck-haskell haskell-mode ox-pandoc company-jedi shackle popwin quickrun company-racer flycheck-rust racer ido-occasional imenus browse-kill-ring ido-select-window ido-completing-read+ smex ido-vertical-mode smooth-scroll dired-subtree counsel dracula-theme kosmos-theme let-alist material-theme google-translate mpv org-plus-contrib org-preview-html ace-link vlf dired-open dired-launch dired-filter company zoom-window fish-mode ein rainbow-delimiters atom-one-dark-theme powerline multi-term exwm edit-server ddskk)))
  '(skk-auto-insert-paren nil)
  '(skk-auto-okuri-process nil)
  '(skk-auto-start-henkan t)
