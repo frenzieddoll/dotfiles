@@ -73,12 +73,12 @@
 ;; (global-set-key (kbd "<f10>") 'upper_volume)
 ;; (global-set-key (kbd "<f11>") 'mute_toggle)
 ;; (global-set-key (kbd "<f12>") 'output_toggle)
-(exwm-input-set-key (kbd "<print>") 'lower_volume)
-(exwm-input-set-key (kbd "<Scroll_Lock>") 'upper_volume)
-(exwm-input-set-key (kbd "<pause>") 'mute_toggle)
-(exwm-input-set-key (kbd "<f7>") 'output_toggle)
-(exwm-input-set-key (kbd "C-<mouse-9>") 'upper_volume)
-(exwm-input-set-key (kbd "C-<mouse-8>") 'lower_volume)
+;; (exwm-input-set-key (kbd "<print>") 'lower_volume)
+;; (exwm-input-set-key (kbd "<Scroll_Lock>") 'upper_volume)
+;; (exwm-input-set-key (kbd "<pause>") 'mute_toggle)
+;; (exwm-input-set-key (kbd "<f7>") 'output_toggle)
+;; (exwm-input-set-key (kbd "C-<mouse-9>") 'upper_volume)
+;; (exwm-input-set-key (kbd "C-<mouse-8>") 'lower_volume)
 
 ;; (global-unset-key (kbd "s-c"))
 

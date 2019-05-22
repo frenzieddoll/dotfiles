@@ -36,6 +36,13 @@
 		[(3 0)
 		 nil "Indent and dedent Lisp code, automatically adjust close parens" tar
 		 ((:url . "http://elpa.gnu.org/packages/adjust-parens.html"))])
+ (advice-patch .
+	       [(0 1)
+		((emacs
+		  (24 4)))
+		"Use patches to advise the inside of functions" single
+		((:url . "http://elpa.gnu.org/packages/advice-patch.html")
+		 (:keywords))])
  (aggressive-indent .
 		    [(1 8 3)
 		     ((emacs
@@ -63,7 +70,7 @@
 	((:url . "http://elpa.gnu.org/packages/ampc.html")
 	 (:keywords "ampc" "mpc" "mpd"))])
  (arbitools .
-	    [(0 97)
+	    [(0 976)
 	     ((cl-lib
 	       (0 5)))
 	     "Package for chess tournaments administration" single
@@ -104,12 +111,12 @@
 		 ((:keywords "extensions")
 		  (:url . "http://www.dr-qubit.org/emacs.php"))])
  (avy .
-      [(0 4 0)
+      [(0 5 0)
        ((emacs
 	 (24 1))
 	(cl-lib
 	 (0 5)))
-       "tree-based completion" tar
+       "Jump to arbitrary positions in visible text and select text quickly." tar
        ((:keywords "point" "location")
 	(:url . "https://github.com/abo-abo/avy"))])
  (bbdb .
@@ -125,6 +132,15 @@
 	  "Highlight the cursor whenever the window scrolls" single
 	  ((:url . "https://github.com/Malabarba/beacon")
 	   (:keywords "convenience"))])
+ (bnf-mode .
+	   [(0 4 2)
+	    ((cl-lib
+	      (0 5))
+	     (emacs
+	      (24 3)))
+	    "Major mode for editing BNF grammars." tar
+	    ((:keywords "languages")
+	     (:url . "https://github.com/sergeyklay/bnf-mode"))])
  (brief .
 	[(5 87)
 	 nil "Brief Editor Emulator (Brief Mode)" tar
@@ -410,9 +426,9 @@
 	     ((:url . "http://elpa.gnu.org/packages/ediprolog.html")
 	      (:keywords "languages" "processes"))])
  (eev .
-      [(20190410)
+      [(20190425)
        ((emacs
-	 (24 3)))
+	 (24 1)))
        "Support for e-scripts (eepitch blocks, elisp hyperlinks, etc)" tar
        ((:keywords "lisp" "e-scripts")
 	(:url . "http://angg.twu.net/#eev"))])
@@ -522,7 +538,7 @@
 	   ((:url . "http://elpa.gnu.org/packages/flymake.html")
 	    (:keywords "c" "languages" "tools"))])
  (fountain-mode .
-		[(2 6 2)
+		[(2 7 0)
 		 ((emacs
 		   (24 5)))
 		 "Major mode for screenwriting in Fountain markup" single
@@ -665,7 +681,7 @@
 	 ((:keywords "bindings")
 	  (:url . "https://github.com/abo-abo/hydra"))])
  (hyperbole .
-	    [(7 0 2)
+	    [(7 0 3)
 	     ((emacs
 	       (24 4)))
 	     "GNU Hyperbole: The Everyday Hypertextual Information Manager" tar
@@ -684,7 +700,7 @@
 	     ((:url . "http://elpa.gnu.org/packages/iterators.html")
 	      (:keywords "extensions" "elisp"))])
  (ivy .
-      [(0 10 0)
+      [(0 11 0)
        ((emacs
 	 (24 1)))
        "Incremental Vertical completYon" tar
@@ -807,6 +823,11 @@
 	     nil "Mark chars fitting certain characteristics" single
 	     ((:url . "http://elpa.gnu.org/packages/markchars.html")
 	      (:keywords))])
+ (math-symbol-lists .
+		    [(1 2 1)
+		     nil "Lists of Unicode math symbols and latex commands" single
+		     ((:url . "https://github.com/vspinu/math-symbol-lists")
+		      (:keywords "unicode" "symbols" "mathematics"))])
  (memory-usage .
 	       [(0 2)
 		nil "Analyze the memory usage of Emacs in various ways" single
@@ -937,7 +958,7 @@
 	 ((:keywords "convenience")
 	  (:url . "https://github.com/clemera/objed"))])
  (olivetti .
-	   [(1 7 0)
+	   [(1 7 1)
 	    ((emacs
 	      (24 5)))
 	    "Minor mode for a nice writing environment" single
@@ -1097,6 +1118,19 @@
 	   "A modular front-end for interacting with external debuggers" tar
 	   ((:keywords "gdb" "python" "perl" "go" "bash" "nodejs" "zsh" "bashdb" "zshdb" "remake" "make" "trepan" "perldb" "pdb")
 	    (:url . "http://github.com/realgud/realgud/"))])
+ (realgud-ipdb .
+	       [(1 0 0)
+		((realgud
+		  (1 4 5))
+		 (load-relative
+		  (1 2))
+		 (cl-lib
+		  (0 5))
+		 (emacs
+		  (24)))
+		"Realgud front-end to ipdb" single
+		((:url . "http://github.com/rocky/realgud-ipdb")
+		 (:keywords))])
  (register-list .
 		[(0 1)
 		 nil "Interactively list/edit registers" single

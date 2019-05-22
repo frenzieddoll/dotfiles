@@ -45,6 +45,7 @@
           ("m4a" . "mpv")
           ("playlist" . "mpv --playlist")
           ("exe" . "wine")
+          ("pdf" . "zathura")
           ;; ("zip" . "YACReader")
           ;; ("rar" . "YACReader")
           )))

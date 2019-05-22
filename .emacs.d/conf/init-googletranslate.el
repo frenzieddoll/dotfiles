@@ -58,7 +58,7 @@
 
 (global-unset-key (kbd "C-o"))
 (global-set-key (kbd "C-o") 'google-translate-enja-or-jaen)
-(exwm-input-set-key (kbd "C-o") 'google-translate-enja-or-jaen)
+;; (exwm-input-set-key (kbd "C-o") 'google-translate-enja-or-jaen)
 
 ;; Fix error of "Failed to search TKK"
 (defun google-translate--get-b-d1 ()
