@@ -6,8 +6,9 @@
                          (or (file-name-directory #$) (car load-path))))
 
 
-;;;### (autoloads nil "eglot" "eglot.el" (0 0 0 0))
-;;; Generated autoloads from eglot.el
+;;;### (autoloads nil "eglot" "../../../../../.emacs.d/elpa/eglot-20190512.1047/eglot.el"
+;;;;;;  "d459045937287a55f92d350fdf5ce4f0")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/eglot-20190512.1047/eglot.el
 
 (autoload 'eglot "eglot" "\
 Manage a project with a Language Server Protocol (LSP) server.
@@ -44,8 +45,20 @@ INTERACTIVE is t if called interactively.
 Start Eglot session for current buffer if there isn't one.
 
 \(fn)" nil nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "eglot" "../../../../../.emacs.d/elpa/eglot-20190512.1047/eglot.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/eglot-20190512.1047/eglot.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "eglot" '("eglot-")))
+
+;;;***
+
+;;;***
+
+;;;### (autoloads nil nil ("../../../../../.emacs.d/elpa/eglot-20190512.1047/eglot-autoloads.el"
+;;;;;;  "../../../../../.emacs.d/elpa/eglot-20190512.1047/eglot.el")
+;;;;;;  (0 0 0 0))
 
 ;;;***
 

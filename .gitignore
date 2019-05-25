@@ -22,3 +22,5 @@
 !/.config/libskk
 !/.config/chrome-dev-flags.conf
 !/.config/chromium.conf
+!/.config/zathura/zathurarc
+!/.zshrc

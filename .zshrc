@@ -44,7 +44,7 @@ stty erase ^H
 bindkey "^[[3~" delete-char
 
 # pathを通す
-# export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 
 # エイリアス
 alias la='ls -a'

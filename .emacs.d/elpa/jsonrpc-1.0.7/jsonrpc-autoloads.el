@@ -6,10 +6,17 @@
                          (or (file-name-directory #$) (car load-path))))
 
 
-;;;### (autoloads nil "jsonrpc" "jsonrpc.el" (0 0 0 0))
-;;; Generated autoloads from jsonrpc.el
+;;;### (autoloads "actual autoloads are elsewhere" "jsonrpc" "../../../../../.emacs.d/elpa/jsonrpc-1.0.7/jsonrpc.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/jsonrpc-1.0.7/jsonrpc.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "jsonrpc" '("jrpc-default-request-timeout" "jsonrpc-")))
+
+;;;***
+
+;;;### (autoloads nil nil ("../../../../../.emacs.d/elpa/jsonrpc-1.0.7/jsonrpc-autoloads.el"
+;;;;;;  "../../../../../.emacs.d/elpa/jsonrpc-1.0.7/jsonrpc.el")
+;;;;;;  (0 0 0 0))
 
 ;;;***
 

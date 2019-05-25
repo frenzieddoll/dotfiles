@@ -27,3 +27,4 @@
 ;; (add-hook 'lsp-mode-hook 'lsp-ui-mode)
 ;; (add-hook 'haskell-mode-hook #'lsp)
 ;; (add-hook 'haskell-mode-hook 'flycheck-mode)
+;; (setq lsp-document-sync-method 'full)
