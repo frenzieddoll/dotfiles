@@ -5,6 +5,8 @@
   (setq flymake-allowed-file-name-masks (delete '("\\.l?hs\\'" haskell-flymake-init) flymake-allowed-file-name-masks))
   )
 
+;; (define-key haskell-mode-map (kbd "
+
 (defun haskell-repl-and-flycheck ()
   (interactive)
   (delete-other-windows)

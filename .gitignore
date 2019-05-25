@@ -19,3 +19,6 @@
 !/.emacs.d/recentf
 !/.config/libskk
 !/.config/fcitx
+!/.config/libskk
+!/.config/chrome-dev-flags.conf
+!/.config/chromium.conf

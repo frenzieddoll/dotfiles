@@ -16,6 +16,7 @@
   (local-set-key (kbd "C-h") 'delete-backward-char))
 (add-hook 'minibuffer-setup-hook 'minibuffer-delete-backward-char)
 (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char)
+(define-key global-map (kbd "M-h") 'backward-kill-word)
 ;; C-x ? : help
 (define-key global-map (kbd "C-c ?") 'help-command)
 ;;折り返しトグルコマンド

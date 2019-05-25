@@ -66,40 +66,38 @@
 ;;                     :family "Ricty"
 ;;                     :height 170)
 
-;; (when (eq system-type 'gnu/linux)
-;;   (set-face-attribute 'default nil
-;;                       :family "Ricty"
-;;                       :height 170)
-;;   (defun ricty_250 ()
-;;     (interactive)
-;;     (set-face-attribute 'default nil
-;;                       :family "Ricty"
-;;                       :height 250))
-;;     (defun ricty_170 ()
-;;     (interactive)
-;;     (set-face-attribute 'default nil
-;;                       :family "Ricty"
-;;                       :height 170)
-
-;;   ))
+(when (eq system-type 'gnu/linux)
+  (set-face-attribute 'default nil
+                      :family "Ricty"
+                      :height 170)
+  (defun ricty_250 ()
+    (interactive)
+    (set-face-attribute 'default nil
+                      :family "Ricty"
+                      :height 250))
+    (defun ricty_170 ()
+    (interactive)
+    (set-face-attribute 'default nil
+                      :family "Ricty"
+                      :height 170)))
 
 ;; notePC
-(when (eq system-type 'gnu/linux)
+;; (when (eq system-type 'gnu/linux)
 
 
-  (set-fontset-font (frame-parameter nil 'font)
-                  'japanese-jisx0208
-                  (cons "Ricty" "iso10646-1"))
-  (set-fontset-font (frame-parameter nil 'font)
-                    'japanese-jisx0212
-                    (cons "Ricty" "iso10646-1"))
-  (set-fontset-font (frame-parameter nil 'font)
-                    'katakana-jisx0201
-                    (cons "Ricty" "iso10646-1"))
+;;   (set-fontset-font (frame-parameter nil 'font)
+;;                   'japanese-jisx0208
+;;                   (cons "Ricty" "iso10646-1"))
+;;   (set-fontset-font (frame-parameter nil 'font)
+;;                     'japanese-jisx0212
+;;                     (cons "Ricty" "iso10646-1"))
+;;   (set-fontset-font (frame-parameter nil 'font)
+;;                     'katakana-jisx0201
+;;                     (cons "Ricty" "iso10646-1"))
 
-  (set-face-attribute 'default nil
-                      :family "Inconsolata"
-                      :height 110)
+;;   (set-face-attribute 'default nil
+;;                       :family "Inconsolata"
+;;                       :height 110)
 
 
 (when (eq system-type 'darwin)
