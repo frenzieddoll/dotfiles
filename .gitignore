@@ -16,9 +16,9 @@
 !/.emacs.d/elpa
 !/.emacs.d/public_repos
 !/.emacs.d/script
-!/.emacs.d/recentf
+# !/.emacs.d/recentf
 !/.config/libskk
-!/.config/fcitx
+!/.config/fcitx/skk
 !/.config/libskk
 !/.config/chrome-dev-flags.conf
 !/.config/chromium.conf

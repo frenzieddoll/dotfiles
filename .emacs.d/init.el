@@ -18,14 +18,12 @@
 ;; リポジトリの追加
 (require 'package)
 ;;MELPA を追加
-;; (add-to-list 'package-archives '("melpa"."https://melpa.org/packages/")t)
-;; (package-initialize)
 
 (setq package-archives
       '(("gnu" . "http://elpa.gnu.org/packages/")
         ("melpa" . "http://melpa.org/packages/")
         ("org" . "http://orgmode.org/elpa/")))
-(package-initialize)
+ (package-initialize)
 
 
 ;; init-system.el
@@ -69,8 +67,6 @@
 ;; init-window.el
 (load "init-window" t)
 
-;; init-eww.el
-(load "init-eww" t)
 
 ;; init-visual.el
 ;; (load "init-visual")
@@ -115,6 +111,7 @@
   (load "init-rust" t)
   (load "init-haskell" t)
   (load "init-pdftools" t)
+  (load "init-eww" t)
   (require 'ein)
   (require 'magit))
 ;; (defun load-rust ()
@@ -157,7 +154,7 @@
  '(org-agenda-files nil)
  '(package-selected-packages
    (quote
-    (eglot lsp-ui lsp-haskell image+ dimmer company-box ivy-rich exec-path-from-shell use-package doom-modeline doom-themes flycheck-haskell haskell-mode ox-pandoc company-jedi shackle popwin quickrun company-racer flycheck-rust racer ido-occasional imenus browse-kill-ring ido-select-window ido-completing-read+ smex ido-vertical-mode smooth-scroll dired-subtree counsel dracula-theme kosmos-theme let-alist material-theme google-translate mpv org-plus-contrib org-preview-html ace-link vlf dired-open dired-launch dired-filter company zoom-window fish-mode ein rainbow-delimiters atom-one-dark-theme powerline multi-term exwm edit-server ddskk)))
+    (counsel swiper selected google-this smart-mode-line-atom-one-dark-theme company-ghci eglot lsp-ui lsp-haskell image+ dimmer exec-path-from-shell doom-modeline doom-themes flycheck-haskell haskell-mode ox-pandoc company-jedi shackle popwin quickrun company-racer flycheck-rust racer imenus browse-kill-ring smex smooth-scroll dired-subtree let-alist google-translate mpv org-plus-contrib org-preview-html ace-link dired-open dired-launch dired-filter company zoom-window ein rainbow-delimiters powerline multi-term exwm edit-server ddskk)))
  '(skk-auto-insert-paren nil)
  '(skk-auto-okuri-process nil)
  '(skk-auto-start-henkan t)

@@ -45,9 +45,9 @@
           ("m4a" . "mpv")
           ("playlist" . "mpv --playlist")
           ("exe" . "wine")
-          ("pdf" . "zathura")
-          ;; ("zip" . "YACReader")
-          ;; ("rar" . "YACReader")
+          ;; ("pdf" . "zathura")
+          ("zip" . "YACReader")
+          ("rar" . "YACReader")
           )))
 
 (when (eq system-type 'darwin)

@@ -62,10 +62,10 @@ alias -g L='| less'
 alias -g G='| grep'
 
 # 接尾辞エイリアス
-alias -s mkv=mplayer
-alias -s mp4=mplayer
-alias -s avi=mplayer
-alias -s wav=mplayer
+alias -s mkv=mpv
+alias -s mp4=mpv
+alias -s avi=mpv
+alias -s wav=mpv
 alias -s exe=wine
 
 autoload -U promptinit; promptinit

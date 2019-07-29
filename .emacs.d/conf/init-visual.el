@@ -1,54 +1,80 @@
 ;; テーマの設定
-(require 'powerline)
+;; (require 'powerline)
 
-(defun powerline-my-theme ()
-  "Setup the my mode-line."
-  (interactive)
-  (setq powerline-current-separator 'utf-8)
-  (setq-default mode-line-format
-                '("%e"
-                  (:eval
-                   (let* ((active (powerline-selected-window-active))
-                          (mode-line (if active 'mode-line 'mode-line-inactive))
-                          (face1 (if active 'mode-line-1-fg 'mode-line-2-fg))
-                          (face2 (if active 'mode-line-1-arrow 'mode-line-2-arrow))
-                          (separator-left (intern (format "powerline-%s-%s"
-                                                          (powerline-current-separator)
-                                                          (car powerline-default-separator-dir))))
-                          (lhs (list (powerline-raw " " face1)
-                                     (powerline-major-mode face1)
-                                     (powerline-raw " " face1)
-                                     (funcall separator-left face1 face2)
-                                     (powerline-buffer-id nil )
-                                     (powerline-raw " [ ")
-                                     (powerline-raw mode-line-mule-info nil)
-                                     (powerline-raw "%*")
-                                     (powerline-raw " |")
-                                     (powerline-process nil)
-                                     (powerline-vc)
-                                     (powerline-raw " ]")
-                                     ))
-                          (rhs (list (powerline-raw "%4l")
-                                     (powerline-raw ":")
-                                     (powerline-raw "%2c")
-                                     (powerline-raw " | ")
-                                     (powerline-raw "%6p")
-                                     (powerline-raw " ")
-                                     )))
-                     (concat (powerline-render lhs)
-                             (powerline-fill nil (powerline-width rhs))
-                             (powerline-render rhs)))))))
+;; (defun powerline-my-theme ()
+;;   "Setup the my mode-line."
+;;   (interactive)
+;;   (setq powerline-current-separator 'utf-8)
+;;   (setq-default mode-line-format
+;;                 '("%e"
+;;                   (:eval
+;;                    (let* ((active (powerline-selected-window-active))
+;;                           (mode-line (if active 'mode-line 'mode-line-inactive))
+;;                           (face1 (if active 'mode-line-1-fg 'mode-line-2-fg))
+;;                           (face2 (if active 'mode-line-1-arrow 'mode-line-2-arrow))
+;;                           (separator-left (intern (format "powerline-%s-%s"
+;;                                                           (powerline-current-separator)
+;;                                                           (car powerline-default-separator-dir))))
+;;                           (lhs (list (powerline-raw " " face1)
+;;                                      (powerline-major-mode face1)
+;;                                      (powerline-raw " " face1)
+;;                                      (funcall separator-left face1 face2)
+;;                                      (powerline-buffer-id nil )
+;;                                      (powerline-raw " [ ")
+;;                                      (powerline-raw mode-line-mule-info nil)
+;;                                      (powerline-raw "%*")
+;;                                      (powerline-raw " |")
+;;                                      (powerline-process nil)
+;;                                      (powerline-vc)
+;;                                      (powerline-raw " ]")
+;;                                      ))
+;;                           (rhs (list (powerline-raw "%4l")
+;;                                      (powerline-raw ":")
+;;                                      (powerline-raw "%2c")
+;;                                      (powerline-raw " | ")
+;;                                      (powerline-raw "%6p")
+;;                                      (powerline-raw " ")
+;;                                      )))
+;;                      (concat (powerline-render lhs)
+;;                              (powerline-fill nil (powerline-width rhs))
+;;                              (powerline-render rhs)))))))
 
-(defun make/set-face (face-name fg-color bg-color weight)
-  (make-face face-name)
-  (set-face-attribute face-name nil
-                      :foreground fg-color :background bg-color :box nil :weight weight))
-(make/set-face 'mode-line-1-fg "#282C34" "#EF8300" 'bold)
-(make/set-face 'mode-line-2-fg "#AAAAAA" "#2F343D" 'bold)
-(make/set-face 'mode-line-1-arrow  "#AAAAAA" "#3E4451" 'bold)
-(make/set-face 'mode-line-2-arrow  "#AAAAAA" "#3E4451" 'bold)
+;; (defun make/set-face (face-name fg-color bg-color weight)
+;;   (make-face face-name)
+;;   (set-face-attribute face-name nil
+;;                       :foreground fg-color :background bg-color :box nil :weight weight))
+;; (make/set-face 'mode-line-1-fg "#282C34" "#EF8300" 'bold)
+;; (make/set-face 'mode-line-2-fg "#AAAAAA" "#2F343D" 'bold)
+;; (make/set-face 'mode-line-1-arrow  "#AAAAAA" "#3E4451" 'bold)
+;; (make/set-face 'mode-line-2-arrow  "#AAAAAA" "#3E4451" 'bold)
 
-(powerline-my-theme)
+;; (powerline-my-theme)
+
+(require 'smart-mode-line)
+;;; この変数を定義しておかないとエラーになるバグあり
+(setq sml/active-background-color "gray60")
+;;; 桁番号も表示させる
+(column-number-mode 1)
+;;; 読み込み専用バッファは%で表示
+(setq sml/read-only-char "%%")
+;;; 修正済みバッファは*で表示
+(setq sml/modified-char "*")
+;;; helm-modeとauto-complete-modeのモードライン表示を隠す
+;; (setq sml/hidden-modes '(" Helm" " AC"))
+;;; これがないと表示がはみでる
+(setq sml/extra-filler -10)
+;;; sml/replacer-regexp-listはモードラインでのファイル名表示方法を制御
+(add-to-list 'sml/replacer-regexp-list '("^.+/junk/[0-9]+/" ":J:") t)
+;;; これを入れないとsmart-mode-lineを読み込むたびに
+;;; Loading a theme can run Lisp code.  Really load? (y or n)
+;;; と聞いてくる。
+(setq sml/no-confirm-load-theme t)
+(sml/setup)
+(sml/apply-theme 'respectful)
+;;; その他のthemeを設定
+;;(sml/apply-theme 'dark)
+;;(sml/apply-theme 'light)
+
 
 ;; (defconst color1 "SteelBlue")
 ;; (defconst color2 "salmon")
@@ -171,7 +197,7 @@
 ;; (load-theme 'atom-one-dark t)
 ;; (load-theme 'material t)
 ;; (load-theme 'kosmos t)
-(load-theme 'dracula t)
+;; (load-theme 'dracula t)
 
 ;; (require 'doom-modeline)
 ;; (doom-modeline-mode 1)
@@ -218,20 +244,20 @@
 
 
 ;; カレントバッファ以外を暗くする
-(when (require 'dimmer nil t)
-  (setq dimmer-fraction 0.6)
-  (setq dimmer-exclusion-regexp "^\\*helm\\|^ \\*Minibuf\\|^\\*Calendar")
-  (dimmer-mode 1))
-(with-eval-after-load "dimmer"
-  (defun dimmer-off ()
-    (dimmer-mode -1)
-    (dimmer-process-all))
-  (defun dimmer-on ()
-    (dimmer-mode 1)
-    (dimmer-process-all))
-  (add-hook 'focus-out-hook #'dimmer-off)
-  (add-hook 'focus-in-hook #'dimmer-on))
+;; (when (require 'dimmer nil t)
+;;   (setq dimmer-fraction 0.6)
+;;   (setq dimmer-exclusion-regexp "^\\*helm\\|^ \\*Minibuf\\|^\\*Calendar")
+;;   (dimmer-mode 1))
+;; (with-eval-after-load "dimmer"
+;;   (defun dimmer-off ()
+;;     (dimmer-mode -1)
+;;     (dimmer-process-all))
+;;   (defun dimmer-on ()
+;;     (dimmer-mode 1)
+;;     (dimmer-process-all))
+;;   (add-hook 'focus-out-hook #'dimmer-off)
+;;   (add-hook 'focus-in-hook #'dimmer-on))
 
 ;; バッファの終わりをフリンジで確認
-(setq-default indicate-buffer-boundaries
-              '((top . nil) (bottom . right) (down . right)))
+;; (setq-default indicate-buffer-boundaries
+;;               '((top . nil) (bottom . right) (down . right)))

@@ -33,8 +33,6 @@
 (global-set-key (kbd "C-c C-j") 'eval-print-last-sexp)
 ;; quick run
 (global-set-key (kbd "M-s") 'quickrun)
-;; buffer list
-(global-set-key (kbd "C-c k") 'list-buffers)
 
 
 ;; audio操作の関数

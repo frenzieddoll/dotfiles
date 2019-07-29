@@ -79,7 +79,7 @@
 ;;             (start-process-shell-command
 ;;              "xrandr --output HDMI-0  --rotate left")))
 
-(setq exwm-workspace-number 2)
+(setq exwm-workspace-number 3)
 ;; Make class name the buffer name
 (add-hook 'exwm-update-class-hook
           (lambda ()
@@ -125,7 +125,7 @@
   "exwm workspace toggle 0 or 1"
   (interactive)
   (if (= exwm-workspace-current-index 0)
-      (exwm-workspace-switch 1)
+      (exwm-workspace-switch 2)
     (exwm-workspace-switch 0)))
 (defun start-pavucontrol ()
   (interactive)

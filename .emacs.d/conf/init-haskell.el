@@ -1,11 +1,19 @@
 (require 'eglot)
+(require 'haskell-mode)
 (add-hook 'haskell-mode-hook 'eglot-ensure)
 (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
 (with-eval-after-load 'haskell-mode
   (setq flymake-allowed-file-name-masks (delete '("\\.l?hs\\'" haskell-flymake-init) flymake-allowed-file-name-masks))
   )
 
-;; (define-key haskell-mode-map (kbd "
+(add-to-list 'company-backends 'company-ghci)
+
+(define-key haskell-mode-map (kbd "C-c C-j") 'eglot-help-at-point)
+(define-key haskell-mode-map (kbd "C-c C-.") 'eglot-rename)
+
+;; (require 'lsp)
+;; (require 'lsp-haskell)
+;; (add-hook 'haskell-mode-hook #'lsp)
 
 (defun haskell-repl-and-flycheck ()
   (interactive)
