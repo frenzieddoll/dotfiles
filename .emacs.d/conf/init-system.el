@@ -49,6 +49,14 @@
 (set-default-coding-systems 'utf-8)
 (prefer-coding-system 'utf-8)
 
+;; 時計を表示
+(display-time)
+(setq display-time-string-forms
+ '((format "%s/%s(%s)%s:%s"
+		 month day dayname
+		 24-hours minutes
+   )))
+
 ;; バックアップファイ及び、自動セーブの無効
 (setq make-backup-files nil)
 (setq delete-auto-save-files t)

@@ -154,7 +154,7 @@
  '(org-agenda-files nil)
  '(package-selected-packages
    (quote
-    (counsel swiper selected google-this smart-mode-line-atom-one-dark-theme company-ghci eglot lsp-ui lsp-haskell image+ dimmer exec-path-from-shell doom-modeline doom-themes flycheck-haskell haskell-mode ox-pandoc company-jedi shackle popwin quickrun company-racer flycheck-rust racer imenus browse-kill-ring smex smooth-scroll dired-subtree let-alist google-translate mpv org-plus-contrib org-preview-html ace-link dired-open dired-launch dired-filter company zoom-window ein rainbow-delimiters powerline multi-term exwm edit-server ddskk)))
+    (notmuch abyss-theme counsel swiper selected google-this smart-mode-line-atom-one-dark-theme company-ghci eglot lsp-ui lsp-haskell image+ dimmer exec-path-from-shell doom-modeline doom-themes flycheck-haskell haskell-mode ox-pandoc company-jedi shackle popwin quickrun company-racer flycheck-rust racer imenus browse-kill-ring smex smooth-scroll dired-subtree let-alist google-translate mpv org-plus-contrib org-preview-html ace-link dired-open dired-launch dired-filter company zoom-window ein rainbow-delimiters powerline multi-term exwm edit-server ddskk)))
  '(skk-auto-insert-paren nil)
  '(skk-auto-okuri-process nil)
  '(skk-auto-start-henkan t)

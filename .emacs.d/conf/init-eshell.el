@@ -24,7 +24,7 @@
           (list "translate" "~/python/translate.py")
           (list "pacmandate" "expac --timefmt='%Y-%m-%d %T' '%l\t%n' | sort | tail -n $1")
           (list "manga" "wine ~/Documents/Software/picture/MangaMeeya_73/MangaMeeya.exe")
-          (list "backup" "~/.emacs.d/script/backup.sh")
+          (list "backup" "~/.emacs.d/script/backup.sh $1")
           ))))
 ;; eshell起動時にエイリアスを読み込む
 (add-hook 'eshell-mode-hook 'eshell-alias)

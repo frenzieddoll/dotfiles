@@ -48,6 +48,9 @@
           ;; ("pdf" . "zathura")
           ("zip" . "YACReader")
           ("rar" . "YACReader")
+          ("jpg" . "sxiv-rifle")
+          ("png" . "sxiv-rifle")
+          ("jpeg" . "sxiv-rifle")
           )))
 
 (when (eq system-type 'darwin)

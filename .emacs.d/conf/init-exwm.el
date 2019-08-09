@@ -103,15 +103,6 @@
 (exwm-input-set-key (kbd "s-d") 'counsel-linux-app)
 
 
-;; browser start
-;; (exwm-input-set-key (kbd "s-<return>")
-;;                     (lambda ()
-;;                       (interactive)
-;;                       (start-process-shell-command "yandex-browser-beta --force-device-scale-factor=1.5" nil "yandex-browser-beta --force-device-scale-factor=1.5")))
-
-
-
-
 ;; Launch application
 ;; (exwm-input-set-key (kbd "s-d")
 ;;                     (lambda (command)
