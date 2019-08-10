@@ -13,7 +13,7 @@
   (global-set-key (kbd "s-b") 'windmove-left)
   (global-set-key (kbd "s-p") 'windmove-up)
   (global-set-key (kbd "s-a") 'zoom-window-zoom)
-  (global-set-key (kbd "s-q") 'kill-buffer)
+  (global-set-key (kbd "s-q") 'kill-current-buffer)
   (global-set-key (kbd "s-h") 'delete-window))
 
 ;; ------------------------------------------
