@@ -26,12 +26,9 @@
 ;; (add-hook 'exwm-floating-setup-hook 'exwm-layout-hide-mode-line)
 ;; (add-hook 'exwm-floating-exit-hook 'exwm-layout-show-mode-line)
 
-;;; Allow non-floating resizing with mouse.
-;; (setq window-divider-default-bottom-width 2
-;;       window-divider-default-right-width 2)
-;; (window-divider-mode)
-
 ;;; Code:
+
+(server-start)
 
 (require 'exwm)
 
@@ -42,8 +39,16 @@
 ;; (setq exwm-systemtray-height 16)
 
 ;; フローティングモードで右下をドラックするとサイズ変更
-(setq window-divider-default-right-width 1)
-(window-divider-mode)
+;; (setq window-divider-default-right-width 1)
+;; (window-divider-mode)
+
+;;; Allow non-floating resizing with mouse.
+;; (setq window-divider-default-bottom-width 2
+;;       window-divider-default-right-width 2)
+;; (window-divider-mode)
+;; (exwm-input-set-key "\C-<down-mouse-1>" 'exwm-input-move-event)
+;; (exwm-input-set-key "\C-<down-mouse-3>" 'exwm-input-resize-event)
+
 
 ;; workspaceでバッファを共有
 (setq exwm-workspace-show-all-buffers t)
@@ -210,7 +215,7 @@
         ([?\s-t] . [C-t])
         ([?\s-T] . [C-T])
         ;; ([?\s-n] . [C-n])
-        ([?\s-N] . [C-N])
+        ;; ([?\s-N] . [C-N])
         ;; ([?\s-p] . [C-p])
         ;; ([?\s-r] . [C-r])
         ;; skk switch change
@@ -218,6 +223,14 @@
         ([?\C-l] . [C-^])
         ([?\s-l] . [C-k])
         ([?\s-k] . [C-l])
+        ;; test
+        ([?\C-x ?\C-s] . [C-s])
+        ([?\C-u ?\C-/] . [C-y])
+        ([?\C-u ?\C-/] . [C-y])
+        ([?\M-p] . [S-up])
+        ([?\M-n] . [S-down])
+        ([?\M-f] . [S-right])
+        ([?\M-b] . [S-left])
         ))
 
 

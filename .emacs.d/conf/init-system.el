@@ -76,18 +76,18 @@
 
 (when (eq system-type 'gnu/linux)
   (set-face-attribute 'default nil
-                      :family "Ricty"
-                      :height 170)
-  (defun ricty_250 ()
-    (interactive)
-    (set-face-attribute 'default nil
-                      :family "Ricty"
-                      :height 250))
-    (defun ricty_170 ()
-    (interactive)
-    (set-face-attribute 'default nil
-                      :family "Ricty"
-                      :height 170)))
+                      :family "HackGen"
+                      :height 170))
+  ;; (defun ricty_250 ()
+  ;;   (interactive)
+  ;;   (set-face-attribute 'default nil
+  ;;                     :family "Ricty"
+  ;;                     :height 250))
+  ;;   (defun ricty_170 ()
+  ;;   (interactive)
+  ;;   (set-face-attribute 'default nil
+  ;;                     :family "Ricty"
+  ;;                     :height 170)))
 
 ;; notePC
 ;; (when (eq system-type 'gnu/linux)
@@ -162,8 +162,6 @@
 (setq next-line-add-newlines nil)
 ;; 保存時に行末のスペースを削除
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
-;; 開き括弧を挿入すると自動で閉じ括弧を挿入
-(setq electric-pair-mode t)
 ;; auto-fill-modeを切る
 (auto-fill-mode 0)
 
@@ -198,5 +196,8 @@
 
 ;; 折り返し禁止
 (setq-default truncate-lines t)
+
+;; 閉括弧自動挿入
+(electric-pair-mode 1)
 
 ;;; init-system.el ends here

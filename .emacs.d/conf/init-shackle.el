@@ -15,7 +15,7 @@
         ("\*Agenda" :regexp t :align below :ratio 0.3)
         ("*Org Agenda*" :align below :ratio 0.3)
         ("Calendar*" :regexp t :align below :ratio 0.3)
-        ("*Buffer List*" :align right :ratio 0.3)
+        ;; ("*Buffer List*" :align right :ratio 0.3)
         ("\**eglot-help" :align right :ratio 0.3)
         ;; 上部に表示
         ("foo" :align above)

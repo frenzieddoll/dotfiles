@@ -23,7 +23,7 @@
 ;; .zipで終るファイルをZキーで展開できるように
 (add-to-list 'dired-compress-file-suffixes '("\\.zip\\" ".zip" "unar"))
 ;; diredでlsオプションをつかう
-(setq dired-listing-switches (purecopy "-alh"))
+(setq dired-listing-switches (purecopy "-alht"))
 ;; diredのコピーをバックグラウンドで行なう
 (eval-after-load "dired-aux" '(require 'dired-async))
 
@@ -43,14 +43,19 @@
           ("mp3" . "mpv")
           ("wav" . "mpv")
           ("m4a" . "mpv")
+          ("3gp" . "mpv")
+          ("rm" . "mpv")
           ("playlist" . "mpv --playlist")
           ("exe" . "wine")
           ;; ("pdf" . "zathura")
           ("zip" . "YACReader")
           ("rar" . "YACReader")
-          ("jpg" . "sxiv-rifle")
-          ("png" . "sxiv-rifle")
-          ("jpeg" . "sxiv-rifle")
+          ("xls" . "xdg-open")
+          ("xlsx" . "xdg-open")
+          ("gnumeric" . "gnumeric")
+          ;; ("jpg" . "sxiv-rifle")
+          ;; ("png" . "sxiv-rifle")
+          ;; ("jpeg" . "sxiv-rifle")
           )))
 
 (when (eq system-type 'darwin)

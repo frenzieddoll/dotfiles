@@ -82,6 +82,9 @@
 ;; init-dired.el
 (load "init-dired" t)
 
+;; init-mail.el
+(load "init-mail" t)
+
 ;; latexの設定を読み込む関数
 ;;(load "init-tex")
 ;; (defun load-tex ()
@@ -138,6 +141,19 @@
 ;; (when (eq system-type 'gnu/linux)
 ;;   (load "init-pdftools" t))
 
+(defun loadRssSetting ()
+  (load "init-rss" t))
+(add-hook 'newsticker-treeview-mode-hook
+          '(lambda ()
+             (load "init-rss" t)))
+
+
+(defun guitool ()
+  (interactive)
+  (start-process-shell-command
+   "GDK application scaling up"
+   nil
+   (format "export GDK_SCACE=2")))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -145,16 +161,14 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(helm-external-programs-associations
-   (quote
-    (("wmv" . "mplayer")
+   '(("wmv" . "mplayer")
      ("exe" . "wine")
      ("rar" . "mcomix")
      ("pdf" . "mcomix")
-     ("zip" . "mcomix"))))
+     ("zip" . "mcomix")))
  '(org-agenda-files nil)
  '(package-selected-packages
-   (quote
-    (notmuch abyss-theme counsel swiper selected google-this smart-mode-line-atom-one-dark-theme company-ghci eglot lsp-ui lsp-haskell image+ dimmer exec-path-from-shell doom-modeline doom-themes flycheck-haskell haskell-mode ox-pandoc company-jedi shackle popwin quickrun company-racer flycheck-rust racer imenus browse-kill-ring smex smooth-scroll dired-subtree let-alist google-translate mpv org-plus-contrib org-preview-html ace-link dired-open dired-launch dired-filter company zoom-window ein rainbow-delimiters powerline multi-term exwm edit-server ddskk)))
+   '(iflipb counsel-notmuch notmuch abyss-theme counsel swiper selected google-this smart-mode-line-atom-one-dark-theme company-ghci eglot lsp-ui lsp-haskell image+ dimmer exec-path-from-shell doom-modeline doom-themes flycheck-haskell haskell-mode ox-pandoc company-jedi shackle popwin quickrun company-racer flycheck-rust racer imenus browse-kill-ring smex smooth-scroll dired-subtree let-alist google-translate mpv org-plus-contrib org-preview-html ace-link dired-open dired-launch dired-filter company zoom-window ein rainbow-delimiters powerline multi-term exwm edit-server ddskk))
  '(skk-auto-insert-paren nil)
  '(skk-auto-okuri-process nil)
  '(skk-auto-start-henkan t)
