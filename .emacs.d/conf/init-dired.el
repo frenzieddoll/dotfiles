@@ -50,6 +50,7 @@
           ;; ("pdf" . "zathura")
           ("zip" . "YACReader")
           ("rar" . "YACReader")
+          ("tar" . "YACReader")
           ("xls" . "xdg-open")
           ("xlsx" . "xdg-open")
           ("gnumeric" . "gnumeric")
