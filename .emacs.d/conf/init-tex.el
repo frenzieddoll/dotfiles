@@ -130,30 +130,30 @@
 ;;         "platex %f"
 ;;         "dvipdfmx %b.dvi"))
 
-(autoload 'helm-bibtex "helm-bibtex" "" t)
-(setq bibtex-completion-bibliography
-      '("~/tex/reference.bib"))
-(define-key org-mode-map (kbd "C-c [") 'helm-bibtex)
+;; (autoload 'helm-bibtex "helm-bibtex" "" t)
+;; (setq bibtex-completion-bibliography
+;;       '("~/tex/reference.bib"))
+;; (define-key org-mode-map (kbd "C-c [") 'helm-bibtex)
 
 
-(defun org-mode-reftex-setup ()
-  (interactive)
-  (load-library "reftex")
-  (and (buffer-file-name)
-       (file-exists-p (buffer-file-name))
-       (reftex-parse-all))
-  (define-key org-mode-map (kbd "C-c )") 'reftex-citation))
-(add-hook 'org-mode-hook 'org-mode-reftex-setup)
+;; (defun org-mode-reftex-setup ()
+;;   (interactive)
+;;   (load-library "reftex")
+;;   (and (buffer-file-name)
+;;        (file-exists-p (buffer-file-name))
+;;        (reftex-parse-all))
+;;   (define-key org-mode-map (kbd "C-c )") 'reftex-citation))
+;; (add-hook 'org-mode-hook 'org-mode-reftex-setup)
 
-(require 'ox-bibtex)
-(require 'org-ref)
-(setq reftex-default-bibliography '("~/tex/reference.bib"))
+;; (require 'ox-bibtex)
+;; (require 'org-ref)
+;; (setq reftex-default-bibliography '("~/tex/reference.bib"))
 
-;; ノート、bib ファイル、PDF のディレクトリなどを設定
-(setq org-ref-default-bibliography '("~/tex/reference.bib"))
+;; ;; ノート、bib ファイル、PDF のディレクトリなどを設定
+;; (setq org-ref-default-bibliography '("~/tex/reference.bib"))
 
 
-;;; helm-bibtex を使う場合は以下の変数も設定しておく
-(setq bibtex-completion-bibliography "~/tex/reference.bib")
-      ;; bibtex-completion-library-path "~/Dropbox/bibliography/bibtex-pdfs"
-      ;; bibtex-completion-notes-path "~/Dropbox/bibliography/helm-bibtex-notes")
+;; ;;; helm-bibtex を使う場合は以下の変数も設定しておく
+;; (setq bibtex-completion-bibliography "~/tex/reference.bib")
+;;       ;; bibtex-completion-library-path "~/Dropbox/bibliography/bibtex-pdfs"
+;;       ;; bibtex-completion-notes-path "~/Dropbox/bibliography/helm-bibtex-notes")
