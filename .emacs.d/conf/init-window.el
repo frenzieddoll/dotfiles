@@ -13,7 +13,7 @@
   (global-set-key (kbd "s-b") 'windmove-left)
   (global-set-key (kbd "s-p") 'windmove-up)
   (global-set-key (kbd "s-a") 'zoom-window-zoom)
-  (global-set-key (kbd "s-q") 'kill-buffer)
+  (global-set-key (kbd "s-q") 'kill-current-buffer)
   (global-set-key (kbd "s-h") 'delete-window))
 
 ;; ------------------------------------------
@@ -65,8 +65,8 @@
 (setq scroll-preserve-screen-position t)
 ;; windowを一時的に最大化
 (require 'zoom-window)
-(global-set-key (kbd "C-c 1") 'zoom-window-zoom)
+;; (global-set-key (kbd "C-c 1") 'zoom-window-zoom)
 (setq zoom-window-mode-line-color "DarkBlue")
 
-(require 'smooth-scroll)
-(smooth-scroll-mode t)
+;; (require 'smooth-scroll)
+;; (smooth-scroll-mode t)

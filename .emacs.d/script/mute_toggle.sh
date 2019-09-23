@@ -1,5 +1,4 @@
-#!/bin/zsh
-emulate -R sh
+#!/bin/bash
 
 # 現在の設定を変数に放り込む
 running=$(pactl list short sinks sink-inputs | sed -n 1p | cut -f 2)

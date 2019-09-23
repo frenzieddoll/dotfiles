@@ -7,8 +7,8 @@
 /.ddskk/*
 /.config/fcitx/skk/user.dict
 
-
 # gitで管理する
+# emacs関係
 !/.emacs.d/init.el
 !/.emacs.d/conf
 !/.emacs/ddskk/init
@@ -16,6 +16,12 @@
 !/.emacs.d/elpa
 !/.emacs.d/public_repos
 !/.emacs.d/script
-!/.emacs.d/recentf
+# 設定ファイル
+!/X11ForNotePC
+!/.bashrc
+!/.Xmodmap
+!/.xinitrc
+!/.zshrc
 !/.config/libskk
 !/.config/fcitx
+!/.Xresources

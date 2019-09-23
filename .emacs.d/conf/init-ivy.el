@@ -9,14 +9,20 @@
 
 (setq ivy-use-virtual-buffers t)
 (setq enable-recursive-minibuffers t)
-(setq ivy-height 30)
+(setq ivy-height 15)
 (setq ivy-extra-directories nil)
 (setq ivy-re-builders-alist
       '((t . ivy--regex-plus)))
 
+
+(defvar recentf-max-saved-items 2000)
+(defvar recentf-auto-cleanup 'never)
+(defvar recentf-exclude '("/recentf" "COMMIT_EDITMSG" "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores" "/\\.emacs\\.d/\\.cask/"))
+(recentf-mode 1)
+
 ;; define function
 (defun bjm/ivy-dired-recent-dirs ()
-  "Present a list of recently used directories and open the selected one in dired"
+  "Present a list of recently used directories and open the selected one in dired."
   (interactive)
   (let ((recent-dirs
          (delete-dups
@@ -73,6 +79,8 @@
 ;; (global-set-key (kbd "<f1> l") 'counsel-load-library)
 ;; (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
 ;; (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
+
+
 
 (defun yank-browse (string)
       "Browse the `kill-ring' to choose which entry to yank."

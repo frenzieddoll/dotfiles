@@ -16,6 +16,7 @@
   (local-set-key (kbd "C-h") 'delete-backward-char))
 (add-hook 'minibuffer-setup-hook 'minibuffer-delete-backward-char)
 (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char)
+(define-key global-map (kbd "M-h") 'backward-kill-word)
 ;; C-x ? : help
 (define-key global-map (kbd "C-c ?") 'help-command)
 ;;折り返しトグルコマンド
@@ -32,8 +33,6 @@
 (global-set-key (kbd "C-c C-j") 'eval-print-last-sexp)
 ;; quick run
 (global-set-key (kbd "M-s") 'quickrun)
-;; buffer list
-(global-set-key (kbd "C-c k") 'list-buffers)
 
 
 ;; audio操作の関数
@@ -73,12 +72,12 @@
 ;; (global-set-key (kbd "<f10>") 'upper_volume)
 ;; (global-set-key (kbd "<f11>") 'mute_toggle)
 ;; (global-set-key (kbd "<f12>") 'output_toggle)
-(exwm-input-set-key (kbd "<print>") 'lower_volume)
-(exwm-input-set-key (kbd "<Scroll_Lock>") 'upper_volume)
-(exwm-input-set-key (kbd "<pause>") 'mute_toggle)
-(exwm-input-set-key (kbd "<f7>") 'output_toggle)
-(exwm-input-set-key (kbd "C-<mouse-9>") 'upper_volume)
-(exwm-input-set-key (kbd "C-<mouse-8>") 'lower_volume)
+;; (exwm-input-set-key (kbd "<print>") 'lower_volume)
+;; (exwm-input-set-key (kbd "<Scroll_Lock>") 'upper_volume)
+;; (exwm-input-set-key (kbd "<pause>") 'mute_toggle)
+;; (exwm-input-set-key (kbd "<f7>") 'output_toggle)
+;; (exwm-input-set-key (kbd "C-<mouse-9>") 'upper_volume)
+;; (exwm-input-set-key (kbd "C-<mouse-8>") 'lower_volume)
 
 ;; (global-unset-key (kbd "s-c"))
 
@@ -86,17 +85,16 @@
   "Side monitor ratate."
   (interactive)
   "side-monitor-rotate"
-  (shell-command-to-string "xrandr --output DP-3 --rotate left"))
+  (shell-command-to-string "xrandr --output HDMI-0 --rotate right"))
 
 (defun side-monitor-normal ()
   "Side monitor ratate cancel."
   (interactive)
-  "side-monitor-rotate"
-  (shell-command-to-string "xrandr --output DP-3 --rotate normal"))
+  (shell-command-to-string "xrandr --output HDMI-0 --rotate normal"))
 
 (defun DP-0_primary ()
+  "Side-monitor-rotate."
   (interactive)
-  "side-monitor-rotate"
   (shell-command-to-string "xrandr --output DP-0 --primary"))
 
 ;; (global-unset-key (kbd "C-z"))

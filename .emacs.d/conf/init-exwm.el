@@ -26,10 +26,9 @@
 ;; (add-hook 'exwm-floating-setup-hook 'exwm-layout-hide-mode-line)
 ;; (add-hook 'exwm-floating-exit-hook 'exwm-layout-show-mode-line)
 
-;;; Allow non-floating resizing with mouse.
-;; (setq window-divider-default-bottom-width 2
-;;       window-divider-default-right-width 2)
-;; (window-divider-mode)
+;;; Code:
+
+(server-start)
 
 (require 'exwm)
 
@@ -40,17 +39,25 @@
 ;; (setq exwm-systemtray-height 16)
 
 ;; フローティングモードで右下をドラックするとサイズ変更
-(setq window-divider-default-right-width 1)
-(window-divider-mode)
+;; (setq window-divider-default-right-width 1)
+;; (window-divider-mode)
+
+;;; Allow non-floating resizing with mouse.
+;; (setq window-divider-default-bottom-width 2
+;;       window-divider-default-right-width 2)
+;; (window-divider-mode)
+;; (exwm-input-set-key "\C-<down-mouse-1>" 'exwm-input-move-event)
+;; (exwm-input-set-key "\C-<down-mouse-3>" 'exwm-input-resize-event)
+
 
 ;; workspaceでバッファを共有
 (setq exwm-workspace-show-all-buffers t)
 (setq exwm-layout-show-all-buffers t)
 
 ;; 時間を表示
-(setq display-time-default-load-average nil)
-(setq display-time-day-and-date t)
-(display-time-mode 1)
+;; (setq display-time-default-load-average nil)
+;; (setq display-time-day-and-date t)
+;; (display-time-mode 1)
 
 
 ;; コンポジットマネージャー
@@ -64,7 +71,7 @@
 ;; マルチモニターの設定
 (require 'exwm-randr)
 ;; (setq exwm-randr-workspace-output-plist '(0 "DP-0" 1 "HDMI-0" 2 "DP-0" 3 "HDMI-0" 4 "DP-0" 5 "HDMI-0" 6 "DP-0" 7 "HDMI-0" 8 "DP-0" 9  "HDMI-0"))
-(setq exwm-randr-workspace-output-plist '(0 "DP-0" 1 "DP-3" 2 "DP-0" 3 "DP-0" 4 "DP-0" 5 "DP-0"))
+(setq exwm-randr-workspace-output-plist '(0 "DP-0" 1 "HDMI-0" 2 "DP-0" 3 "DP-0" 4 "DP-0" 5 "DP-0"))
 
 (add-hook 'exwm-randr-screen-change-hook
           (lambda ()
@@ -77,7 +84,7 @@
 ;;             (start-process-shell-command
 ;;              "xrandr --output HDMI-0  --rotate left")))
 
-(setq exwm-workspace-number 2)
+(setq exwm-workspace-number 3)
 ;; Make class name the buffer name
 (add-hook 'exwm-update-class-hook
           (lambda ()
@@ -94,19 +101,11 @@
                          (interactive)
                          (exwm-workspace-switch-create ,i))))
 ;; Launch application
-(exwm-input-set-key (kbd "s-d")
-                    (lambda (command)
-                      (interactive (list (read-shell-command "$ ")))
-                      (start-process-shell-command command nil command)))
-
-
-;; browser start
-(exwm-input-set-key (kbd "s-<return>")
-                    (lambda ()
-                      (interactive)
-                      (start-process-shell-command "yandex-browser-beta --force-device-scale-factor=1.5" nil "yandex-browser-beta --force-device-scale-factor=1.5")))
-
-
+;; (exwm-input-set-key (kbd "s-d")
+;;                     (lambda (command)
+;;                       (interactive (list (read-shell-command "$ ")))
+;;                       (start-process-shell-command command nil command)))
+(exwm-input-set-key (kbd "s-d") 'counsel-linux-app)
 
 
 ;; Launch application
@@ -122,7 +121,7 @@
   "exwm workspace toggle 0 or 1"
   (interactive)
   (if (= exwm-workspace-current-index 0)
-      (exwm-workspace-switch 1)
+      (exwm-workspace-switch 2)
     (exwm-workspace-switch 0)))
 (defun start-pavucontrol ()
   (interactive)
@@ -130,6 +129,11 @@
    "start pavucontrol"
    nil
    (format "pavucontrol")))
+
+(defun application-lunch (command)
+  "Application lunch. command"
+  (interactive (list (read-shell-command "$ ")))
+  (start-process-shell-command command nil command))
 
 ;;; Those cannot be set globally: if Emacs would be run in another WM, the "s-"
 ;;; prefix will conflict with the WM bindings.
@@ -144,23 +148,23 @@
 ;; (exwm-input-set-key (kbd "s-R") 'exwm-restart)
 (exwm-input-set-key (kbd "C-M-v") 'scroll-other-window)
 (exwm-input-set-key (kbd "C-M-S-v") 'scroll-other-window-down)
-;; (exwm-input-set-key (kbd "<f9>") 'output_toggle)
-;; (exwm-input-set-key (kbd "<f10>") 'mute_toggle)
-;; (exwm-input-set-key (kbd "<f11>") 'lower_volume)
-;; (exwm-input-set-key (kbd "<f12>") 'upper_volume)
+(exwm-input-set-key (kbd "<f9>") 'output_toggle)
+(exwm-input-set-key (kbd "<f10>") 'mute_toggle)
+(exwm-input-set-key (kbd "<f11>") 'lower_volume)
+(exwm-input-set-key (kbd "<f12>") 'upper_volume)
 (exwm-input-set-key (kbd "C-s-i") 'output_toggle)
 (exwm-input-set-key (kbd "C-s-m") 'mute_toggle)
-(exwm-input-set-key (kbd "C-s-n") 'lower_volume)
+(exwm-input-set-key (kbd "C-s-n") 'lower_volume )
 (exwm-input-set-key (kbd "C-s-p") 'upper_volume)
-(exwm-input-set-key (kbd "s-q") 'kill-buffer)
+(exwm-input-set-key (kbd "s-q") 'kill-current-buffer)
 (exwm-input-set-key (kbd "s-h") 'delete-window)
 (define-key exwm-mode-map (kbd "s-SPC") 'exwm-floating-toggle-floating)
 
 ;; chomeの起動
-(exwm-input-set-key (kbd "s-c")
-                    (lambda ()
-                      (interactive)
-                      (start-process-shell-command "google-chrome-stable" nil "google-chrome-stable")))
+;; (exwm-input-set-key (kbd "s-c")
+;;                     (lambda ()
+;;                       (interactive)
+;;                       (start-process-shell-command "google-chrome-stable" nil "google-chrome-stable")))
 
 
 (setq exwm-input-simulation-keys
@@ -211,7 +215,7 @@
         ([?\s-t] . [C-t])
         ([?\s-T] . [C-T])
         ;; ([?\s-n] . [C-n])
-        ([?\s-N] . [C-N])
+        ;; ([?\s-N] . [C-N])
         ;; ([?\s-p] . [C-p])
         ;; ([?\s-r] . [C-r])
         ;; skk switch change
@@ -219,6 +223,14 @@
         ([?\C-l] . [C-^])
         ([?\s-l] . [C-k])
         ([?\s-k] . [C-l])
+        ;; test
+        ([?\C-x ?\C-s] . [C-s])
+        ([?\C-u ?\C-/] . [C-y])
+        ([?\C-u ?\C-/] . [C-y])
+        ([?\M-p] . [S-up])
+        ([?\M-n] . [S-down])
+        ([?\M-f] . [S-right])
+        ([?\M-b] . [S-left])
         ))
 
 
@@ -227,4 +239,7 @@
 (provide 'init-exwm)
 
 ;;サイドモニターを回転
-(DP-0_primary)
+;; (DP-0_primary)
+
+
+;;; init-exwm.el ends here.

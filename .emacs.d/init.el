@@ -18,14 +18,12 @@
 ;; リポジトリの追加
 (require 'package)
 ;;MELPA を追加
-;; (add-to-list 'package-archives '("melpa"."https://melpa.org/packages/")t)
-;; (package-initialize)
 
 (setq package-archives
-      '(("gnu" . "http://elpa.gnu.org/packages/")
-        ("melpa" . "http://melpa.org/packages/")
-        ("org" . "http://orgmode.org/elpa/")))
-(package-initialize)
+       '(("gnu" . "http://elpa.gnu.org/packages/")
+         ("melpa" . "http://melpa.org/packages/")
+         ("org" . "http://orgmode.org/elpa/")))
+  (package-initialize)
 
 
 ;; init-system.el
@@ -48,6 +46,8 @@
 ;; init-ddskk.el
 (load "init-skk" t)
 
+
+
 ;; multi-termの設定
 (load "init-term" t)
 
@@ -69,8 +69,6 @@
 ;; init-window.el
 (load "init-window" t)
 
-;; init-eww.el
-(load "init-eww" t)
 
 ;; init-visual.el
 ;; (load "init-visual")
@@ -85,6 +83,9 @@
 
 ;; init-dired.el
 (load "init-dired" t)
+
+;; init-mail.el
+;; (load "init-mail" t)
 
 ;; latexの設定を読み込む関数
 ;;(load "init-tex")
@@ -107,9 +108,17 @@
 (load "init-company" t)
 
 ;; flycheck
-(add-hook 'after-init-hook #'global-flycheck-mode)
+;; (add-hook 'after-init-hook #'global-flycheck-mode)
 
-(load "init-rust" t)
+(defun load-lang-mode ()
+  (interactive)
+  (load "init-flycheck" t)
+  (load "init-rust" t)
+  (load "init-haskell" t)
+  (load "init-pdftools" t)
+  (load "init-eww" t)
+  (require 'ein)
+  (require 'magit))
 ;; (defun load-rust ()
 ;;   "load rust-mode setting"
 ;;   (interactive)
@@ -117,10 +126,12 @@
 
 
 ;; linux環境でのみ読み込み
-(when (eq system-type 'gnu/linux)
- (require 'magit)
- (require 'ein)
- (load "init-pdftools" t))
+;; (when (eq system-type 'gnu/linux)
+;;  (require 'magit)
+;;  (require 'ein))
+
+
+
 
 (add-hook 'picture-mode-hook 'picture-mode-init)
 (autoload 'picture-mode-init "init-picture")
@@ -132,6 +143,19 @@
 ;; (when (eq system-type 'gnu/linux)
 ;;   (load "init-pdftools" t))
 
+(defun loadRssSetting ()
+  (load "init-rss" t))
+(add-hook 'newsticker-treeview-mode-hook
+          '(lambda ()
+             (load "init-rss" t)))
+
+
+(defun guitool ()
+  (interactive)
+  (start-process-shell-command
+   "GDK application scaling up"
+   nil
+   (format "export GDK_SCACE=2")))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -148,7 +172,7 @@
  '(org-agenda-files nil)
  '(package-selected-packages
    (quote
-    (company-jedi shackle popwin quickrun company-racer flycheck-rust racer ido-occasional imenus browse-kill-ring ido-select-window ido-completing-read+ smex ido-vertical-mode smooth-scroll dired-subtree counsel dracula-theme kosmos-theme let-alist material-theme google-translate mpv org-plus-contrib org-ref org-preview-html ace-link vlf dired-open w3m dired-launch dired-filter company zoom-window fish-mode helm ein rainbow-delimiters atom-one-dark-theme powerline multi-term exwm edit-server ddskk)))
+    (recentf-ext smart-mode-line doom-themes iflipb counsel-notmuch notmuch abyss-theme counsel swiper selected google-this smart-mode-line-atom-one-dark-theme company-ghci eglot lsp-ui lsp-haskell image+ dimmer exec-path-from-shell flycheck-haskell haskell-mode ox-pandoc company-jedi shackle popwin quickrun company-racer flycheck-rust racer imenus browse-kill-ring smex smooth-scroll dired-subtree let-alist google-translate mpv org-plus-contrib org-preview-html ace-link dired-open dired-launch dired-filter company zoom-window ein rainbow-delimiters powerline multi-term exwm edit-server ddskk)))
  '(skk-auto-insert-paren nil)
  '(skk-auto-okuri-process nil)
  '(skk-auto-start-henkan t)
