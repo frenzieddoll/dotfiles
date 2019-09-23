@@ -6,8 +6,9 @@
                          (or (file-name-directory #$) (car load-path))))
 
 
-;;;### (autoloads nil "pdf-annot" "pdf-annot.el" (0 0 0 0))
-;;; Generated autoloads from pdf-annot.el
+;;;### (autoloads nil "pdf-annot" "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-annot.el"
+;;;;;;  "7f5f8d6a8067bfc78b2ee7a3e24bc3be")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-annot.el
 
 (autoload 'pdf-annot-minor-mode "pdf-annot" "\
 Support for PDF Annotations.
@@ -15,27 +16,36 @@ Support for PDF Annotations.
 \\{pdf-annot-minor-mode-map}
 
 \(fn &optional ARG)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "pdf-annot" "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-annot.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-annot.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "pdf-annot" '("pdf-annot-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "pdf-cache" "pdf-cache.el" (0 0 0 0))
-;;; Generated autoloads from pdf-cache.el
+;;;### (autoloads "actual autoloads are elsewhere" "pdf-cache" "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-cache.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-cache.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "pdf-cache" '("page" "pdf-cache-" "textregions" "boundingbox" "define-pdf-cache-function")))
 
 ;;;***
 
-;;;### (autoloads nil "pdf-dev" "pdf-dev.el" (0 0 0 0))
-;;; Generated autoloads from pdf-dev.el
+;;;### (autoloads "actual autoloads are elsewhere" "pdf-dev" "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-dev.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-dev.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "pdf-dev" '("pdf-dev-")))
 
 ;;;***
 
-;;;### (autoloads nil "pdf-history" "pdf-history.el" (0 0 0 0))
-;;; Generated autoloads from pdf-history.el
+;;;### (autoloads nil "pdf-history" "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-history.el"
+;;;;;;  "3f92248b9ce69e277dbeaa44cc69f085")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-history.el
 
 (autoload 'pdf-history-minor-mode "pdf-history" "\
 Keep a history of previously visited pages.
@@ -47,20 +57,29 @@ may be navigated with the following keys.
 \\{pdf-history-minor-mode-map}
 
 \(fn &optional ARG)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "pdf-history"
+;;;;;;  "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-history.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-history.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "pdf-history" '("pdf-history-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "pdf-info" "pdf-info.el" (0 0 0 0))
-;;; Generated autoloads from pdf-info.el
+;;;### (autoloads "actual autoloads are elsewhere" "pdf-info" "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-info.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-info.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "pdf-info" '("pdf-info-")))
 
 ;;;***
 
-;;;### (autoloads nil "pdf-isearch" "pdf-isearch.el" (0 0 0 0))
-;;; Generated autoloads from pdf-isearch.el
+;;;### (autoloads nil "pdf-isearch" "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-isearch.el"
+;;;;;;  "168243a09c5c166af194c15307d67279")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-isearch.el
 
 (autoload 'pdf-isearch-minor-mode "pdf-isearch" "\
 Isearch mode for PDF buffer.
@@ -94,13 +113,21 @@ that not every isearch command work as expected.
 \\{pdf-isearch-active-mode-map}
 
 \(fn &optional ARG)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "pdf-isearch"
+;;;;;;  "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-isearch.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-isearch.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "pdf-isearch" '("pdf-isearch-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "pdf-links" "pdf-links.el" (0 0 0 0))
-;;; Generated autoloads from pdf-links.el
+;;;### (autoloads nil "pdf-links" "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-links.el"
+;;;;;;  "8600d1c6e2681319185c3ac73774f63d")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-links.el
 
 (autoload 'pdf-links-minor-mode "pdf-links" "\
 Handle links in PDF documents.\\<pdf-links-minor-mode-map>
@@ -128,13 +155,20 @@ link's link is invoked.  Additionally, SPC may be used to
 scroll the current page.
 
 \(fn LINK)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "pdf-links" "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-links.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-links.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "pdf-links" '("pdf-links-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "pdf-loader" "pdf-loader.el" (0 0 0 0))
-;;; Generated autoloads from pdf-loader.el
+;;;### (autoloads nil "pdf-loader" "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-loader.el"
+;;;;;;  "6a1c8c15f9124e3dddc043e560f71fdf")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-loader.el
 
 (autoload 'pdf-loader-install "pdf-loader" "\
 Prepare Emacs for using PDF Tools.
@@ -147,13 +181,20 @@ The arguments are passed verbatim to `pdf-tools-install', which
 see.
 
 \(fn &optional NO-QUERY-P SKIP-DEPENDENCIES-P NO-ERROR-P FORCE-DEPENDENCIES-P)" nil nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "pdf-loader" "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-loader.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-loader.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "pdf-loader" '("pdf-loader--")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "pdf-misc" "pdf-misc.el" (0 0 0 0))
-;;; Generated autoloads from pdf-misc.el
+;;;### (autoloads nil "pdf-misc" "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-misc.el"
+;;;;;;  "adee4d18458c035a9a831aa7d6f1f1b1")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-misc.el
 
 (autoload 'pdf-misc-minor-mode "pdf-misc" "\
 FIXME:  Not documented.
@@ -176,13 +217,20 @@ Provide a right-click context menu in PDF buffers.
 \\{pdf-misc-context-menu-minor-mode-map}
 
 \(fn &optional ARG)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "pdf-misc" "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-misc.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-misc.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "pdf-misc" '("pdf-misc-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "pdf-occur" "pdf-occur.el" (0 0 0 0))
-;;; Generated autoloads from pdf-occur.el
+;;;### (autoloads nil "pdf-occur" "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-occur.el"
+;;;;;;  "57b77a0ca09ff0270240b7f765f00a3b")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-occur.el
 
 (autoload 'pdf-occur "pdf-occur" "\
 List lines matching STRING or PCRE.
@@ -241,13 +289,20 @@ version of `occur', if all marked buffer's are in `pdf-view-mode'
 and otherwise fallback to `dired-do-search'.
 
 \(fn &optional ARG)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "pdf-occur" "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-occur.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-occur.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "pdf-occur" '("pdf-occur-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "pdf-outline" "pdf-outline.el" (0 0 0 0))
-;;; Generated autoloads from pdf-outline.el
+;;;### (autoloads nil "pdf-outline" "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-outline.el"
+;;;;;;  "826f637be4aee65e237dc72553586920")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-outline.el
 
 (autoload 'pdf-outline-minor-mode "pdf-outline" "\
 Display an outline of a PDF document.
@@ -272,13 +327,21 @@ buffer, unless NO-SELECT-WINDOW-P is non-nil.
 Enable imenu in the current PDF buffer.
 
 \(fn)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "pdf-outline"
+;;;;;;  "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-outline.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-outline.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "pdf-outline" '("pdf-outline")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "pdf-sync" "pdf-sync.el" (0 0 0 0))
-;;; Generated autoloads from pdf-sync.el
+;;;### (autoloads nil "pdf-sync" "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-sync.el"
+;;;;;;  "7a3e09572bec43dfbee6c1c1ff0ec9bb")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-sync.el
 
 (autoload 'pdf-sync-minor-mode "pdf-sync" "\
 Correlate a PDF position with the TeX file.
@@ -299,13 +362,20 @@ position in the TeX buffer.  This function only works together
 with AUCTeX.
 
 \(fn &optional ARG)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "pdf-sync" "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-sync.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-sync.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "pdf-sync" '("pdf-sync-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "pdf-tools" "pdf-tools.el" (0 0 0 0))
-;;; Generated autoloads from pdf-tools.el
+;;;### (autoloads nil "pdf-tools" "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-tools.el"
+;;;;;;  "013e4643010d2e0c0d988666b37264e7")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-tools.el
 
 (defvar pdf-tools-handle-upgrades t "\
 Whether PDF Tools should handle upgrading itself.")
@@ -354,20 +424,28 @@ MODES defaults to `pdf-tools-enabled-modes'.
 
 
 \(fn)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "pdf-tools" "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-tools.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-tools.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "pdf-tools" '("pdf-tools-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "pdf-util" "pdf-util.el" (0 0 0 0))
-;;; Generated autoloads from pdf-util.el
+;;;### (autoloads "actual autoloads are elsewhere" "pdf-util" "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-util.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-util.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "pdf-util" '("pdf-util-" "display-buffer-split-below-and-attach")))
 
 ;;;***
 
-;;;### (autoloads nil "pdf-view" "pdf-view.el" (0 0 0 0))
-;;; Generated autoloads from pdf-view.el
+;;;### (autoloads nil "pdf-view" "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-view.el"
+;;;;;;  "4f7cb5deed9b4f80a629c3e2e74e9dc8")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-view.el
 
 (autoload 'pdf-view-bookmark-jump-handler "pdf-view" "\
 The bookmark handler-function interface for bookmark BMK.
@@ -375,13 +453,20 @@ The bookmark handler-function interface for bookmark BMK.
 See also `pdf-view-bookmark-make-record'.
 
 \(fn BMK)" nil nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "pdf-view" "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-view.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-view.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "pdf-view" '("pdf-view-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "pdf-virtual" "pdf-virtual.el" (0 0 0 0))
-;;; Generated autoloads from pdf-virtual.el
+;;;### (autoloads nil "pdf-virtual" "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-virtual.el"
+;;;;;;  "395afde8183ba6f84eb5afc739666fdf")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-virtual.el
 
 (autoload 'pdf-virtual-edit-mode "pdf-virtual" "\
 Major mode when editing a virtual PDF buffer.
@@ -412,12 +497,37 @@ Enable recognition and handling of VPDF files.
 
 
 \(fn &optional FILENAMES BUFFER-NAME DISPLAY-P)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "pdf-virtual"
+;;;;;;  "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-virtual.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-virtual.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "pdf-virtual" '("pdf-virtual-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil nil ("pdf-tools-pkg.el") (0 0 0 0))
+;;;### (autoloads nil nil ("../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-annot.el"
+;;;;;;  "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-cache.el"
+;;;;;;  "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-dev.el"
+;;;;;;  "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-history.el"
+;;;;;;  "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-info.el"
+;;;;;;  "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-isearch.el"
+;;;;;;  "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-links.el"
+;;;;;;  "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-loader.el"
+;;;;;;  "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-misc.el"
+;;;;;;  "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-occur.el"
+;;;;;;  "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-outline.el"
+;;;;;;  "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-sync.el"
+;;;;;;  "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-tools-autoloads.el"
+;;;;;;  "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-tools-pkg.el"
+;;;;;;  "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-tools.el"
+;;;;;;  "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-util.el"
+;;;;;;  "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-view.el"
+;;;;;;  "../../../../../.emacs.d/elpa/pdf-tools-20190918.1715/pdf-virtual.el")
+;;;;;;  (0 0 0 0))
 
 ;;;***
 

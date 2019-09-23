@@ -6,15 +6,17 @@
                          (or (file-name-directory #$) (car load-path))))
 
 
-;;;### (autoloads nil "poly-lock" "poly-lock.el" (0 0 0 0))
-;;; Generated autoloads from poly-lock.el
+;;;### (autoloads "actual autoloads are elsewhere" "poly-lock" "../../../../../.emacs.d/elpa/polymode-20190714.2017/poly-lock.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/polymode-20190714.2017/poly-lock.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "poly-lock" '("poly-lock-")))
 
 ;;;***
 
-;;;### (autoloads nil "polymode" "polymode.el" (0 0 0 0))
-;;; Generated autoloads from polymode.el
+;;;### (autoloads nil "polymode" "../../../../../.emacs.d/elpa/polymode-20190714.2017/polymode.el"
+;;;;;;  "699dfad7a26a6b8d3fdd2be900b339de")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/polymode-20190714.2017/polymode.el
 
 (autoload 'define-polymode "polymode" "\
 Define a new polymode MODE.
@@ -85,36 +87,47 @@ most frequently used slots are:
 \(fn MODE &optional PARENT DOC &rest BODY)" nil t)
 
 (function-put 'define-polymode 'doc-string-elt '3)
+
+;;;### (autoloads "actual autoloads are elsewhere" "polymode" "../../../../../.emacs.d/elpa/polymode-20190714.2017/polymode.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/polymode-20190714.2017/polymode.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "polymode" '("pm-" "poly")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "polymode-base" "polymode-base.el" (0 0 0 0))
-;;; Generated autoloads from polymode-base.el
+;;;### (autoloads "actual autoloads are elsewhere" "polymode-base"
+;;;;;;  "../../../../../.emacs.d/elpa/polymode-20190714.2017/polymode-base.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/polymode-20190714.2017/polymode-base.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "polymode-base" '("poly-")))
 
 ;;;***
 
-;;;### (autoloads nil "polymode-classes" "polymode-classes.el" (0
-;;;;;;  0 0 0))
-;;; Generated autoloads from polymode-classes.el
+;;;### (autoloads "actual autoloads are elsewhere" "polymode-classes"
+;;;;;;  "../../../../../.emacs.d/elpa/polymode-20190714.2017/polymode-classes.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/polymode-20190714.2017/polymode-classes.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "polymode-classes" '("pm-")))
 
 ;;;***
 
-;;;### (autoloads nil "polymode-compat" "polymode-compat.el" (0 0
-;;;;;;  0 0))
-;;; Generated autoloads from polymode-compat.el
+;;;### (autoloads "actual autoloads are elsewhere" "polymode-compat"
+;;;;;;  "../../../../../.emacs.d/elpa/polymode-20190714.2017/polymode-compat.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/polymode-20190714.2017/polymode-compat.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "polymode-compat" '("pm-" "polymode-" "*span*")))
 
 ;;;***
 
-;;;### (autoloads nil "polymode-core" "polymode-core.el" (0 0 0 0))
-;;; Generated autoloads from polymode-core.el
+;;;### (autoloads nil "polymode-core" "../../../../../.emacs.d/elpa/polymode-20190714.2017/polymode-core.el"
+;;;;;;  "accf92ac27cbc99110ff8b48f3ad7a29")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/polymode-20190714.2017/polymode-core.el
 
 (defvar-local polymode-default-inner-mode nil "\
 Inner mode for chunks with unspecified modes.
@@ -158,14 +171,21 @@ key-value pairs. See the documentation of the class
 \(fn NAME &optional PARENT DOC &rest KEY-ARGS)" nil t)
 
 (function-put 'define-auto-innermode 'doc-string-elt '3)
+
+;;;### (autoloads "actual autoloads are elsewhere" "polymode-core"
+;;;;;;  "../../../../../.emacs.d/elpa/polymode-20190714.2017/polymode-core.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/polymode-20190714.2017/polymode-core.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "polymode-core" '("polymode-" "*span*")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "polymode-debug" "polymode-debug.el" (0 0 0
-;;;;;;  0))
-;;; Generated autoloads from polymode-debug.el
+;;;### (autoloads nil "polymode-debug" "../../../../../.emacs.d/elpa/polymode-20190714.2017/polymode-debug.el"
+;;;;;;  "18f81b35c4990313b04707549de9c330")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/polymode-20190714.2017/polymode-debug.el
 
 (autoload 'pm-debug-minor-mode "polymode-debug" "\
 Turns on/off useful facilities for debugging polymode.
@@ -223,44 +243,68 @@ If OUT-TYPE is 'buffer, print the variables in the dedicated
 buffer, if 'message issue a message, if nil just return a list of values.
 
 \(fn &optional OUT-TYPE)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "polymode-debug"
+;;;;;;  "../../../../../.emacs.d/elpa/polymode-20190714.2017/polymode-debug.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/polymode-20190714.2017/polymode-debug.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "polymode-debug" '("pm-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "polymode-export" "polymode-export.el" (0 0
-;;;;;;  0 0))
-;;; Generated autoloads from polymode-export.el
+;;;### (autoloads "actual autoloads are elsewhere" "polymode-export"
+;;;;;;  "../../../../../.emacs.d/elpa/polymode-20190714.2017/polymode-export.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/polymode-20190714.2017/polymode-export.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "polymode-export" '("pm-" "poly")))
 
 ;;;***
 
-;;;### (autoloads nil "polymode-methods" "polymode-methods.el" (0
-;;;;;;  0 0 0))
-;;; Generated autoloads from polymode-methods.el
+;;;### (autoloads "actual autoloads are elsewhere" "polymode-methods"
+;;;;;;  "../../../../../.emacs.d/elpa/polymode-20190714.2017/polymode-methods.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/polymode-20190714.2017/polymode-methods.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "polymode-methods" '("pm-")))
 
 ;;;***
 
-;;;### (autoloads nil "polymode-test-utils" "polymode-test-utils.el"
+;;;### (autoloads "actual autoloads are elsewhere" "polymode-test-utils"
+;;;;;;  "../../../../../.emacs.d/elpa/polymode-20190714.2017/polymode-test-utils.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from polymode-test-utils.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/polymode-20190714.2017/polymode-test-utils.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "polymode-test-utils" '("pm-")))
 
 ;;;***
 
-;;;### (autoloads nil "polymode-weave" "polymode-weave.el" (0 0 0
-;;;;;;  0))
-;;; Generated autoloads from polymode-weave.el
+;;;### (autoloads "actual autoloads are elsewhere" "polymode-weave"
+;;;;;;  "../../../../../.emacs.d/elpa/polymode-20190714.2017/polymode-weave.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/polymode-20190714.2017/polymode-weave.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "polymode-weave" '("pm-" "polymode-")))
 
 ;;;***
 
-;;;### (autoloads nil nil ("polymode-pkg.el" "polymode-tangle.el")
+;;;### (autoloads nil nil ("../../../../../.emacs.d/elpa/polymode-20190714.2017/poly-lock.el"
+;;;;;;  "../../../../../.emacs.d/elpa/polymode-20190714.2017/polymode-autoloads.el"
+;;;;;;  "../../../../../.emacs.d/elpa/polymode-20190714.2017/polymode-base.el"
+;;;;;;  "../../../../../.emacs.d/elpa/polymode-20190714.2017/polymode-classes.el"
+;;;;;;  "../../../../../.emacs.d/elpa/polymode-20190714.2017/polymode-compat.el"
+;;;;;;  "../../../../../.emacs.d/elpa/polymode-20190714.2017/polymode-core.el"
+;;;;;;  "../../../../../.emacs.d/elpa/polymode-20190714.2017/polymode-debug.el"
+;;;;;;  "../../../../../.emacs.d/elpa/polymode-20190714.2017/polymode-export.el"
+;;;;;;  "../../../../../.emacs.d/elpa/polymode-20190714.2017/polymode-methods.el"
+;;;;;;  "../../../../../.emacs.d/elpa/polymode-20190714.2017/polymode-pkg.el"
+;;;;;;  "../../../../../.emacs.d/elpa/polymode-20190714.2017/polymode-tangle.el"
+;;;;;;  "../../../../../.emacs.d/elpa/polymode-20190714.2017/polymode-test-utils.el"
+;;;;;;  "../../../../../.emacs.d/elpa/polymode-20190714.2017/polymode-weave.el"
+;;;;;;  "../../../../../.emacs.d/elpa/polymode-20190714.2017/polymode.el")
 ;;;;;;  (0 0 0 0))
 
 ;;;***

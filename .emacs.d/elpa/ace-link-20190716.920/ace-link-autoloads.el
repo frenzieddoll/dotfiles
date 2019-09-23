@@ -6,8 +6,9 @@
                          (or (file-name-directory #$) (car load-path))))
 
 
-;;;### (autoloads nil "ace-link" "ace-link.el" (0 0 0 0))
-;;; Generated autoloads from ace-link.el
+;;;### (autoloads nil "ace-link" "../../../../../.emacs.d/elpa/ace-link-20190716.920/ace-link.el"
+;;;;;;  "014b867f45ebda810521bc0fdb95fa45")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ace-link-20190716.920/ace-link.el
 
 (autoload 'ace-link "ace-link" "\
 Call the ace link function for the current `major-mode'
@@ -111,8 +112,20 @@ Interact with a value, an action or a range button in a
 Bind KEY to appropriate functions in appropriate keymaps.
 
 \(fn &optional KEY)" nil nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "ace-link" "../../../../../.emacs.d/elpa/ace-link-20190716.920/ace-link.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ace-link-20190716.920/ace-link.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ace-link" '("ace-link-")))
+
+;;;***
+
+;;;***
+
+;;;### (autoloads nil nil ("../../../../../.emacs.d/elpa/ace-link-20190716.920/ace-link-autoloads.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ace-link-20190716.920/ace-link.el")
+;;;;;;  (0 0 0 0))
 
 ;;;***
 

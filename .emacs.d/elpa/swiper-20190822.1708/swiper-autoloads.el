@@ -6,17 +6,14 @@
                          (or (file-name-directory #$) (car load-path))))
 
 
-;;;### (autoloads nil "swiper" "swiper.el" (0 0 0 0))
-;;; Generated autoloads from swiper.el
+;;;### (autoloads nil "swiper" "../../../../../.emacs.d/elpa/swiper-20190822.1708/swiper.el"
+;;;;;;  "6e9fcb3ebeabf623abdef257c5fff1aa")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/swiper-20190822.1708/swiper.el
 
 (autoload 'swiper-avy "swiper" "\
-<<<<<<< HEAD
 Jump to one of the current swiper candidates.
 
 \(fn)" t nil)
-=======
-Jump to one of the current swiper candidates." t nil)
->>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
 
 (autoload 'swiper "swiper" "\
 `isearch-forward' with an overview.
@@ -31,7 +28,6 @@ When non-nil, INITIAL-INPUT is the initial search pattern.
 \(fn &optional INITIAL-INPUT)" t nil)
 
 (autoload 'swiper-thing-at-point "swiper" "\
-<<<<<<< HEAD
 `swiper' with `ivy-thing-at-point'.
 
 \(fn)" t nil)
@@ -40,12 +36,6 @@ When non-nil, INITIAL-INPUT is the initial search pattern.
 `swiper-all' with `ivy-thing-at-point'.
 
 \(fn)" t nil)
-=======
-`swiper' with `ivy-thing-at-point'." t nil)
-
-(autoload 'swiper-all-thing-at-point "swiper" "\
-`swiper-all' with `ivy-thing-at-point'." t nil)
->>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
 
 (autoload 'swiper-all "swiper" "\
 Run `swiper' for all open buffers.
@@ -61,8 +51,20 @@ A `swiper' that's not line-based.
 Like `swiper-isearch' but the first result is before the point.
 
 \(fn &optional INITIAL-INPUT)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "swiper" "../../../../../.emacs.d/elpa/swiper-20190822.1708/swiper.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/swiper-20190822.1708/swiper.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "swiper" '("swiper-")))
+
+;;;***
+
+;;;***
+
+;;;### (autoloads nil nil ("../../../../../.emacs.d/elpa/swiper-20190822.1708/swiper-autoloads.el"
+;;;;;;  "../../../../../.emacs.d/elpa/swiper-20190822.1708/swiper.el")
+;;;;;;  (0 0 0 0))
 
 ;;;***
 

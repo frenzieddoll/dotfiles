@@ -6,24 +6,22 @@
                          (or (file-name-directory #$) (car load-path))))
 
 
-;;;### (autoloads nil "colir" "colir.el" (0 0 0 0))
-;;; Generated autoloads from colir.el
+;;;### (autoloads "actual autoloads are elsewhere" "colir" "../../../../../.emacs.d/elpa/ivy-20190825.1023/colir.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ivy-20190825.1023/colir.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "colir" '("colir-")))
 
 ;;;***
 
-;;;### (autoloads nil "ivy" "ivy.el" (0 0 0 0))
-;;; Generated autoloads from ivy.el
+;;;### (autoloads nil "ivy" "../../../../../.emacs.d/elpa/ivy-20190825.1023/ivy.el"
+;;;;;;  "d4dde40a8c44c48cd347e4f6ba6b18fa")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ivy-20190825.1023/ivy.el
 
 (autoload 'ivy-resume "ivy" "\
-<<<<<<< HEAD
 Resume the last completion session.
 
 \(fn)" t nil)
-=======
-Resume the last completion session." t nil)
->>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
 
 (autoload 'ivy-read "ivy" "\
 Read a string in the minibuffer, with completion.
@@ -132,7 +130,6 @@ Minibuffer bindings:
 \(fn &optional ARG)" t nil)
 
 (autoload 'ivy-switch-buffer "ivy" "\
-<<<<<<< HEAD
 Switch to another buffer.
 
 \(fn)" t nil)
@@ -146,28 +143,33 @@ Switch to one of the window views stored by `ivy-push-view'.
 Switch to another buffer in another window.
 
 \(fn)" t nil)
-=======
-Switch to another buffer." t nil)
-
-(autoload 'ivy-switch-view "ivy" "\
-Switch to one of the window views stored by `ivy-push-view'." t nil)
-
-(autoload 'ivy-switch-buffer-other-window "ivy" "\
-Switch to another buffer in another window." t nil)
->>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
+
+;;;### (autoloads "actual autoloads are elsewhere" "ivy" "../../../../../.emacs.d/elpa/ivy-20190825.1023/ivy.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ivy-20190825.1023/ivy.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ivy" '("ivy-" "with-ivy-window")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "ivy-overlay" "ivy-overlay.el" (0 0 0 0))
-;;; Generated autoloads from ivy-overlay.el
+;;;### (autoloads "actual autoloads are elsewhere" "ivy-overlay"
+;;;;;;  "../../../../../.emacs.d/elpa/ivy-20190825.1023/ivy-overlay.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ivy-20190825.1023/ivy-overlay.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ivy-overlay" '("ivy-")))
 
 ;;;***
 
-;;;### (autoloads nil nil ("elpa.el" "ivy-pkg.el") (0 0 0 0))
+;;;### (autoloads nil nil ("../../../../../.emacs.d/elpa/ivy-20190825.1023/colir.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ivy-20190825.1023/elpa.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ivy-20190825.1023/ivy-autoloads.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ivy-20190825.1023/ivy-overlay.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ivy-20190825.1023/ivy-pkg.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ivy-20190825.1023/ivy.el")
+;;;;;;  (0 0 0 0))
 
 ;;;***
 

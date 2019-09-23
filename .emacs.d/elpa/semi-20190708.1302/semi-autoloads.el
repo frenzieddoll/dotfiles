@@ -6,15 +6,17 @@
                          (or (file-name-directory #$) (car load-path))))
 
 
-;;;### (autoloads nil "mime-bbdb" "mime-bbdb.el" (0 0 0 0))
-;;; Generated autoloads from mime-bbdb.el
+;;;### (autoloads "actual autoloads are elsewhere" "mime-bbdb" "../../../../../.emacs.d/elpa/semi-20190708.1302/mime-bbdb.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/semi-20190708.1302/mime-bbdb.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "mime-bbdb" '("signature/" "mime-bbdb/")))
 
 ;;;***
 
-;;;### (autoloads nil "mime-edit" "mime-edit.el" (0 0 0 0))
-;;; Generated autoloads from mime-edit.el
+;;;### (autoloads nil "mime-edit" "../../../../../.emacs.d/elpa/semi-20190708.1302/mime-edit.el"
+;;;;;;  "45c3ca5d8a5019ce8fc8ad8e0efdd8c6")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/semi-20190708.1302/mime-edit.el
 
 (autoload 'mime-edit-mode "mime-edit" "\
 MIME minor mode for editing the tagged MIME message.
@@ -172,41 +174,53 @@ Content-Type and Content-Transfer-Encoding header fields will be
 converted to MIME-Edit tags.
 
 \(fn &optional NOT-DECODE-TEXT NO-SEPARATOR NOT-TURN-ON)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "mime-edit" "../../../../../.emacs.d/elpa/semi-20190708.1302/mime-edit.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/semi-20190708.1302/mime-edit.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "mime-edit" '("mime-" "eliminate-top-spaces" "replace-space-with-underline")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "mime-image" "mime-image.el" (0 0 0 0))
-;;; Generated autoloads from mime-image.el
+;;;### (autoloads "actual autoloads are elsewhere" "mime-image" "../../../../../.emacs.d/elpa/semi-20190708.1302/mime-image.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/semi-20190708.1302/mime-image.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "mime-image" '("mime-")))
 
 ;;;***
 
-;;;### (autoloads nil "mime-mac" "mime-mac.el" (0 0 0 0))
-;;; Generated autoloads from mime-mac.el
+;;;### (autoloads "actual autoloads are elsewhere" "mime-mac" "../../../../../.emacs.d/elpa/semi-20190708.1302/mime-mac.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/semi-20190708.1302/mime-mac.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "mime-mac" '("mime-mac-save-and-play-with-")))
 
 ;;;***
 
-;;;### (autoloads nil "mime-partial" "mime-partial.el" (0 0 0 0))
-;;; Generated autoloads from mime-partial.el
+;;;### (autoloads "actual autoloads are elsewhere" "mime-partial"
+;;;;;;  "../../../../../.emacs.d/elpa/semi-20190708.1302/mime-partial.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/semi-20190708.1302/mime-partial.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "mime-partial" '("mime-combine-message/partial-pieces-automatically")))
 
 ;;;***
 
-;;;### (autoloads nil "mime-pgp" "mime-pgp.el" (0 0 0 0))
-;;; Generated autoloads from mime-pgp.el
+;;;### (autoloads "actual autoloads are elsewhere" "mime-pgp" "../../../../../.emacs.d/elpa/semi-20190708.1302/mime-pgp.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/semi-20190708.1302/mime-pgp.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "mime-pgp" '("mime-")))
 
 ;;;***
 
-;;;### (autoloads nil "mime-play" "mime-play.el" (0 0 0 0))
-;;; Generated autoloads from mime-play.el
+;;;### (autoloads nil "mime-play" "../../../../../.emacs.d/elpa/semi-20190708.1302/mime-play.el"
+;;;;;;  "520d7494295b24f9051875b0445fefdf")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/semi-20190708.1302/mime-play.el
 
 (autoload 'mime-preview-play-current-entity "mime-play" "\
 Play current entity.
@@ -225,42 +239,53 @@ is selected from variable `mime-acting-condition'.  If MODE is
 specified, play as it.  Default MODE is \"play\".
 
 \(fn ENTITY &optional SITUATION IGNORED-METHOD)" nil nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "mime-play" "../../../../../.emacs.d/elpa/semi-20190708.1302/mime-play.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/semi-20190708.1302/mime-play.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "mime-play" '("mime-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "mime-shr" "mime-shr.el" (0 0 0 0))
-;;; Generated autoloads from mime-shr.el
+;;;### (autoloads "actual autoloads are elsewhere" "mime-shr" "../../../../../.emacs.d/elpa/semi-20190708.1302/mime-shr.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/semi-20190708.1302/mime-shr.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "mime-shr" '("mime-shr-")))
 
 ;;;***
 
-;;;### (autoloads nil "mime-signature" "mime-signature.el" (0 0 0
-;;;;;;  0))
-;;; Generated autoloads from mime-signature.el
+;;;### (autoloads "actual autoloads are elsewhere" "mime-signature"
+;;;;;;  "../../../../../.emacs.d/elpa/semi-20190708.1302/mime-signature.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/semi-20190708.1302/mime-signature.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "mime-signature" '("mime-edit-")))
 
 ;;;***
 
-;;;### (autoloads nil "mime-tnef" "mime-tnef.el" (0 0 0 0))
-;;; Generated autoloads from mime-tnef.el
+;;;### (autoloads "actual autoloads are elsewhere" "mime-tnef" "../../../../../.emacs.d/elpa/semi-20190708.1302/mime-tnef.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/semi-20190708.1302/mime-tnef.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "mime-tnef" '("mime-")))
 
 ;;;***
 
-;;;### (autoloads nil "mime-vcard" "mime-vcard.el" (0 0 0 0))
-;;; Generated autoloads from mime-vcard.el
+;;;### (autoloads "actual autoloads are elsewhere" "mime-vcard" "../../../../../.emacs.d/elpa/semi-20190708.1302/mime-vcard.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/semi-20190708.1302/mime-vcard.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "mime-vcard" '("mime-display-text/vcard")))
 
 ;;;***
 
-;;;### (autoloads nil "mime-view" "mime-view.el" (0 0 0 0))
-;;; Generated autoloads from mime-view.el
+;;;### (autoloads nil "mime-view" "../../../../../.emacs.d/elpa/semi-20190708.1302/mime-view.el"
+;;;;;;  "8545aad8cf567f5afd97a9c3fdc6cb0f")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/semi-20190708.1302/mime-view.el
 
 (autoload 'mime-display-message "mime-view" "\
 View MESSAGE in MIME-View mode.
@@ -297,20 +322,28 @@ message.  It must be nil, `binary' or `cooked'.  If it is nil,
 `cooked' is used as default.
 
 \(fn &optional RAW-BUFFER PREVIEW-BUFFER MOTHER DEFAULT-KEYMAP-OR-FUNCTION REPRESENTATION-TYPE)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "mime-view" "../../../../../.emacs.d/elpa/semi-20190708.1302/mime-view.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/semi-20190708.1302/mime-view.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "mime-view" '("mime-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "mime-w3" "mime-w3.el" (0 0 0 0))
-;;; Generated autoloads from mime-w3.el
+;;;### (autoloads "actual autoloads are elsewhere" "mime-w3" "../../../../../.emacs.d/elpa/semi-20190708.1302/mime-w3.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/semi-20190708.1302/mime-w3.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "mime-w3" '("url-cid" "mime-")))
 
 ;;;***
 
-;;;### (autoloads nil "postpet" "postpet.el" (0 0 0 0))
-;;; Generated autoloads from postpet.el
+;;;### (autoloads nil "postpet" "../../../../../.emacs.d/elpa/semi-20190708.1302/postpet.el"
+;;;;;;  "d6e600804a1f4db27c363ab854e887cc")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/semi-20190708.1302/postpet.el
 
 (autoload 'postpet-decode "postpet" "\
 
@@ -321,33 +354,62 @@ message.  It must be nil, `binary' or `cooked'.  If it is nil,
 
 
 \(fn ENTITY SITUATION)" nil nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "postpet" "../../../../../.emacs.d/elpa/semi-20190708.1302/postpet.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/semi-20190708.1302/postpet.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "postpet" '("unpack")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "semi-def" "semi-def.el" (0 0 0 0))
-;;; Generated autoloads from semi-def.el
+;;;### (autoloads "actual autoloads are elsewhere" "semi-def" "../../../../../.emacs.d/elpa/semi-20190708.1302/semi-def.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/semi-20190708.1302/semi-def.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "semi-def" '("mime-")))
 
 ;;;***
 
-;;;### (autoloads nil "semi-setup" "semi-setup.el" (0 0 0 0))
-;;; Generated autoloads from semi-setup.el
+;;;### (autoloads "actual autoloads are elsewhere" "semi-setup" "../../../../../.emacs.d/elpa/semi-20190708.1302/semi-setup.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/semi-20190708.1302/semi-setup.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "semi-setup" '("mime-setup-" "call-after-loaded")))
 
 ;;;***
 
-;;;### (autoloads nil "signature" "signature.el" (0 0 0 0))
-;;; Generated autoloads from signature.el
+;;;### (autoloads "actual autoloads are elsewhere" "signature" "../../../../../.emacs.d/elpa/semi-20190708.1302/signature.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/semi-20190708.1302/signature.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "signature" '("insert-signature" "signature")))
 
 ;;;***
 
-;;;### (autoloads nil nil ("mail-mime-setup.el" "mime-setup.el" "semi-pkg.el")
+;;;### (autoloads nil nil ("../../../../../.emacs.d/elpa/semi-20190708.1302/mail-mime-setup.el"
+;;;;;;  "../../../../../.emacs.d/elpa/semi-20190708.1302/mime-bbdb.el"
+;;;;;;  "../../../../../.emacs.d/elpa/semi-20190708.1302/mime-edit.el"
+;;;;;;  "../../../../../.emacs.d/elpa/semi-20190708.1302/mime-image.el"
+;;;;;;  "../../../../../.emacs.d/elpa/semi-20190708.1302/mime-mac.el"
+;;;;;;  "../../../../../.emacs.d/elpa/semi-20190708.1302/mime-partial.el"
+;;;;;;  "../../../../../.emacs.d/elpa/semi-20190708.1302/mime-pgp.el"
+;;;;;;  "../../../../../.emacs.d/elpa/semi-20190708.1302/mime-play.el"
+;;;;;;  "../../../../../.emacs.d/elpa/semi-20190708.1302/mime-setup.el"
+;;;;;;  "../../../../../.emacs.d/elpa/semi-20190708.1302/mime-shr.el"
+;;;;;;  "../../../../../.emacs.d/elpa/semi-20190708.1302/mime-signature.el"
+;;;;;;  "../../../../../.emacs.d/elpa/semi-20190708.1302/mime-tnef.el"
+;;;;;;  "../../../../../.emacs.d/elpa/semi-20190708.1302/mime-vcard.el"
+;;;;;;  "../../../../../.emacs.d/elpa/semi-20190708.1302/mime-view.el"
+;;;;;;  "../../../../../.emacs.d/elpa/semi-20190708.1302/mime-w3.el"
+;;;;;;  "../../../../../.emacs.d/elpa/semi-20190708.1302/postpet.el"
+;;;;;;  "../../../../../.emacs.d/elpa/semi-20190708.1302/semi-autoloads.el"
+;;;;;;  "../../../../../.emacs.d/elpa/semi-20190708.1302/semi-def.el"
+;;;;;;  "../../../../../.emacs.d/elpa/semi-20190708.1302/semi-pkg.el"
+;;;;;;  "../../../../../.emacs.d/elpa/semi-20190708.1302/semi-setup.el"
+;;;;;;  "../../../../../.emacs.d/elpa/semi-20190708.1302/signature.el")
 ;;;;;;  (0 0 0 0))
 
 ;;;***

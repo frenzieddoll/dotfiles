@@ -4,15 +4,7 @@
 
 ;; Author: Oleh Krehel <ohwoeowho@gmail.com>
 ;; URL: https://github.com/abo-abo/swiper
-<<<<<<< HEAD
 ;; Package-Version: 20190830.1557
-=======
-<<<<<<< HEAD:.emacs.d/elpa/counsel-20190830.1557/counsel.el
-;; Package-Version: 20190830.1557
-=======
-;; Package-Version: 20190809.1548
->>>>>>> f51dca9c882c9262ec9d372b0fdde4f173d1e651:.emacs.d/elpa/counsel-20190809.1548/counsel.el
->>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
 ;; Version: 0.12.0
 ;; Package-Requires: ((emacs "24.3") (swiper "0.12.0"))
 ;; Keywords: convenience, matching, tools

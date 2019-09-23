@@ -6,36 +6,41 @@
                          (or (file-name-directory #$) (car load-path))))
 
 
-;;;### (autoloads nil "ob-C" "ob-C.el" (0 0 0 0))
-;;; Generated autoloads from ob-C.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-C" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-C.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-C.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-C" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-J" "ob-J.el" (0 0 0 0))
-;;; Generated autoloads from ob-J.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-J" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-J.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-J.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-J" '("obj-" "org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-R" "ob-R.el" (0 0 0 0))
-;;; Generated autoloads from ob-R.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-R" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-R.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-R.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-R" '("ob-R-" "org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-abc" "ob-abc.el" (0 0 0 0))
-;;; Generated autoloads from ob-abc.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-abc" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-abc.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-abc.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-abc" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-arduino" "ob-arduino.el" (0 0 0 0))
-;;; Generated autoloads from ob-arduino.el
+;;;### (autoloads nil "ob-arduino" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-arduino.el"
+;;;;;;  "450305b81f4db2be5182b1fc996f6116")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-arduino.el
 
 (autoload 'org-babel-execute:arduino "ob-arduino" "\
 org-babel arduino hook.
@@ -43,42 +48,53 @@ org-babel arduino hook.
 \(fn BODY PARAMS)" nil nil)
 
 (eval-after-load 'org '(add-to-list 'org-src-lang-modes '("arduino" . arduino)))
+
+;;;### (autoloads "actual autoloads are elsewhere" "ob-arduino" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-arduino.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-arduino.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-arduino" '("ob-arduino:" "org-babel-default-header-args:sclang")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "ob-asymptote" "ob-asymptote.el" (0 0 0 0))
-;;; Generated autoloads from ob-asymptote.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-asymptote"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-asymptote.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-asymptote.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-asymptote" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-awk" "ob-awk.el" (0 0 0 0))
-;;; Generated autoloads from ob-awk.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-awk" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-awk.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-awk.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-awk" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-calc" "ob-calc.el" (0 0 0 0))
-;;; Generated autoloads from ob-calc.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-calc" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-calc.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-calc.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-calc" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-clojure" "ob-clojure.el" (0 0 0 0))
-;;; Generated autoloads from ob-clojure.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-clojure" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-clojure.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-clojure.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-clojure" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-clojure-literate" "ob-clojure-literate.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from ob-clojure-literate.el
+;;;### (autoloads nil "ob-clojure-literate" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-clojure-literate.el"
+;;;;;;  "0e7f2bcaac6f3c1999d238f71fda6597")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-clojure-literate.el
 
 (defvar ob-clojure-literate-auto-jackin-p nil "\
 Auto jack in ob-clojure project.
@@ -112,273 +128,323 @@ Disable Org-mode buffer locally for `ob-clojure-literate'.
 A minor mode to toggle `ob-clojure-literate'.
 
 \(fn &optional ARG)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "ob-clojure-literate"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-clojure-literate.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-clojure-literate.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-clojure-literate" '("org-babel-" "ob-clojure-literate-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "ob-comint" "ob-comint.el" (0 0 0 0))
-;;; Generated autoloads from ob-comint.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-comint" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-comint.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-comint.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-comint" '("org-babel-comint-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-coq" "ob-coq.el" (0 0 0 0))
-;;; Generated autoloads from ob-coq.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-coq" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-coq.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-coq.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-coq" '("org-babel-" "coq-program-name")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-csharp" "ob-csharp.el" (0 0 0 0))
-;;; Generated autoloads from ob-csharp.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-csharp" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-csharp.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-csharp.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-csharp" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-css" "ob-css.el" (0 0 0 0))
-;;; Generated autoloads from ob-css.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-css" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-css.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-css.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-css" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-ditaa" "ob-ditaa.el" (0 0 0 0))
-;;; Generated autoloads from ob-ditaa.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-ditaa" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-ditaa.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-ditaa.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-ditaa" '("org-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-dot" "ob-dot.el" (0 0 0 0))
-;;; Generated autoloads from ob-dot.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-dot" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-dot.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-dot.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-dot" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-ebnf" "ob-ebnf.el" (0 0 0 0))
-;;; Generated autoloads from ob-ebnf.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-ebnf" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-ebnf.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-ebnf.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-ebnf" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-emacs-lisp" "ob-emacs-lisp.el" (0 0 0 0))
-;;; Generated autoloads from ob-emacs-lisp.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-emacs-lisp"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-emacs-lisp.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-emacs-lisp.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-emacs-lisp" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-eukleides" "ob-eukleides.el" (0 0 0 0))
-;;; Generated autoloads from ob-eukleides.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-eukleides"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-eukleides.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-eukleides.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-eukleides" '("org-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-eval" "ob-eval.el" (0 0 0 0))
-;;; Generated autoloads from ob-eval.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-eval" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-eval.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-eval.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-eval" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-exp" "ob-exp.el" (0 0 0 0))
-;;; Generated autoloads from ob-exp.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-exp" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-exp.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-exp.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-exp" '("org-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-fomus" "ob-fomus.el" (0 0 0 0))
-;;; Generated autoloads from ob-fomus.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-fomus" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-fomus.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-fomus.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-fomus" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-forth" "ob-forth.el" (0 0 0 0))
-;;; Generated autoloads from ob-forth.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-forth" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-forth.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-forth.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-forth" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-fortran" "ob-fortran.el" (0 0 0 0))
-;;; Generated autoloads from ob-fortran.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-fortran" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-fortran.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-fortran.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-fortran" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-gnuplot" "ob-gnuplot.el" (0 0 0 0))
-;;; Generated autoloads from ob-gnuplot.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-gnuplot" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-gnuplot.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-gnuplot.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-gnuplot" '("org-babel-" "*org-babel-gnuplot-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-groovy" "ob-groovy.el" (0 0 0 0))
-;;; Generated autoloads from ob-groovy.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-groovy" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-groovy.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-groovy.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-groovy" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-haskell" "ob-haskell.el" (0 0 0 0))
-;;; Generated autoloads from ob-haskell.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-haskell" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-haskell.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-haskell.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-haskell" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-hledger" "ob-hledger.el" (0 0 0 0))
-;;; Generated autoloads from ob-hledger.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-hledger" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-hledger.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-hledger.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-hledger" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-io" "ob-io.el" (0 0 0 0))
-;;; Generated autoloads from ob-io.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-io" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-io.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-io.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-io" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-java" "ob-java.el" (0 0 0 0))
-;;; Generated autoloads from ob-java.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-java" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-java.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-java.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-java" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-js" "ob-js.el" (0 0 0 0))
-;;; Generated autoloads from ob-js.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-js" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-js.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-js.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-js" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-julia" "ob-julia.el" (0 0 0 0))
-;;; Generated autoloads from ob-julia.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-julia" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-julia.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-julia.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-julia" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-latex" "ob-latex.el" (0 0 0 0))
-;;; Generated autoloads from ob-latex.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-latex" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-latex.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-latex.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-latex" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-ledger" "ob-ledger.el" (0 0 0 0))
-;;; Generated autoloads from ob-ledger.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-ledger" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-ledger.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-ledger.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-ledger" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-lilypond" "ob-lilypond.el" (0 0 0 0))
-;;; Generated autoloads from ob-lilypond.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-lilypond"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-lilypond.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-lilypond.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-lilypond" '("org-babel-" "lilypond-mode")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-lisp" "ob-lisp.el" (0 0 0 0))
-;;; Generated autoloads from ob-lisp.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-lisp" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-lisp.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-lisp.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-lisp" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-lua" "ob-lua.el" (0 0 0 0))
-;;; Generated autoloads from ob-lua.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-lua" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-lua.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-lua.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-lua" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-makefile" "ob-makefile.el" (0 0 0 0))
-;;; Generated autoloads from ob-makefile.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-makefile"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-makefile.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-makefile.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-makefile" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-mathematica" "ob-mathematica.el" (0 0 0
-;;;;;;  0))
-;;; Generated autoloads from ob-mathematica.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-mathematica"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-mathematica.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-mathematica.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-mathematica" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-mathomatic" "ob-mathomatic.el" (0 0 0 0))
-;;; Generated autoloads from ob-mathomatic.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-mathomatic"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-mathomatic.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-mathomatic.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-mathomatic" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-maxima" "ob-maxima.el" (0 0 0 0))
-;;; Generated autoloads from ob-maxima.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-maxima" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-maxima.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-maxima.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-maxima" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-mscgen" "ob-mscgen.el" (0 0 0 0))
-;;; Generated autoloads from ob-mscgen.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-mscgen" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-mscgen.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-mscgen.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-mscgen" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-ocaml" "ob-ocaml.el" (0 0 0 0))
-;;; Generated autoloads from ob-ocaml.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-ocaml" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-ocaml.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-ocaml.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-ocaml" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-octave" "ob-octave.el" (0 0 0 0))
-;;; Generated autoloads from ob-octave.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-octave" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-octave.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-octave.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-octave" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-org" "ob-org.el" (0 0 0 0))
-;;; Generated autoloads from ob-org.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-org" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-org.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-org.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-org" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-oz" "ob-oz.el" (0 0 0 0))
-;;; Generated autoloads from ob-oz.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-oz" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-oz.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-oz.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-oz" '("oz-send-string-expression" "org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-perl" "ob-perl.el" (0 0 0 0))
-;;; Generated autoloads from ob-perl.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-perl" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-perl.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-perl.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-perl" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-php" "ob-php.el" (0 0 0 0))
-;;; Generated autoloads from ob-php.el
+;;;### (autoloads nil "ob-php" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-php.el"
+;;;;;;  "f4efcea2574bf83b9c8b758aa338a4c2")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-php.el
 
 (autoload 'org-babel-execute:php "ob-php" "\
 Orgmode Babel PHP evaluate function for `BODY' with `PARAMS'.
@@ -386,41 +452,55 @@ Orgmode Babel PHP evaluate function for `BODY' with `PARAMS'.
 \(fn BODY PARAMS)" nil nil)
 
 (eval-after-load "org" '(add-to-list 'org-src-lang-modes '("php" . php)))
+
+;;;### (autoloads "actual autoloads are elsewhere" "ob-php" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-php.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-php.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-php" '("ob-php:inf-php-buffer" "org-babel-default-header-args:php")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "ob-picolisp" "ob-picolisp.el" (0 0 0 0))
-;;; Generated autoloads from ob-picolisp.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-picolisp"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-picolisp.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-picolisp.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-picolisp" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-plantuml" "ob-plantuml.el" (0 0 0 0))
-;;; Generated autoloads from ob-plantuml.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-plantuml"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-plantuml.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-plantuml.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-plantuml" '("org-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-processing" "ob-processing.el" (0 0 0 0))
-;;; Generated autoloads from ob-processing.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-processing"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-processing.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-processing.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-processing" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-python" "ob-python.el" (0 0 0 0))
-;;; Generated autoloads from ob-python.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-python" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-python.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-python.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-python" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-redis" "ob-redis.el" (0 0 0 0))
-;;; Generated autoloads from ob-redis.el
+;;;### (autoloads nil "ob-redis" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-redis.el"
+;;;;;;  "09e440ec87aa1add5cbb5573709232a1")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-redis.el
 
 (autoload 'org-babel-execute:redis "ob-redis" "\
 org-babel redis hook.
@@ -428,156 +508,194 @@ org-babel redis hook.
 \(fn BODY PARAMS)" nil nil)
 
 (eval-after-load "org" '(add-to-list 'org-src-lang-modes '("redis" . redis)))
+
+;;;### (autoloads "actual autoloads are elsewhere" "ob-redis" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-redis.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-redis.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-redis" '("ob-redis:default-db")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "ob-ref" "ob-ref.el" (0 0 0 0))
-;;; Generated autoloads from ob-ref.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-ref" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-ref.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-ref.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-ref" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-ruby" "ob-ruby.el" (0 0 0 0))
-;;; Generated autoloads from ob-ruby.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-ruby" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-ruby.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-ruby.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-ruby" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-sass" "ob-sass.el" (0 0 0 0))
-;;; Generated autoloads from ob-sass.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-sass" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-sass.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-sass.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-sass" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-scheme" "ob-scheme.el" (0 0 0 0))
-;;; Generated autoloads from ob-scheme.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-scheme" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-scheme.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-scheme.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-scheme" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-sclang" "ob-sclang.el" (0 0 0 0))
-;;; Generated autoloads from ob-sclang.el
+;;;### (autoloads nil "ob-sclang" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-sclang.el"
+;;;;;;  "85cc13983f80b5b447a346dec7b371b7")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-sclang.el
 
 (autoload 'org-babel-execute:sclang "ob-sclang" "\
 Org-mode Babel sclang hook for evaluate `BODY' with `PARAMS'.
 
 \(fn BODY PARAMS)" nil nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "ob-sclang" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-sclang.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-sclang.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-sclang" '("org-babel-default-header-args:sclang")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "ob-screen" "ob-screen.el" (0 0 0 0))
-;;; Generated autoloads from ob-screen.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-screen" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-screen.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-screen.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-screen" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-sed" "ob-sed.el" (0 0 0 0))
-;;; Generated autoloads from ob-sed.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-sed" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-sed.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-sed.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-sed" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-shell" "ob-shell.el" (0 0 0 0))
-;;; Generated autoloads from ob-shell.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-shell" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-shell.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-shell.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-shell" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-shen" "ob-shen.el" (0 0 0 0))
-;;; Generated autoloads from ob-shen.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-shen" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-shen.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-shen.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-shen" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-smiles" "ob-smiles.el" (0 0 0 0))
-;;; Generated autoloads from ob-smiles.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-smiles" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-smiles.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-smiles.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-smiles" '("molecule-" "org-babel-execute:smiles")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-spice" "ob-spice.el" (0 0 0 0))
-;;; Generated autoloads from ob-spice.el
+;;;### (autoloads nil "ob-spice" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-spice.el"
+;;;;;;  "f39562cf18db4d5be034f11179445491")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-spice.el
 
 (autoload 'org-babel-execute:spice "ob-spice" "\
 Execute a block of Spice code `BODY' with org-babel and `PARAMS'.
 
 \(fn BODY PARAMS)" nil nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "ob-spice" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-spice.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-spice.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-spice" '("ob-spice-concat" "org-babel-expand-body:spice")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "ob-sql" "ob-sql.el" (0 0 0 0))
-;;; Generated autoloads from ob-sql.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-sql" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-sql.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-sql.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-sql" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-sqlite" "ob-sqlite.el" (0 0 0 0))
-;;; Generated autoloads from ob-sqlite.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-sqlite" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-sqlite.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-sqlite.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-sqlite" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-stan" "ob-stan.el" (0 0 0 0))
-;;; Generated autoloads from ob-stan.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-stan" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-stan.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-stan.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-stan" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-stata" "ob-stata.el" (0 0 0 0))
-;;; Generated autoloads from ob-stata.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-stata" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-stata.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-stata.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-stata" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-table" "ob-table.el" (0 0 0 0))
-;;; Generated autoloads from ob-table.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-table" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-table.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-table.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-table" '("org-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-tcl" "ob-tcl.el" (0 0 0 0))
-;;; Generated autoloads from ob-tcl.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-tcl" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-tcl.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-tcl.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-tcl" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-vala" "ob-vala.el" (0 0 0 0))
-;;; Generated autoloads from ob-vala.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-vala" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-vala.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-vala.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-vala" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-vbnet" "ob-vbnet.el" (0 0 0 0))
-;;; Generated autoloads from ob-vbnet.el
+;;;### (autoloads "actual autoloads are elsewhere" "ob-vbnet" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-vbnet.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-vbnet.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-vbnet" '("org-babel-")))
 
 ;;;***
 
-;;;### (autoloads nil "org" "org.el" (0 0 0 0))
-;;; Generated autoloads from org.el
+;;;### (autoloads nil "org" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org.el"
+;;;;;;  "98019f490f765a3fc3c8c48d36f67c80")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org.el
 
 (autoload 'org-babel-do-load-languages "org" "\
 Load the languages defined in `org-babel-load-languages'.
@@ -779,13 +897,20 @@ With prefix arg UNCOMPILED, load the uncompiled versions.
 Call the customize function with org as argument.
 
 \(fn)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "org" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org" '("org-" "turn-on-org-cdlatex")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "org-agenda" "org-agenda.el" (0 0 0 0))
-;;; Generated autoloads from org-agenda.el
+;;;### (autoloads nil "org-agenda" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-agenda.el"
+;;;;;;  "315e0f114130fba48fd4cf0b8e768b8d")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-agenda.el
 
 (autoload 'org-toggle-sticky-agenda "org-agenda" "\
 Toggle `org-agenda-sticky'.
@@ -1057,14 +1182,20 @@ If an entry has a APPT_WARNTIME property, its value will be used
 to override `appt-message-warning-time'.
 
 \(fn &optional REFRESH FILTER &rest ARGS)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "org-agenda" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-agenda.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-agenda.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-agenda" '("org-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "org-annotate-file" "org-annotate-file.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from org-annotate-file.el
+;;;### (autoloads nil "org-annotate-file" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-annotate-file.el"
+;;;;;;  "c8573dc61e8cff7383efdaef701c3b42")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-annotate-file.el
 
 (autoload 'org-annotate-file "org-annotate-file" "\
 Visit `org-annotate-file-storage-file` and add a new annotation section.
@@ -1079,56 +1210,75 @@ The annotation will link to ANNOTATED-BUFFER if specified,
   otherwise the current buffer is used.
 
 \(fn STORAGE-FILE &optional ANNOTATED-BUFFER)" nil nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "org-annotate-file"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-annotate-file.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-annotate-file.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-annotate-file" '("org-annotate-file-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads "actual autoloads are elsewhere" "org-attach" "org-attach.el"
+;;;### (autoloads "actual autoloads are elsewhere" "org-attach" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-attach.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from org-attach.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-attach.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-attach" '("org-attach-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-attach-embedded-images" "org-attach-embedded-images.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from org-attach-embedded-images.el
+;;;### (autoloads nil "org-attach-embedded-images" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-attach-embedded-images.el"
+;;;;;;  "fe88b39aa9e967b93f2f5cc38144e62a")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-attach-embedded-images.el
 
 (autoload 'org-attach-embedded-images-in-subtree "org-attach-embedded-images" "\
 Save the displayed images as attachments and insert links to them.
 
 \(fn)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "org-attach-embedded-images"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-attach-embedded-images.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-attach-embedded-images.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-attach-embedded-images" '("org-attach-embedded-images--")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "org-bibtex" "org-bibtex.el" (0 0 0 0))
-;;; Generated autoloads from org-bibtex.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-bibtex" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-bibtex.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-bibtex.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-bibtex" '("org-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-bibtex-extras" "org-bibtex-extras.el"
+;;;### (autoloads "actual autoloads are elsewhere" "org-bibtex-extras"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-bibtex-extras.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from org-bibtex-extras.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-bibtex-extras.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-bibtex-extras" '("obe-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-bookmark" "org-bookmark.el" (0 0 0 0))
-;;; Generated autoloads from org-bookmark.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-bookmark"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-bookmark.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-bookmark.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-bookmark" '("org-bookmark-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-capture" "org-capture.el" (0 0 0 0))
-;;; Generated autoloads from org-capture.el
+;;;### (autoloads nil "org-capture" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-capture.el"
+;;;;;;  "20bb6c2e43b6f63153933a5da3ed8084")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-capture.el
 
 (autoload 'org-capture-string "org-capture" "\
 Capture STRING with the template selected by KEYS.
@@ -1170,34 +1320,47 @@ of the day at point (if any) or the current HH:MM time.
 Set `org-capture-templates' to be similar to `org-remember-templates'.
 
 \(fn)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "org-capture"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-capture.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-capture.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-capture" '("org-capture-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "org-checklist" "org-checklist.el" (0 0 0 0))
-;;; Generated autoloads from org-checklist.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-checklist"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-checklist.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-checklist.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-checklist" '("org-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-choose" "org-choose.el" (0 0 0 0))
-;;; Generated autoloads from org-choose.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-choose" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-choose.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-choose.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-choose" '("org-choose-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-collector" "org-collector.el" (0 0 0 0))
-;;; Generated autoloads from org-collector.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-collector"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-collector.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-collector.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-collector" '("org-" "and-rest")))
 
 ;;;***
 
-;;;### (autoloads nil "org-colview" "org-colview.el" (0 0 0 0))
-;;; Generated autoloads from org-colview.el
+;;;### (autoloads nil "org-colview" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-colview.el"
+;;;;;;  "6691cf0df132f8c855ddb8e39ec12ae4")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-colview.el
 
 (autoload 'org-columns-remove-overlays "org-colview" "\
 Remove all currently active column overlays.
@@ -1291,72 +1454,101 @@ Create a dynamic block capturing a column view table.
 Turn on or update column view in the agenda.
 
 \(fn)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "org-colview"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-colview.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-colview.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-colview" '("org-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "org-compat" "org-compat.el" (0 0 0 0))
-;;; Generated autoloads from org-compat.el
+;;;### (autoloads nil "org-compat" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-compat.el"
+;;;;;;  "24714f675e6d255b0beec7740eb84c42")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-compat.el
 
 (autoload 'org-check-version "org-compat" "\
 Try very hard to provide sensible version strings.
 
 \(fn)" nil t)
+
+;;;### (autoloads "actual autoloads are elsewhere" "org-compat" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-compat.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-compat.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-compat" '("org-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "org-contacts" "org-contacts.el" (0 0 0 0))
-;;; Generated autoloads from org-contacts.el
+;;;### (autoloads nil "org-contacts" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-contacts.el"
+;;;;;;  "c691e4726f60202905871548ba56cf49")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-contacts.el
 
 (autoload 'org-contacts "org-contacts" "\
 Create agenda view for contacts matching NAME.
 
 \(fn NAME)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "org-contacts"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-contacts.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-contacts.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-contacts" '("org-co" "erc-nicknames-list")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "org-crypt" "org-crypt.el" (0 0 0 0))
-;;; Generated autoloads from org-crypt.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-crypt" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-crypt.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-crypt.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-crypt" '("org-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-ctags" "org-ctags.el" (0 0 0 0))
-;;; Generated autoloads from org-ctags.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-ctags" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-ctags.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-ctags.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-ctags" '("org-ctags-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-depend" "org-depend.el" (0 0 0 0))
-;;; Generated autoloads from org-depend.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-depend" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-depend.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-depend.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-depend" '("org-depend-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-docview" "org-docview.el" (0 0 0 0))
-;;; Generated autoloads from org-docview.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-docview"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-docview.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-docview.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-docview" '("org-docview-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-drill" "org-drill.el" (0 0 0 0))
-;;; Generated autoloads from org-drill.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-drill" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-drill.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-drill.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-drill" '("org-" "shuffle-list" "spelln-integer-in-language" "*org-drill-" "with-" "drill-answer" "determine-next-interval-s" "initial-optimal-factor-sm5" "inter-repetition-interval-sm5" "get-optimal-factor-sm5" "pop-random" "push-end" "pseudonormal" "time-to-" "command-keybinding-to-string" "round-float" "free-marker")))
 
 ;;;***
 
-;;;### (autoloads nil "org-duration" "org-duration.el" (0 0 0 0))
-;;; Generated autoloads from org-duration.el
+;;;### (autoloads nil "org-duration" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-duration.el"
+;;;;;;  "1c6c95f5105e7992b2988567bebf4c0a")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-duration.el
 
 (autoload 'org-duration-set-regexps "org-duration" "\
 Set duration related regexps.
@@ -1406,21 +1598,30 @@ with \"H:MM:SS\" format, return `h:mm:ss'.  Otherwise, return
 `h:mm'.
 
 \(fn TIMES)" nil nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "org-duration"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-duration.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-duration.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-duration" '("org-duration-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "org-effectiveness" "org-effectiveness.el"
+;;;### (autoloads "actual autoloads are elsewhere" "org-effectiveness"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-effectiveness.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from org-effectiveness.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-effectiveness.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-effectiveness" '("org-effectiveness-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-eldoc" "org-eldoc.el" (0 0 0 0))
-;;; Generated autoloads from org-eldoc.el
+;;;### (autoloads nil "org-eldoc" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-eldoc.el"
+;;;;;;  "3259c0c07888544e27b06268a8e27e60")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-eldoc.el
 
 (autoload 'org-eldoc-load "org-eldoc" "\
 Set up org-eldoc documentation function.
@@ -1428,85 +1629,104 @@ Set up org-eldoc documentation function.
 \(fn)" t nil)
 
 (add-hook 'org-mode-hook #'org-eldoc-load)
+
+;;;### (autoloads "actual autoloads are elsewhere" "org-eldoc" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-eldoc.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-eldoc.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-eldoc" '("org-eldoc-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "org-elisp-symbol" "org-elisp-symbol.el" (0
-;;;;;;  0 0 0))
-;;; Generated autoloads from org-elisp-symbol.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-elisp-symbol"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-elisp-symbol.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-elisp-symbol.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-elisp-symbol" '("org-elisp-symbol-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-entities" "org-entities.el" (0 0 0 0))
-;;; Generated autoloads from org-entities.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-entities"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-entities.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-entities.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-entities" '("org-entit")))
 
 ;;;***
 
-;;;### (autoloads nil "org-eshell" "org-eshell.el" (0 0 0 0))
-;;; Generated autoloads from org-eshell.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-eshell" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-eshell.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-eshell.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-eshell" '("org-eshell-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-eval" "org-eval.el" (0 0 0 0))
-;;; Generated autoloads from org-eval.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-eval" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-eval.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-eval.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-eval" '("org-eval-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-eval-light" "org-eval-light.el" (0 0 0
-;;;;;;  0))
-;;; Generated autoloads from org-eval-light.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-eval-light"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-eval-light.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-eval-light.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-eval-light" '("org-eval-light-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-eww" "org-eww.el" (0 0 0 0))
-;;; Generated autoloads from org-eww.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-eww" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-eww.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-eww.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-eww" '("org-eww-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-expiry" "org-expiry.el" (0 0 0 0))
-;;; Generated autoloads from org-expiry.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-expiry" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-expiry.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-expiry.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-expiry" '("org-expiry-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-faces" "org-faces.el" (0 0 0 0))
-;;; Generated autoloads from org-faces.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-faces" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-faces.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-faces.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-faces" '("org-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-git-link" "org-git-link.el" (0 0 0 0))
-;;; Generated autoloads from org-git-link.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-git-link"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-git-link.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-git-link.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-git-link" '("org-git")))
 
 ;;;***
 
-;;;### (autoloads nil "org-gnus" "org-gnus.el" (0 0 0 0))
-;;; Generated autoloads from org-gnus.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-gnus" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-gnus.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-gnus.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-gnus" '("org-gnus-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-goto" "org-goto.el" (0 0 0 0))
-;;; Generated autoloads from org-goto.el
+;;;### (autoloads nil "org-goto" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-goto.el"
+;;;;;;  "2a39942623c0f150d633593d24191ce2")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-goto.el
 
 (autoload 'org-goto-location "org-goto" "\
 Let the user select a location in current buffer.
@@ -1536,64 +1756,80 @@ With a prefix argument, use the alternative interface: e.g., if
 `org-goto-interface' is `outline' use `outline-path-completion'.
 
 \(fn &optional ALTERNATIVE-INTERFACE)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "org-goto" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-goto.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-goto.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-goto" '("org-goto-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "org-habit" "org-habit.el" (0 0 0 0))
-;;; Generated autoloads from org-habit.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-habit" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-habit.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-habit.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-habit" '("org-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-info" "org-info.el" (0 0 0 0))
-;;; Generated autoloads from org-info.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-info" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-info.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-info.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-info" '("org-info-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-inlinetask" "org-inlinetask.el" (0 0 0
-;;;;;;  0))
-;;; Generated autoloads from org-inlinetask.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-inlinetask"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-inlinetask.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-inlinetask.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-inlinetask" '("org-inlinetask-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-interactive-query" "org-interactive-query.el"
+;;;### (autoloads "actual autoloads are elsewhere" "org-interactive-query"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-interactive-query.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from org-interactive-query.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-interactive-query.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-interactive-query" '("org-agenda-query-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-invoice" "org-invoice.el" (0 0 0 0))
-;;; Generated autoloads from org-invoice.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-invoice"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-invoice.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-invoice.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-invoice" '("org-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-learn" "org-learn.el" (0 0 0 0))
-;;; Generated autoloads from org-learn.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-learn" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-learn.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-learn.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-learn" '("org-" "determine-next-interval" "inter-repetition-interval" "initial-" "calculate-new-optimal-factor" "modify-" "set-optimal-factor" "get-optimal-factor")))
 
 ;;;***
 
-;;;### (autoloads nil "org-license" "org-license.el" (0 0 0 0))
-;;; Generated autoloads from org-license.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-license"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-license.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-license.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-license" '("org-license-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-link-edit" "org-link-edit.el" (0 0 0 0))
-;;; Generated autoloads from org-link-edit.el
+;;;### (autoloads nil "org-link-edit" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-link-edit.el"
+;;;;;;  "eb318ca24c8aeb5ae3699dd5f38c0eb6")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-link-edit.el
 
 (autoload 'org-link-edit-forward-slurp "org-link-edit" "\
 Slurp N trailing blobs into link's description.
@@ -1687,13 +1923,21 @@ description, moving the next (or previous) link relative BEG and
 END.
 
 \(fn &optional PREVIOUS BEG END)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "org-link-edit"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-link-edit.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-link-edit.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-link-edit" '("org-link-edit--")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "org-lint" "org-lint.el" (0 0 0 0))
-;;; Generated autoloads from org-lint.el
+;;;### (autoloads nil "org-lint" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-lint.el"
+;;;;;;  "11a23e0e182a5b7ae7cc7593f168a28b")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-lint.el
 
 (autoload 'org-lint "org-lint" "\
 Check current Org buffer for syntax mistakes.
@@ -1705,27 +1949,37 @@ checker by its name.
 ARG can also be a list of checker names, as symbols, to run.
 
 \(fn &optional ARG)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "org-lint" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-lint.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-lint.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-lint" '("org-lint-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "org-list" "org-list.el" (0 0 0 0))
-;;; Generated autoloads from org-list.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-list" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-list.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-list.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-list" '("org-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-mac-iCal" "org-mac-iCal.el" (0 0 0 0))
-;;; Generated autoloads from org-mac-iCal.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-mac-iCal"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-mac-iCal.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-mac-iCal.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-mac-iCal" '("org-mac-iCal" "omi-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-mac-link" "org-mac-link.el" (0 0 0 0))
-;;; Generated autoloads from org-mac-link.el
+;;;### (autoloads nil "org-mac-link" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-mac-link.el"
+;;;;;;  "1aff00d7c3adb6272c71d9a918497a4b")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-mac-link.el
 
 (autoload 'org-mac-grab-link "org-mac-link" "\
 Prompt for an application to grab a link from.
@@ -1898,96 +2152,121 @@ level.  If heading doesn't exist, create it at point-max.  Insert
 list of message:// links to flagged mail after heading.
 
 \(fn ORG-BUFFER ORG-HEADING)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "org-mac-link"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-mac-link.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-mac-link.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-mac-link" '("org-" "as-get-s")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "org-macro" "org-macro.el" (0 0 0 0))
-;;; Generated autoloads from org-macro.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-macro" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-macro.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-macro.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-macro" '("org-macro-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-macs" "org-macs.el" (0 0 0 0))
-;;; Generated autoloads from org-macs.el
+;;;### (autoloads nil "org-macs" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-macs.el"
+;;;;;;  "fa493ddde2eff2af2af47c8283ada02d")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-macs.el
 
 (autoload 'org-load-noerror-mustsuffix "org-macs" "\
 Load FILE with optional arguments NOERROR and MUSTSUFFIX.
 
 \(fn FILE)" nil t)
+
+;;;### (autoloads "actual autoloads are elsewhere" "org-macs" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-macs.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-macs.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-macs" '("org-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "org-mairix" "org-mairix.el" (0 0 0 0))
-;;; Generated autoloads from org-mairix.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-mairix" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-mairix.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-mairix.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-mairix" '("org-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-man" "org-man.el" (0 0 0 0))
-;;; Generated autoloads from org-man.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-man" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-man.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-man.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-man" '("org-man-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-mew" "org-mew.el" (0 0 0 0))
-;;; Generated autoloads from org-mew.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-mew" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-mew.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-mew.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-mew" '("org-mew-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-mhe" "org-mhe.el" (0 0 0 0))
-;;; Generated autoloads from org-mhe.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-mhe" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-mhe.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-mhe.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-mhe" '("org-mhe-")))
 
 ;;;***
 
-;;;### (autoloads "actual autoloads are elsewhere" "org-mobile" "org-mobile.el"
+;;;### (autoloads "actual autoloads are elsewhere" "org-mobile" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-mobile.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from org-mobile.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-mobile.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-mobile" '("org-mobile-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-mouse" "org-mouse.el" (0 0 0 0))
-;;; Generated autoloads from org-mouse.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-mouse" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-mouse.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-mouse.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-mouse" '("org-mouse-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-notify" "org-notify.el" (0 0 0 0))
-;;; Generated autoloads from org-notify.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-notify" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-notify.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-notify.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-notify" '("org-notify-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-notmuch" "org-notmuch.el" (0 0 0 0))
-;;; Generated autoloads from org-notmuch.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-notmuch"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-notmuch.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-notmuch.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-notmuch" '("org-notmuch-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-panel" "org-panel.el" (0 0 0 0))
-;;; Generated autoloads from org-panel.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-panel" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-panel.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-panel.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-panel" '("orgpan-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-passwords" "org-passwords.el" (0 0 0 0))
-;;; Generated autoloads from org-passwords.el
+;;;### (autoloads nil "org-passwords" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-passwords.el"
+;;;;;;  "6303c376d300461c4c5a251c00d5a7ce")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-passwords.el
 
 (autoload 'org-passwords-mode "org-passwords" "\
 Mode for storing passwords
@@ -2007,35 +2286,47 @@ With prefix arg ARG, the command does not set up a timer to kill the buffer.
 With a double prefix arg \\[universal-argument] \\[universal-argument], open the file for editing.
 
 \(fn &optional ARG)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "org-passwords"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-passwords.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-passwords.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-passwords" '("org-passwords-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "org-pcomplete" "org-pcomplete.el" (0 0 0 0))
-;;; Generated autoloads from org-pcomplete.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-pcomplete"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-pcomplete.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-pcomplete.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-pcomplete" '("pcomplete/org-mode/" "org-")))
 
 ;;;***
 
-;;;### (autoloads "actual autoloads are elsewhere" "org-plot" "org-plot.el"
+;;;### (autoloads "actual autoloads are elsewhere" "org-plot" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-plot.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from org-plot.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-plot.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-plot" '("org-plot")))
 
 ;;;***
 
-;;;### (autoloads nil "org-protocol" "org-protocol.el" (0 0 0 0))
-;;; Generated autoloads from org-protocol.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-protocol"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-protocol.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-protocol.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-protocol" '("org-protocol-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-registry" "org-registry.el" (0 0 0 0))
-;;; Generated autoloads from org-registry.el
+;;;### (autoloads nil "org-registry" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-registry.el"
+;;;;;;  "be0936440313f9459edcb40bf7f0bf2c")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-registry.el
 
 (autoload 'org-registry-show "org-registry" "\
 Show Org files where there are links pointing to the current
@@ -2068,28 +2359,37 @@ Use with caution.  This could slow down things a bit.
 Update the registry for the current Org file.
 
 \(fn)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "org-registry"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-registry.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-registry.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-registry" '("org-registry-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "org-rmail" "org-rmail.el" (0 0 0 0))
-;;; Generated autoloads from org-rmail.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-rmail" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-rmail.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-rmail.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-rmail" '("org-rmail-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-screen" "org-screen.el" (0 0 0 0))
-;;; Generated autoloads from org-screen.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-screen" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-screen.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-screen.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-screen" '("org-screen")))
 
 ;;;***
 
-;;;### (autoloads nil "org-screenshot" "org-screenshot.el" (0 0 0
-;;;;;;  0))
-;;; Generated autoloads from org-screenshot.el
+;;;### (autoloads nil "org-screenshot" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-screenshot.el"
+;;;;;;  "127e825039f6904d3acba2bb0cc2eac3")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-screenshot.el
 
 (autoload 'org-screenshot-take "org-screenshot" "\
 Take a screenshot and insert link to it at point, if image
@@ -2128,77 +2428,98 @@ in the other direction
 Open A Dired buffer with unused screenshots marked
 
 \(fn)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "org-screenshot"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-screenshot.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-screenshot.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-screenshot" '("org-screenshot-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "org-secretary" "org-secretary.el" (0 0 0 0))
-;;; Generated autoloads from org-secretary.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-secretary"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-secretary.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-secretary.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-secretary" '("org-sec-" "join")))
 
 ;;;***
 
-;;;### (autoloads nil "org-src" "org-src.el" (0 0 0 0))
-;;; Generated autoloads from org-src.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-src" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-src.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-src.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-src" '("org-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-static-mathjax" "org-static-mathjax.el"
+;;;### (autoloads "actual autoloads are elsewhere" "org-static-mathjax"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-static-mathjax.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from org-static-mathjax.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-static-mathjax.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-static-mathjax" '("org-static-mathjax-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-sudoku" "org-sudoku.el" (0 0 0 0))
-;;; Generated autoloads from org-sudoku.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-sudoku" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-sudoku.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-sudoku.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-sudoku" '("org-sudoku-")))
 
 ;;;***
 
-;;;### (autoloads "actual autoloads are elsewhere" "org-table" "org-table.el"
+;;;### (autoloads "actual autoloads are elsewhere" "org-table" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-table.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from org-table.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-table.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-table" '("org")))
 
 ;;;***
 
-;;;### (autoloads nil "org-tempo" "org-tempo.el" (0 0 0 0))
-;;; Generated autoloads from org-tempo.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-tempo" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-tempo.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-tempo.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-tempo" '("org-tempo-")))
 
 ;;;***
 
-;;;### (autoloads "actual autoloads are elsewhere" "org-timer" "org-timer.el"
+;;;### (autoloads "actual autoloads are elsewhere" "org-timer" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-timer.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from org-timer.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-timer.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-timer" '("org-timer-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-toc" "org-toc.el" (0 0 0 0))
-;;; Generated autoloads from org-toc.el
+;;;### (autoloads nil "org-toc" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-toc.el"
+;;;;;;  "4cd98ab552a1b3653691194441fbc4fb")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-toc.el
 
 (autoload 'org-toc-show "org-toc" "\
 Show the table of contents of the current Org-mode buffer.
 
 \(fn &optional DEPTH POSITION)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "org-toc" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-toc.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-toc.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-toc" '("org-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "org-track" "org-track.el" (0 0 0 0))
-;;; Generated autoloads from org-track.el
+;;;### (autoloads nil "org-track" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-track.el"
+;;;;;;  "a7e1320f5ce43ccea4beaef416df28c6")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-track.el
 
 (autoload 'org-track-fetch-package "org-track" "\
 Fetch Org package depending on `org-track-fetch-package-extension'.
@@ -2215,20 +2536,29 @@ DIRECTORY is where the directory org-mode/ lives (i.e. the
           parent directory of your local repo.
 
 \(fn &optional DIRECTORY)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "org-track" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-track.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-track.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-track" '("org-track-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "org-velocity" "org-velocity.el" (0 0 0 0))
-;;; Generated autoloads from org-velocity.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-velocity"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-velocity.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-velocity.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-velocity" '("org-velocity")))
 
 ;;;***
 
-;;;### (autoloads nil "org-version" "org-version.el" (0 0 0 0))
-;;; Generated autoloads from org-version.el
+;;;### (autoloads nil "org-version" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-version.el"
+;;;;;;  "1c800aa6b7601db99af316978f3664a8")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-version.el
 
 (autoload 'org-release "org-version" "\
 The release version of Org.
@@ -2247,96 +2577,108 @@ The location of ODT styles.")
 
 ;;;***
 
-;;;### (autoloads nil "org-vm" "org-vm.el" (0 0 0 0))
-;;; Generated autoloads from org-vm.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-vm" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-vm.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-vm.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-vm" '("org-vm-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-w3m" "org-w3m.el" (0 0 0 0))
-;;; Generated autoloads from org-w3m.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-w3m" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-w3m.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-w3m.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-w3m" '("org-w3m-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-wikinodes" "org-wikinodes.el" (0 0 0 0))
-;;; Generated autoloads from org-wikinodes.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-wikinodes"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-wikinodes.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-wikinodes.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-wikinodes" '("org-wikinodes-")))
 
 ;;;***
 
-;;;### (autoloads nil "org-wl" "org-wl.el" (0 0 0 0))
-;;; Generated autoloads from org-wl.el
+;;;### (autoloads "actual autoloads are elsewhere" "org-wl" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-wl.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-wl.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-wl" '("org-wl-")))
 
 ;;;***
 
-;;;### (autoloads nil "orgtbl-sqlinsert" "orgtbl-sqlinsert.el" (0
-;;;;;;  0 0 0))
-;;; Generated autoloads from orgtbl-sqlinsert.el
+;;;### (autoloads "actual autoloads are elsewhere" "orgtbl-sqlinsert"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/orgtbl-sqlinsert.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/orgtbl-sqlinsert.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "orgtbl-sqlinsert" '("orgtbl-")))
 
 ;;;***
 
-;;;### (autoloads "actual autoloads are elsewhere" "ox" "ox.el" (0
-;;;;;;  0 0 0))
-;;; Generated autoloads from ox.el
+;;;### (autoloads "actual autoloads are elsewhere" "ox" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ox" '("org-export-")))
 
 ;;;***
 
-;;;### (autoloads "actual autoloads are elsewhere" "ox-ascii" "ox-ascii.el"
+;;;### (autoloads "actual autoloads are elsewhere" "ox-ascii" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-ascii.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from ox-ascii.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-ascii.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ox-ascii" '("org-ascii-")))
 
 ;;;***
 
-;;;### (autoloads "actual autoloads are elsewhere" "ox-beamer" "ox-beamer.el"
+;;;### (autoloads "actual autoloads are elsewhere" "ox-beamer" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-beamer.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from ox-beamer.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-beamer.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ox-beamer" '("org-beamer-")))
 
 ;;;***
 
-;;;### (autoloads nil "ox-bibtex" "ox-bibtex.el" (0 0 0 0))
-;;; Generated autoloads from ox-bibtex.el
+;;;### (autoloads "actual autoloads are elsewhere" "ox-bibtex" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-bibtex.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-bibtex.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ox-bibtex" '("org-bibtex-")))
 
 ;;;***
 
-;;;### (autoloads nil "ox-confluence" "ox-confluence.el" (0 0 0 0))
-;;; Generated autoloads from ox-confluence.el
+;;;### (autoloads "actual autoloads are elsewhere" "ox-confluence"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-confluence.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-confluence.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ox-confluence" '("org-confluence-")))
 
 ;;;***
 
-;;;### (autoloads nil "ox-deck" "ox-deck.el" (0 0 0 0))
-;;; Generated autoloads from ox-deck.el
+;;;### (autoloads "actual autoloads are elsewhere" "ox-deck" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-deck.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-deck.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ox-deck" '("org-deck-")))
 
 ;;;***
 
-;;;### (autoloads nil "ox-extra" "ox-extra.el" (0 0 0 0))
-;;; Generated autoloads from ox-extra.el
+;;;### (autoloads "actual autoloads are elsewhere" "ox-extra" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-extra.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-extra.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ox-extra" '("org-" "ox-extras")))
 
 ;;;***
 
-;;;### (autoloads nil "ox-freemind" "ox-freemind.el" (0 0 0 0))
-;;; Generated autoloads from ox-freemind.el
+;;;### (autoloads nil "ox-freemind" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-freemind.el"
+;;;;;;  "cac928fc9ada6fdbb5b268a57e3687a4")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-freemind.el
 
 (autoload 'org-freemind-export-to-freemind "ox-freemind" "\
 Export current buffer to a Freemind Mindmap file.
@@ -2367,37 +2709,46 @@ file-local settings.
 Return output file's name.
 
 \(fn &optional ASYNC SUBTREEP VISIBLE-ONLY BODY-ONLY EXT-PLIST)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "ox-freemind"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-freemind.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-freemind.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ox-freemind" '("org-freemind-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "ox-groff" "ox-groff.el" (0 0 0 0))
-;;; Generated autoloads from ox-groff.el
+;;;### (autoloads "actual autoloads are elsewhere" "ox-groff" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-groff.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-groff.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ox-groff" '("org-groff-")))
 
 ;;;***
 
-;;;### (autoloads "actual autoloads are elsewhere" "ox-html" "ox-html.el"
+;;;### (autoloads "actual autoloads are elsewhere" "ox-html" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-html.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from ox-html.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-html.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ox-html" '("org-html-")))
 
 ;;;***
 
 ;;;### (autoloads "actual autoloads are elsewhere" "ox-icalendar"
-;;;;;;  "ox-icalendar.el" (0 0 0 0))
-;;; Generated autoloads from ox-icalendar.el
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-icalendar.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-icalendar.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ox-icalendar" '("org-icalendar-")))
 
 ;;;***
 
-;;;### (autoloads nil "ox-koma-letter" "ox-koma-letter.el" (0 0 0
-;;;;;;  0))
-;;; Generated autoloads from ox-koma-letter.el
+;;;### (autoloads nil "ox-koma-letter" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-koma-letter.el"
+;;;;;;  "a94273cd8cd7693b1971ab395ee8dfb1")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-koma-letter.el
 
 (autoload 'org-koma-letter-export-as-latex "ox-koma-letter" "\
 Export current buffer as a KOMA Scrlttr2 letter.
@@ -2493,61 +2844,69 @@ file-local settings.
 Return PDF file's name.
 
 \(fn &optional ASYNC SUBTREEP VISIBLE-ONLY BODY-ONLY EXT-PLIST)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "ox-koma-letter"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-koma-letter.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-koma-letter.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ox-koma-letter" '("org-koma-letter-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads "actual autoloads are elsewhere" "ox-latex" "ox-latex.el"
+;;;### (autoloads "actual autoloads are elsewhere" "ox-latex" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-latex.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from ox-latex.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-latex.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ox-latex" '("org-latex-")))
 
 ;;;***
 
-;;;### (autoloads "actual autoloads are elsewhere" "ox-man" "ox-man.el"
+;;;### (autoloads "actual autoloads are elsewhere" "ox-man" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-man.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from ox-man.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-man.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ox-man" '("org-man-")))
 
 ;;;***
 
-;;;### (autoloads "actual autoloads are elsewhere" "ox-md" "ox-md.el"
+;;;### (autoloads "actual autoloads are elsewhere" "ox-md" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-md.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from ox-md.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-md.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ox-md" '("org-md-")))
 
 ;;;***
 
-;;;### (autoloads "actual autoloads are elsewhere" "ox-odt" "ox-odt.el"
+;;;### (autoloads "actual autoloads are elsewhere" "ox-odt" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-odt.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from ox-odt.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-odt.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ox-odt" '("org-odt-")))
 
 ;;;***
 
-;;;### (autoloads "actual autoloads are elsewhere" "ox-org" "ox-org.el"
+;;;### (autoloads "actual autoloads are elsewhere" "ox-org" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-org.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from ox-org.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-org.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ox-org" '("org-org-")))
 
 ;;;***
 
-;;;### (autoloads "actual autoloads are elsewhere" "ox-publish" "ox-publish.el"
+;;;### (autoloads "actual autoloads are elsewhere" "ox-publish" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-publish.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from ox-publish.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-publish.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ox-publish" '("org-publish-")))
 
 ;;;***
 
-;;;### (autoloads nil "ox-rss" "ox-rss.el" (0 0 0 0))
-;;; Generated autoloads from ox-rss.el
+;;;### (autoloads nil "ox-rss" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-rss.el"
+;;;;;;  "7a6d6c164d25be3f5fbb4809cde7a804")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-rss.el
 
 (autoload 'org-rss-export-as-rss "ox-rss" "\
 Export current buffer to an RSS buffer.
@@ -2607,21 +2966,28 @@ publishing directory.
 Return output file name.
 
 \(fn PLIST FILENAME PUB-DIR)" nil nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "ox-rss" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-rss.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-rss.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ox-rss" '("org-rss-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "ox-s5" "ox-s5.el" (0 0 0 0))
-;;; Generated autoloads from ox-s5.el
+;;;### (autoloads "actual autoloads are elsewhere" "ox-s5" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-s5.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-s5.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ox-s5" '("org-s5-")))
 
 ;;;***
 
-;;;### (autoloads nil "ox-taskjuggler" "ox-taskjuggler.el" (0 0 0
-;;;;;;  0))
-;;; Generated autoloads from ox-taskjuggler.el
+;;;### (autoloads nil "ox-taskjuggler" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-taskjuggler.el"
+;;;;;;  "266862ce75ef33893c96572cf3d6fa7c")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-taskjuggler.el
 
 (autoload 'org-taskjuggler-export "ox-taskjuggler" "\
 Export current buffer to a TaskJuggler file.
@@ -2703,29 +3069,223 @@ If you are targeting TaskJuggler 2.4 (see
 the reports is done using the TaskJuggler GUI.
 
 \(fn &optional SUBTREEP VISIBLE-ONLY)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "ox-taskjuggler"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-taskjuggler.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-taskjuggler.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ox-taskjuggler" '("org-taskjuggler-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads "actual autoloads are elsewhere" "ox-texinfo" "ox-texinfo.el"
+;;;### (autoloads "actual autoloads are elsewhere" "ox-texinfo" "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-texinfo.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from ox-texinfo.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-texinfo.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ox-texinfo" '("org-texinfo-")))
 
 ;;;***
 
-;;;### (autoloads nil nil ("ob-core.el" "ob-keys.el" "ob-lob.el"
-;;;;;;  "ob-matlab.el" "ob-tangle.el" "ob.el" "org-archive.el" "org-attach.el"
-;;;;;;  "org-bbdb.el" "org-clock.el" "org-contribdir.el" "org-datetree.el"
-;;;;;;  "org-element.el" "org-feed.el" "org-footnote.el" "org-id.el"
-;;;;;;  "org-indent.el" "org-install.el" "org-irc.el" "org-loaddefs.el"
-;;;;;;  "org-mobile.el" "org-plot.el" "org-plus-contrib-pkg.el" "org-table.el"
-;;;;;;  "org-timer.el" "ox-ascii.el" "ox-beamer.el" "ox-html.el"
-;;;;;;  "ox-icalendar.el" "ox-latex.el" "ox-man.el" "ox-md.el" "ox-odt.el"
-;;;;;;  "ox-org.el" "ox-publish.el" "ox-texinfo.el" "ox.el") (0 0
-;;;;;;  0 0))
+;;;### (autoloads nil nil ("../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-C.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-J.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-R.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-abc.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-arduino.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-asymptote.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-awk.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-calc.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-clojure-literate.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-clojure.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-comint.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-coq.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-core.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-csharp.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-css.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-ditaa.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-dot.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-ebnf.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-emacs-lisp.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-eukleides.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-eval.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-exp.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-fomus.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-forth.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-fortran.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-gnuplot.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-groovy.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-haskell.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-hledger.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-io.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-java.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-js.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-julia.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-keys.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-latex.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-ledger.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-lilypond.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-lisp.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-lob.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-lua.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-makefile.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-mathematica.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-mathomatic.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-matlab.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-maxima.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-mscgen.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-ocaml.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-octave.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-org.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-oz.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-perl.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-php.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-picolisp.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-plantuml.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-processing.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-python.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-redis.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-ref.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-ruby.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-sass.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-scheme.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-sclang.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-screen.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-sed.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-shell.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-shen.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-smiles.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-spice.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-sql.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-sqlite.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-stan.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-stata.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-table.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-tangle.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-tcl.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-vala.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob-vbnet.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ob.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-agenda.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-annotate-file.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-archive.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-attach-embedded-images.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-attach.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-bbdb.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-bibtex-extras.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-bibtex.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-bookmark.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-capture.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-checklist.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-choose.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-clock.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-collector.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-colview.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-compat.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-contacts.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-contribdir.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-crypt.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-ctags.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-datetree.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-depend.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-docview.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-drill.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-duration.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-effectiveness.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-eldoc.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-element.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-elisp-symbol.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-entities.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-eshell.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-eval-light.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-eval.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-eww.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-expiry.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-faces.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-feed.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-footnote.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-git-link.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-gnus.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-goto.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-habit.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-id.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-indent.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-info.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-inlinetask.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-install.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-interactive-query.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-invoice.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-irc.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-learn.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-license.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-link-edit.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-lint.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-list.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-loaddefs.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-mac-iCal.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-mac-link.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-macro.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-macs.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-mairix.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-man.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-mew.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-mhe.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-mobile.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-mouse.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-notify.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-notmuch.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-panel.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-passwords.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-pcomplete.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-plot.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-plus-contrib-autoloads.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-plus-contrib-pkg.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-protocol.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-registry.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-rmail.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-screen.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-screenshot.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-secretary.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-src.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-static-mathjax.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-sudoku.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-table.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-tempo.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-timer.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-toc.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-track.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-velocity.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-version.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-vm.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-w3m.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-wikinodes.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org-wl.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/org.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/orgtbl-sqlinsert.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-ascii.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-beamer.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-bibtex.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-confluence.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-deck.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-extra.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-freemind.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-groff.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-html.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-icalendar.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-koma-letter.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-latex.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-man.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-md.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-odt.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-org.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-publish.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-rss.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-s5.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-taskjuggler.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox-texinfo.el"
+;;;;;;  "../../../../../.emacs.d/elpa/org-plus-contrib-20190923/ox.el")
+;;;;;;  (0 0 0 0))
 
 ;;;***
 

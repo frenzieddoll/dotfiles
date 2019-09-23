@@ -1,12 +1,4 @@
-<<<<<<< HEAD
 (define-package "doom-themes" "20190904.2252" "an opinionated pack of modern color-themes"
-=======
-<<<<<<< HEAD:.emacs.d/elpa/doom-themes-20190904.2252/doom-themes-pkg.el
-(define-package "doom-themes" "20190904.2252" "an opinionated pack of modern color-themes"
-=======
-(define-package "doom-themes" "20190810.408" "an opinionated pack of modern color-themes"
->>>>>>> f51dca9c882c9262ec9d372b0fdde4f173d1e651:.emacs.d/elpa/doom-themes-20190810.408/doom-themes-pkg.el
->>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
   '((emacs "25.1")
     (cl-lib "0.5"))
   :keywords

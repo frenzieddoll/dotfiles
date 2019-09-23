@@ -6,8 +6,9 @@
                          (or (file-name-directory #$) (car load-path))))
 
 
-;;;### (autoloads nil "context-skk" "context-skk.el" (0 0 0 0))
-;;; Generated autoloads from context-skk.el
+;;;### (autoloads nil "context-skk" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/context-skk.el"
+;;;;;;  "19b0914b4396aec7a475f94bf05bf178")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/context-skk.el
 
 (let ((loads (get 'context-skk 'custom-loads))) (if (member '"context-skk" loads) nil (put 'context-skk 'custom-loads (cons '"context-skk" loads))))
 
@@ -54,13 +55,21 @@
 
 (custom-autoload 'context-skk-mode-off-message "context-skk" t)
  (autoload 'context-skk-mode "context-skk" "文脈に応じて自動的にskkの入力モードをlatinに切り換えるマイナーモード。" t)
+
+;;;### (autoloads "actual autoloads are elsewhere" "context-skk"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/context-skk.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/context-skk.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "context-skk" '("context-skk-" "define-context-skk-advice")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "skk" "skk.el" (0 0 0 0))
-;;; Generated autoloads from skk.el
+;;;### (autoloads nil "skk" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk.el"
+;;;;;;  "75fb5425d357c84cbd8ad3b2c5bfbcde")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk.el
 
 (autoload 'skk-mode "skk" "\
 日本語入力モード。
@@ -161,13 +170,20 @@ Emacs 起動時にあらかじめ SKK を呼ぶことで SKK の応答を速く�
 \(fn)" nil nil)
 
 (add-hook 'after-init-hook (lambda nil (when (and (symbol-value 'init-file-user) skk-preload) (skk-preload) (message "SKK preload...done")) (when (and (not (featurep 'xemacs)) window-system) (ccc-setup))) t)
+
+;;;### (autoloads "actual autoloads are elsewhere" "skk" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "skk" '("skk-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "skk-abbrev" "skk-abbrev.el" (0 0 0 0))
-;;; Generated autoloads from skk-abbrev.el
+;;;### (autoloads nil "skk-abbrev" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-abbrev.el"
+;;;;;;  "c6a6c5283ae86a4f349d684f9b9058ca")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-abbrev.el
 
 (autoload 'skk-abbrev-search "skk-abbrev" "\
 
@@ -176,16 +192,17 @@ Emacs 起動時にあらかじめ SKK を呼ぶことで SKK の応答を速く�
 
 ;;;***
 
-;;;### (autoloads nil "skk-act" "skk-act.el" (0 0 0 0))
-;;; Generated autoloads from skk-act.el
+;;;### (autoloads "actual autoloads are elsewhere" "skk-act" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-act.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-act.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "skk-act" '("skk-act-")))
 
 ;;;***
 
-;;;### (autoloads nil "skk-annotation" "skk-annotation.el" (0 0 0
-;;;;;;  0))
-;;; Generated autoloads from skk-annotation.el
+;;;### (autoloads nil "skk-annotation" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-annotation.el"
+;;;;;;  "f8fc9375a54eb5f00d90f22925080994")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-annotation.el
 
 (autoload 'skk-annotation-get "skk-annotation" "\
 
@@ -281,13 +298,21 @@ Wiktionary/Wikipedia の WORD に相当する記事からアノテーション�
 
 
 \(fn WORD &optional SOURCES)" nil nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "skk-annotation"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-annotation.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-annotation.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "skk-annotation" '("skk")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "skk-auto" "skk-auto.el" (0 0 0 0))
-;;; Generated autoloads from skk-auto.el
+;;;### (autoloads nil "skk-auto" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-auto.el"
+;;;;;;  "2913f87ff337fb09139d0b55f536f8b4")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-auto.el
 
 (autoload 'skk-okuri-search-1 "skk-auto" "\
 
@@ -298,32 +323,47 @@ Wiktionary/Wikipedia の WORD に相当する記事からアノテーション�
 
 
 \(fn)" nil nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "skk-auto" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-auto.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-auto.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "skk-auto" '("skk-okuri-search-subr-original")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "skk-azik" "skk-azik.el" (0 0 0 0))
-;;; Generated autoloads from skk-azik.el
+;;;### (autoloads "actual autoloads are elsewhere" "skk-azik" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-azik.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-azik.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "skk-azik" '("skk-azik-")))
 
 ;;;***
 
-;;;### (autoloads nil "skk-cdb" "skk-cdb.el" (0 0 0 0))
-;;; Generated autoloads from skk-cdb.el
+;;;### (autoloads nil "skk-cdb" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-cdb.el"
+;;;;;;  "0eaf677f2e2c6cb6020bada125650a90")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-cdb.el
 
 (autoload 'skk-search-cdb-jisyo "skk-cdb" "\
 
 
 \(fn CDB-PATH)" nil nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "skk-cdb" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-cdb.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-cdb.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "skk-cdb" '("skk-cdb-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "skk-comp" "skk-comp.el" (0 0 0 0))
-;;; Generated autoloads from skk-comp.el
+;;;### (autoloads nil "skk-comp" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-comp.el"
+;;;;;;  "85e943cf138a4c9287b4a93942335ada")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-comp.el
 
 (autoload 'skk-comp-start-henkan "skk-comp" "\
 ▽モードで読みを補完した後、変換する。
@@ -474,13 +514,20 @@ SEARCH-PROG-LIST は `skk-search-prog-list' と同じ形式で、
 WITHOUT-MIDASI を指定すると見出しは省かれる。
 
 \(fn COMP-PROG-LIST &optional SEARCH-PROG-LIST WITHOUT-MIDASI WITHOUT-CHAR-MAYBE)" nil nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "skk-comp" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-comp.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-comp.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "skk-comp" '("skk-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "skk-cursor" "skk-cursor.el" (0 0 0 0))
-;;; Generated autoloads from skk-cursor.el
+;;;### (autoloads nil "skk-cursor" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-cursor.el"
+;;;;;;  "f8d88c37c75e01dcc575ca505958cc5d")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-cursor.el
 
 (autoload 'skk-cursor-current-color "skk-cursor" "\
 
@@ -496,13 +543,20 @@ WITHOUT-MIDASI を指定すると見出しは省かれる。
 
 
 \(fn)" nil nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "skk-cursor" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-cursor.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-cursor.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "skk-cursor" '("skk-cursor-default-color")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "skk-cus" "skk-cus.el" (0 0 0 0))
-;;; Generated autoloads from skk-cus.el
+;;;### (autoloads nil "skk-cus" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-cus.el"
+;;;;;;  "08208972ac5d97fbfb7f18a4308bab0b")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-cus.el
 
 (autoload 'skk-customize-group-skk "skk-cus" "\
 
@@ -523,13 +577,20 @@ WITHOUT-MIDASI を指定すると見出しは省かれる。
 
 
 \(fn &optional ALIST)" nil nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "skk-cus" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-cus.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-cus.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "skk-cus" '("skk-cus")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "skk-dcomp" "skk-dcomp.el" (0 0 0 0))
-;;; Generated autoloads from skk-dcomp.el
+;;;### (autoloads nil "skk-dcomp" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-dcomp.el"
+;;;;;;  "795722981b8f6b652088d9749f067337")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-dcomp.el
 
 (autoload 'skk-dcomp-marked-p "skk-dcomp" "\
 
@@ -545,13 +606,20 @@ WITHOUT-MIDASI を指定すると見出しは省かれる。
 
 
 \(fn)" nil nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "skk-dcomp" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-dcomp.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-dcomp.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "skk-dcomp" '("skk-dcomp-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "skk-develop" "skk-develop.el" (0 0 0 0))
-;;; Generated autoloads from skk-develop.el
+;;;### (autoloads nil "skk-develop" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-develop.el"
+;;;;;;  "bf5685030639c9be5a39d3971ff975f4")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-develop.el
 
 (autoload 'skk-submit-bug-report "skk-develop" "\
 SKK のバグレポートを書くメールバッファを用意する。
@@ -568,13 +636,21 @@ DIR.
 \(fn DIR)" t nil)
 
 (add-hook 'before-init-hook (lambda nil (eval-after-load "font-lock" '(set (if (boundp 'lisp-el-font-lock-keywords-2) 'lisp-el-font-lock-keywords-2 'lisp-font-lock-keywords-2) (nconc (list (list (concat "(\\(\\(skk-\\)?def\\(" "\\(un-cond\\|subst-cond\\|advice\\|" "macro-maybe\\|alias-maybe\\|un-maybe\\)\\|" "\\(var\\|localvar\\)" "\\)\\)\\>" "[ 	'(]*" "\\(\\sw+\\)?") '(1 font-lock-keyword-face) '(6 (cond ((match-beginning 4) font-lock-function-name-face) ((match-beginning 5) font-lock-variable-name-face)) nil t))) (list (list (concat "(" (regexp-opt '("skk-save-point" "skk-with-point-move" "skk-loop-for-buffers") t) "\\>") '(1 font-lock-keyword-face))) (list (list "(\\(skk-error\\)\\>" '(1 font-lock-warning-face))) (symbol-value (if (boundp 'lisp-el-font-lock-keywords-2) 'lisp-el-font-lock-keywords-2 'lisp-font-lock-keywords-2))))) (put 'skk-deflocalvar 'doc-string-elt 3) (put 'skk-defadvice 'doc-string-elt 3)))
+
+;;;### (autoloads "actual autoloads are elsewhere" "skk-develop"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-develop.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-develop.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "skk-develop" '("skk-get-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "skk-emacs" "skk-emacs.el" (0 0 0 0))
-;;; Generated autoloads from skk-emacs.el
+;;;### (autoloads nil "skk-emacs" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-emacs.el"
+;;;;;;  "bcfe20efcab9d7d14a46b1fc7d8111d7")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-emacs.el
 
 (autoload 'skk-emacs-prepare-menu "skk-emacs" "\
 
@@ -598,13 +674,20 @@ GNU Emacs に付属するかな漢字変換辞書を用いて検索する。
 
 
 \(fn CHAR1 CHAR2)" nil nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "skk-emacs" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-emacs.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-emacs.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "skk-emacs" '("skk-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "skk-gadget" "skk-gadget.el" (0 0 0 0))
-;;; Generated autoloads from skk-gadget.el
+;;;### (autoloads nil "skk-gadget" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-gadget.el"
+;;;;;;  "bb76bd5cd266a6bc822077afb2058679")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-gadget.el
 
 (autoload 'skk-current-date "skk-gadget" "\
 `current-time-string' の出力を加工し、現在の日時 (string) を返す。
@@ -746,32 +829,47 @@ interactive に起動する他、\"clock /(skk-clock)/\" などのエントリ�
 NUMBER について UNIT-FROM から UNIT-TO への換算を行う。
 
 \(fn UNIT-FROM NUMBER UNIT-TO)" nil nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "skk-gadget" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-gadget.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-gadget.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "skk-gadget" '("skk-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "skk-hint" "skk-hint.el" (0 0 0 0))
-;;; Generated autoloads from skk-hint.el
+;;;### (autoloads "actual autoloads are elsewhere" "skk-hint" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-hint.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-hint.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "skk-hint" '("skk-hint-")))
 
 ;;;***
 
-;;;### (autoloads nil "skk-inline" "skk-inline.el" (0 0 0 0))
-;;; Generated autoloads from skk-inline.el
+;;;### (autoloads nil "skk-inline" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-inline.el"
+;;;;;;  "037a812079ca80d2e5ba49e1f3b62156")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-inline.el
 
 (autoload 'skk-inline-show "skk-inline" "\
 
 
 \(fn STR FACE &optional VERTICAL-STR TEXT-MAX-HEIGHT)" nil nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "skk-inline" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-inline.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-inline.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "skk-inline" '("skk-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "skk-isearch" "skk-isearch.el" (0 0 0 0))
-;;; Generated autoloads from skk-isearch.el
+;;;### (autoloads nil "skk-isearch" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-isearch.el"
+;;;;;;  "d7100151e8606e44d100f0abf7ccce08")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-isearch.el
 
 (autoload 'skk-isearch-message "skk-isearch" "\
 Show isearch message.
@@ -796,13 +894,21 @@ Hook function called when skk isearch is done.
 (defconst skk-isearch-really-early-advice (lambda nil (defadvice isearch-message-prefix (around skk-isearch-ad activate) (let ((current-input-method (unless (and (boundp 'skk-isearch-switch) skk-isearch-switch) current-input-method))) ad-do-it)) (defadvice isearch-toggle-input-method (around skk-isearch-ad activate) (cond ((string-match "^japanese-skk" (format "%s" default-input-method)) (let ((skk-isearch-initial-mode-when-skk-mode-disabled 'latin)) (skk-isearch-mode-setup) (skk-isearch-skk-mode))) ((null default-input-method) ad-do-it (when (string-match "^japanese-skk" (format "%s" default-input-method)) (let ((skk-isearch-initial-mode-when-skk-mode-disabled 'latin)) (skk-isearch-mode-setup)) (skk-deactivate-input-method))) (t ad-do-it)))))
 
 (unless (featurep 'xemacs) (define-key isearch-mode-map [(control \\)] 'isearch-toggle-input-method) (cond ((and (featurep 'advice) (assq 'skk-isearch-ad (assq 'around (ad-get-advice-info 'isearch-toggle-input-method)))) nil) ((locate-library "advice") (funcall skk-isearch-really-early-advice)) (t (add-hook 'before-init-hook skk-isearch-really-early-advice))))
+
+;;;### (autoloads "actual autoloads are elsewhere" "skk-isearch"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-isearch.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-isearch.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "skk-isearch" '("skk-isearch-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "skk-jisx0201" "skk-jisx0201.el" (0 0 0 0))
-;;; Generated autoloads from skk-jisx0201.el
+;;;### (autoloads nil "skk-jisx0201" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-jisx0201.el"
+;;;;;;  "95dd7d5ba7575754b0bc4c003db2aeba")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-jisx0201.el
 
 (autoload 'skk-jisx0201-mode "skk-jisx0201" "\
 SKK のモードを JIS X 0201 モードに変更する。
@@ -823,13 +929,21 @@ SKK のモードを JIS X 0201 モードに変更する。
 
 
 \(fn START END)" nil nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "skk-jisx0201"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-jisx0201.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-jisx0201.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "skk-jisx0201" '("skk-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "skk-jisx0213" "skk-jisx0213.el" (0 0 0 0))
-;;; Generated autoloads from skk-jisx0213.el
+;;;### (autoloads nil "skk-jisx0213" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-jisx0213.el"
+;;;;;;  "84b1f382f9e05b1c7e5ea66b07d39a5c")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-jisx0213.el
 
 (autoload 'skk-jisx0213-henkan-list-filter "skk-jisx0213" "\
 
@@ -838,9 +952,9 @@ SKK のモードを JIS X 0201 モードに変更する。
 
 ;;;***
 
-;;;### (autoloads nil "skk-jisyo-edit-mode" "skk-jisyo-edit-mode.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from skk-jisyo-edit-mode.el
+;;;### (autoloads nil "skk-jisyo-edit-mode" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-jisyo-edit-mode.el"
+;;;;;;  "4bcabdae0c9118c774111a0c114dc35c")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-jisyo-edit-mode.el
 
 (autoload 'skk-jisyo-edit-mode "skk-jisyo-edit-mode" "\
 Major mode for editing SKK JISYO.
@@ -871,13 +985,21 @@ SKK 使用中の場合は SKK による個人辞書バッファの更新が禁�
 チェックすることはできず、自己責任での編集であることは変わりない。
 
 \(fn &optional CODING-SYSTEM)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "skk-jisyo-edit-mode"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-jisyo-edit-mode.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-jisyo-edit-mode.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "skk-jisyo-edit-mode" '("skk-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "skk-kakasi" "skk-kakasi.el" (0 0 0 0))
-;;; Generated autoloads from skk-kakasi.el
+;;;### (autoloads nil "skk-kakasi" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-kakasi.el"
+;;;;;;  "51a8fcb0336ab1e269bfda06d09e1e6d")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-kakasi.el
 
 (autoload 'skk-gyakubiki-region "skk-kakasi" "\
 領域の漢字、送り仮名を全てひらがなに変換する。
@@ -991,13 +1113,20 @@ SKK 使用中の場合は SKK による個人辞書バッファの更新が禁�
 る。例えば、\"し\" はヘボン式では \"shi\" だが、訓令式では \"si\" となる。
 
 \(fn START END)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "skk-kakasi" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-kakasi.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-kakasi.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "skk-kakasi" '("skk-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "skk-kcode" "skk-kcode.el" (0 0 0 0))
-;;; Generated autoloads from skk-kcode.el
+;;;### (autoloads nil "skk-kcode" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-kcode.el"
+;;;;;;  "91018c80b5cebf236b727d14602485c0")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-kcode.el
 
 (autoload 'skk-input-by-code-or-menu "skk-kcode" "\
 変数 `skk-kcode-method' で指定された機能を用いて文字を挿入する。
@@ -1014,13 +1143,20 @@ SKK 使用中の場合は SKK による個人辞書バッファの更新が禁�
 \\[universal-argument] 付きで実行すると、following-char() を優先表示する.
 
 \(fn ARG)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "skk-kcode" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-kcode.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-kcode.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "skk-kcode" '("skk-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "skk-leim" "skk-leim.el" (0 0 0 0))
-;;; Generated autoloads from skk-leim.el
+;;;### (autoloads nil "skk-leim" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-leim.el"
+;;;;;;  "771a8876e17589d0bac024813a6483e0")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-leim.el
 
 (autoload 'skk-activate "skk-leim" "\
 
@@ -1045,13 +1181,20 @@ SKK 使用中の場合は SKK による個人辞書バッファの更新が禁�
 (register-input-method "japanese-skk" "Japanese" 'skk-activate "" "Simple Kana to Kanji conversion program")
 
 (register-input-method "japanese-skk-auto-fill" "Japanese" 'skk-auto-fill-activate "" "Simple Kana to Kanji conversion program with auto-fill")
+
+;;;### (autoloads "actual autoloads are elsewhere" "skk-leim" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-leim.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-leim.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "skk-leim" '("skk-leim-exit-from-minibuffer")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "skk-look" "skk-look.el" (0 0 0 0))
-;;; Generated autoloads from skk-look.el
+;;;### (autoloads nil "skk-look" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-look.el"
+;;;;;;  "0a4157ba8dca77a71d66d253580c3240")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-look.el
 
 (autoload 'skk-look "skk-look" "\
 UNIX look コマンドを利用して変換する。
@@ -1086,24 +1229,38 @@ words ファイルにある全ての見出しを返す。
 
 
 \(fn WORD &optional SITUATION)" nil nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "skk-look" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-look.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-look.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "skk-look" '("skk-look-1")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "skk-macs" "skk-macs.el" (0 0 0 0))
-;;; Generated autoloads from skk-macs.el
+;;;### (autoloads nil "skk-macs" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-macs.el"
+;;;;;;  "795e2bfb93bf8c49e33a129f7a74c77f")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-macs.el
 
 (put 'skk-defadvice 'lisp-indent-function 'defun)
 
 (put 'skk-loop-for-buffers 'lisp-indent-function 1)
+
+;;;### (autoloads "actual autoloads are elsewhere" "skk-macs" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-macs.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-macs.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "skk-macs" '("string-to-int-list" "skk-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "skk-num" "skk-num.el" (0 0 0 0))
-;;; Generated autoloads from skk-num.el
+;;;### (autoloads nil "skk-num" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-num.el"
+;;;;;;  "db6148f6ee7dc123febaf34fe1715176")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-num.el
 
 (autoload 'skk-num-compute-henkan-key "skk-num" "\
 KEY の中の連続する数字を現わす文字列を \"#\" に置き換えた文字列を返す。
@@ -1169,21 +1326,29 @@ type4 の数値再変換が行われたときは、数値自身を返し、そ�
 `skk-current-date' のサブルーチン。
 
 \(fn STR)" nil nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "skk-num" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-num.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-num.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "skk-num" '("skk-num-" "add-number-grouping")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "skk-search-web" "skk-search-web.el" (0 0 0
-;;;;;;  0))
-;;; Generated autoloads from skk-search-web.el
+;;;### (autoloads "actual autoloads are elsewhere" "skk-search-web"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-search-web.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-search-web.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "skk-search-web" '("skk-")))
 
 ;;;***
 
-;;;### (autoloads nil "skk-server" "skk-server.el" (0 0 0 0))
-;;; Generated autoloads from skk-server.el
+;;;### (autoloads nil "skk-server" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-server.el"
+;;;;;;  "07e2cab52e4ed0fc14a506f8ec57757b")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-server.el
 
 (autoload 'skk-server-version "skk-server" "\
 Return version information of SKK server.
@@ -1208,14 +1373,20 @@ non-nil であれば、加える。
 辞書サーバを切り離す。
 
 \(fn)" nil nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "skk-server" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-server.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-server.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "skk-server" '("skk-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "skk-server-completion" "skk-server-completion.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from skk-server-completion.el
+;;;### (autoloads nil "skk-server-completion" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-server-completion.el"
+;;;;;;  "174f6cacdbabd150c2be7ad1e17e733f")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-server-completion.el
 
 (autoload 'skk-server-completion-search "skk-server-completion" "\
 サーバーコンプリーションを行い、得られた各見出しでさらに検索する。
@@ -1228,32 +1399,49 @@ Server completion に対応した辞書サーバを利用する補完プログ�
 `skk-completion-prog-list' の要素に指定して使う。
 
 \(fn)" nil nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "skk-server-completion"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-server-completion.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-server-completion.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "skk-server-completion" '("skk-server-completion-search-midasi")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "skk-show-mode" "skk-show-mode.el" (0 0 0 0))
-;;; Generated autoloads from skk-show-mode.el
+;;;### (autoloads nil "skk-show-mode" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-show-mode.el"
+;;;;;;  "8cba7aab0917aba26b652c3dcc43faaa")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-show-mode.el
 
 (autoload 'skk-show-mode "skk-show-mode" "\
 
 
 \(fn)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "skk-show-mode"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-show-mode.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-show-mode.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "skk-show-mode" '("skk-show-mode-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "skk-sticky" "skk-sticky.el" (0 0 0 0))
-;;; Generated autoloads from skk-sticky.el
+;;;### (autoloads "actual autoloads are elsewhere" "skk-sticky" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-sticky.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-sticky.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "skk-sticky" '("skk-sticky-")))
 
 ;;;***
 
-;;;### (autoloads nil "skk-study" "skk-study.el" (0 0 0 0))
-;;; Generated autoloads from skk-study.el
+;;;### (autoloads nil "skk-study" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-study.el"
+;;;;;;  "058664bced7cd6db7e7b463b6bf0851a")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-study.el
 
 (autoload 'skk-study-search "skk-study" "\
 学習データを参照して ENTRY を加工し、関連性のある語の優先順位を上げて返す。
@@ -1295,13 +1483,20 @@ TO の既存データは破壊される。
 オプショナル引数の FORCE が non-nil であれば、破棄の確認をしない。
 
 \(fn &optional NOMSG FORCE)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "skk-study" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-study.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-study.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "skk-study" '("skk-study-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "skk-tankan" "skk-tankan.el" (0 0 0 0))
-;;; Generated autoloads from skk-tankan.el
+;;;### (autoloads nil "skk-tankan" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-tankan.el"
+;;;;;;  "8d87e1e4c6079579ffd9721f0fe6920a")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-tankan.el
 
 (autoload 'skk-tankan "skk-tankan" "\
 単漢字変換を開始する。
@@ -1322,26 +1517,40 @@ TO の既存データは破壊される。
 
 
 \(fn &optional JISYO)" nil nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "skk-tankan" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-tankan.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-tankan.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "skk-tankan" '("skk-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "skk-tut" "skk-tut.el" (0 0 0 0))
-;;; Generated autoloads from skk-tut.el
+;;;### (autoloads nil "skk-tut" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-tut.el"
+;;;;;;  "e749f78187fd0dfed80e4ff0adff7165")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-tut.el
 
 (autoload 'skk-tutorial "skk-tut" "\
 Start SKK tutorial.
 You can select English version by \\[universal-argument] \\[skk-tutorial].
 
 \(fn &optional QUERY-LANGUAGE)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "skk-tut" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-tut.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-tut.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "skk-tut" '("skk")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "skk-vars" "skk-vars.el" (0 0 0 0))
-;;; Generated autoloads from skk-vars.el
+;;;### (autoloads nil "skk-vars" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-vars.el"
+;;;;;;  "116d4b10d5b262bfb30d212c0c902ae0")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-vars.el
 
 (put 'skk-deflocalvar 'lisp-indent-function 'defun)
 
@@ -1354,13 +1563,20 @@ Emacs の起動そのものは遅くなるが、DDSKK の初回起動を早く�
 (custom-autoload 'skk-preload "skk-vars" t)
 
 (defvar skk-isearch-switch nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "skk-vars" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-vars.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-vars.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "skk-vars" '("skk")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "skk-version" "skk-version.el" (0 0 0 0))
-;;; Generated autoloads from skk-version.el
+;;;### (autoloads nil "skk-version" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-version.el"
+;;;;;;  "d8bfa13c076ab729fb6dd829aefb0bd8")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-version.el
 
 (autoload 'skk-version "skk-version" "\
 Return SKK version with its codename.
@@ -1371,20 +1587,28 @@ the codename.
 
 ;;;***
 
-;;;### (autoloads nil "skk-viper" "skk-viper.el" (0 0 0 0))
-;;; Generated autoloads from skk-viper.el
+;;;### (autoloads nil "skk-viper" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-viper.el"
+;;;;;;  "57a4831309cb6c8d53793c445c34df96")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-viper.el
 
 (autoload 'skk-viper-normalize-map "skk-viper" "\
 
 
 \(fn)" nil nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "skk-viper" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-viper.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-viper.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "skk-viper" '("skk-viper-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "tar-util" "tar-util.el" (0 0 0 0))
-;;; Generated autoloads from tar-util.el
+;;;### (autoloads nil "tar-util" "../../../../../.emacs.d/elpa/ddskk-20190423.1234/tar-util.el"
+;;;;;;  "84430b81184fb8509c037bb70062c277")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ddskk-20190423.1234/tar-util.el
 
 (autoload 'tar-make-descriptor "tar-util" "\
 BUFFER is made by function `tar-raw-buffer'.
@@ -1417,7 +1641,48 @@ Salvage SALVAGEFILE in ARCHIVE, and save to SAVEFILE.
 
 ;;;***
 
-;;;### (autoloads nil nil ("ddskk-pkg.el") (0 0 0 0))
+;;;### (autoloads nil nil ("../../../../../.emacs.d/elpa/ddskk-20190423.1234/context-skk.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/ddskk-autoloads.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/ddskk-pkg.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-abbrev.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-act.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-annotation.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-auto.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-azik.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-cdb.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-comp.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-cursor.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-cus.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-dcomp.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-develop.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-emacs.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-gadget.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-hint.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-inline.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-isearch.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-jisx0201.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-jisx0213.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-jisyo-edit-mode.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-kakasi.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-kcode.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-leim.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-look.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-macs.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-num.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-search-web.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-server-completion.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-server.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-show-mode.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-sticky.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-study.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-tankan.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-tut.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-vars.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-version.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk-viper.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/skk.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ddskk-20190423.1234/tar-util.el")
+;;;;;;  (0 0 0 0))
 
 ;;;***
 

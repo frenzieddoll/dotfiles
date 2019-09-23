@@ -221,15 +221,7 @@ the log of the running jupyter server."
    (list 'shutdown-server url-or-port)
    (ein:url url-or-port "api/shutdown")
    :type "POST"
-<<<<<<< HEAD
    :timeout 3 ;; content-query-timeout and query-timeout default nil
-=======
-<<<<<<< HEAD:.emacs.d/elpa/ein-20190813.2156/ein-jupyter.el
-   :timeout 3 ;; content-query-timeout and query-timeout default nil
-=======
-   :timeout 10 ;; content-query-timeout and query-timeout default nil
->>>>>>> f51dca9c882c9262ec9d372b0fdde4f173d1e651:.emacs.d/elpa/ein-20190809.2351/ein-jupyter.el
->>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
    :sync t))
 
 ;;;###autoload
@@ -243,15 +235,7 @@ the log of the running jupyter server."
           until (zerop (hash-table-count ein:query-running-process-table))
           do (sleep-for 0 500))
     (ein:shutdown-server url-or-port)
-<<<<<<< HEAD
     (loop repeat 3
-=======
-<<<<<<< HEAD:.emacs.d/elpa/ein-20190813.2156/ein-jupyter.el
-    (loop repeat 3
-=======
-    (loop repeat 10
->>>>>>> f51dca9c882c9262ec9d372b0fdde4f173d1e651:.emacs.d/elpa/ein-20190809.2351/ein-jupyter.el
->>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
           for proc = (ein:jupyter-server-process)
           until (not proc)
           do (sleep-for 0 1000)

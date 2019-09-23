@@ -6,17 +6,14 @@
                          (or (file-name-directory #$) (car load-path))))
 
 
-;;;### (autoloads nil "flycheck" "flycheck.el" (0 0 0 0))
-;;; Generated autoloads from flycheck.el
+;;;### (autoloads nil "flycheck" "../../../../../.emacs.d/elpa/flycheck-20190913.1456/flycheck.el"
+;;;;;;  "396255d0d58b370f047772616a6c45aa")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/flycheck-20190913.1456/flycheck.el
 
 (autoload 'flycheck-manual "flycheck" "\
-<<<<<<< HEAD
 Open the Flycheck manual.
 
 \(fn)" t nil)
-=======
-Open the Flycheck manual." t nil)
->>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
 
 (autoload 'flycheck-mode "flycheck" "\
 Minor mode for on-the-fly syntax checking.
@@ -230,31 +227,41 @@ Use this together with the `option', `option-list' and
 (function-put 'flycheck-def-option-var 'lisp-indent-function '3)
 
 (function-put 'flycheck-def-option-var 'doc-string-elt '4)
+
+;;;### (autoloads "actual autoloads are elsewhere" "flycheck" "../../../../../.emacs.d/elpa/flycheck-20190913.1456/flycheck.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/flycheck-20190913.1456/flycheck.el
 
-<<<<<<< HEAD
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "flycheck" '("flycheck-" "list-flycheck-errors" "locate-rebar3-project-root" "contains-rebar-config" "help-flycheck-checker-d" "read-flycheck-")))
-=======
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "flycheck" '("contains-rebar-config" "flycheck-" "help-flycheck-checker-d" "list-flycheck-errors" "locate-rebar3-project-root" "read-flycheck-")))
->>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
+
+;;;***
 
 ;;;***
 
-;;;### (autoloads nil "flycheck-buttercup" "flycheck-buttercup.el"
+;;;### (autoloads "actual autoloads are elsewhere" "flycheck-buttercup"
+;;;;;;  "../../../../../.emacs.d/elpa/flycheck-20190913.1456/flycheck-buttercup.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from flycheck-buttercup.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/flycheck-20190913.1456/flycheck-buttercup.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "flycheck-buttercup" '("flycheck-buttercup-format-error-list")))
 
 ;;;***
 
-;;;### (autoloads nil "flycheck-ert" "flycheck-ert.el" (0 0 0 0))
-;;; Generated autoloads from flycheck-ert.el
+;;;### (autoloads "actual autoloads are elsewhere" "flycheck-ert"
+;;;;;;  "../../../../../.emacs.d/elpa/flycheck-20190913.1456/flycheck-ert.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/flycheck-20190913.1456/flycheck-ert.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "flycheck-ert" '("flycheck-er")))
 
 ;;;***
 
-;;;### (autoloads nil nil ("flycheck-pkg.el") (0 0 0 0))
+;;;### (autoloads nil nil ("../../../../../.emacs.d/elpa/flycheck-20190913.1456/flycheck-autoloads.el"
+;;;;;;  "../../../../../.emacs.d/elpa/flycheck-20190913.1456/flycheck-buttercup.el"
+;;;;;;  "../../../../../.emacs.d/elpa/flycheck-20190913.1456/flycheck-ert.el"
+;;;;;;  "../../../../../.emacs.d/elpa/flycheck-20190913.1456/flycheck-pkg.el"
+;;;;;;  "../../../../../.emacs.d/elpa/flycheck-20190913.1456/flycheck.el")
+;;;;;;  (0 0 0 0))
 
 ;;;***
 

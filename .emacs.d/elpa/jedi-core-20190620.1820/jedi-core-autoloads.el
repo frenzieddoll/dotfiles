@@ -6,8 +6,9 @@
                          (or (file-name-directory #$) (car load-path))))
 
 
-;;;### (autoloads nil "jedi-core" "jedi-core.el" (0 0 0 0))
-;;; Generated autoloads from jedi-core.el
+;;;### (autoloads nil "jedi-core" "../../../../../.emacs.d/elpa/jedi-core-20190620.1820/jedi-core.el"
+;;;;;;  "ec62317f62861628c69cc4561f1d7ed5")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/jedi-core-20190620.1820/jedi-core.el
 
 (autoload 'jedi:start-dedicated-server "jedi-core" "\
 Start Jedi server dedicated to this buffer.
@@ -99,12 +100,21 @@ Reinstall Jedi server script jediepcserver.py.
 Blocking version `jedi:install-server'.
 
 \(fn)" nil nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "jedi-core" "../../../../../.emacs.d/elpa/jedi-core-20190620.1820/jedi-core.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/jedi-core-20190620.1820/jedi-core.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "jedi-core" '("jedi")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil nil ("jedi-core-pkg.el") (0 0 0 0))
+;;;### (autoloads nil nil ("../../../../../.emacs.d/elpa/jedi-core-20190620.1820/jedi-core-autoloads.el"
+;;;;;;  "../../../../../.emacs.d/elpa/jedi-core-20190620.1820/jedi-core-pkg.el"
+;;;;;;  "../../../../../.emacs.d/elpa/jedi-core-20190620.1820/jedi-core.el")
+;;;;;;  (0 0 0 0))
 
 ;;;***
 

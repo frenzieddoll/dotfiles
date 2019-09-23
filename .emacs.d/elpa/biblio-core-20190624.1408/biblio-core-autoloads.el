@@ -6,8 +6,9 @@
                          (or (file-name-directory #$) (car load-path))))
 
 
-;;;### (autoloads nil "biblio-core" "biblio-core.el" (0 0 0 0))
-;;; Generated autoloads from biblio-core.el
+;;;### (autoloads nil "biblio-core" "../../../../../.emacs.d/elpa/biblio-core-20190624.1408/biblio-core.el"
+;;;;;;  "115ffd57726afc9cb92a51161fb5b9db")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/biblio-core-20190624.1408/biblio-core.el
 
 (autoload 'biblio-lookup "biblio-core" "\
 Perform a search using BACKEND, and QUERY.
@@ -17,8 +18,21 @@ function obeying the interface described in the docstring of
 inserted.
 
 \(fn &optional BACKEND QUERY)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "biblio-core"
+;;;;;;  "../../../../../.emacs.d/elpa/biblio-core-20190624.1408/biblio-core.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/biblio-core-20190624.1408/biblio-core.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "biblio-core" '("biblio-")))
+
+;;;***
+
+;;;***
+
+;;;### (autoloads nil nil ("../../../../../.emacs.d/elpa/biblio-core-20190624.1408/biblio-core-autoloads.el"
+;;;;;;  "../../../../../.emacs.d/elpa/biblio-core-20190624.1408/biblio-core.el")
+;;;;;;  (0 0 0 0))
 
 ;;;***
 

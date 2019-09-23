@@ -6,10 +6,17 @@
                          (or (file-name-directory #$) (car load-path))))
 
 
-;;;### (autoloads nil "request" "request.el" (0 0 0 0))
-;;; Generated autoloads from request.el
+;;;### (autoloads "actual autoloads are elsewhere" "request" "../../../../../.emacs.d/elpa/request-20190922.2218/request.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/request-20190922.2218/request.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "request" '("request-")))
+
+;;;***
+
+;;;### (autoloads nil nil ("../../../../../.emacs.d/elpa/request-20190922.2218/request-autoloads.el"
+;;;;;;  "../../../../../.emacs.d/elpa/request-20190922.2218/request.el")
+;;;;;;  (0 0 0 0))
 
 ;;;***
 

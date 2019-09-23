@@ -6,8 +6,9 @@
                          (or (file-name-directory #$) (car load-path))))
 
 
-;;;### (autoloads nil "flymake" "flymake.el" (0 0 0 0))
-;;; Generated autoloads from flymake.el
+;;;### (autoloads nil "flymake" "../../../../../.emacs.d/elpa/flymake-1.0.8/flymake.el"
+;;;;;;  "4d0794656d64023895c3237460ecdff9")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/flymake-1.0.8/flymake.el
 
 (autoload 'flymake-log "flymake" "\
 Log, at level LEVEL, the message MSG formatted with ARGS.
@@ -91,8 +92,20 @@ Turn Flymake mode on.
 Turn Flymake mode off.
 
 \(fn)" nil nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "flymake" "../../../../../.emacs.d/elpa/flymake-1.0.8/flymake.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/flymake-1.0.8/flymake.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "flymake" '("flymake-")))
+
+;;;***
+
+;;;***
+
+;;;### (autoloads nil nil ("../../../../../.emacs.d/elpa/flymake-1.0.8/flymake-autoloads.el"
+;;;;;;  "../../../../../.emacs.d/elpa/flymake-1.0.8/flymake.el")
+;;;;;;  (0 0 0 0))
 
 ;;;***
 

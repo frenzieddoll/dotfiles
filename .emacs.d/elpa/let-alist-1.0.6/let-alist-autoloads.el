@@ -6,8 +6,9 @@
                          (or (file-name-directory #$) (car load-path))))
 
 
-;;;### (autoloads nil "let-alist" "let-alist.el" (0 0 0 0))
-;;; Generated autoloads from let-alist.el
+;;;### (autoloads nil "let-alist" "../../../../../.emacs.d/elpa/let-alist-1.0.6/let-alist.el"
+;;;;;;  "9c058d12d0f4ba0ae01d462e82507d31")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/let-alist-1.0.6/let-alist.el
 
 (autoload 'let-alist "let-alist" "\
 Let-bind dotted symbols to their cdrs in ALIST and execute BODY.
@@ -41,8 +42,20 @@ displayed in the example above.
 \(fn ALIST &rest BODY)" nil t)
 
 (function-put 'let-alist 'lisp-indent-function '1)
+
+;;;### (autoloads "actual autoloads are elsewhere" "let-alist" "../../../../../.emacs.d/elpa/let-alist-1.0.6/let-alist.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/let-alist-1.0.6/let-alist.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "let-alist" '("let-alist--")))
+
+;;;***
+
+;;;***
+
+;;;### (autoloads nil nil ("../../../../../.emacs.d/elpa/let-alist-1.0.6/let-alist-autoloads.el"
+;;;;;;  "../../../../../.emacs.d/elpa/let-alist-1.0.6/let-alist.el")
+;;;;;;  (0 0 0 0))
 
 ;;;***
 

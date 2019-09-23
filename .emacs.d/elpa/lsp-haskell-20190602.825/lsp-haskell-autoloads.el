@@ -6,8 +6,9 @@
                          (or (file-name-directory #$) (car load-path))))
 
 
-;;;### (autoloads nil "lsp-haskell" "lsp-haskell.el" (0 0 0 0))
-;;; Generated autoloads from lsp-haskell.el
+;;;### (autoloads nil "lsp-haskell" "../../../../../.emacs.d/elpa/lsp-haskell-20190602.825/lsp-haskell.el"
+;;;;;;  "8719264cd9e9b4ce26f16b0762bd37ad")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/lsp-haskell-20190602.825/lsp-haskell.el
 
 (let ((loads (get 'lsp-haskell 'custom-loads))) (if (member '"lsp-haskell" loads) nil (put 'lsp-haskell 'custom-loads (cons '"lsp-haskell" loads))))
 
@@ -38,8 +39,21 @@ For example, use the following the start the hie process in a nix-shell:
   )")
 
 (custom-autoload 'lsp-haskell-process-wrapper-function "lsp-haskell" t)
+
+;;;### (autoloads "actual autoloads are elsewhere" "lsp-haskell"
+;;;;;;  "../../../../../.emacs.d/elpa/lsp-haskell-20190602.825/lsp-haskell.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/lsp-haskell-20190602.825/lsp-haskell.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "lsp-haskell" '("lsp-")))
+
+;;;***
+
+;;;***
+
+;;;### (autoloads nil nil ("../../../../../.emacs.d/elpa/lsp-haskell-20190602.825/lsp-haskell-autoloads.el"
+;;;;;;  "../../../../../.emacs.d/elpa/lsp-haskell-20190602.825/lsp-haskell.el")
+;;;;;;  (0 0 0 0))
 
 ;;;***
 

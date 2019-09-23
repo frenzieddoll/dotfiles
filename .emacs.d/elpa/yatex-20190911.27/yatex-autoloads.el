@@ -6,43 +6,49 @@
                          (or (file-name-directory #$) (car load-path))))
 
 
-;;;### (autoloads nil "yahtml" "yahtml.el" (0 0 0 0))
-;;; Generated autoloads from yahtml.el
+;;;### (autoloads "actual autoloads are elsewhere" "yahtml" "../../../../../.emacs.d/elpa/yatex-20190911.27/yahtml.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/yatex-20190911.27/yahtml.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "yahtml" '("yahtml")))
 
 ;;;***
 
-;;;### (autoloads nil "yatex" "yatex.el" (0 0 0 0))
-;;; Generated autoloads from yatex.el
+;;;### (autoloads "actual autoloads are elsewhere" "yatex" "../../../../../.emacs.d/elpa/yatex-20190911.27/yatex.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/yatex-20190911.27/yatex.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "yatex" '("yatex-mode" "YaTeX-" "tex-" "tmp-" "user-" "section-table" "singlecmd-table" "LaTeX2e-fontstyle-alist" "fontsize-table" "env-table" "NTT-jTeX" "latex-" "dvi" "makeindex-command" "bibtex-command")))
 
 ;;;***
 
-;;;### (autoloads nil "yatex19" "yatex19.el" (0 0 0 0))
-;;; Generated autoloads from yatex19.el
+;;;### (autoloads "actual autoloads are elsewhere" "yatex19" "../../../../../.emacs.d/elpa/yatex-20190911.27/yatex19.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/yatex-20190911.27/yatex19.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "yatex19" '("YaTeX-" "hilit-patterns-alist")))
 
 ;;;***
 
-;;;### (autoloads nil "yatex23" "yatex23.el" (0 0 0 0))
-;;; Generated autoloads from yatex23.el
+;;;### (autoloads "actual autoloads are elsewhere" "yatex23" "../../../../../.emacs.d/elpa/yatex-20190911.27/yatex23.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/yatex-20190911.27/yatex23.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "yatex23" '("YaTeX-")))
 
 ;;;***
 
-;;;### (autoloads nil "yatexadd" "yatexadd.el" (0 0 0 0))
-;;; Generated autoloads from yatexadd.el
+;;;### (autoloads "actual autoloads are elsewhere" "yatexadd" "../../../../../.emacs.d/elpa/yatex-20190911.27/yatexadd.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/yatex-20190911.27/yatexadd.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "yatexadd" '("YaTeX")))
 
 ;;;***
 
-;;;### (autoloads nil "yatexenv" "yatexenv.el" (0 0 0 0))
-;;; Generated autoloads from yatexenv.el
+;;;### (autoloads nil "yatexenv" "../../../../../.emacs.d/elpa/yatex-20190911.27/yatexenv.el"
+;;;;;;  "f7f2893262203708d8f3499538bc09a9")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/yatex-20190911.27/yatexenv.el
 
 (autoload 'YaTeX-what-column "yatexenv" "\
 Show which kind of column the current position is belonging to.
@@ -66,46 +72,63 @@ Indent a line in equation family.
 Go to corresponding left or ight.
 
 \(fn)" nil nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "yatexenv" "../../../../../.emacs.d/elpa/yatex-20190911.27/yatexenv.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/yatex-20190911.27/yatexenv.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "yatexenv" '("YaTeX-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "yatexflt" "yatexflt.el" (0 0 0 0))
-;;; Generated autoloads from yatexflt.el
+;;;### (autoloads nil "yatexflt" "../../../../../.emacs.d/elpa/yatex-20190911.27/yatexflt.el"
+;;;;;;  "50134465bd8a87bd28e59816770cc165")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/yatex-20190911.27/yatexflt.el
 
 (autoload 'YaTeX-filter-goto-source "yatexflt" "\
 Go to corresponding text source of the graphic file
 
 \(fn FILE OTHER-WIN)" nil nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "yatexflt" "../../../../../.emacs.d/elpa/yatex-20190911.27/yatexflt.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/yatex-20190911.27/yatexflt.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "yatexflt" '("YaTeX-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "yatexgen" "yatexgen.el" (0 0 0 0))
-;;; Generated autoloads from yatexgen.el
+;;;### (autoloads "actual autoloads are elsewhere" "yatexgen" "../../../../../.emacs.d/elpa/yatex-20190911.27/yatexgen.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/yatex-20190911.27/yatexgen.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "yatexgen" '("YaTeX-")))
 
 ;;;***
 
-;;;### (autoloads nil "yatexhie" "yatexhie.el" (0 0 0 0))
-;;; Generated autoloads from yatexhie.el
+;;;### (autoloads "actual autoloads are elsewhere" "yatexhie" "../../../../../.emacs.d/elpa/yatex-20190911.27/yatexhie.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/yatex-20190911.27/yatexhie.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "yatexhie" '("YaTeX-")))
 
 ;;;***
 
-;;;### (autoloads nil "yatexhks" "yatexhks.el" (0 0 0 0))
-;;; Generated autoloads from yatexhks.el
+;;;### (autoloads "actual autoloads are elsewhere" "yatexhks" "../../../../../.emacs.d/elpa/yatex-20190911.27/yatexhks.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/yatex-20190911.27/yatexhks.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "yatexhks" '("YaTeX-browse-info")))
 
 ;;;***
 
-;;;### (autoloads nil "yatexhlp" "yatexhlp.el" (0 0 0 0))
-;;; Generated autoloads from yatexhlp.el
+;;;### (autoloads nil "yatexhlp" "../../../../../.emacs.d/elpa/yatex-20190911.27/yatexhlp.el"
+;;;;;;  "292069d8d76d1df61e1b652ab07b3e3d")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/yatex-20190911.27/yatexhlp.el
 
 (autoload 'YaTeX-apropos "yatexhlp" "\
 
@@ -119,20 +142,28 @@ Non-nil for optional second argument REF-ONLY inhibits call enrich-help
 for non-interactive use.
 
 \(fn &optional MACRO REF-ONLY)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "yatexhlp" "../../../../../.emacs.d/elpa/yatex-20190911.27/yatexhlp.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/yatex-20190911.27/yatexhlp.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "yatexhlp" '("YaTeX-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "yatexinf" "yatexinf.el" (0 0 0 0))
-;;; Generated autoloads from yatexinf.el
+;;;### (autoloads "actual autoloads are elsewhere" "yatexinf" "../../../../../.emacs.d/elpa/yatex-20190911.27/yatexinf.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/yatex-20190911.27/yatexinf.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "yatexinf" '("yatexinfo-")))
 
 ;;;***
 
-;;;### (autoloads nil "yatexlib" "yatexlib.el" (0 0 0 0))
-;;; Generated autoloads from yatexlib.el
+;;;### (autoloads nil "yatexlib" "../../../../../.emacs.d/elpa/yatex-20190911.27/yatexlib.el"
+;;;;;;  "1ad84a31d785df290e7dd5ef3858937c")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/yatex-20190911.27/yatexlib.el
 
 (autoload 'YaTeX-kanji-ptex-mnemonic "yatexlib" "\
 Return the kanji-mnemonic of pTeX from current buffer's coding-system.
@@ -346,20 +377,28 @@ Delete
 Remove current indentation and reindento to COL column.
 
 \(fn COL)" nil nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "yatexlib" "../../../../../.emacs.d/elpa/yatex-20190911.27/yatexlib.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/yatex-20190911.27/yatexlib.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "yatexlib" '("tfb-and-exit" "bcf-and-exit" "YaTeX-" "goto-buffer-window" "foreach-buffers" "latex-message-kanji-code")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "yatexm-o" "yatexm-o.el" (0 0 0 0))
-;;; Generated autoloads from yatexm-o.el
+;;;### (autoloads "actual autoloads are elsewhere" "yatexm-o" "../../../../../.emacs.d/elpa/yatex-20190911.27/yatexm-o.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/yatex-20190911.27/yatexm-o.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "yatexm-o" '("yatex-mode-")))
 
 ;;;***
 
-;;;### (autoloads nil "yatexmth" "yatexmth.el" (0 0 0 0))
-;;; Generated autoloads from yatexmth.el
+;;;### (autoloads nil "yatexmth" "../../../../../.emacs.d/elpa/yatex-20190911.27/yatexmth.el"
+;;;;;;  "18d7fdc1fa4db5e4eec16853406f33de")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/yatex-20190911.27/yatexmth.el
 
 (autoload 'YaTeX-toggle-math-mode "yatexmth" "\
 
@@ -370,27 +409,36 @@ Remove current indentation and reindento to COL column.
 Go to corresponding mathematical parentheses.
 
 \(fn)" nil nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "yatexmth" "../../../../../.emacs.d/elpa/yatex-20190911.27/yatexmth.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/yatex-20190911.27/yatexmth.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "yatexmth" '("YaTeX-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "yatexpkg" "yatexpkg.el" (0 0 0 0))
-;;; Generated autoloads from yatexpkg.el
+;;;### (autoloads "actual autoloads are elsewhere" "yatexpkg" "../../../../../.emacs.d/elpa/yatex-20190911.27/yatexpkg.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/yatex-20190911.27/yatexpkg.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "yatexpkg" '("YaTeX-package-")))
 
 ;;;***
 
-;;;### (autoloads nil "yatexprc" "yatexprc.el" (0 0 0 0))
-;;; Generated autoloads from yatexprc.el
+;;;### (autoloads "actual autoloads are elsewhere" "yatexprc" "../../../../../.emacs.d/elpa/yatex-20190911.27/yatexprc.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/yatex-20190911.27/yatexprc.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "yatexprc" '("YaTeX-")))
 
 ;;;***
 
-;;;### (autoloads nil "yatexsec" "yatexsec.el" (0 0 0 0))
-;;; Generated autoloads from yatexsec.el
+;;;### (autoloads nil "yatexsec" "../../../../../.emacs.d/elpa/yatex-20190911.27/yatexsec.el"
+;;;;;;  "8e423822bf4af04312a3b2783a2780fb")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/yatex-20190911.27/yatexsec.el
 
 (autoload 'YaTeX-read-section-in-minibuffer "yatexsec" "\
 
@@ -401,12 +449,38 @@ Go to corresponding mathematical parentheses.
 Input sectining command with previous overview.
 
 \(fn)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "yatexsec" "../../../../../.emacs.d/elpa/yatex-20190911.27/yatexsec.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/yatex-20190911.27/yatexsec.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "yatexsec" '("YaTeX-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil nil ("yatex-pkg.el") (0 0 0 0))
+;;;### (autoloads nil nil ("../../../../../.emacs.d/elpa/yatex-20190911.27/yahtml.el"
+;;;;;;  "../../../../../.emacs.d/elpa/yatex-20190911.27/yatex-autoloads.el"
+;;;;;;  "../../../../../.emacs.d/elpa/yatex-20190911.27/yatex-pkg.el"
+;;;;;;  "../../../../../.emacs.d/elpa/yatex-20190911.27/yatex.el"
+;;;;;;  "../../../../../.emacs.d/elpa/yatex-20190911.27/yatex19.el"
+;;;;;;  "../../../../../.emacs.d/elpa/yatex-20190911.27/yatex23.el"
+;;;;;;  "../../../../../.emacs.d/elpa/yatex-20190911.27/yatexadd.el"
+;;;;;;  "../../../../../.emacs.d/elpa/yatex-20190911.27/yatexenv.el"
+;;;;;;  "../../../../../.emacs.d/elpa/yatex-20190911.27/yatexflt.el"
+;;;;;;  "../../../../../.emacs.d/elpa/yatex-20190911.27/yatexgen.el"
+;;;;;;  "../../../../../.emacs.d/elpa/yatex-20190911.27/yatexhie.el"
+;;;;;;  "../../../../../.emacs.d/elpa/yatex-20190911.27/yatexhks.el"
+;;;;;;  "../../../../../.emacs.d/elpa/yatex-20190911.27/yatexhlp.el"
+;;;;;;  "../../../../../.emacs.d/elpa/yatex-20190911.27/yatexinf.el"
+;;;;;;  "../../../../../.emacs.d/elpa/yatex-20190911.27/yatexlib.el"
+;;;;;;  "../../../../../.emacs.d/elpa/yatex-20190911.27/yatexm-o.el"
+;;;;;;  "../../../../../.emacs.d/elpa/yatex-20190911.27/yatexmth.el"
+;;;;;;  "../../../../../.emacs.d/elpa/yatex-20190911.27/yatexpkg.el"
+;;;;;;  "../../../../../.emacs.d/elpa/yatex-20190911.27/yatexprc.el"
+;;;;;;  "../../../../../.emacs.d/elpa/yatex-20190911.27/yatexsec.el")
+;;;;;;  (0 0 0 0))
 
 ;;;***
 

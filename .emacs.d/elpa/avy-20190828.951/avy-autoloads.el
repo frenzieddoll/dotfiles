@@ -6,8 +6,9 @@
                          (or (file-name-directory #$) (car load-path))))
 
 
-;;;### (autoloads nil "avy" "avy.el" (0 0 0 0))
-;;; Generated autoloads from avy.el
+;;;### (autoloads nil "avy" "../../../../../.emacs.d/elpa/avy-20190828.951/avy.el"
+;;;;;;  "09ed194a26fc0f25ffa7762dc02298cf")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/avy-20190828.951/avy.el
 
 (autoload 'avy-goto-char "avy" "\
 Jump to the currently visible CHAR.
@@ -47,13 +48,9 @@ When ARG is non-nil, do the opposite of `avy-all-windows'.
 \(fn CHAR1 CHAR2 &optional ARG)" t nil)
 
 (autoload 'avy-isearch "avy" "\
-<<<<<<< HEAD
 Jump to one of the current isearch candidates.
 
 \(fn)" t nil)
-=======
-Jump to one of the current isearch candidates." t nil)
->>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
 
 (autoload 'avy-goto-word-0 "avy" "\
 Jump to a word start.
@@ -143,13 +140,9 @@ The case of CHAR is ignored.
 
 (autoload 'avy-goto-word-or-subword-1 "avy" "\
 Forward to `avy-goto-subword-1' or `avy-goto-word-1'.
-<<<<<<< HEAD
 Which one depends on variable `subword-mode'.
 
 \(fn)" t nil)
-=======
-Which one depends on variable `subword-mode'." t nil)
->>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
 
 (autoload 'avy-goto-line "avy" "\
 Jump to a line start in current buffer.
@@ -206,13 +199,9 @@ The window scope is determined by `avy-all-windows' or
 \(fn ARG)" t nil)
 
 (autoload 'avy-move-region "avy" "\
-<<<<<<< HEAD
 Select two lines and move the text between them above the current line.
 
 \(fn)" t nil)
-=======
-Select two lines and move the text between them above the current line." t nil)
->>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
 
 (autoload 'avy-kill-region "avy" "\
 Select two lines and kill the region between them.
@@ -261,21 +250,29 @@ newline.
 \(fn ARG)" t nil)
 
 (autoload 'avy-setup-default "avy" "\
-<<<<<<< HEAD
 Setup the default shortcuts.
 
 \(fn)" nil nil)
-=======
-Setup the default shortcuts." nil nil)
->>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
 
 (autoload 'avy-goto-char-timer "avy" "\
 Read one or many consecutive chars and jump to the first one.
 The window scope is determined by `avy-all-windows' (ARG negates it).
 
 \(fn &optional ARG)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "avy" "../../../../../.emacs.d/elpa/avy-20190828.951/avy.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/avy-20190828.951/avy.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "avy" '("avy-")))
+
+;;;***
+
+;;;***
+
+;;;### (autoloads nil nil ("../../../../../.emacs.d/elpa/avy-20190828.951/avy-autoloads.el"
+;;;;;;  "../../../../../.emacs.d/elpa/avy-20190828.951/avy.el") (0
+;;;;;;  0 0 0))
 
 ;;;***
 

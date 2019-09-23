@@ -6,8 +6,9 @@
                          (or (file-name-directory #$) (car load-path))))
 
 
-;;;### (autoloads nil "csv-mode" "csv-mode.el" (0 0 0 0))
-;;; Generated autoloads from csv-mode.el
+;;;### (autoloads nil "csv-mode" "../../../../../.emacs.d/elpa/csv-mode-1.8/csv-mode.el"
+;;;;;;  "d881cad4ac672236a53bbe2a10e29dc9")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/csv-mode-1.8/csv-mode.el
 
 (autoload 'csv-mode "csv-mode" "\
 Major mode for editing files of comma-separated value type.
@@ -48,8 +49,20 @@ CSV mode provides the following specific keyboard key bindings:
 \(fn)" t nil)
 
 (add-to-list 'auto-mode-alist '("\\.[Cc][Ss][Vv]\\'" . csv-mode))
+
+;;;### (autoloads "actual autoloads are elsewhere" "csv-mode" "../../../../../.emacs.d/elpa/csv-mode-1.8/csv-mode.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/csv-mode-1.8/csv-mode.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "csv-mode" '("csv-")))
+
+;;;***
+
+;;;***
+
+;;;### (autoloads nil nil ("../../../../../.emacs.d/elpa/csv-mode-1.8/csv-mode-autoloads.el"
+;;;;;;  "../../../../../.emacs.d/elpa/csv-mode-1.8/csv-mode.el")
+;;;;;;  (0 0 0 0))
 
 ;;;***
 

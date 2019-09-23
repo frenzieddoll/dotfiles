@@ -6,63 +6,81 @@
                          (or (file-name-directory #$) (car load-path))))
 
 
-;;;### (autoloads nil "ein-ac" "ein-ac.el" (0 0 0 0))
-;;; Generated autoloads from ein-ac.el
+;;;### (autoloads "actual autoloads are elsewhere" "ein-ac" "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-ac.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-ac.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-ac" '("ein:")))
 
 ;;;***
 
-;;;### (autoloads nil "ein-cell" "ein-cell.el" (0 0 0 0))
-;;; Generated autoloads from ein-cell.el
+;;;### (autoloads "actual autoloads are elsewhere" "ein-cell" "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-cell.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-cell.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-cell" '("ein:")))
 
 ;;;***
 
-;;;### (autoloads nil "ein-cell-edit" "ein-cell-edit.el" (0 0 0 0))
-;;; Generated autoloads from ein-cell-edit.el
+;;;### (autoloads "actual autoloads are elsewhere" "ein-cell-edit"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-cell-edit.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-cell-edit.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-cell-edit" '("ein:")))
 
 ;;;***
 
-;;;### (autoloads nil "ein-cell-output" "ein-cell-output.el" (0 0
-;;;;;;  0 0))
-;;; Generated autoloads from ein-cell-output.el
+;;;### (autoloads "actual autoloads are elsewhere" "ein-cell-output"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-cell-output.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-cell-output.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-cell-output" '("ein:")))
 
 ;;;***
 
-;;;### (autoloads nil "ein-classes" "ein-classes.el" (0 0 0 0))
-;;; Generated autoloads from ein-classes.el
+;;;### (autoloads "actual autoloads are elsewhere" "ein-classes"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-classes.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-classes.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-classes" '("ein:")))
 
 ;;;***
 
-;;;### (autoloads nil "ein-company" "ein-company.el" (0 0 0 0))
-;;; Generated autoloads from ein-company.el
+;;;### (autoloads nil "ein-company" "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-company.el"
+;;;;;;  "dd7a69906a61e4a4f3e3492ebd175d53")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-company.el
 
 (autoload 'ein:company-backend "ein-company" "\
 
 
 \(fn COMMAND &optional ARG &rest _)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "ein-company"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-company.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-company.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-company" '("ein:comp")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "ein-completer" "ein-completer.el" (0 0 0 0))
-;;; Generated autoloads from ein-completer.el
+;;;### (autoloads "actual autoloads are elsewhere" "ein-completer"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-completer.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-completer.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-completer" '("ein:complet")))
 
 ;;;***
 
-;;;### (autoloads nil "ein-connect" "ein-connect.el" (0 0 0 0))
-;;; Generated autoloads from ein-connect.el
+;;;### (autoloads nil "ein-connect" "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-connect.el"
+;;;;;;  "7ac30bc561cb911ddc16b5be2ce0b717")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-connect.el
 
 (autoload 'ein:connect-to-notebook-command "ein-connect" "\
 Connect to notebook.  When the prefix argument is given,
@@ -91,20 +109,24 @@ Connect BUFFER to NOTEBOOK.
 Connect to the default notebook specified by
 `ein:connect-default-notebook'.  Set this to `python-mode-hook'
 to automatically connect any python-mode buffer to the
-<<<<<<< HEAD
 notebook.
 
 \(fn)" nil nil)
-=======
-notebook." nil nil)
->>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
+
+;;;### (autoloads "actual autoloads are elsewhere" "ein-connect"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-connect.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-connect.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-connect" '("ein:")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "ein-console" "ein-console.el" (0 0 0 0))
-;;; Generated autoloads from ein-console.el
+;;;### (autoloads nil "ein-console" "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-console.el"
+;;;;;;  "1470e6ee46aeb8ec5b3bcefe72e2075b")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-console.el
 
 (autoload 'ein:console-open "ein-console" "\
 Open IPython console.
@@ -116,43 +138,41 @@ opens a \"plain\" command line interpreter (comint) buffer where
 you cannot use fancy stuff such as TAB completion.
 It should be possible to support python-mode.el.  Patches are welcome!
 
-<<<<<<< HEAD
 .. _python.el: https://github.com/fgallina/python.el
 
 \(fn)" t nil)
-=======
-.. _python.el: https://github.com/fgallina/python.el" t nil)
->>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
+
+;;;### (autoloads "actual autoloads are elsewhere" "ein-console"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-console.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-console.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-console" '("ein:")))
 
 ;;;***
-
-;;;### (autoloads nil "ein-contents-api" "ein-contents-api.el" (0
-;;;;;;  0 0 0))
-;;; Generated autoloads from ein-contents-api.el
 
-<<<<<<< HEAD
+;;;***
+
+;;;### (autoloads "actual autoloads are elsewhere" "ein-contents-api"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-contents-api.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-contents-api.el
+
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-contents-api" '("ein:" "update-content-path" "*ein:content-hierarchy*")))
-=======
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-contents-api" '("*ein:content-hierarchy*" "ein:" "update-content-path")))
->>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
 
 ;;;***
 
-;;;### (autoloads nil "ein-core" "ein-core.el" (0 0 0 0))
-;;; Generated autoloads from ein-core.el
+;;;### (autoloads "actual autoloads are elsewhere" "ein-core" "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-core.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-core.el
 
-<<<<<<< HEAD
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-core" '("ein:" "*ein:")))
-=======
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-core" '("*ein:" "ein:")))
->>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
 
 ;;;***
 
-;;;### (autoloads nil "ein-dev" "ein-dev.el" (0 0 0 0))
-;;; Generated autoloads from ein-dev.el
+;;;### (autoloads nil "ein-dev" "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-dev.el"
+;;;;;;  "cae11845864d1b7c8f85a693cb63bb28")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-dev.el
 
 (autoload 'ein:dev-insert-mode-map "ein-dev" "\
 Insert mode-map into rst document.  For README.rst.
@@ -162,7 +182,6 @@ Insert mode-map into rst document.  For README.rst.
 (autoload 'ein:dev-start-debug "ein-dev" "\
 Enable EIN debugging support.
 When the prefix argument is given, debugging support for websocket
-<<<<<<< HEAD
 callback (`websocket-callback-debug-on-error') is enabled.
 
 \(fn)" t nil)
@@ -176,43 +195,38 @@ Inverse of `ein:dev-start-debug'.  Hard to maintain because it needs to match st
 Open a buffer with bug report template.
 
 \(fn)" t nil)
-=======
-callback (`websocket-callback-debug-on-error') is enabled." t nil)
-
-(autoload 'ein:dev-stop-debug "ein-dev" "\
-Inverse of `ein:dev-start-debug'.  Hard to maintain because it needs to match start" t nil)
-
-(autoload 'ein:dev-bug-report-template "ein-dev" "\
-Open a buffer with bug report template." t nil)
->>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
+
+;;;### (autoloads "actual autoloads are elsewhere" "ein-dev" "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-dev.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-dev.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-dev" '("ein:")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "ein-events" "ein-events.el" (0 0 0 0))
-;;; Generated autoloads from ein-events.el
+;;;### (autoloads "actual autoloads are elsewhere" "ein-events" "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-events.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-events.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-events" '("ein:events-")))
 
 ;;;***
 
-;;;### (autoloads nil "ein-file" "ein-file.el" (0 0 0 0))
-;;; Generated autoloads from ein-file.el
+;;;### (autoloads "actual autoloads are elsewhere" "ein-file" "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-file.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-file.el
 
-<<<<<<< HEAD
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-file" '("ein:" "*ein:file-buffername-template*")))
-=======
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-file" '("*ein:file-buffername-template*" "ein:")))
->>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
 
 ;;;***
 
-;;;### (autoloads nil "ein-helm" "ein-helm.el" (0 0 0 0))
-;;; Generated autoloads from ein-helm.el
+;;;### (autoloads nil "ein-helm" "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-helm.el"
+;;;;;;  "c12970eb6d8fc1d3fd99be8071f1eab1")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-helm.el
 
 (autoload 'anything-ein-kernel-history "ein-helm" "\
-<<<<<<< HEAD
 Search kernel execution history then insert the selected one.
 
 \(fn)" t nil)
@@ -231,71 +245,69 @@ Choose opened notebook using anything.el interface.
 Choose opened notebook using helm interface.
 
 \(fn)" t nil)
-=======
-Search kernel execution history then insert the selected one." t nil)
-
-(autoload 'helm-ein-kernel-history "ein-helm" "\
-Search kernel execution history then insert the selected one." t nil)
-
-(autoload 'anything-ein-notebook-buffers "ein-helm" "\
-Choose opened notebook using anything.el interface." t nil)
-
-(autoload 'helm-ein-notebook-buffers "ein-helm" "\
-Choose opened notebook using helm interface." t nil)
->>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
+
+;;;### (autoloads "actual autoloads are elsewhere" "ein-helm" "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-helm.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-helm.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-helm" '("ein:helm-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "ein-iexec" "ein-iexec.el" (0 0 0 0))
-;;; Generated autoloads from ein-iexec.el
+;;;### (autoloads nil "ein-iexec" "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-iexec.el"
+;;;;;;  "06b4c18b2839069d520b043add2dbcfc")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-iexec.el
 
 (autoload 'ein:iexec-mode "ein-iexec" "\
 Instant cell execution minor mode.
 Code cell at point will be automatically executed after any
 change in its input area.
 
-<<<<<<< HEAD
-=======
-If called interactively, enable Ein:Iexec mode if ARG is positive, and
-disable it if ARG is zero or negative.  If called from Lisp,
-also enable the mode if ARG is omitted or nil, and toggle it
-if ARG is `toggle'; disable the mode otherwise.
-
->>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
 \(fn &optional ARG)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "ein-iexec" "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-iexec.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-iexec.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-iexec" '("ein:iexec-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "ein-inspector" "ein-inspector.el" (0 0 0 0))
-;;; Generated autoloads from ein-inspector.el
+;;;### (autoloads nil "ein-inspector" "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-inspector.el"
+;;;;;;  "d1dde3844aa9b1b72a1443d5d7d35ceb")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-inspector.el
 
 (autoload 'ein:inspect-object "ein-inspector" "\
 
 
 \(fn KERNEL OBJECT)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "ein-inspector"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-inspector.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-inspector.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-inspector" '("ein:")))
 
 ;;;***
-
-;;;### (autoloads nil "ein-ipdb" "ein-ipdb.el" (0 0 0 0))
-;;; Generated autoloads from ein-ipdb.el
-
-<<<<<<< HEAD
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-ipdb" '("ein:" "*ein:ipdb-")))
-=======
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-ipdb" '("*ein:ipdb-" "ein:")))
->>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
 
 ;;;***
 
-;;;### (autoloads nil "ein-ipynb-mode" "ein-ipynb-mode.el" (0 0 0
-;;;;;;  0))
-;;; Generated autoloads from ein-ipynb-mode.el
+;;;### (autoloads "actual autoloads are elsewhere" "ein-ipdb" "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-ipdb.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-ipdb.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-ipdb" '("ein:" "*ein:ipdb-")))
+
+;;;***
+
+;;;### (autoloads nil "ein-ipynb-mode" "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-ipynb-mode.el"
+;;;;;;  "18e55149448536deb7a205858a452a12")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-ipynb-mode.el
 
 (autoload 'ein:ipynb-mode "ein-ipynb-mode" "\
 A simple mode for ipynb file.
@@ -303,13 +315,21 @@ A simple mode for ipynb file.
 \(fn)" t nil)
 
 (add-to-list 'auto-mode-alist '(".*\\.ipynb\\'" . ein:ipynb-mode))
+
+;;;### (autoloads "actual autoloads are elsewhere" "ein-ipynb-mode"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-ipynb-mode.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-ipynb-mode.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-ipynb-mode" '("ein:ipynb-parent-mode")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "ein-jupyter" "ein-jupyter.el" (0 0 0 0))
-;;; Generated autoloads from ein-jupyter.el
+;;;### (autoloads nil "ein-jupyter" "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-jupyter.el"
+;;;;;;  "b3193b06830be9a11219851da35eb1c9")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-jupyter.el
 
 (autoload 'ein:jupyter-server-start "ein-jupyter" "\
 Start SERVER-CMD_PATH with `--notebook-dir' NOTEBOOK-DIRECTORY.  Login after connection established unless NO-LOGIN-P is set.  LOGIN-CALLBACK takes two arguments, the buffer created by ein:notebooklist-open--finish, and the url-or-port argument of ein:notebooklist-open*.
@@ -340,67 +360,85 @@ the log of the running jupyter server.
 
 
 \(fn &optional FORCE LOG)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "ein-jupyter"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-jupyter.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-jupyter.el
 
-<<<<<<< HEAD
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-jupyter" '("ein:" "*ein:")))
-=======
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-jupyter" '("*ein:" "ein:")))
->>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
+
+;;;***
 
 ;;;***
 
-;;;### (autoloads nil "ein-jupyterhub" "ein-jupyterhub.el" (0 0 0
-;;;;;;  0))
-;;; Generated autoloads from ein-jupyterhub.el
+;;;### (autoloads nil "ein-jupyterhub" "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-jupyterhub.el"
+;;;;;;  "8e4568b02c882eb9b18270e3655d9d3e")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-jupyterhub.el
 
 (autoload 'ein:jupyterhub-connect "ein-jupyterhub" "\
 Log on to a jupyterhub server using PAM authentication. Requires jupyterhub version 0.8 or greater.  CALLBACK takes two arguments, the resulting buffer and the singleuser url-or-port
 
 \(fn URL-OR-PORT USERNAME PASSWORD CALLBACK)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "ein-jupyterhub"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-jupyterhub.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-jupyterhub.el
 
-<<<<<<< HEAD
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-jupyterhub" '("ein:" "*ein:jupyterhub-connections*")))
-=======
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-jupyterhub" '("*ein:jupyterhub-connections*" "ein:")))
->>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
+
+;;;***
 
 ;;;***
 
-;;;### (autoloads nil "ein-kernel" "ein-kernel.el" (0 0 0 0))
-;;; Generated autoloads from ein-kernel.el
+;;;### (autoloads nil "ein-kernel" "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-kernel.el"
+;;;;;;  "fbe453b6ad5ae859aac552a0bc841a8e")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-kernel.el
 
 (defalias 'ein:kernel-url-or-port 'ein:$kernel-url-or-port)
 
 (defalias 'ein:kernel-id 'ein:$kernel-kernel-id)
+
+;;;### (autoloads "actual autoloads are elsewhere" "ein-kernel" "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-kernel.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-kernel.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-kernel" '("ein:")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "ein-kernelinfo" "ein-kernelinfo.el" (0 0 0
-;;;;;;  0))
-;;; Generated autoloads from ein-kernelinfo.el
+;;;### (autoloads "actual autoloads are elsewhere" "ein-kernelinfo"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-kernelinfo.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-kernelinfo.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-kernelinfo" '("ein:kernelinfo")))
 
 ;;;***
 
-;;;### (autoloads nil "ein-kill-ring" "ein-kill-ring.el" (0 0 0 0))
-;;; Generated autoloads from ein-kill-ring.el
+;;;### (autoloads "actual autoloads are elsewhere" "ein-kill-ring"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-kill-ring.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-kill-ring.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-kill-ring" '("ein:")))
 
 ;;;***
 
-;;;### (autoloads nil "ein-log" "ein-log.el" (0 0 0 0))
-;;; Generated autoloads from ein-log.el
+;;;### (autoloads "actual autoloads are elsewhere" "ein-log" "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-log.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-log.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-log" '("ein:")))
 
 ;;;***
 
-;;;### (autoloads nil "ein-multilang" "ein-multilang.el" (0 0 0 0))
-;;; Generated autoloads from ein-multilang.el
+;;;### (autoloads nil "ein-multilang" "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-multilang.el"
+;;;;;;  "1b159706c024258ba4d1ad02a94c8278")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-multilang.el
 
 (autoload 'ein:notebook-multilang-mode "ein-multilang" "\
 A mode for fontifying multiple languages.
@@ -408,28 +446,38 @@ A mode for fontifying multiple languages.
 \\{ein:notebook-multilang-mode-map}
 
 \(fn)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "ein-multilang"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-multilang.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-multilang.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-multilang" '("ein:" "python-imenu-format-parent-item-jump-label")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "ein-multilang-fontify" "ein-multilang-fontify.el"
+;;;### (autoloads "actual autoloads are elsewhere" "ein-multilang-fontify"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-multilang-fontify.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from ein-multilang-fontify.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-multilang-fontify.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-multilang-fontify" '("ein:mlf-")))
 
 ;;;***
 
-;;;### (autoloads nil "ein-node" "ein-node.el" (0 0 0 0))
-;;; Generated autoloads from ein-node.el
+;;;### (autoloads "actual autoloads are elsewhere" "ein-node" "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-node.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-node.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-node" '("ein:")))
 
 ;;;***
 
-;;;### (autoloads nil "ein-notebook" "ein-notebook.el" (0 0 0 0))
-;;; Generated autoloads from ein-notebook.el
+;;;### (autoloads nil "ein-notebook" "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-notebook.el"
+;;;;;;  "78442601c1b0b304e791977a304c6fa1")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-notebook.el
 
 (defalias 'ein:notebook-name 'ein:$notebook-notebook-name)
 
@@ -450,18 +498,21 @@ After the notebook is opened, CALLBACK is called as::
 where `created' indicates a new notebook or an existing one.
 
 \(fn URL-OR-PORT PATH &optional KERNELSPEC CALLBACK ERRBACK NO-POP)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "ein-notebook"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-notebook.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-notebook.el
 
-<<<<<<< HEAD
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-notebook" '("ein:" "*ein:notebook--pending-query*")))
-=======
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-notebook" '("*ein:notebook--pending-query*" "ein:")))
->>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
+
+;;;***
 
 ;;;***
 
-;;;### (autoloads nil "ein-notebooklist" "ein-notebooklist.el" (0
-;;;;;;  0 0 0))
-;;; Generated autoloads from ein-notebooklist.el
+;;;### (autoloads nil "ein-notebooklist" "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-notebooklist.el"
+;;;;;;  "bdc81b5259d5694acca1af72990ad11d")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-notebooklist.el
 
 (autoload 'ein:notebooklist-enable-keepalive "ein-notebooklist" "\
 Enable periodic calls to the notebook server to keep long running sessions from expiring.
@@ -475,13 +526,9 @@ automatically be called during calls to `ein:notebooklist-open`.
 \(fn &optional URL-OR-PORT)" t nil)
 
 (autoload 'ein:notebooklist-disable-keepalive "ein-notebooklist" "\
-<<<<<<< HEAD
 Disable the notebooklist keepalive calls to the jupyter notebook server.
 
 \(fn)" t nil)
-=======
-Disable the notebooklist keepalive calls to the jupyter notebook server." t nil)
->>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
 
 (autoload 'ein:notebooklist-reload "ein-notebooklist" "\
 Reload current Notebook list.
@@ -552,25 +599,30 @@ This function works by calling `ein:notebook-update-url-or-port'
 on all the notebooks opened from the current notebooklist.
 
 \(fn NEW-URL-OR-PORT)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "ein-notebooklist"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-notebooklist.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-notebooklist.el
 
-<<<<<<< HEAD
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-notebooklist" '("ein:" "render-" "generate-breadcrumbs")))
-=======
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-notebooklist" '("ein:" "generate-breadcrumbs" "render-")))
->>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
+
+;;;***
 
 ;;;***
 
-;;;### (autoloads nil "ein-notification" "ein-notification.el" (0
-;;;;;;  0 0 0))
-;;; Generated autoloads from ein-notification.el
+;;;### (autoloads "actual autoloads are elsewhere" "ein-notification"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-notification.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-notification.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-notification" '("ein:")))
 
 ;;;***
 
-;;;### (autoloads nil "ein-org" "ein-org.el" (0 0 0 0))
-;;; Generated autoloads from ein-org.el
+;;;### (autoloads nil "ein-org" "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-org.el"
+;;;;;;  "09660e2a5b4c68dd612f4f0411637aad")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-org.el
 
 (autoload 'ein:org-open "ein-org" "\
 Open IPython notebook specified by LINK-PATH.
@@ -596,115 +648,117 @@ format for notebook links.  Current approach is to use
 S-expression based (rather verbose) serialization, so that
 extending link spec without loosing backward compatibility is
 easier.  For the examples of link format in general, see Info
-<<<<<<< HEAD
 node `(org) External links' and Info node `(org) Search options'
 
 \(fn)" nil nil)
-=======
-node `(org) External links' and Info node `(org) Search options'" nil nil)
->>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
 
 (eval-after-load "org" '(if (fboundp 'org-link-set-parameters) (org-link-set-parameters "ipynb" :follow 'ein:org-open :help-echo "Open ipython notebook." :store 'ein:org-store-link) (org-add-link-type "ipynb" :follow 'ein:org-open) (add-hook 'org-store-link-functions 'ein:org-store-link)))
+
+;;;### (autoloads "actual autoloads are elsewhere" "ein-org" "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-org.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-org.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-org" '("ein:org-goto-link")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "ein-output-area" "ein-output-area.el" (0 0
-;;;;;;  0 0))
-;;; Generated autoloads from ein-output-area.el
+;;;### (autoloads "actual autoloads are elsewhere" "ein-output-area"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-output-area.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-output-area.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-output-area" '("ein:")))
 
 ;;;***
 
-;;;### (autoloads nil "ein-pager" "ein-pager.el" (0 0 0 0))
-;;; Generated autoloads from ein-pager.el
+;;;### (autoloads "actual autoloads are elsewhere" "ein-pager" "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-pager.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-pager.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-pager" '("ein:pager-")))
 
 ;;;***
 
-;;;### (autoloads nil "ein-process" "ein-process.el" (0 0 0 0))
-;;; Generated autoloads from ein-process.el
+;;;### (autoloads "actual autoloads are elsewhere" "ein-process"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-process.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-process.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-process" '("ein:")))
 
 ;;;***
 
-;;;### (autoloads nil "ein-pseudo-console" "ein-pseudo-console.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from ein-pseudo-console.el
+;;;### (autoloads nil "ein-pseudo-console" "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-pseudo-console.el"
+;;;;;;  "61aba9f673501a5fd338a8396c1b5bf2")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-pseudo-console.el
 
 (autoload 'ein:pseudo-console-mode "ein-pseudo-console" "\
 Pseudo console mode.  Hit RET to execute code.
 
-<<<<<<< HEAD
-=======
-If called interactively, enable Ein:Pseudo-Console mode if ARG is positive, and
-disable it if ARG is zero or negative.  If called from Lisp,
-also enable the mode if ARG is omitted or nil, and toggle it
-if ARG is `toggle'; disable the mode otherwise.
-
->>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
 \(fn &optional ARG)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "ein-pseudo-console"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-pseudo-console.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-pseudo-console.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-pseudo-console" '("ein:pseudo-console-mode-map")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "ein-python" "ein-python.el" (0 0 0 0))
-;;; Generated autoloads from ein-python.el
+;;;### (autoloads "actual autoloads are elsewhere" "ein-python" "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-python.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-python.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-python" '("ein:python-")))
 
 ;;;***
 
-;;;### (autoloads nil "ein-pytools" "ein-pytools.el" (0 0 0 0))
-;;; Generated autoloads from ein-pytools.el
+;;;### (autoloads "actual autoloads are elsewhere" "ein-pytools"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-pytools.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-pytools.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-pytools" '("ein:")))
 
 ;;;***
 
-;;;### (autoloads nil "ein-query" "ein-query.el" (0 0 0 0))
-;;; Generated autoloads from ein-query.el
+;;;### (autoloads "actual autoloads are elsewhere" "ein-query" "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-query.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-query.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-query" '("ein:")))
 
 ;;;***
 
-;;;### (autoloads nil "ein-scratchsheet" "ein-scratchsheet.el" (0
-;;;;;;  0 0 0))
-;;; Generated autoloads from ein-scratchsheet.el
+;;;### (autoloads "actual autoloads are elsewhere" "ein-scratchsheet"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-scratchsheet.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-scratchsheet.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-scratchsheet" '("ein:scratchsheet")))
 
 ;;;***
 
-;;;### (autoloads nil "ein-shared-output" "ein-shared-output.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from ein-shared-output.el
+;;;### (autoloads nil "ein-shared-output" "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-shared-output.el"
+;;;;;;  "085ac2d759ad551dbf27347454baa980")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-shared-output.el
 
 (autoload 'ein:shared-output-pop-to-buffer "ein-shared-output" "\
-<<<<<<< HEAD
 Open shared output buffer.
 
 \(fn)" t nil)
-=======
-Open shared output buffer." t nil)
->>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
 
 (autoload 'ein:shared-output-show-code-cell-at-point "ein-shared-output" "\
 Show code cell at point in shared-output buffer.
 It is useful when the output of the cell at point is truncated.
-<<<<<<< HEAD
 See also `ein:cell-max-num-outputs'.
 
 \(fn)" t nil)
-=======
-See also `ein:cell-max-num-outputs'." t nil)
->>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
 
 (autoload 'ein:shared-output-eval-string "ein-shared-output" "\
 Evaluate a piece of code.  Prompt will appear asking the code to run.
@@ -717,112 +771,185 @@ shared output buffer.  You can open the buffer by the command
    `:silent' is `nil' by default.
 
 \(fn KERNEL CODE POPUP &rest ARGS)" t nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "ein-shared-output"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-shared-output.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-shared-output.el
 
-<<<<<<< HEAD
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-shared-output" '("ein:" "*ein:shared-output*")))
-=======
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-shared-output" '("*ein:shared-output*" "ein:")))
->>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
+
+;;;***
 
 ;;;***
 
-;;;### (autoloads nil "ein-skewer" "ein-skewer.el" (0 0 0 0))
-;;; Generated autoloads from ein-skewer.el
+;;;### (autoloads "actual autoloads are elsewhere" "ein-skewer" "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-skewer.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-skewer.el
 
-<<<<<<< HEAD
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-skewer" '("ein:" "*ein:skewer-" "current-jupyter-cell-output")))
-=======
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-skewer" '("*ein:skewer-" "current-jupyter-cell-output" "ein:")))
->>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
 
 ;;;***
 
-;;;### (autoloads nil "ein-smartrep" "ein-smartrep.el" (0 0 0 0))
-;;; Generated autoloads from ein-smartrep.el
+;;;### (autoloads "actual autoloads are elsewhere" "ein-smartrep"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-smartrep.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-smartrep.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-smartrep" '("ein:smartrep-notebook-mode-alist")))
 
 ;;;***
 
-;;;### (autoloads nil "ein-subpackages" "ein-subpackages.el" (0 0
-;;;;;;  0 0))
-;;; Generated autoloads from ein-subpackages.el
+;;;### (autoloads "actual autoloads are elsewhere" "ein-subpackages"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-subpackages.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-subpackages.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-subpackages" '("ein:completion-backend")))
 
 ;;;***
 
-;;;### (autoloads nil "ein-timestamp" "ein-timestamp.el" (0 0 0 0))
-;;; Generated autoloads from ein-timestamp.el
+;;;### (autoloads "actual autoloads are elsewhere" "ein-timestamp"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-timestamp.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-timestamp.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-timestamp" '("ein:timestamp-")))
 
 ;;;***
 
-;;;### (autoloads nil "ein-traceback" "ein-traceback.el" (0 0 0 0))
-;;; Generated autoloads from ein-traceback.el
+;;;### (autoloads nil "ein-traceback" "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-traceback.el"
+;;;;;;  "6e892b5627cb93bd51db8dfc4869822e")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-traceback.el
 
 (autoload 'ein:tb-show "ein-traceback" "\
-<<<<<<< HEAD
 Show full traceback in traceback viewer.
 
 \(fn)" t nil)
-=======
-Show full traceback in traceback viewer." t nil)
->>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
+
+;;;### (autoloads "actual autoloads are elsewhere" "ein-traceback"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-traceback.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-traceback.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-traceback" '("ein:t")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "ein-utils" "ein-utils.el" (0 0 0 0))
-;;; Generated autoloads from ein-utils.el
+;;;### (autoloads "actual autoloads are elsewhere" "ein-utils" "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-utils.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-utils.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-utils" '("ein:")))
 
 ;;;***
 
-;;;### (autoloads nil "ein-websocket" "ein-websocket.el" (0 0 0 0))
-;;; Generated autoloads from ein-websocket.el
+;;;### (autoloads "actual autoloads are elsewhere" "ein-websocket"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-websocket.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-websocket.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-websocket" '("ein:" "fix-request-netscape-cookie-parse")))
 
 ;;;***
 
-;;;### (autoloads nil "ein-worksheet" "ein-worksheet.el" (0 0 0 0))
-;;; Generated autoloads from ein-worksheet.el
+;;;### (autoloads "actual autoloads are elsewhere" "ein-worksheet"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-worksheet.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ein-worksheet.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ein-worksheet" '("ein:" "hof-add")))
 
 ;;;***
 
-;;;### (autoloads nil "ob-ein" "ob-ein.el" (0 0 0 0))
-;;; Generated autoloads from ob-ein.el
+;;;### (autoloads nil "ob-ein" "../../../../../.emacs.d/elpa/ein-20190813.2156/ob-ein.el"
+;;;;;;  "7b0601d0e45c1592e0396505615f15c5")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ob-ein.el
 
 (if (featurep 'org) (let* ((orig (get 'org-babel-load-languages 'custom-type)) (orig-cdr (cdr orig)) (choices (plist-get orig-cdr :key-type))) (push '(const :tag "Ein" ein) (nthcdr 1 choices)) (put 'org-babel-load-languages 'custom-type (cons (car orig) (plist-put orig-cdr :key-type choices)))))
+
+;;;### (autoloads "actual autoloads are elsewhere" "ob-ein" "../../../../../.emacs.d/elpa/ein-20190813.2156/ob-ein.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/ob-ein.el
 
-<<<<<<< HEAD
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-ein" '("ob-ein-" "org-babel-edit-prep:ein" "*ob-ein-sentinel*")))
-=======
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-ein" '("*ob-ein-sentinel*" "ob-ein-" "org-babel-edit-prep:ein")))
->>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
+
+;;;***
 
 ;;;***
 
-;;;### (autoloads nil "poly-ein" "poly-ein.el" (0 0 0 0))
-;;; Generated autoloads from poly-ein.el
+;;;### (autoloads nil "poly-ein" "../../../../../.emacs.d/elpa/ein-20190813.2156/poly-ein.el"
+;;;;;;  "91d1134347daa3d90a5672f79ed35411")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/poly-ein.el
  (autoload 'poly-ein-mode "poly-ein")
+
+;;;### (autoloads "actual autoloads are elsewhere" "poly-ein" "../../../../../.emacs.d/elpa/ein-20190813.2156/poly-ein.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/ein-20190813.2156/poly-ein.el
 
-<<<<<<< HEAD
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "poly-ein" '("pm-" "poly-ein-" "ein:polymode")))
-=======
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "poly-ein" '("ein:polymode" "pm-" "poly-ein-")))
->>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
+
+;;;***
 
 ;;;***
 
-;;;### (autoloads nil nil ("ein-hy.el" "ein-pkg.el" "ein.el") (0
-;;;;;;  0 0 0))
+;;;### (autoloads nil nil ("../../../../../.emacs.d/elpa/ein-20190813.2156/ein-ac.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-autoloads.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-cell-edit.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-cell-output.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-cell.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-classes.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-company.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-completer.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-connect.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-console.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-contents-api.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-core.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-dev.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-events.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-file.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-helm.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-hy.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-iexec.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-inspector.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-ipdb.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-ipynb-mode.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-jupyter.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-jupyterhub.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-kernel.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-kernelinfo.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-kill-ring.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-log.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-multilang-fontify.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-multilang.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-node.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-notebook.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-notebooklist.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-notification.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-org.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-output-area.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-pager.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-pkg.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-process.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-pseudo-console.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-python.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-pytools.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-query.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-scratchsheet.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-shared-output.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-skewer.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-smartrep.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-subpackages.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-timestamp.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-traceback.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-utils.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-websocket.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein-worksheet.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/ein.el" "../../../../../.emacs.d/elpa/ein-20190813.2156/ob-ein.el"
+;;;;;;  "../../../../../.emacs.d/elpa/ein-20190813.2156/poly-ein.el")
+;;;;;;  (0 0 0 0))
 
 ;;;***
 
