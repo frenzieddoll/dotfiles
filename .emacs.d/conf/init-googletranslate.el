@@ -56,6 +56,7 @@
      (if asciip "ja" "en")
      string)))
 
+
 (global-unset-key (kbd "C-c C-o"))
 (global-set-key (kbd "C-c C-o") 'google-translate-enja-or-jaen)
 ;; (exwm-input-set-key (kbd "C-o") 'google-translate-enja-or-jaen)

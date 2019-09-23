@@ -10,14 +10,26 @@
 ;;;;;;  0 0 0))
 ;;; Generated autoloads from js2-imenu-extras.el
 
+<<<<<<< HEAD
 (autoload 'js2-imenu-extras-setup "js2-imenu-extras" "\
 
 
 \(fn)" nil nil)
+=======
+(autoload 'js2-imenu-extras-setup "js2-imenu-extras" nil nil nil)
+>>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
 
 (autoload 'js2-imenu-extras-mode "js2-imenu-extras" "\
 Toggle Imenu support for frameworks and structural patterns.
 
+<<<<<<< HEAD
+=======
+If called interactively, enable Js2-Imenu-Extras mode if ARG is positive, and
+disable it if ARG is zero or negative.  If called from Lisp,
+also enable the mode if ARG is omitted or nil, and toggle it
+if ARG is `toggle'; disable the mode otherwise.
+
+>>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
 \(fn &optional ARG)" t nil)
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "js2-imenu-extras" '("js2-imenu-")))
@@ -30,6 +42,14 @@ Toggle Imenu support for frameworks and structural patterns.
 (autoload 'js2-highlight-unused-variables-mode "js2-mode" "\
 Toggle highlight of unused variables.
 
+<<<<<<< HEAD
+=======
+If called interactively, enable Js2-Highlight-Unused-Variables mode if ARG is positive, and
+disable it if ARG is zero or negative.  If called from Lisp,
+also enable the mode if ARG is omitted or nil, and toggle it
+if ARG is `toggle'; disable the mode otherwise.
+
+>>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
 \(fn &optional ARG)" t nil)
 
 (autoload 'js2-minor-mode "js2-mode" "\
@@ -38,6 +58,14 @@ This allows you to use a different major mode for JavaScript editing,
 such as `js-mode', while retaining the asynchronous error/warning
 highlighting features of `js2-mode'.
 
+<<<<<<< HEAD
+=======
+If called interactively, enable Js2 minor mode if ARG is positive, and
+disable it if ARG is zero or negative.  If called from Lisp,
+also enable the mode if ARG is omitted or nil, and toggle it
+if ARG is `toggle'; disable the mode otherwise.
+
+>>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
 \(fn &optional ARG)" t nil)
 
 (autoload 'js2-mode "js2-mode" "\

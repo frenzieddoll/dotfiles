@@ -10,9 +10,13 @@
 ;;; Generated autoloads from flycheck.el
 
 (autoload 'flycheck-manual "flycheck" "\
+<<<<<<< HEAD
 Open the Flycheck manual.
 
 \(fn)" t nil)
+=======
+Open the Flycheck manual." t nil)
+>>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
 
 (autoload 'flycheck-mode "flycheck" "\
 Minor mode for on-the-fly syntax checking.
@@ -227,7 +231,11 @@ Use this together with the `option', `option-list' and
 
 (function-put 'flycheck-def-option-var 'doc-string-elt '4)
 
+<<<<<<< HEAD
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "flycheck" '("flycheck-" "list-flycheck-errors" "locate-rebar3-project-root" "contains-rebar-config" "help-flycheck-checker-d" "read-flycheck-")))
+=======
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "flycheck" '("contains-rebar-config" "flycheck-" "help-flycheck-checker-d" "list-flycheck-errors" "locate-rebar3-project-root" "read-flycheck-")))
+>>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
 
 ;;;***
 

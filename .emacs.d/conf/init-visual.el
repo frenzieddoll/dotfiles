@@ -52,6 +52,7 @@
 
 ;; --------powerlineの設定ここまで----------------
 
+
 (require 'smart-mode-line)
 ;;; この変数を定義しておかないとエラーになるバグあり
 (setq sml/active-background-color "gray60")
@@ -76,6 +77,7 @@
 ;;; その他のthemeを設定
 ;;(sml/apply-theme 'dark)
 ;;(sml/apply-theme 'light)
+
 
 ;; ------------smart-mode-lineの設定ここまで-----------
 

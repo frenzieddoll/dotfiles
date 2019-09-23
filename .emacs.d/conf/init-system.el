@@ -198,6 +198,10 @@
 (setq-default truncate-lines t)
 
 ;; 閉括弧自動挿入
+<<<<<<< HEAD
 (electric-pair-mode 0)
+=======
+(electric-pair-mode 1)
+>>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
 
 ;;; init-system.el ends here

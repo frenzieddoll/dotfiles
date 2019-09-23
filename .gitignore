@@ -16,6 +16,7 @@
 !/.emacs.d/elpa
 !/.emacs.d/public_repos
 !/.emacs.d/script
+<<<<<<< HEAD
 # 設定ファイル
 !/X11ForNotePC
 !/.bashrc
@@ -25,3 +26,13 @@
 !/.config/libskk
 !/.config/fcitx
 !/.Xresources
+=======
+# !/.emacs.d/recentf
+!/.config/libskk
+!/.config/fcitx/skk
+!/.config/libskk
+!/.config/chrome-dev-flags.conf
+!/.config/chromium.conf
+!/.config/zathura/zathurarc
+!/.zshrc
+>>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab

@@ -1,4 +1,12 @@
+<<<<<<< HEAD
 (define-package "lsp-ui" "20190915.856" "UI modules for lsp-mode"
+=======
+<<<<<<< HEAD:.emacs.d/elpa/lsp-ui-20190915.856/lsp-ui-pkg.el
+(define-package "lsp-ui" "20190915.856" "UI modules for lsp-mode"
+=======
+(define-package "lsp-ui" "20190809.1907" "UI modules for lsp-mode"
+>>>>>>> f51dca9c882c9262ec9d372b0fdde4f173d1e651:.emacs.d/elpa/lsp-ui-20190809.1907/lsp-ui-pkg.el
+>>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
   '((emacs "25.1")
     (dash "2.14")
     (dash-functional "1.2.0")

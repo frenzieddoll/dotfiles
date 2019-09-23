@@ -1,0 +1,6 @@
+{
+  "name" : "fcitx-kkc:default",
+  "description" : "デフォルトのタイピング方式",
+  "filter" : "simple",
+  "priority" : 99
+}

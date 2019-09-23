@@ -32,6 +32,8 @@ English (US):us:English (Carpalx, intl., with AltGr dead keys):carpalx-altgr-int
 English (US):us:English (Carpalx, full optimization):carpalx-full:en
 English (US):us:English (Carpalx, full optimization, intl., with dead keys):carpalx-full-intl:en
 English (US):us:English (Carpalx, full optimization, intl., with AltGr dead keys):carpalx-full-altgr-intl:en
+English (US):us:English (3l):3l:en
+English (US):us:English (3l, chromebook):3l-cros:en
 English (US):us:Sicilian (US keyboard):scn:en
 Afghani:af:
 Afghani:af:Pashto:ps:ps
@@ -185,6 +187,8 @@ Czech:cz:Czech (UCW, only accented letters):ucw:cs
 Czech:cz:Czech (US, Dvorak, UCW support):dvorak-ucw:cs
 Czech:cz:Russian (Czech, phonetic):rus:ru
 Czech:cz:Czech (Sun Type 6/7):sun_type6:cs
+Czech:cz:Czech (programming):prog:cs
+Czech:cz:Czech (typographic):typo:cs
 Danish:dk:da
 Danish:dk:Danish (no dead keys):nodeadkeys:da
 Danish:dk:Danish (Win keys):winkeys:da
@@ -342,8 +346,8 @@ Italian:it:Georgian (Italy):geo:ka
 Italian:it:Italian (IBM 142):ibm:it
 Italian:it:Italian (intl., with dead keys):intl:it
 Italian:it:Sicilian:scn:it
-Italian:it:Italian (Sun Type 6/7):sun_type6:it
 Italian:it:Friulian (Italy):fur:fur
+Italian:it:Italian (Sun Type 6/7):sun_type6:it
 Italian:it:Italian Ladin:lld:
 Japanese:jp:ja
 Japanese:jp:Japanese (Kana):kana:ja
@@ -408,6 +412,8 @@ Macedonian:mk:mk
 Macedonian:mk:Macedonian (no dead keys):nodeadkeys:mk
 Maltese:mt:mt
 Maltese:mt:Maltese (with US layout):us:mt
+Maltese:mt:Maltese (US layout with AltGr overrides):alt-us:mt
+Maltese:mt:Maltese (UK layout with AltGr overrides):alt-gb:mt
 Mongolian:mn:mn
 Norwegian:no:no
 Norwegian:no:Norwegian (no dead keys):nodeadkeys:no

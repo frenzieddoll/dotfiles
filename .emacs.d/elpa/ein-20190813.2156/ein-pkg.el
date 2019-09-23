@@ -1,4 +1,12 @@
+<<<<<<< HEAD
 (define-package "ein" "20190813.2156" "Emacs IPython Notebook"
+=======
+<<<<<<< HEAD:.emacs.d/elpa/ein-20190813.2156/ein-pkg.el
+(define-package "ein" "20190813.2156" "Emacs IPython Notebook"
+=======
+(define-package "ein" "20190809.2351" "Emacs IPython Notebook"
+>>>>>>> f51dca9c882c9262ec9d372b0fdde4f173d1e651:.emacs.d/elpa/ein-20190809.2351/ein-pkg.el
+>>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
   '((emacs "25")
     (websocket "20190620.338")
     (auto-complete "1.4.0")

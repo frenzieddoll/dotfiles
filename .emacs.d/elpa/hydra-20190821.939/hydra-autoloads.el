@@ -67,7 +67,11 @@ result of `defhydra'.
 
 (function-put 'defhydra 'doc-string-elt '3)
 
+<<<<<<< HEAD
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "hydra" '("hydra-" "defhydra")))
+=======
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "hydra" '("defhydra" "hydra-")))
+>>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
 
 ;;;***
 

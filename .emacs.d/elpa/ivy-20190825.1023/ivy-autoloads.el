@@ -17,9 +17,13 @@
 ;;; Generated autoloads from ivy.el
 
 (autoload 'ivy-resume "ivy" "\
+<<<<<<< HEAD
 Resume the last completion session.
 
 \(fn)" t nil)
+=======
+Resume the last completion session." t nil)
+>>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
 
 (autoload 'ivy-read "ivy" "\
 Read a string in the minibuffer, with completion.
@@ -128,6 +132,7 @@ Minibuffer bindings:
 \(fn &optional ARG)" t nil)
 
 (autoload 'ivy-switch-buffer "ivy" "\
+<<<<<<< HEAD
 Switch to another buffer.
 
 \(fn)" t nil)
@@ -141,6 +146,15 @@ Switch to one of the window views stored by `ivy-push-view'.
 Switch to another buffer in another window.
 
 \(fn)" t nil)
+=======
+Switch to another buffer." t nil)
+
+(autoload 'ivy-switch-view "ivy" "\
+Switch to one of the window views stored by `ivy-push-view'." t nil)
+
+(autoload 'ivy-switch-buffer-other-window "ivy" "\
+Switch to another buffer in another window." t nil)
+>>>>>>> 974ca27152b63038ab23f105b4df4ddcc84454ab
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ivy" '("ivy-" "with-ivy-window")))
 

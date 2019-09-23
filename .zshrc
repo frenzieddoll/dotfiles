@@ -43,23 +43,29 @@ setopt share_history
 stty erase ^H
 bindkey "^[[3~" delete-char
 
+# pathを通す
+export PATH="$HOME/.local/bin:$PATH"
+
 # エイリアス
 alias la='ls -a'
 alias ll='ls -lh'
 alias rm='rm -i'
 alias manga='wine /mnt/sdc/frenz/Documents/Software/picture/MangaMeeya_73/MangaMeeya.exe'
 alias startx='startx -- -dpi 138'
-alias yandex-browser-beta='yandex-browser-beta --force-device-scale-factor=1.3'
+alias ghc="stack ghc"
+alias ghci="stack ghci"
+alias runghc="stack runghc"
+alias runhaskell="stack runghc"
 
 # グローバルエイリアス
 alias -g L='| less'
 alias -g G='| grep'
 
 # 接尾辞エイリアス
-alias -s mkv=mplayer
-alias -s mp4=mplayer
-alias -s avi=mplayer
-alias -s wav=mplayer
+alias -s mkv=mpv
+alias -s mp4=mpv
+alias -s avi=mpv
+alias -s wav=mpv
 alias -s exe=wine
 
 autoload -U promptinit; promptinit
