@@ -19,19 +19,22 @@
                 (";" nil ";")
                 ("?" nil "?")
                 ("la" nil "ぁ" )
-                ("le" nil "ぇ" )
                 ("li" nil "ぃ" )
-                ("lo" nil "ぉ" )
                 ("lu" nil "ぅ" )
+                ("le" nil "ぇ" )
+                ("lo" nil "ぉ" )
             )))
 
-(setq skk-tut-file "~/.emacs.d/etc/SKK.tut")
 (setq skk-initial-search-jisyo "~/.emacs.d/ddskk/jisyo")
 (setq skk-large-jisyo "~/.emacs.d/skk-get-jisyo/SKK-JISYO.L")
 (setq skk-extra-jisyo-file-list
       (list
        '("~/.emacs.d/skk-get-jisyo/SKK-JISYO.JIS3_4")
-       '("~/.emacs.d/skk-get-jisyo/SKK-JISYO.lisp")))
+       '("~/.emacs.d/skk-get-jisyo/SKK-JISYO.lisp")
+       '("~/.emacs.d/skk-get-jisyo/SKK-JISYO.jinmei")
+       '("~/.emacs.d/skk-get-jisyo/SKK-JISYO.station")
+       '("~/.emacs.d/skk-get-jisyo/SKK-JISYO.itaiji")
+       '("~/.emacs.d/skk-get-jisyo/SKK-JISYO.geo")))
 
 
 (defun skk-hiragana-set nil
