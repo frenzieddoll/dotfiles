@@ -50,7 +50,6 @@ export PATH="$HOME/.local/bin:$PATH"
 alias la='ls -a'
 alias ll='ls -lh'
 alias rm='rm -i'
-alias manga='wine /mnt/sdc/frenz/Documents/Software/picture/MangaMeeya_73/MangaMeeya.exe'
 alias startx='startx -- -dpi 138'
 alias ghc="stack ghc"
 alias ghci="stack ghci"

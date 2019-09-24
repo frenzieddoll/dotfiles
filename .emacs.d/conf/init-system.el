@@ -77,7 +77,7 @@
 (when (eq system-type 'gnu/linux)
   (set-face-attribute 'default nil
                       :family "Hackgen"
-                      :height 100))
+                      :height 170))
   ;; (defun ricty_250 ()
   ;;   (interactive)
   ;;   (set-face-attribute 'default nil
