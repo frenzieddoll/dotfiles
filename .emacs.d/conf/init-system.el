@@ -76,16 +76,32 @@
 
 
 ;; デスクトップPCでのみフォントサイズを変更する
-(if (string-match system-name "archlinuxhonda")
+;; (if (string-match system-name "archlinuxhonda")
 
-    (set-face-attribute 'default nil
-                        :family "Hackgen"
-                        :height 170)
+;;     (set-face-attribute 'default nil
+;;                         :family "Hackgen"
+;;                         :height 170)
 
-  (set-face-attribute 'default nil
-                      :family "Hackgen"
-                      :height 100))
+;;   (set-face-attribute 'default nil
+;;                       :family "Hackgen"
+;;                       :height 100))
 
+;; macと設定を共有
+(cond ((eq system-type 'gnu/linux)
+       (if (string-match system-name "archlinuxhonda")
+
+           (set-face-attribute 'default nil
+                               :family "Hackgen"
+                               :height 170)
+
+         (set-face-attribute 'default nil
+                             :family "Hackgen"
+                             :height 100)))
+
+      ((eq system-type 'darwin)
+       (set-face-attribute 'default nil
+                           :family "Hackgen"
+                           :height 150)))
 
 
 ;; (when (eq system-type 'gnu/linux)

@@ -83,11 +83,11 @@
 ;; (load "init-mail" t)
 
 ;; latexの設定を読み込む関数
-(load "init-tex")
-(defun load-tex ()
-  "load tex setting"
-  (interactive)
-  (load "init-tex" t))
+;; (load "init-tex")
+;; (defun load-tex ()
+;;   "load tex setting"
+;;   (interactive)
+;;   (load "init-tex" t))
 
 (defun load-tex ()
   "load tex setting"
@@ -105,15 +105,16 @@
 ;; flycheck
 ;; (add-hook 'after-init-hook #'global-flycheck-mode)
 
-(defun load-lang-mode ()
+(defun load-add-setting ()
   (interactive)
   (load "init-flycheck" t)
-  (load "init-rust" t)
-  (load "init-haskell" t)
-  (load "init-pdftools" t)
   (load "init-eww" t)
   (require 'ein)
-  (require 'magit))
+  (when (eq system-type 'gnu/linux)
+      (load "init-pdftools" t)
+      (load "init-rust" t)
+      (load "init-haskell" t)
+      ))
 ;; (defun load-rust ()
 ;;   "load rust-mode setting"
 ;;   (interactive)
@@ -124,9 +125,6 @@
 ;; (when (eq system-type 'gnu/linux)
 ;;  (require 'magit)
 ;;  (require 'ein))
-
-
-
 
 (add-hook 'picture-mode-hook 'picture-mode-init)
 (autoload 'picture-mode-init "init-picture")
@@ -145,13 +143,10 @@
              (load "init-rss" t)))
 
 ;; exwmの設定
-;; (load "init-exwm" t)
 (when (eq system-type 'gnu/linux)
   (if window-system (progn
                       (load "init-exwm" t)
                       )))
-
-
 
 (defun guitool ()
   (interactive)
@@ -159,6 +154,12 @@
    "GDK application scaling up"
    nil
    (format "export GDK_SCACE=2")))
+
+;; mac用の設定
+(when (eq system-type 'darwin)
+  (load "init-mySaveFrame" t))
+
+
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.

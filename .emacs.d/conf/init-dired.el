@@ -45,6 +45,7 @@
           ("m4a" . "mpv")
           ("3gp" . "mpv")
           ("rm" . "mpv")
+          ("rmvb" . "mpv")
           ("playlist" . "mpv --playlist")
           ("exe" . "wine")
           ("pdf" . "YACReader")
