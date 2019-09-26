@@ -166,12 +166,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(helm-external-programs-associations
-   '(("wmv" . "mplayer")
-     ("exe" . "wine")
-     ("rar" . "mcomix")
-     ("pdf" . "mcomix")
-     ("zip" . "mcomix")))
  '(org-agenda-files nil)
  '(package-selected-packages
    '(yaml-mode gitignore-mode recentf-ext smart-mode-line doom-themes iflipb counsel-notmuch notmuch abyss-theme counsel swiper selected google-this smart-mode-line-atom-one-dark-theme company-ghci eglot image+ dimmer exec-path-from-shell flycheck-haskell haskell-mode ox-pandoc company-jedi shackle popwin quickrun company-racer flycheck-rust racer imenus browse-kill-ring smex smooth-scroll dired-subtree let-alist google-translate org-plus-contrib org-preview-html ace-link dired-open dired-launch dired-filter company zoom-window ein rainbow-delimiters powerline multi-term exwm edit-server ddskk))
