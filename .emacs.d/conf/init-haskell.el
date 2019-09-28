@@ -12,7 +12,12 @@
 (define-key haskell-mode-map (kbd "C-c C-.") 'eglot-rename)
 
 ;; (require 'lsp)
+;; (require 'lsp-ui)
 ;; (require 'lsp-haskell)
+;; (require 'yasnippet)
+
+;; (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+;; (add-hook 'haskell-mode-hook #'lsp-haskell-enable)
 ;; (add-hook 'haskell-mode-hook #'lsp)
 
 (defun haskell-repl-and-flycheck ()
