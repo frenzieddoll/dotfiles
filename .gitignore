@@ -25,4 +25,7 @@
 !/.zshrc
 !/.config/libskk
 !/.config/fcitx
+!/.config/termite
+!/.config/chrome-dev-flags.conf
+!/.config/chromium-flags.conf
 !/.Xresources
