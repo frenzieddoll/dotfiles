@@ -4,7 +4,7 @@
 
 ;; Author: Oleh Krehel <ohwoeowho@gmail.com>
 ;; URL: https://github.com/abo-abo/swiper
-;; Package-Version: 20191001.858
+;; Package-Version: 20191003.1236
 ;; Version: 0.12.0
 ;; Package-Requires: ((emacs "24.3") (swiper "0.12.0"))
 ;; Keywords: convenience, matching, tools
@@ -3718,6 +3718,10 @@ This variable has no effect unless
 
 ;;* Misc. Emacs
 ;;** `counsel-mark-ring'
+(defcustom counsel-mark-ring-sort-selections t
+  "If non-nil, sort `mark-ring' list by line number."
+  :type 'boolean)
+
 (defface counsel--mark-ring-highlight
   '((t (:inherit highlight)))
   "Face for current `counsel-mark-ring' line."
@@ -3748,11 +3752,11 @@ This variable has no effect unless
 
 (defun counsel--mark-ring-update-fn ()
   "Show preview by candidate."
-  (let ((linenum (string-to-number (ivy-state-current ivy-last))))
+  (let ((pos (get-text-property 0 'point (ivy-state-current ivy-last))))
     (counsel--mark-ring-delete-highlight)
-    (unless (= linenum 0)
-      (with-ivy-window
-        (forward-line (- linenum (line-number-at-pos)))))))
+    (with-ivy-window
+      (goto-char pos)
+      (counsel--mark-ring-add-highlight))))
 
 ;;;###autoload
 (defun counsel-mark-ring ()
@@ -3768,8 +3772,14 @@ Obeys `widen-automatically', which see."
             (let ((linum (line-number-at-pos))
                   (line (buffer-substring
                          (line-beginning-position) (line-end-position))))
-              (cons (format fmt linum line) (point)))))
-         (marks (sort (delete-dups (copy-sequence mark-ring)) #'<))
+              (propertize (format fmt linum line) 'point (point)))))
+         (marks (copy-sequence mark-ring))
+         (marks (delete-dups marks))
+         (marks
+          ;; mark-marker is empty?
+          (if (equal (mark-marker) (make-marker))
+              marks
+            (cons (copy-marker (mark-marker)) marks)))
          (cands
           ;; Widen, both to save `line-number-at-pos' the trouble
           ;; and for `buffer-substring' to work.
@@ -3781,8 +3791,9 @@ Obeys `widen-automatically', which see."
         (ivy-read "Mark: " cands
                   :require-match t
                   :update-fn #'counsel--mark-ring-update-fn
+                  :sort counsel-mark-ring-sort-selections
                   :action (lambda (cand)
-                            (let ((pos (cdr-safe cand)))
+                            (let ((pos (get-text-property 0 'point cand)))
                               (when pos
                                 (unless (<= (point-min) pos (point-max))
                                   (if widen-automatically
@@ -5763,9 +5774,11 @@ specified by the `blddir' property."
 (defun counsel-compile (&optional dir)
   "Call `compile' completing with smart suggestions, optionally for DIR."
   (interactive)
-  (setq counsel-compile--current-build-dir (or dir default-directory))
+  (setq counsel-compile--current-build-dir (or dir
+                                               (counsel--compile-root)
+                                               default-directory))
   (ivy-read "Compile command: "
-            (counsel--get-compile-candidates dir)
+            (delete-dups (counsel--get-compile-candidates dir))
             :action #'counsel-compile--action
             :caller 'counsel-compile))
 

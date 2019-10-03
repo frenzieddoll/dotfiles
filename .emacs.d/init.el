@@ -114,6 +114,7 @@
       (load "init-pdftools" t)
       (load "init-rust" t)
       (load "init-haskell" t)
+      (load "init-mail" t)
       ))
 ;; (defun load-rust ()
 ;;   "load rust-mode setting"

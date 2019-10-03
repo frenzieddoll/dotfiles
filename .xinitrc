@@ -59,6 +59,4 @@ fcitx-autostart  &
 
 
 xset r rate 200 30
-# exec i3
-# exec remacs
 exec emacs
