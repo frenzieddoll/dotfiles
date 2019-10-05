@@ -33,3 +33,14 @@
 (setq mew-imap-trash-folder "%[Gmail]/Trash")
 (setq mew-use-cached-passwd t)
 (setq mew-ssl-verify-level 0)
+
+(setq mew-use-cached-passwd t)
+(setq mew-use-master-passwd t)
+
+;; http://suzuki.tdiary.net/20140813.html#c04
+(when (and (fboundp 'shr-render-region)
+           ;; \\[shr-render-region] requires Emacs to be compiled with libxml2.
+           (fboundp 'libxml-parse-html-region))
+  (setq mew-prog-text/html 'shr-render-region)) ;; 'mew-mime-text/html-w3m
+
+;; veguharrgiapddif

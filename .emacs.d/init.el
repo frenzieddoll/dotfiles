@@ -109,12 +109,13 @@
   (interactive)
   (load "init-flycheck" t)
   (load "init-eww" t)
-  (require 'ein)
   (when (eq system-type 'gnu/linux)
       (load "init-pdftools" t)
       (load "init-rust" t)
       (load "init-haskell" t)
-      (load "init-mail" t)
+      ;; (load "init-mail" t)
+      (load "init-mew" t)
+      (require 'ein)
       ))
 ;; (defun load-rust ()
 ;;   "load rust-mode setting"
@@ -137,8 +138,8 @@
 ;; (when (eq system-type 'gnu/linux)
 ;;   (load "init-pdftools" t))
 
-(defun loadRssSetting ()
-  (load "init-rss" t))
+;; (defun loadRssSetting ()
+;;   (load "init-rss" t))
 (add-hook 'newsticker-treeview-mode-hook
           '(lambda ()
              (load "init-rss" t)))
