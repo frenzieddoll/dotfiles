@@ -1,0 +1,2 @@
+;;; Generated package description from /home/toshiaki/.emacs.d/elpa/auto-async-byte-compile-20160916.454/auto-async-byte-compile.el  -*- no-byte-compile: t -*-
+(define-package "auto-async-byte-compile" "20160916.454" "Automatically byte-compile when saved" 'nil :commit "8681e74ddb8481789c5dbb3cafabb327db4c4484" :keywords '("lisp" "convenience") :authors '(("rubikitch" . "rubikitch@ruby-lang.org")) :maintainer '("rubikitch" . "rubikitch@ruby-lang.org") :url "http://www.emacswiki.org/cgi-bin/wiki/download/auto-async-byte-compile.el")
