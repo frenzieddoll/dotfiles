@@ -1,6 +1,6 @@
 [Hotkey]
 # 入力メソッドのオンオフ
-TriggerKey=CTRL_SUPER_LCTRL CTRL_SUPER_LCTRL
+TriggerKey=CTRL_SUPER_LCTRL CTRL_SHIFT_SPACE
 # アクティブでない時だけその他のトリガーキーを使用する
 # Available Value:
 # True False

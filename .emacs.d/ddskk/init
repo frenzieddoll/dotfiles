@@ -86,3 +86,9 @@
 
 ;;カタカナを変換候補に
 (setq skk-search-katakana t)
+
+;; サ変動詞変換
+(setq skk-search-sagyo-henkaku t)
+
+;; skk-studyを使用
+(require 'skk-study)

@@ -56,7 +56,7 @@ export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
 fcitx-autostart  &
 
-
-
+export GDK_SCALE=2
 xset r rate 200 30
 exec emacs
+# exec cinnamon-session

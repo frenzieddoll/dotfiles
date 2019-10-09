@@ -51,7 +51,7 @@
 
 ;; 時計を表示
 (display-time)
-(setq display-time-string-forms
+(defvar display-time-string-forms
  '((format "%s/%s(%s)%s:%s"
 		 month day dayname
 		 24-hours minutes
@@ -74,7 +74,6 @@
 ;;                     :family "Ricty"
 ;;                     :height 170)
 
-
 ;; デスクトップPCでのみフォントサイズを変更する
 ;; (if (string-match system-name "archlinuxhonda")
 
@@ -88,7 +87,7 @@
 
 ;; macと設定を共有
 (cond ((eq system-type 'gnu/linux)
-       (if (string-match system-name "archlinuxhonda")
+       (if (string-match (system-name) "archlinuxhonda")
 
            (set-face-attribute 'default nil
                                :family "Hackgen"
@@ -102,7 +101,6 @@
        (set-face-attribute 'default nil
                            :family "Hackgen"
                            :height 150)))
-
 
 ;; (when (eq system-type 'gnu/linux)
 ;;   (set-face-attribute 'default nil
@@ -187,20 +185,26 @@
       (error "Cannot get a file name"))))
 
 ;; pathを引き継ぐ
-(when (require 'exec-path-from-shell nil t)
-  (exec-path-from-shell-initialize))
+;; (when (require 'exec-path-from-shell nil t)
+;;   (exec-path-from-shell-initialize))
+;; ;; パスを引き継ぐ
+;; (exec-path-from-shell-initialize)
+
+
 
 ;; 折り返し禁止
 (setq-default truncate-lines t)
 
 ;; マウスイベントの無効
-(dolist (k '([mouse-1] [down-mouse-1] [drag-mouse-1] [double-mouse-1] [triple-mouse-1]
-             [mouse-2] [down-mouse-2] [drag-mouse-2] [double-mouse-2] [triple-mouse-2]
-             [mouse-3] [down-mouse-3] [drag-mouse-3] [double-mouse-3] [triple-mouse-3]
-             [mouse-4] [down-mouse-4] [drag-mouse-4] [double-mouse-4] [triple-mouse-4]
-             [mouse-5] [down-mouse-5] [drag-mouse-5] [double-mouse-5] [triple-mouse-5]))
-  (global-unset-key k))
+(if (not (string-match (system-name) "archlinuxhonda"))
+    (dolist (k '([mouse-1] [down-mouse-1] [drag-mouse-1] [double-mouse-1] [triple-mouse-1]
+                 [mouse-2] [down-mouse-2] [drag-mouse-2] [double-mouse-2] [triple-mouse-2]
+                 [mouse-3] [down-mouse-3] [drag-mouse-3] [double-mouse-3] [triple-mouse-3]
+                 [mouse-4] [down-mouse-4] [drag-mouse-4] [double-mouse-4] [triple-mouse-4]
+                 [mouse-5] [down-mouse-5] [drag-mouse-5] [double-mouse-5] [triple-mouse-5]))
+      (global-unset-key k)))
 
-;; パスを引き継ぐ
-(exec-path-from-shell-initialize)
+
+;; デフォルトのinput methodをskkにする
+(setq default-input-method "japanese-skk")
 ;;; init-system.el ends here

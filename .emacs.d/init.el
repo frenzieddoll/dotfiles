@@ -42,6 +42,7 @@
 ;; ddskk の設定
 ;; init-ddskk.el
 (load "init-skk" t)
+(defvar skk-byte-compile-init-file t)
 
 ;; multi-termの設定
 (load "init-term" t)
@@ -109,6 +110,8 @@
   (interactive)
   (load "init-flycheck" t)
   (load "init-eww" t)
+  (add-hook 'picture-mode-hook 'picture-mode-init)
+  (autoload 'picture-mode-init "init-picture")
   (when (eq system-type 'gnu/linux)
       (load "init-pdftools" t)
       (load "init-rust" t)
@@ -128,8 +131,6 @@
 ;;  (require 'magit)
 ;;  (require 'ein))
 
-(add-hook 'picture-mode-hook 'picture-mode-init)
-(autoload 'picture-mode-init "init-picture")
 
 ;; (require 'magit)
 ;; ;; jupyter notebookを使う
