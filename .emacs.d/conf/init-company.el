@@ -1,3 +1,29 @@
+;;; init-company.el --- setting for company
+
+;; Copyright (C) 2019 by Toshiaki HONDA
+
+;; Author: Toshiaki HONDA <frenzieddoll@gmail.com>
+;; URL:
+;; Version: 0.01
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+;;; Commentary:
+
+;;; Code:
+
+;; (provide 'init-company)
 (require 'company)
 (global-company-mode) ; 全バッファで有効にする
 (setq company-transformers '(company-sort-by-backend-importance)) ;; ソート順
@@ -5,7 +31,7 @@
 (setq company-minimum-prefix-length 3) ; デフォルトは4
 (setq company-selection-wrap-around t) ; 候補の一番下でさらに下に行こうとすると一番上に戻る
 (setq completion-ignore-case t)
-(setq company-dabbrev-downcase nil)
+(defvar company-dabbrev-downcase nil)
 (global-set-key (kbd "C-M-i") 'company-complete)
 
 ;; C-n, C-pで補完候補を次/前の候補を選択
@@ -35,3 +61,6 @@
 ;;   :background "Midnight Blue")
 ;; (set-face-attribute 'company-scrollbar-bg nil             ; ポップアップのスクロールバー
 ;;                     :background "ivory1")
+
+
+;;; init-company.el ends here

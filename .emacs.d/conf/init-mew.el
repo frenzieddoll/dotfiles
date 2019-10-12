@@ -1,11 +1,38 @@
+;;; init-mew.el --- setting for mew
+
+;; Copyright (C) 2019 by Toshiaki HONDA
+
+;; Author: Toshiaki HONDA <frenzieddoll@gmail.com>
+;; URL:
+;; Version: 0.01
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+;;; Commentary:
+
+;;; Code:
+
+;; (provide 'init-mew)
+
 (autoload 'mew "mew" nil t)
 (autoload 'mew-send "mew" nil t)
-(setq mew-fcc "+outbox")
+(defvar mew-fcc "+outbox")
 (setq exec-path (cons "/usr/bin" exec-path))
 
 (setq user-mail-address "frenzieddoll@gmail.com")
 (setq user-full-name "frenzieddoll")
-(setq mew-smtp-server "smtp.gmail.com")
+(defvar mew-smtp-server "smtp.gmail.com")
 (require 'mew)
 (setq mail-user-agent 'mew-user-agent)
 (define-mail-user-agent
@@ -24,7 +51,7 @@
 (setq mew-imap-auth  t)
 (setq mew-imap-ssl t)
 (setq mew-imap-ssl-port "993")
-(setq mew-smtp-auth t)
+(defvar mew-smtp-auth t)
 (setq mew-smtp-ssl t)
 (setq mew-smtp-ssl-port "465")
 (setq mew-smtp-user "frenzieddoll@gmail.com")
@@ -41,6 +68,8 @@
 (when (and (fboundp 'shr-render-region)
            ;; \\[shr-render-region] requires Emacs to be compiled with libxml2.
            (fboundp 'libxml-parse-html-region))
-  (setq mew-prog-text/html 'shr-render-region)) ;; 'mew-mime-text/html-w3m
+  (defvar mew-prog-text/html 'shr-render-region)) ;; 'mew-mime-text/html-w3m
 
 ;; veguharrgiapddif
+
+;;; init-mew.el ends here

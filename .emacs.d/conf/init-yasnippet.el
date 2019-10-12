@@ -1,4 +1,4 @@
-;;; init-auto-ansyc-byte-compile.el --- setting for auto-ansyc-byte-compile
+;;; init-yasnippet.el --- Setting for init-yasnippet
 
 ;; Copyright (C) 2019 by Toshiaki HONDA
 
@@ -23,18 +23,7 @@
 
 ;;; Code:
 
-;; (provide 'init-auto-ansyc-byte-compile)
+(provide 'init-yasnippet)
+;; (yas-global-mode 1)
 
-(require 'auto-async-byte-compile)
-(setq auto-async-byte-compile-exclude-files-regexp "/confbk/")
-(add-hook 'emacs-lisp-mode-hook 'enable-auto-async-byte-compile-mode)
-
-(defun confDirRecompile ()
-  "オートコンパイルの対象ディレクトリ."
-  (interactive)
-  (byte-recompile-directory (expand-file-name "~/.emacs.d/conf") 0))
-
-
-
-
-;;; init-auto-ansyc-byte-compile.el ends here
+;;; init-yasnippet.el ends here
