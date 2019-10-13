@@ -51,7 +51,7 @@
 
 ;; 時計を表示
 (display-time)
-(defvar display-time-string-forms
+(setq display-time-string-forms
  '((format "%s/%s(%s)%s:%s"
 		 month day dayname
 		 24-hours minutes
@@ -190,6 +190,18 @@
 ;; ;; パスを引き継ぐ
 ;; (exec-path-from-shell-initialize)
 
+(require 'exec-path-from-shell)
+(exec-path-from-shell-initialize)
+;; (defun set-exec-path-from-shell-PATH ()
+;;   "Set up Emacs' `exec-path' and PATH environment variable to match that used by the user's shell.
+
+;; This is particularly useful under Mac OSX, where GUI apps are not started from a shell."
+;;   (interactive)
+;;   (let ((path-from-shell (replace-regexp-in-string "[ \t\n]*$" "" (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
+;;     (setenv "PATH" path-from-shell)
+;;     (setq exec-path (split-string path-from-shell path-separator))))
+
+;; (set-exec-path-from-shell-PATH)
 
 
 ;; 折り返し禁止

@@ -56,7 +56,12 @@ export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
 fcitx-autostart  &
 
-export GDK_SCALE=2
+if [ $(hostname) = "archlinuxhonda" ]; then
+    export GDK_SCALE=2
+    export QT_SCALE_FACTOR=1.5
+fi
+
+
 xset r rate 200 30
 exec emacs
 # exec cinnamon-session

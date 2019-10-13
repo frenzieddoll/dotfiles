@@ -45,6 +45,7 @@ bindkey "^[[3~" delete-char
 
 # pathを通す
 export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.emacs.d/script:$PATH"
 
 # エイリアス
 alias la='ls -a'

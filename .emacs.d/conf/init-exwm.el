@@ -71,7 +71,8 @@
 ;; マルチモニターの設定
 (require 'exwm-randr)
 ;; (setq exwm-randr-workspace-output-plist '(0 "DP-0" 1 "HDMI-0" 2 "DP-0" 3 "HDMI-0" 4 "DP-0" 5 "HDMI-0" 6 "DP-0" 7 "HDMI-0" 8 "DP-0" 9  "HDMI-0"))
-(setq exwm-randr-workspace-output-plist '(0 "DP-0" 1 "HDMI-0" 2 "DP-0" 3 "DP-0" 4 "DP-0" 5 "DP-0"))
+;; (setq exwm-randr-workspace-output-plist '(0 "DP-0" 1 "HDMI-0" 2 "DP-0" 3 "DP-0" 4 "DP-0" 5 "DP-0"))
+(setq exwm-randr-workspace-monitor-plist '(0 "DP-0" 1 "HDMI-0" 2 "DP-0" 3 "DP-0" 4 "DP-0" 5 "DP-0"))
 
 (add-hook 'exwm-randr-screen-change-hook
           (lambda ()
@@ -226,7 +227,7 @@
         ;; test
         ([?\C-x ?\C-s] . [C-s])
         ([?\C-u ?\C-/] . [C-y])
-        ([?\C-u ?\C-/] . [C-y])
+        ;; ([?\C-u ?\C-/] . [C-y])
         ([?\M-p] . [S-up])
         ([?\M-n] . [S-down])
         ([?\M-f] . [S-right])

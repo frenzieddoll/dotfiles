@@ -151,13 +151,6 @@
                       (load "init-exwm" t)
                       )))
 
-(defun guitool ()
-  (interactive)
-  (start-process-shell-command
-   "GDK application scaling up"
-   nil
-   (format "export GDK_SCACE=2")))
-
 ;; mac用の設定
 (when (eq system-type 'darwin)
   (load "init-mySaveFrame" t))
