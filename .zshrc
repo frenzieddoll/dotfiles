@@ -47,6 +47,9 @@ bindkey "^[[3~" delete-char
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.emacs.d/script:$PATH"
 
+# 言語を英語にする
+export LANG=C
+
 # エイリアス
 alias la='ls -a'
 alias ll='ls -lh'
@@ -84,3 +87,8 @@ prompt pure
 function mm() {
     mpv --no-video --ytdl-format=bestaudio ytdl://ytsearch10:"$@"
     }
+
+# case $TERM in
+#     linux) LANG=C ;;
+#     *) LANG=ja_JP.UTF-8 ;;
+# esac

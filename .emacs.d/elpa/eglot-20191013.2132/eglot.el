@@ -3,7 +3,7 @@
 ;; Copyright (C) 2018 Free Software Foundation, Inc.
 
 ;; Version: 1.4
-;; Package-Version: 20191011.1011
+;; Package-Version: 20191013.2132
 ;; Author: João Távora <joaotavora@gmail.com>
 ;; Maintainer: João Távora <joaotavora@gmail.com>
 ;; URL: https://github.com/joaotavora/eglot
@@ -1725,6 +1725,7 @@ Calls REPORT-FN maybe if server publishes diagnostics in time."
 
 (cl-defmacro eglot--collecting-xrefs ((collector) &rest body)
   "Sort and handle xrefs collected with COLLECTOR in BODY."
+  (declare (indent 1) (debug (sexp &rest form)))
   (let ((collected (cl-gensym "collected")))
     `(unwind-protect
          (let (,collected)
@@ -1787,13 +1788,13 @@ Try to visit the target file for a richer summary line."
                                             "/"))))))
     (eglot--error "Sorry, this server doesn't do %s" method))
   (eglot--collecting-xrefs (collect)
-   (mapc
-    (eglot--lambda ((Location) uri range)
-      (eglot--xref-make (symbol-at-point) uri range))
-    (jsonrpc-request
-     (eglot--current-server-or-lose) method (append
-                                             (eglot--TextDocumentPositionParams)
-                                             extra-params)))))
+    (mapc
+     (eglot--lambda ((Location) uri range)
+       (collect (eglot--xref-make (symbol-at-point) uri range)))
+     (jsonrpc-request
+      (eglot--current-server-or-lose) method (append
+                                              (eglot--TextDocumentPositionParams)
+                                              extra-params)))))
 
 (cl-defun eglot--lsp-xref-helper (method &key extra-params capability )
   "Helper for `eglot-find-declaration' & friends."
@@ -1830,13 +1831,13 @@ Try to visit the target file for a richer summary line."
 (cl-defmethod xref-backend-apropos ((_backend (eql eglot)) pattern)
   (when (eglot--server-capable :workspaceSymbolProvider)
     (eglot--collecting-xrefs (collect)
-     (mapc
-      (eglot--lambda ((SymbolInformation) name location)
-        (eglot--dbind ((Location) uri range) location
-          (collect (eglot--xref-make name uri range))))
-      (jsonrpc-request (eglot--current-server-or-lose)
-                       :workspace/symbol
-                       `(:query ,pattern))))))
+      (mapc
+       (eglot--lambda ((SymbolInformation) name location)
+         (eglot--dbind ((Location) uri range) location
+           (collect (eglot--xref-make name uri range))))
+       (jsonrpc-request (eglot--current-server-or-lose)
+                        :workspace/symbol
+                        `(:query ,pattern))))))
 
 (defun eglot-format-buffer ()
   "Format contents of current buffer."

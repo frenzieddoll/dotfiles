@@ -498,7 +498,8 @@ action functions.")
   current
   def
   ignore
-  multi-action)
+  multi-action
+  extra-props)
 
 (defvar ivy-last (make-ivy-state)
   "The last parameters passed to `ivy-read'.
@@ -1204,6 +1205,7 @@ If the text hasn't changed as a result, forward to `ivy-alt-done'."
          :re-builder (ivy-state-re-builder ivy-last)
          :matcher (ivy-state-matcher ivy-last)
          :dynamic-collection (ivy-state-dynamic-collection ivy-last)
+         :extra-props (ivy-state-extra-props ivy-last)
          :caller (ivy-state-caller ivy-last))))))
 
 (defvar-local ivy-calling nil
@@ -1993,7 +1995,9 @@ found, it falls back to the key t."
                       history preselect def keymap update-fn sort
                       action multi-action
                       unwind re-builder matcher
-                      dynamic-collection caller)
+                      dynamic-collection
+                      extra-props
+                      caller)
   "Read a string in the minibuffer, with completion.
 
 PROMPT is a string, normally ending in a colon and a space.
@@ -2052,6 +2056,9 @@ list of candidates, and returns the list of matching candidates.
 DYNAMIC-COLLECTION is a boolean specifying whether the list of
 candidates is updated after each input by calling COLLECTION.
 
+EXTRA-PROPS can be used to store collection-specific
+session-specific data.
+
 CALLER is a symbol to uniquely identify the caller to `ivy-read'.
 It is used, along with COLLECTION, to determine which
 customizations apply to the current completion session."
@@ -2099,6 +2106,7 @@ customizations apply to the current completion session."
            :dynamic-collection dynamic-collection
            :display-transformer-fn (plist-get ivy--display-transformers-list caller)
            :directory default-directory
+           :extra-props extra-props
            :caller caller
            :def def))
     (ivy--reset-state ivy-last)
@@ -3883,7 +3891,7 @@ Note: The usual last two arguments are flipped for convenience.")
 
 (defun ivy--format (cands)
   "Return a string for CANDS suitable for display in the minibuffer.
-CANDS is a list of strings."
+CANDS is a list of candidates that :display-transformer can turn into strings."
   (setq ivy--length (length cands))
   (when (>= ivy--index ivy--length)
     (ivy-set-index (max (1- ivy--length) 0)))
@@ -4322,15 +4330,18 @@ Skip buffers that match `ivy-ignore-buffers'."
           (t str))
       str)))
 
-(defun ivy-switch-buffer-occur ()
-  "Occur function for `ivy-switch-buffer' using `ibuffer'."
+(defun ivy-switch-buffer-occur (cands)
+  "Occur function for `ivy-switch-buffer' using `ibuffer'.
+CANDS are the candidates to be displayed."
+  (unless cands
+    (setq cands (all-completions ivy-text #'internal-complete-buffer)))
   (ibuffer
    nil (buffer-name)
    `((or ,@(cl-mapcan
             (lambda (cand)
               (unless (eq (get-text-property 0 'face cand) 'ivy-virtual)
                 `((name . ,(format "\\_<%s\\_>" (regexp-quote cand))))))
-            ivy--old-cands)))))
+            cands)))))
 
 ;;;###autoload
 (defun ivy-switch-buffer ()
@@ -4751,6 +4762,18 @@ When `ivy-calling' isn't nil, call `ivy-occur-press'."
     (insert (if (string-match-p "\\`.[/\\]" cand) "" "    ")
             cand ?\n)))
 
+(defun ivy--occur-default (cands)
+  "Insert CANDS into the current occur buffer."
+  (unless cands
+    (let ((coll (ivy-state-collection ivy-last)))
+      (when (arrayp coll)
+        (setq coll (all-completions "" coll (ivy-state-predicate ivy-last))))
+      (setq cands (ivy--filter (ivy-state-text ivy-last) coll))))
+  (ivy-occur-mode)
+  (insert (format "%d candidates:\n" (length cands)))
+  (ivy--occur-insert-lines cands)
+  (read-only-mode))
+
 (defun ivy-occur ()
   "Stop completion and put the current candidates into a new buffer.
 
@@ -4764,7 +4787,8 @@ There is no limit on the number of *ivy-occur* buffers."
   (if (not (window-minibuffer-p))
       (user-error "No completion session is active")
     (let* ((caller (ivy-state-caller ivy-last))
-           (occur-fn (plist-get ivy--occurs-list caller))
+           (occur-fn (or (plist-get ivy--occurs-list caller)
+                         #'ivy--occur-default))
            (buffer
             (generate-new-buffer
              (format "*ivy-occur%s \"%s\"*"
@@ -4773,15 +4797,7 @@ There is no limit on the number of *ivy-occur* buffers."
                        "")
                      ivy-text))))
       (with-current-buffer buffer
-        (let ((inhibit-read-only t))
-          (erase-buffer)
-          (if occur-fn
-              (funcall occur-fn)
-            (ivy-occur-mode)
-            (insert (format "%d candidates:\n" (length ivy--old-cands)))
-            (read-only-mode)
-            (ivy--occur-insert-lines
-             ivy--old-cands)))
+        (funcall occur-fn ivy--old-cands)
         (setf (ivy-state-text ivy-last) ivy-text)
         (setq ivy-occur-last ivy-last))
       (ivy-exit-with-action
@@ -4802,21 +4818,13 @@ updated original buffer."
   (interactive)
   (let ((caller (ivy-state-caller ivy-occur-last))
         (ivy-last ivy-occur-last))
-    (cond ((member caller '(swiper swiper-isearch))
-           (let ((buffer (ivy-state-buffer ivy-occur-last)))
-             (unless (buffer-live-p buffer)
-               (error "Buffer was killed"))
-             (let ((inhibit-read-only t))
-               (erase-buffer)
-               (funcall (plist-get ivy--occurs-list caller) t)
-               (ivy-occur-grep-mode))))
-          ((memq caller ivy-highlight-grep-commands)
-           (let ((inhibit-read-only t)
-                 (line (line-number-at-pos)))
-             (erase-buffer)
-             (funcall (plist-get ivy--occurs-list caller))
-             (goto-char (point-min))
-             (forward-line (1- line)))))
+    (let ((inhibit-read-only t)
+          (line (line-number-at-pos)))
+      (erase-buffer)
+      (funcall (or (plist-get ivy--occurs-list caller)
+                   #'ivy--occur-default) nil)
+      (goto-char (point-min))
+      (forward-line (1- line)))
     (setq ivy-occur-last ivy-last)))
 
 (declare-function wgrep-change-to-wgrep-mode "ext:wgrep")

@@ -50,6 +50,10 @@ fi
 
 [[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources
 
+xhost +SI:localuser:$USER
+export _JAVA_AWT_WM_NONREPARENTING=1
+xsetroot -cursor_name left_ptr
+
 export DefaultIMModule=fcitx
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
@@ -61,6 +65,7 @@ if [ $(hostname) = "archlinuxhonda" ]; then
     export QT_SCALE_FACTOR=1.5
 fi
 
+export LANG=ja_JP.UTF-8
 
 xset r rate 200 30
 exec emacs

@@ -112,6 +112,7 @@
   (load "init-eww" t)
   (add-hook 'picture-mode-hook 'picture-mode-init)
   (autoload 'picture-mode-init "init-picture")
+  (load "init-yasnippet")
   (when (eq system-type 'gnu/linux)
       (load "init-pdftools" t)
       (load "init-rust" t)

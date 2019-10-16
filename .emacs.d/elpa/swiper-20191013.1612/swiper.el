@@ -4,7 +4,7 @@
 
 ;; Author: Oleh Krehel <ohwoeowho@gmail.com>
 ;; URL: https://github.com/abo-abo/swiper
-;; Package-Version: 20191011.2149
+;; Package-Version: 20191013.1612
 ;; Version: 0.12.0
 ;; Package-Requires: ((emacs "24.1") (ivy "0.12.0"))
 ;; Keywords: matching
@@ -631,11 +631,32 @@ When non-nil, INITIAL-INPUT is the initial search pattern."
       (setq last-pt pt))
     (nreverse res)))
 
-(defun swiper-occur (&optional revert)
+(defun swiper--occur-insert-lines (cands)
+  (let ((inhibit-read-only t))
+    ;; Need precise number of header lines for `wgrep' to work.
+    (insert (format "-*- mode:grep; default-directory: %S -*-\n\n\n"
+                    default-directory))
+    (insert (format "%d candidates:\n" (length cands)))
+    (ivy--occur-insert-lines cands)
+    (goto-char (point-min))
+    (forward-line 4)))
+
+(defun swiper--occur-buffer ()
+  (let ((buffer (ivy-state-buffer ivy-last)))
+    (unless (buffer-live-p buffer)
+      (setq buffer
+            (setf (ivy-state-buffer ivy-last)
+                  (find-file-noselect
+                   (plist-get (ivy-state-extra-props ivy-last) :fname))))
+      (save-selected-window
+        (pop-to-buffer buffer))
+      (setf (ivy-state-window ivy-last) (selected-window)))
+    buffer))
+
+(defun swiper-occur (&optional cands)
   "Generate a custom occur buffer for `swiper'.
-When REVERT is non-nil, regenerate the current *ivy-occur* buffer.
 When capture groups are present in the input, print them instead of lines."
-  (let* ((buffer (ivy-state-buffer ivy-last))
+  (let* ((buffer (swiper--occur-buffer))
          (fname (propertize
                  (with-ivy-window
                    (if (buffer-file-name buffer)
@@ -650,15 +671,14 @@ When capture groups are present in the input, print them instead of lines."
          (cands
           (swiper--occur-cands
            fname
-           (if (not revert)
-               ivy--old-cands
-             (setq ivy--old-re nil)
-             (save-window-excursion
-               (switch-to-buffer buffer)
-               (if (eq (ivy-state-caller ivy-last) 'swiper)
-                   (let ((ivy--regex-function 'swiper--re-builder))
-                     (ivy--filter re (swiper--candidates)))
-                 (swiper-isearch-function ivy-text)))))))
+           (or cands
+               (save-window-excursion
+                 (setq ivy--old-re nil)
+                 (switch-to-buffer buffer)
+                 (if (eq (ivy-state-caller ivy-last) 'swiper)
+                     (let ((ivy--regex-function 'swiper--re-builder))
+                       (ivy--filter re (swiper--candidates)))
+                   (swiper-isearch-function ivy-text)))))))
     (if (string-match-p "\\\\(" re)
         (insert
          (mapconcat #'identity
@@ -669,16 +689,8 @@ When capture groups are present in the input, print them instead of lines."
       (unless (eq major-mode 'ivy-occur-grep-mode)
         (ivy-occur-grep-mode)
         (font-lock-mode -1))
-      (insert (format "-*- mode:grep; default-directory: %S -*-\n\n\n"
-                      default-directory))
-      (insert (format "%d candidates:\n" (length cands)))
-      (ivy--occur-insert-lines
-       (mapcar
-        (lambda (cand) (concat "./" cand))
-        cands))
-      (goto-char (point-min))
-      (forward-line 4)
-      (setq-local next-error-function #'ivy-occur-next-error))))
+      (swiper--occur-insert-lines
+       (mapcar (lambda (cand) (concat "./" cand)) cands)))))
 
 (declare-function evil-set-jump "ext:evil-jumps")
 
@@ -797,6 +809,7 @@ When non-nil, INITIAL-INPUT is the initial search pattern."
                    :action #'swiper--action
                    :re-builder #'swiper--re-builder
                    :history 'swiper-history
+                   :extra-props (list :fname (buffer-file-name))
                    :caller 'swiper))
             (point))
         (unless (or res swiper-stay-on-quit)
@@ -1613,6 +1626,7 @@ When not running `swiper-isearch' already, start it."
                  :action #'swiper-isearch-action
                  :re-builder #'swiper--re-builder
                  :history 'swiper-history
+                 :extra-props (list :fname (buffer-file-name))
                  :caller 'swiper-isearch))
           (point))
       (unless (or res swiper-stay-on-quit)
