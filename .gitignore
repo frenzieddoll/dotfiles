@@ -28,4 +28,5 @@
 !/.config/termite
 !/.config/chrome-dev-flags.conf
 !/.config/chromium-flags.conf
+!/.config/mpv
 !/.Xresources
