@@ -1,5 +1,5 @@
 ;;; init.el --- setting for emacs
-;;; Commentary
+;;; Commentary:
 
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
@@ -51,23 +51,18 @@
 (load "init-eshell" t)
 
 ;; 補完パッケージ
-;; ido setting
-;; (load "init-ido" t)
-;; init-ivy.el
 (load "init-ivy" t)
-;; init-helm.el
-;; (load "init-helm")
 
 ;; init-shackle
 (load "init-shackle" t)
 
-
 ;; init-window.el
 (load "init-window" t)
 
+;; init-dired.el
+(load "init-dired" t)
 
 ;; init-visual.el
-;; (load "init-visual")
 ;; GUI環境でのみ見た目の設定を読み込む
 (if window-system (progn
                     (load "init-visual" t)
@@ -75,10 +70,6 @@
 
 ;; init-googletranslate.el
 (load "init-googletranslate" t)
-
-
-;; init-dired.el
-(load "init-dired" t)
 
 ;; init-mail.el
 ;; (load "init-mail" t)
@@ -91,7 +82,7 @@
 ;;   (load "init-tex" t))
 
 (defun load-tex ()
-  "load tex setting"
+  "Load tex setting."
   (interactive)
   (cond
    ((eq system-type 'gnu/linux)
@@ -103,16 +94,15 @@
 ;; init-company.el
 (load "init-company" t)
 
-;; flycheck
-;; (add-hook 'after-init-hook #'global-flycheck-mode)
-
 (defun load-add-setting ()
+  "Add setting."
   (interactive)
   (load "init-flycheck" t)
   (load "init-eww" t)
   (add-hook 'picture-mode-hook 'picture-mode-init)
   (autoload 'picture-mode-init "init-picture")
   (load "init-yasnippet")
+  ;; linux環境でのみ読み込み
   (when (eq system-type 'gnu/linux)
       (load "init-pdftools" t)
       (load "init-rust" t)
@@ -121,24 +111,7 @@
       (load "init-mew" t)
       (require 'ein)
       ))
-;; (defun load-rust ()
-;;   "load rust-mode setting"
-;;   (interactive)
-;;   (load "init-rust" t))
 
-
-;; linux環境でのみ読み込み
-;; (when (eq system-type 'gnu/linux)
-;;  (require 'magit)
-;;  (require 'ein))
-
-
-;; (require 'magit)
-;; ;; jupyter notebookを使う
-;; (require 'ein)
-;; ;; init-pdftools.el
-;; (when (eq system-type 'gnu/linux)
-;;   (load "init-pdftools" t))
 
 ;; (defun loadRssSetting ()
 ;;   (load "init-rss" t))
@@ -178,7 +151,7 @@
  '(haskell-indent-spaces 4)
  '(org-agenda-files nil)
  '(package-selected-packages
-   '(ivy-yasnippet auto-async-byte-compile yasnippet lua-mode yaml-mode gitignore-mode recentf-ext smart-mode-line doom-themes iflipb counsel-notmuch notmuch abyss-theme counsel swiper selected google-this smart-mode-line-atom-one-dark-theme company-ghci eglot image+ dimmer exec-path-from-shell flycheck-haskell haskell-mode ox-pandoc company-jedi shackle popwin quickrun company-racer flycheck-rust racer imenus browse-kill-ring smex smooth-scroll dired-subtree let-alist google-translate org-plus-contrib org-preview-html ace-link dired-open dired-launch dired-filter company zoom-window ein rainbow-delimiters powerline multi-term exwm edit-server ddskk))
+   '(company-lsp ivy-yasnippet auto-async-byte-compile yasnippet lua-mode yaml-mode gitignore-mode recentf-ext smart-mode-line doom-themes iflipb counsel-notmuch notmuch abyss-theme counsel swiper selected google-this smart-mode-line-atom-one-dark-theme company-ghci eglot image+ dimmer exec-path-from-shell flycheck-haskell haskell-mode ox-pandoc company-jedi shackle popwin quickrun company-racer flycheck-rust racer imenus browse-kill-ring smex smooth-scroll dired-subtree let-alist google-translate org-plus-contrib org-preview-html ace-link dired-open dired-launch dired-filter company zoom-window ein rainbow-delimiters powerline multi-term exwm edit-server ddskk))
  '(skk-auto-insert-paren nil)
  '(skk-auto-okuri-process nil)
  '(skk-auto-start-henkan t)

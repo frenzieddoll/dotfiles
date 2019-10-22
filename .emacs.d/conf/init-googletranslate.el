@@ -57,8 +57,8 @@
      string)))
 
 
-(global-unset-key (kbd "C-c C-o"))
-(global-set-key (kbd "C-c C-o") 'google-translate-enja-or-jaen)
+(global-unset-key (kbd "C-'"))
+(global-set-key (kbd "C-'") 'google-translate-enja-or-jaen)
 ;; (exwm-input-set-key (kbd "C-o") 'google-translate-enja-or-jaen)
 ;; (global-set-key (kbd "C-'") 'google-translate-enja-or-jan)
 

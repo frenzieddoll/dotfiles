@@ -70,6 +70,20 @@
            (fboundp 'libxml-parse-html-region))
   (defvar mew-prog-text/html 'shr-render-region)) ;; 'mew-mime-text/html-w3m
 
+(setq mew-use-text/html t)
+(setq browse-url-browser-function 'eww-browse-url)
+(condition-case nil
+    (require 'eww)
+  (file-error nil))
+
+;; (require 'mew-w3m)
+;; (setq mew-prog-text/html 'w3m-region)
+;; (setq mew-prog-text/xml 'w3m-region)
+;; (setq mew-use-text/html t)
+;; (setq mew-mime-multipart-alternative-list '("Text/Html" "Text/Plain" ".*"))
+;; (add-hook 'mew-message-hook 'w3m-minor-mode)
+;; (setq mew-file-max-size 10000000)
+
 ;; veguharrgiapddif
 
 ;;; init-mew.el ends here
