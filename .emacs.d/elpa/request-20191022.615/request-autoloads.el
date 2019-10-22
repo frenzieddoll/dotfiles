@@ -9,7 +9,7 @@
 ;;;### (autoloads nil "request" "request.el" (0 0 0 0))
 ;;; Generated autoloads from request.el
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "request" '("engdegard-auto-revert-notify-rm-watch" "request-")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "request" '("request-")))
 
 ;;;***
 

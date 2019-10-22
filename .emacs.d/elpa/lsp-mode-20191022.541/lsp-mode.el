@@ -57,6 +57,7 @@
 (require 'tree-widget)
 (require 'markdown-mode)
 (require 'ewoc)
+(require 'yasnippet nil t)
 
 (declare-function company-mode "company")
 (declare-function flycheck-mode "flycheck")
@@ -2540,8 +2541,8 @@ disappearing, unset all the variables related to it."
                                                                                (or
                                                                                 (featurep 'yasnippet)
                                                                                 (warn (concat
-                                                                                       "Yasnippet is not yet loaded, but `lsp-enable-snippet' is set to `t'. "
-                                                                                       "You must either (require 'yasnippet), or disable snippet support."))
+                                                                                       "Yasnippet is not installed, but `lsp-enable-snippet' is set to `t'. "
+                                                                                       "You must either install yasnippet, or disable snippet support."))
                                                                                 t)
                                                                              :json-false))
                                                         (documentationFormat . ["markdown"])))
@@ -5535,13 +5536,17 @@ changing the value of `foo'."
 
 (defvar lsp-client-settings nil)
 
+(defun lsp--compare-setting-path (a b)
+  (equal (car a) (car b)))
+
 (defun lsp-register-custom-settings (props)
   "Register PROPS.
 The PROPS is list of triple (path symbol boolean?) Where: path is
 the path to the property, symbol is the defcustom symbol which
 will be used to retrieve the value and boolean determines whether
 the type of the property is boolean?"
-  (setq lsp-client-settings (-uniq (append lsp-client-settings props))))
+  (let ((-compare-fn #'lsp--compare-setting-path))
+    (setq lsp-client-settings (-uniq (append props lsp-client-settings)))))
 
 (defun lsp-region-text (region)
   "Get the text for REGION in current buffer."

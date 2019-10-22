@@ -6,7 +6,7 @@
 
 ;; Author: Takafumi Arakaki <aka.tkf at gmail.com>
 ;; URL: https://github.com/tkf/emacs-request
-;; Package-Version: 20191022.15
+;; Package-Version: 20191022.615
 ;; Package-Requires: ((emacs "24.4"))
 ;; Version: 0.3.2
 
@@ -1193,8 +1193,8 @@ START-URL is the URL requested."
               (or error (and (numberp code) (>= code 400) `(error . (http ,code)))))
         (apply #'request--callback buffer settings))))))
 
-(defun engdegard-auto-revert-notify-rm-watch ()
-  "Disable file notification for current buffer's associated file."
+(defun request-auto-revert-notify-rm-watch ()
+  "Backport of M. Engdegard's fix of `auto-revert-notify-rm-watch'."
   (let ((desc auto-revert-notify-watch-descriptor)
         (table (if (boundp 'auto-revert--buffers-by-watch-descriptor)
                    auto-revert--buffers-by-watch-descriptor
@@ -1218,9 +1218,7 @@ START-URL is the URL requested."
                   settings)
       (let ((proc (get-buffer-process (request-response--buffer response))))
         (auto-revert-set-timer)
-        (dolist (buf (buffer-list))
-          (with-current-buffer buf
-            (when auto-revert-use-notify (engdegard-auto-revert-notify-rm-watch))))
+        (when auto-revert-use-notify (request-auto-revert-notify-rm-watch))
         (with-local-quit
           (cl-loop with iter = 0
                    until (or (>= iter 10) finished)
