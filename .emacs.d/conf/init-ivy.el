@@ -49,7 +49,7 @@
 (global-set-key (kbd "C-c i") 'imenus)
 (global-set-key (kbd "M-y") 'counsel-yank-pop)
 (global-set-key (kbd "C-x b") 'ivy-switch-buffer)
-(global-set-key (kbd "C-;") 'swiper)
+(global-set-key (kbd "C-c C-;") 'swiper)
 (defvar swiper-include-line-number-in-search t) ;; line-numberでも検索可能
 (global-set-key (kbd "C-x C-d") 'bjm/ivy-dired-recent-dirs)
 

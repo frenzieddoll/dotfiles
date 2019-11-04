@@ -59,6 +59,7 @@ alias ghc="stack ghc"
 alias ghci="stack ghci"
 alias runghc="stack runghc"
 alias runhaskell="stack runghc"
+alias pacmanlist="pacman -Qqe > ~/projects/dotfiles/.pkglist"
 
 # グローバルエイリアス
 alias -g L='| less'

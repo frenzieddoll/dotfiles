@@ -1,2 +1,0 @@
-;;; Generated package description from /home/toshiaki/.emacs.d/elpa/rust-mode-20191021.950/rust-mode.el  -*- no-byte-compile: t -*-
-(define-package "rust-mode" "20191021.950" "A major emacs mode for editing Rust source code" '((emacs "24.0")) :commit "1d42d6981877100bff4e643f6374cee0a15e733f" :keywords '("languages") :authors '(("Mozilla")) :maintainer '("Mozilla") :url "https://github.com/rust-lang/rust-mode")

@@ -13,6 +13,9 @@
 (set-default-coding-systems 'utf-8)
 (prefer-coding-system 'utf-8)
 
+;; time locale を標準へ
+(setq system-time-locale "C")
+
 ;; 改行コードを表示する
 (setq eol-mnemonic-dos "(CRLF)")
 (setq eol-mnemonic-mac "(CR)")
@@ -55,7 +58,7 @@
  '((format "%s/%s(%s)%s:%s"
 		 month day dayname
 		 24-hours minutes
-   )))
+         )))
 
 ;; バックアップファイ及び、自動セーブの無効
 (setq make-backup-files nil)
@@ -102,36 +105,6 @@
                            :family "Hackgen"
                            :height 150)))
 
-;; (when (eq system-type 'gnu/linux)
-;;   (set-face-attribute 'default nil
-;;                       :family "Hackgen"
-;;                       :height 170))
-
-
-;; (when (eq system-type 'darwin)
-;;   (global-set-key [s-mouse-1] 'browse-url-at-mouse)
-;;   (let* ((size 14)
-;; 	 (jpfont "Hiragino Maru Gothic ProN")
-;; 	 (asciifont "Monaco")
-;; 	 (h (* size 10)))
-;;     (set-face-attribute 'default nil :family asciifont :height h)
-;;     (set-fontset-font t 'katakana-jisx0201 jpfont)
-;;     (set-fontset-font t 'japanese-jisx0208 jpfont)
-;;     (set-fontset-font t 'japanese-jisx0212 jpfont)
-;;     (set-fontset-font t 'japanese-jisx0213-1 jpfont)
-;;     (set-fontset-font t 'japanese-jisx0213-2 jpfont)
-;;     (set-fontset-font t '(#x0080 . #x024F) asciifont))
-;;   (setq face-font-rescale-alist
-;; 	'(("^-apple-hiragino.*" . 1.2)
-;; 	  (".*-Hiragino Maru Gothic ProN-.*" . 1.2)
-;; 	  (".*osaka-bold.*" . 1.2)
-;; 	  (".*osaka-medium.*" . 1.2)
-;; 	  (".*courier-bold-.*-mac-roman" . 1.0)
-;; 	  (".*monaco cy-bold-.*-mac-cyrillic" . 0.9)
-;; 	  (".*monaco-bold-.*-mac-roman" . 0.9)
-;; 	  ("-cdac$" . 1.3)))
-;;   ;; C-x 5 2 で新しいフレームを作ったときに同じフォントを使う
-;;   (setq frame-inherited-parameters '(font tool-bar-lines)))
 
 ;; 列番号表示
 (column-number-mode t)
@@ -184,11 +157,6 @@
         (find-alternate-file (concat "/sudo::" file-name))
       (error "Cannot get a file name"))))
 
-;; pathを引き継ぐ
-;; (when (require 'exec-path-from-shell nil t)
-;;   (exec-path-from-shell-initialize))
-;; ;; パスを引き継ぐ
-;; (exec-path-from-shell-initialize)
 
 (require 'exec-path-from-shell)
 (exec-path-from-shell-initialize)

@@ -16,6 +16,7 @@ English (US):us:English (Macintosh):mac:en
 English (US):us:English (intl., with AltGr dead keys):altgr-intl:en
 English (US):us:English (the divide/multiply keys toggle the layout):olpc2:en
 English (US):us:Serbo-Croatian (US):hbs:en
+English (US):us:English (Norman):norman:en
 English (US):us:English (Workman):workman:en
 English (US):us:English (Workman, intl., with dead keys):workman-intl:en
 English (US):us:English (US, international AltGr Unicode combining):intl-unicode:en
@@ -25,7 +26,6 @@ English (US):us:Coeur d'Alene Salish:crd:
 English (US):us:Czech Slovak and German (US):cz_sk_de:en
 English (US):us:English (US, IBM Arabic 238_L):ibm238l:en
 English (US):us:English (US, Sun Type 6/7):sun_type6:en
-English (US):us:English (Norman):norman:en
 English (US):us:English (Carpalx):carpalx:en
 English (US):us:English (Carpalx, intl., with dead keys):carpalx-intl:en
 English (US):us:English (Carpalx, intl., with AltGr dead keys):carpalx-altgr-intl:en
@@ -96,7 +96,6 @@ Indian:in:Gujarati:guj:gu
 Indian:in:Punjabi (Gurmukhi):guru:pa
 Indian:in:Punjabi (Gurmukhi Jhelum):jhelum:pa
 Indian:in:Kannada:kan:kn
-Indian:in:Kannada (KaGaPa phonetic):kan-kagapa:kn
 Indian:in:Kannada (KaGaPa phonetic):kan-kagapa:kn
 Indian:in:Malayalam:mal:ml
 Indian:in:Malayalam (Lalitha):mal_lalitha:ml
@@ -170,6 +169,13 @@ French (Canada):ca:Secwepemctsin:shs:fr
 French (Canada):ca:Multilingual (Canada, Sun Type 6/7):sun_type6:fr
 French (Democratic Republic of the Congo):cd:fr
 Chinese:cn:zh
+Chinese:cn:Mongolian (Bichig):mon_trad:
+Chinese:cn:Mongolian Todo:mon_trad_todo:
+Chinese:cn:Mongolian Xibe:mon_trad_xibe:
+Chinese:cn:Mongolian Manchu:mon_trad_manchu:mnc
+Chinese:cn:Mongolian Galik:mon_trad_galik:
+Chinese:cn:Mongolian Todo Galik:mon_todo_galik:
+Chinese:cn:Mongolian Manchu Galik:mon_manchu_galik:mnc
 Chinese:cn:Tibetan:tib:bo
 Chinese:cn:Tibetan (with ASCII numerals):tib_asciinum:bo
 Chinese:cn:Uyghur:ug:ug
@@ -183,12 +189,15 @@ Czech:cz:cs
 Czech:cz:key):bksl:cs
 Czech:cz:Czech (QWERTY):qwerty:cs
 Czech:cz:Czech (QWERTY, extended backslash):qwerty_bksl:cs
+Czech:cz:Czech (QWERTY, Macintosh):qwerty-mac:cs
 Czech:cz:Czech (UCW, only accented letters):ucw:cs
 Czech:cz:Czech (US, Dvorak, UCW support):dvorak-ucw:cs
 Czech:cz:Russian (Czech, phonetic):rus:ru
 Czech:cz:Czech (Sun Type 6/7):sun_type6:cs
 Czech:cz:Czech (programming):prog:cs
 Czech:cz:Czech (typographic):typo:cs
+Czech:cz:Czech (coder):coder:cs
+Czech:cz:Czech (programming, typographic):prog_typo:cs
 Danish:dk:da
 Danish:dk:Danish (no dead keys):nodeadkeys:da
 Danish:dk:Danish (Win keys):winkeys:da
@@ -242,9 +251,11 @@ French:fr:French (legacy, alt., no dead keys):latin9_nodeadkeys:fr
 French:fr:French (legacy, alt., with Sun dead keys):latin9_sundeadkeys:fr
 French:fr:French (Bepo, ergonomic, Dvorak way):bepo:fr
 French:fr:French (Bepo, ergonomic, Dvorak way, Latin-9 only):bepo_latin9:fr
+French:fr:French (Bepo, ergonomic, Dvorak way, AFNOR):bepo_afnor:fr
 French:fr:French (Dvorak):dvorak:fr
 French:fr:French (Macintosh):mac:fr
 French:fr:French (AZERTY):azerty:fr
+French:fr:French (AFNOR standardized AZERTY):afnor:fr
 French:fr:French (Breton):bre:fr
 French:fr:Occitan:oci:oc
 French:fr:Georgian (France, AZERTY Tskapo):geo:ka
@@ -650,7 +661,8 @@ Filipino:ph:Filipino (Dvorak, Latin):dvorak:fil
 Filipino:ph:Filipino (Dvorak, Baybayin):dvorak-bay:fil
 Moldavian:md:ro
 Moldavian:md:Moldavian (Gagauz):gag:
-Indonesian (Jawi):id:id
+Indonesian (Arab Melayu, phonetic):id:id
+Indonesian (Arab Melayu, phonetic):id:Indonesian (Arab Melayu, ext. phonetic):phoneticx:id
 Malay (Jawi, Arabic Keyboard):my:id
 Malay (Jawi, Arabic Keyboard):my:Malay (Jawi, phonetic):phonetic:id
 APL:apl:en

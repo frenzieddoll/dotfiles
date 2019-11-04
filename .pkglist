@@ -1,5 +1,6 @@
 adobe-source-han-serif-otc-fonts
 alsa-utils
+archey3
 autoconf
 automake
 bash
@@ -171,7 +172,7 @@ xorg-xhost
 xorg-xinit
 xorg-xrandr
 yacreader
-yay-bin
+yay
 youtube-dl
 zathura
 zathura-pdf-poppler
