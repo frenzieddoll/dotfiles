@@ -56,9 +56,10 @@
           ("xls" . "xdg-open")
           ("xlsx" . "xdg-open")
           ("gnumeric" . "gnumeric")
-          ;; ("jpg" . "sxiv-rifle")
-          ;; ("png" . "sxiv-rifle")
-          ;; ("jpeg" . "sxiv-rifle")
+          ("jpg" . "sxiv-rifle")
+          ("png" . "sxiv-rifle")
+          ("jpeg" . "sxiv-rifle")
+          ("gif" . "sxiv-rifle")
           )))
 
 (when (eq system-type 'darwin)

@@ -39,8 +39,8 @@
 ;; (setq exwm-systemtray-height 16)
 
 ;; フローティングモードで右下をドラックするとサイズ変更
-;; (setq window-divider-default-right-width 1)
-;; (window-divider-mode)
+(setq window-divider-default-right-width 1)
+(window-divider-mode)
 
 ;;; Allow non-floating resizing with mouse.
 ;; (setq window-divider-default-bottom-width 2
@@ -53,20 +53,6 @@
 ;; workspaceでバッファを共有
 (setq exwm-workspace-show-all-buffers t)
 (setq exwm-layout-show-all-buffers t)
-
-;; 時間を表示
-;; (setq display-time-default-load-average nil)
-;; (setq display-time-day-and-date t)
-;; (display-time-mode 1)
-
-
-;; コンポジットマネージャー
-;; (require 'exwm-cm)
-
-;; ido でworkspaceの切り替え
-;; (require 'exwm-config)
-;; (exwm-config-ido)
-;; (exwm-enable-ido-workaround)
 
 ;; マルチモニターの設定
 (require 'exwm-randr)
@@ -119,6 +105,8 @@
 
 ;; 関数の定義
 (defun exwm-workspace-toggle ()
+
+
   "exwm workspace toggle 0 or 1"
   (interactive)
   (if (= exwm-workspace-current-index 0)

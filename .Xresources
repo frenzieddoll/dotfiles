@@ -54,3 +54,7 @@ Xft.hintstyle:  hintfull
 Xft.hinting: 1
 Xft.antialias: 1
 Xft.rgba: rgb
+
+! sxiv
+Sxiv.foreground: #bbc2cf
+Sxiv.background: #282c34
