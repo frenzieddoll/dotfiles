@@ -189,5 +189,5 @@
 (setq default-input-method "japanese-skk")
 
 ;; シンボリック経由でファイルを開く
-(defvar vc-follow-symlinks t)
+(setq vc-follow-symlinks t)
 ;;; init-system.el ends here

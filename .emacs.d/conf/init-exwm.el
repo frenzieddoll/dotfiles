@@ -79,7 +79,7 @@
 ;; 's-r': Reset
 (exwm-input-set-key (kbd "s-r") #'exwm-reset)
 ;; 's-w': Switch workspace
-(exwm-input-set-key (kbd "s-s") #'exwm-workspace-switch)
+;; (exwm-input-set-key (kbd "s-s") #'exwm-workspace-switch)
 
 ;; Switch to certain workspace
 (dotimes (i 6)

@@ -12,7 +12,7 @@
 ;; Maintainer: Jonas Bernoulli <jonas@bernoul.li>
 
 ;; Package-Requires: ((emacs "25.1") (dash "20180910") (with-editor "20181103"))
-;; Package-Version: 20190928.1746
+;; Package-Version: 20191106.1247
 ;; Keywords: git tools vc
 ;; Homepage: https://github.com/magit/magit
 
@@ -674,9 +674,10 @@ With a numeric prefix ARG, go forward ARG comments."
 (defun git-commit-save-message ()
   "Save current message to `log-edit-comment-ring'."
   (interactive)
-  (--when-let (git-commit-buffer-message)
-    (unless (ring-member log-edit-comment-ring it)
-      (ring-insert log-edit-comment-ring it))))
+  (when-let ((message (git-commit-buffer-message)))
+    (when-let ((index (ring-member log-edit-comment-ring message)))
+      (ring-remove log-edit-comment-ring index))
+    (ring-insert log-edit-comment-ring message)))
 
 (defun git-commit-buffer-message ()
   (let ((flush (concat "^" comment-start))

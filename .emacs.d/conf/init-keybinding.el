@@ -33,6 +33,8 @@
 (global-set-key (kbd "C-c C-j") 'eval-print-last-sexp)
 ;; quick run
 (global-set-key (kbd "M-s") 'quickrun)
+;; async shell command
+(global-set-key (kbd "s-s") 'async-shell-command)
 
 
 ;; audio操作の関数
