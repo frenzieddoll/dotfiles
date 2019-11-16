@@ -17,6 +17,7 @@
 !/.emacs.d/elpa
 !/.emacs.d/public_repos
 !/.emacs.d/script
+!/.emacs.d/snippets/*
 # 設定ファイル
 !/X11ForNotePC
 !/.bashrc
