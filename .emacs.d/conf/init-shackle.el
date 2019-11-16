@@ -27,8 +27,8 @@
         ("hoge" :popup t)
         ;; 選択する
         ("abc" :select t)
-        ("*auto-async-byte-compile*" :align below :ratio 0.3)
-        ("*Async Shell Command*" :align below :ratio 0.3)
+        ;; ("*auto-async-byte-compile*" :align below :ratio 0.3)
+        ;; ("*Async Shell Command*" :align below :ratio 0.3)
         ))
 
 (shackle-mode 1)

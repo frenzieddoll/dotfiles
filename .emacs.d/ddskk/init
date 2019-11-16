@@ -92,3 +92,6 @@
 
 ;; skk-studyを使用
 (require 'skk-study)
+
+;; 半角カタカナを選択候補に出す
+(setq skk-search-katakana 'jisx0201-kana)

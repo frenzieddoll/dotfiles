@@ -22,7 +22,7 @@ English (US):us:English (Workman, intl., with dead keys):workman-intl:en
 English (US):us:English (US, international AltGr Unicode combining):intl-unicode:en
 English (US):us:English (US, international AltGr Unicode combining, alternative):alt-intl-unicode:en
 English (US):us:Atsina:ats:en
-English (US):us:Coeur d'Alene Salish:crd:
+English (US):us:Coeur d'Alene Salish:crd:crd
 English (US):us:Czech Slovak and German (US):cz_sk_de:en
 English (US):us:English (US, IBM Arabic 238_L):ibm238l:en
 English (US):us:English (US, Sun Type 6/7):sun_type6:en
@@ -137,16 +137,16 @@ Bulgarian:bg:bg
 Bulgarian:bg:Bulgarian (traditional phonetic):phonetic:bg
 Bulgarian:bg:Bulgarian (new phonetic):bas_phonetic:bg
 Berber (Algeria, Latin):dz:
-Berber (Algeria, Latin):dz:Berber (Algeria, Tifinagh):ber:ber
+Berber (Algeria, Latin):dz:Berber (Algeria, Tifinagh):ber:
 Berber (Algeria, Latin):dz:Arabic (Algeria):ar:ar
 Arabic (Morocco):ma:
 Arabic (Morocco):ma:French (Morocco):french:fr
-Arabic (Morocco):ma:Berber (Morocco, Tifinagh):tifinagh:ber
-Arabic (Morocco):ma:Berber (Morocco, Tifinagh alt.):tifinagh-alt:ber
-Arabic (Morocco):ma:Berber (Morocco, Tifinagh alt. phonetic):tifinagh-alt-phonetic:ber
-Arabic (Morocco):ma:Berber (Morocco, Tifinagh extended):tifinagh-extended:ber
-Arabic (Morocco):ma:Berber (Morocco, Tifinagh phonetic):tifinagh-phonetic:ber
-Arabic (Morocco):ma:Berber (Morocco, Tifinagh extended phonetic):tifinagh-extended-phonetic:ber
+Arabic (Morocco):ma:Berber (Morocco, Tifinagh):tifinagh:
+Arabic (Morocco):ma:Berber (Morocco, Tifinagh alt.):tifinagh-alt:
+Arabic (Morocco):ma:Berber (Morocco, Tifinagh alt. phonetic):tifinagh-alt-phonetic:
+Arabic (Morocco):ma:Berber (Morocco, Tifinagh extended):tifinagh-extended:
+Arabic (Morocco):ma:Berber (Morocco, Tifinagh phonetic):tifinagh-phonetic:
+Arabic (Morocco):ma:Berber (Morocco, Tifinagh extended phonetic):tifinagh-extended-phonetic:
 English (Cameroon):cm:en
 English (Cameroon):cm:French (Cameroon):french:fr
 English (Cameroon):cm:Cameroon Multilingual (QWERTY):qwerty:en
@@ -169,12 +169,12 @@ French (Canada):ca:Secwepemctsin:shs:fr
 French (Canada):ca:Multilingual (Canada, Sun Type 6/7):sun_type6:fr
 French (Democratic Republic of the Congo):cd:fr
 Chinese:cn:zh
-Chinese:cn:Mongolian (Bichig):mon_trad:
-Chinese:cn:Mongolian Todo:mon_trad_todo:
-Chinese:cn:Mongolian Xibe:mon_trad_xibe:
+Chinese:cn:Mongolian (Bichig):mon_trad:mvf
+Chinese:cn:Mongolian Todo:mon_trad_todo:mvf
+Chinese:cn:Mongolian Xibe:mon_trad_xibe:sjo
 Chinese:cn:Mongolian Manchu:mon_trad_manchu:mnc
-Chinese:cn:Mongolian Galik:mon_trad_galik:
-Chinese:cn:Mongolian Todo Galik:mon_todo_galik:
+Chinese:cn:Mongolian Galik:mon_trad_galik:mvf
+Chinese:cn:Mongolian Todo Galik:mon_todo_galik:mvf
 Chinese:cn:Mongolian Manchu Galik:mon_manchu_galik:mnc
 Chinese:cn:Tibetan:tib:bo
 Chinese:cn:Tibetan (with ASCII numerals):tib_asciinum:bo
@@ -270,7 +270,7 @@ English (Ghana):gh:Ewe:ewe:ee
 English (Ghana):gh:Fula:fula:ff
 English (Ghana):gh:Ga:ga:gaa
 English (Ghana):gh:Hausa (Ghana):hausa:ha
-English (Ghana):gh:Avatime:avn:
+English (Ghana):gh:Avatime:avn:avn
 English (Ghana):gh:English (Ghana, GILLBT):gillbt:en
 French (Guinea):gn:fr
 Georgian:ge:ka
@@ -359,7 +359,7 @@ Italian:it:Italian (intl., with dead keys):intl:it
 Italian:it:Sicilian:scn:it
 Italian:it:Friulian (Italy):fur:fur
 Italian:it:Italian (Sun Type 6/7):sun_type6:it
-Italian:it:Italian Ladin:lld:
+Italian:it:Italian Ladin:lld:lld
 Japanese:jp:ja
 Japanese:jp:Japanese (Kana):kana:ja
 Japanese:jp:Japanese (Kana 86):kana86:ja
@@ -443,7 +443,7 @@ Polish:pl:Polish (Dvorak):dvorak:pl
 Polish:pl:Polish (Dvorak, with Polish quotes on quotemark key):dvorak_quotes:pl
 Polish:pl:Polish (Dvorak, with Polish quotes on key 1):dvorak_altquotes:pl
 Polish:pl:Kashubian:csb:csb
-Polish:pl:Silesian:szl:
+Polish:pl:Silesian:szl:szl
 Polish:pl:Russian (Poland, phonetic Dvorak):ru_phonetic_dvorak:ru
 Polish:pl:Polish (programmer Dvorak):dvp:pl
 Polish:pl:Polish (intl., with dead keys):intl:pl
@@ -507,7 +507,7 @@ Serbian:rs:Serbian (Latin, QWERTY):latinyz:sr
 Serbian:rs:Serbian (Latin, Unicode, QWERTY):latinunicodeyz:sr
 Serbian:rs:Serbian (Cyrillic with guillemets):alternatequotes:sr
 Serbian:rs:Serbian (Latin with guillemets):latinalternatequotes:sr
-Serbian:rs:Pannonian Rusyn:rue:
+Serbian:rs:Pannonian Rusyn:rue:rue
 Serbian:rs:Serbian (combining accents instead of dead keys):combiningkeys:sr
 Slovenian:si:sl
 Slovenian:si:Slovenian (with guillemets):alternatequotes:sl
@@ -537,7 +537,7 @@ Swedish:se:Swedish (Macintosh):mac:sv
 Swedish:se:Swedish (Svdvorak):svdvorak:sv
 Swedish:se:Swedish (based on US Intl. Dvorak):us_dvorak:sv
 Swedish:se:Swedish (US, with Swedish letters):us:sv
-Swedish:se:Swedish Sign Language:swl:
+Swedish:se:Swedish Sign Language:swl:swl
 Swedish:se:Swedish (Dvorak A5):dvorak_a5:sv
 Swedish:se:Swedish (Sun Type 6/7):sun_type6:sv
 Swedish:se:Elfdalian (Swedish, with combining ogonek):ovd:
@@ -580,8 +580,8 @@ Turkish:tr:Crimean Tatar (Turkish F):crh_f:crh
 Turkish:tr:Crimean Tatar (Turkish Alt-Q):crh_alt:crh
 Turkish:tr:Turkish (Sun Type 6/7):sun_type6:tr
 Taiwanese:tw:
-Taiwanese:tw:Taiwanese (indigenous):indigenous:
-Taiwanese:tw:Saisiyat (Taiwan):saisiyat:
+Taiwanese:tw:Taiwanese (indigenous):indigenous:tay
+Taiwanese:tw:Saisiyat (Taiwan):saisiyat:xsy
 Ukrainian:ua:uk
 Ukrainian:ua:Ukrainian (phonetic):phonetic:uk
 Ukrainian:ua:Ukrainian (typewriter):typewriter:uk
@@ -660,7 +660,7 @@ Filipino:ph:Filipino (Colemak, Baybayin):colemak-bay:fil
 Filipino:ph:Filipino (Dvorak, Latin):dvorak:fil
 Filipino:ph:Filipino (Dvorak, Baybayin):dvorak-bay:fil
 Moldavian:md:ro
-Moldavian:md:Moldavian (Gagauz):gag:
+Moldavian:md:Moldavian (Gagauz):gag:gag
 Indonesian (Arab Melayu, phonetic):id:id
 Indonesian (Arab Melayu, phonetic):id:Indonesian (Arab Melayu, ext. phonetic):phoneticx:id
 Malay (Jawi, Arabic Keyboard):my:id

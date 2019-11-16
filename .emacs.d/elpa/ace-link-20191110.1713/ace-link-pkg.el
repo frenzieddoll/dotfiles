@@ -1,0 +1,2 @@
+;;; Generated package description from /home/toshiaki/.emacs.d/elpa/ace-link-20191110.1713/ace-link.el  -*- no-byte-compile: t -*-
+(define-package "ace-link" "20191110.1713" "Quickly follow links" '((avy "0.4.0")) :commit "59a3ec64bc6da9842d2045c6ffe6128ec1807cbf" :keywords '("convenience" "links" "avy") :authors '(("Oleh Krehel" . "ohwoeowho@gmail.com")) :maintainer '("Oleh Krehel" . "ohwoeowho@gmail.com") :url "https://github.com/abo-abo/ace-link")
