@@ -6,7 +6,7 @@
 /.config/*
 /.ddskk/*
 /.config/fcitx/skk/user.dict
-/.config/fcitx/clipboard/*
+/.config/fcitx/clipboard/history.dat
 
 # gitで管理する
 # emacs関係
