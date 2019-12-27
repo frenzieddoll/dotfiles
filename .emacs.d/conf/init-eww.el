@@ -1,4 +1,6 @@
-;;eww の設定
+;;; init-eww.el -- eww の設定
+;;; Commentary:
+;;; Code
 
 (require 'eww)
 
@@ -54,6 +56,17 @@
   (setq-local eww-disable-colorize nil)
   (eww-reload))
 
+;; 検索結果にハイライトを付ける
+;; (defun eww-search (term)
+;;   (interactive "sSearch terms: ")
+;;   (setq eww-hl-search-word term)
+;;   (eww-browse-url (concat eww-search-prefix term)))
+
+;; (add-hook 'eww-after-render-hook (lambda ()
+;;                    (highlight-regexp eww-hl-search-word)
+;;                    (setq eww-hl-search-word nil)))
+
+
 ;; (define-key eww-link-keymap "f" 'ace-link-eww)
 (define-key eww-mode-map (kbd "f") 'ace-link-eww)
 
@@ -77,3 +90,5 @@
 (define-key eww-mode-map (kbd "L") 'eww-forward-url)
 (define-key eww-mode-map (kbd "J") 'previous-buffer)
 (define-key eww-mode-map (kbd "K") 'next-buffer)
+
+;;; init-eww.el ends here

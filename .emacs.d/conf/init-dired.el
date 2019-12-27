@@ -31,6 +31,12 @@
 (dired-async-mode 1)
 (async-bytecomp-package-mode 1)
 (setq async-bytecomp-allowed-packages '(all))
+;; 画像の表示
+(require 'peep-dired)
+(define-key dired-mode-map (kbd "P") 'peep-dired)
+(require 'image-dired+)
+(image-diredx-async-mode 1)
+
 
 
 ;; 外部アプリで開く
@@ -54,16 +60,17 @@
           ("mpeg" . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
           ("playlist" . "mpv --playlist")
           ("exe"  . "wine")
-          ("pdf"  . "YACReader")
-          ("zip"  . "YACReader")
-          ("rar"  . "YACReader")
-          ("tar"  . "YACReader")
+          ("pdf"  . "mcomix")
+          ("zip"  . "mcomix")
+          ("rar"  . "mcomix")
+          ("tar"  . "mcomix")
           ("xls"  . "xdg-open")
           ("xlsx" . "xdg-open")
           ("jpg"  . "sxiv-rifle")
           ("png"  . "sxiv-rifle")
           ("jpeg" . "sxiv-rifle")
           ("gif"  . "sxiv-rifle")
+          ("png"  . "sxiv-rifle")
           ("gnumeric" . "gnumeric")
           )))
 
