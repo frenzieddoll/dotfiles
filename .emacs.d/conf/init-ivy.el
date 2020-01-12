@@ -2,56 +2,67 @@
 ;;; Commentary:
 ;;; Code:
 
-(require 'ivy)
-;; デフォルトの入力補完がivyになる
-(ivy-mode 1)
-;; M-x, C-x C-fなどのEmacsの基本的な組み込みコマンドをivy版にリマップする
 
-(setq ivy-use-virtual-buffers t)
-(setq enable-recursive-minibuffers t)
-(setq ivy-height 15)
-(setq ivy-extra-directories nil)
-(setq ivy-re-builders-alist
+(when (require 'ivy nil t)
+
+  ;; M-o を ivy-hydra-read-action に割り当てる．
+  (when (require 'ivy-hydra nil t)
+    (setq ivy-read-action-function #'ivy-hydra-read-action))
+
+  ;; `ivy-switch-buffer' (C-x b) のリストに recent files と bookmark を含める．
+  (setq ivy-use-virtual-buffers t)
+
+  ;; ミニバッファでコマンド発行を認める
+  (when (setq enable-recursive-minibuffers t)
+    (minibuffer-depth-indicate-mode 1)) ;; 何回層入ったかプロンプトに表示．
+
+  ;; ESC連打でミニバッファを閉じる
+  (define-key ivy-minibuffer-map (kbd "<escape>") 'minibuffer-keyboard-quit)
+
+  ;; プロンプトの表示が長い時に折り返す（選択候補も折り返される）
+  (setq ivy-truncate-lines nil)
+
+  ;; リスト先頭で `C-p' するとき，リストの最後に移動する
+  (setq ivy-wrap t)
+  (setq enable-recursive-minibuffers t)
+  (setq ivy-height 15)
+  (setq ivy-extra-directories nil)
+  (setq ivy-re-builders-alist
       '((t . ivy--regex-plus)))
 
+
+  ;; アクティベート
+  (ivy-mode 1))
 
 (defvar recentf-max-saved-items 2000)
 (defvar recentf-auto-cleanup 'never)
 (defvar recentf-exclude '("/recentf" "COMMIT_EDITMSG" "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores" "/\\.emacs\\.d/\\.cask/"))
 (recentf-mode 1)
 
-;; define function
-(defun bjm/ivy-dired-recent-dirs ()
-  "Present a list of recently used directories and open the selected one in dired."
-  (interactive)
-  (let ((recent-dirs
-         (delete-dups
-          (mapcar (lambda (file)
-                    (if (file-directory-p file) file (file-name-directory file)))
-                  recentf-list))))
-
-    (let ((dir (ivy-read "Directory: "
-                         recent-dirs
-                         :re-builder #'ivy--regex
-                         :sort nil
-                         :initial-input nil)))
-      (dired dir))))
-
-(global-set-key (kbd "C-x C-d") 'bjm/ivy-dired-recent-dirs)
+(dired-recent-mode 1)
+(when (require 'ivy-dired-history nil t)
+  (define-key dired-mode-map "," 'dired)
+  (with-eval-after-load "session"
+    (add-to-list 'session-globals-include 'ivy-dired-history-variable)))
 
 ;; counsel設定
+(require 'counsel nil t)
 (global-set-key (kbd "M-x") 'counsel-M-x)
 (global-set-key (kbd "C-x C-f") 'counsel-find-file)
 (defvar counsel-find-file-ignore-regexp (regexp-opt '("./" "../")))
 (global-set-key (kbd "C-c h") 'counsel-recentf)
-(define-key ivy-minibuffer-map (kbd "C-m") 'ivy-alt-done)
+;; (define-key ivy-minibuffer-map (kbd "C-m") 'ivy-alt-done)
+(define-key ivy-minibuffer-map (kbd "C-f") 'ivy-alt-done)
+(define-key ivy-minibuffer-map (kbd "C-b") 'delete-backward-char)
 (define-key ivy-minibuffer-map (kbd "C-i") 'ivy-immediate-done)
 (global-set-key (kbd "C-c i") 'imenus)
 (global-set-key (kbd "M-y") 'counsel-yank-pop)
 (global-set-key (kbd "C-x b") 'ivy-switch-buffer)
+(global-set-key (kbd "C-x C-b") 'counsel-ibuffer)
 (global-set-key (kbd "C-c C-;") 'swiper)
+(global-set-key (kbd "C-M-f") 'counsel-ag)
 (defvar swiper-include-line-number-in-search t) ;; line-numberでも検索可能
-(global-set-key (kbd "C-x C-d") 'bjm/ivy-dired-recent-dirs)
+;; (global-set-key (kbd "C-x C-d") 'bjm/ivy-dired-recent-dirs)
 
 
 ;; ;; migemo + swiper（日本語をローマ字検索できるようになる）
@@ -135,6 +146,11 @@
 
 
 ;; (global-set-key (kbd "M-y") 'yank-browse)
+
+;; (when (require 'ivy-dired-history nil t)
+;;   (define-key dired-mode-map "," 'dired)
+;;   (with-eval-after-load "session"
+;;     (add-to-list 'session-globals-include 'ivy-dired-history-variable)))
 
 
 ;;; init-ivy.el ends here

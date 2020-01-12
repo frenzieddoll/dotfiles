@@ -58,6 +58,7 @@
           ("rm"   . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
           ("rmvb" . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
           ("mpeg" . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+          ("iso" . "mpv dvd:// -dvd-device")
           ("playlist" . "mpv --playlist")
           ("exe"  . "wine")
           ("pdf"  . "mcomix")

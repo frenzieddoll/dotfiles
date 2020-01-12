@@ -1,114 +1,3 @@
-;;
-;; Org mode
-;;
-;; (require 'ox-latex)
-;; (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
-;; (setq org-latex-default-class "bxjsarticle")
-
-;; (add-to-list 'org-latex-classes
-;;              '("bxjsarticle"
-;;                "\\documentclass[autodetect-engine,dvi=dvipdfmx,12pt,a4paper,ja=standard]{bxjsarticle}
-;; [NO-DEFAULT-PACKAGES]
-;; \\usepackage{amsmath}
-;; \\usepackage{newtxtext,newtxmath}
-;; \\usepackage{graphicx}
-;; \\usepackage{hyperref}
-;; \\ifdefined\\kanjiskip
-;;   \\usepackage{pxjahyper}
-;;   \\hypersetup{colorlinks=true}
-;; \\else
-;;   \\ifdefined\\XeTeXversion
-;;       \\hypersetup{colorlinks=true}
-;;   \\else
-;;     \\ifdefined\\directlua
-;;       \\hypersetup{pdfencoding=auto,colorlinks=true}
-;;     \\else
-;;       \\hypersetup{unicode,colorlinks=true}
-;;     \\fi
-;;   \\fi
-;; \\fi"
-;;                ("\\section{%s}" . "\\section*{%s}")
-;;                ("\\subsection{%s}" . "\\subsection*{%s}")
-;;                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-;;                ("\\paragraph{%s}" . "\\paragraph*{%s}")
-;;                ("\\subparagraph{%s}" . "\\subparagraph*{%s}")
-;;                ("longnamesfirst,colon,sort&compress"     "natbib"  nil)))
-
-;; (add-to-list 'org-latex-classes
-;;              '("koma-article"
-;;                "\\documentclass{scrartcl}"
-;;                ("\\section{%s}" . "\\section*{%s}")
-;;                ("\\subsection{%s}" . "\\subsection*{%s}")
-;;                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-;;                ("\\paragraph{%s}" . "\\paragraph*{%s}")
-;;                ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-
-;; (add-to-list 'org-latex-classes
-;;              '("koma-jarticle"
-;;                "\\documentclass{scrartcl}
-;;                \\usepackage{amsmath}
-;;                \\usepackage{amssymb}
-;;                \\usepackage{xunicode}
-;;                \\usepackage{fixltx2e}
-;;                \\usepackage{zxjatype}
-;;                \\usepackage{xltxtra}
-;;                \\usepackage{graphicx}
-;;                \\usepackage{longtable}
-;;                \\usepackage{float}
-;;                \\usepackage{wrapfig}
-;;                \\usepackage{soul}
-;;                \\usepackage{hyperref}"
-;;                ("\\section{%s}" . "\\section*{%s}")
-;;                ("\\subsection{%s}" . "\\subsection*{%s}")
-;;                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-;;                ("\\paragraph{%s}" . "\\paragraph*{%s}")
-;;                ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-
-;; ;; tufte-handout class for writing classy handouts and papers
-;; (add-to-list 'org-latex-classes
-;;              '("tufte-handout"
-;;                "\\documentclass[twoside,nobib]{tufte-handout}
-;;                                  [NO-DEFAULT-PACKAGES]
-;;                 \\usepackage{zxjatype}
-;;                 \\usepackage[hiragino-dx]{zxjafont}"
-;;                ("\\section{%s}" . "\\section*{%s}")
-;;                ("\\subsection{%s}" . "\\subsection*{%s}")))
-;; ;; tufte-book class
-;; (add-to-list 'org-latex-classes
-;;              '("tufte-book"
-;;                "\\documentclass[twoside,nobib]{tufte-book}
-;;                                 [NO-DEFAULT-PACKAGES]
-;;                  \\usepackage{zxjatype}
-;;                  \\usepackage[hiragino-dx]{zxjafont}"
-;;                ("\\part{%s}" . "\\part*{%s}")
-;;                ("\\chapter{%s}" . "\\chapter*{%s}")
-;;                ("\\section{%s}" . "\\section*{%s}")
-;;                ("\\subsection{%s}" . "\\subsection*{%s}")
-;;                ("\\paragraph{%s}" . "\\paragraph*{%s}")))
-
-;; (add-to-list 'org-latex-classes
-;;              '("thesis"
-;;                "\\documentclass{jarticle}
-;;                 [NO-PACKAGES]
-;;                 [NO-DEFAULT-PACKAGES]
-;;                 \\usepackage[dvipdfmx]{graphicx}"
-;;                ("\\section{%s}" . "\\section*{%s}")
-;;                ("\\subsection{%s}" . "\\subsection*{%s}")
-;;                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-;;                ("\\paragraph{%s}" . "\\paragraph*{%s}")
-;;                ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-
-
-;; (add-to-list 'org-latex-classes
-;;              '("jsarticle"
-;;                "\\documentclass[dvipdfmx,12pt]{jsarticle}"
-;;                ("\\section{%s}" . "\\section*{%s}")
-;;                ("\\subsection{%s}" . "\\subsection*{%s}")
-;;                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-;;                ("\\paragraph{%s}" . "\\paragraph*{%s}")
-;;                ("\\subparagraph{%s}" . "\\subparagraph*{%s}")
-;;              )
-;; )
 
 ;; latex on emacs org-mode for mac
 ;; PATH
@@ -138,19 +27,19 @@
 [NO-DEFAULT-PACKAGES]
 \\usepackage{amsmath}
 \\usepackage{newtxtext,newtxmath}
-\\usepackage{graphicx}
+\\usepackage[dvipdfmx]{graphicx}
 \\usepackage{hyperref}
 \\ifdefined\\kanjiskip
   \\usepackage{pxjahyper}
-  \\hypersetup{colorlinks=true}
+  \\hypersetup{colorlinks=true,citecolor=blue,linkcolor=black}
 \\else
   \\ifdefined\\XeTeXversion
-      \\hypersetup{colorlinks=true}
+      \\hypersetup{colorlinks=true,citecolor=blue,linkcolor=black}
   \\else
     \\ifdefined\\directlua
-      \\hypersetup{pdfencoding=auto,colorlinks=true}
+      \\hypersetup{pdfencoding=auto,colorlinks=true,citecolor=blue,linkcolor=black}
     \\else
-      \\hypersetup{unicode,colorlinks=true}
+      \\hypersetup{unicode,colorlinks=ture,citecolor=blue,linkcolor=black}
     \\fi
   \\fi
 \\fi"
@@ -216,35 +105,74 @@
 ;; (setq org-file-apps
 ;;       '(("pdf" . "evince %s")))
 
-(setq org-latex-pdf-process '("uplatex %b"
-                              "dvipdfmx %b"))
-
 ;; (setq org-latex-pdf-process
 ;;       '("platex %f"
 ;;         "platex %f"
 ;;         "platex %b"
 ;;         "platex %f"
-;;         "platex %f"
-;;         "dvipdfmx %b.dvi"))
+;;         "platex %f"))
 
-;; (define-key org-mode-map (kbd "C-c [") 'org-reftex-citation)
+;; 参考文献を含むコンパイル
+(setq org-latex-pdf-process
+      '("uplatex %b"
+        "upbibtex %b"
+        "uplatex %b"
+        "uplatex %b"
+        "dvipdfmx %b"))
+;; 参考文献を含まないコンパイル
+;; (setq org-latex-pdf-process
+;;       '("uplatex %b"
+;;         "dvipdfmx %b"))
 
 
-;; (defun org-mode-reftex-setup ()
-;;   (interactive)
-;;   (load-library "reftex")
-;;   (and (buffer-file-name)
-;;        (file-exists-p (buffer-file-name))
-;;        (reftex-parse-all))
-;;   (define-key org-mode-map (kbd "C-c )") 'reftex-citation))
-;; (add-hook 'org-mode-hook 'reftex-mode)
+(require 'ox-bibtex)
 
-;; (require 'ox-bibtex)
-;; (require 'org-ref)
-;; (setq reftex-default-bibliography '("~/reference.bib"))
+(setq org-ref-completion-library 'org-ref-ivy-cite)
+
+(require 'org-ref)
+(setq reftex-default-bibliography '("~/tex/references.bib"))
 
 ;; ;; ノート、bib ファイル、PDF のディレクトリなどを設定
-;; (setq org-ref-default-bibliography '("~/reference.bib"))
+(setq org-ref-bibliography-notes "~/tex/notes.org"
+      org-ref-default-bibliography '("~/tex/references.bib")
+      org-ref-pdf-directory "~/tex/bibtex-pdfs/")
+
+(setq bibtex-completion-bibliography "~/tex/references.bib"
+      bibtex-completion-library-path "~/tex/bibtex-pdfs"
+      bibtex-completion-notes-path "~/tex/ivy-bibtex-notes")
+
+;; open pdf with system pdf viewer (works on mac)
+(setq bibtex-completion-pdf-open-function
+  (lambda (fpath)
+    (start-process "open" "*open*" "open" fpath)))
+
+(define-key org-mode-map (kbd "C-c c c") 'org-ref-ivy-insert-cite-link)
+(define-key org-mode-map (kbd "C-c c l") 'org-ref-ivy-insert-label-link)
+(define-key org-mode-map (kbd "C-c c r") 'org-ref-ivy-insert-ref-link)
+
+
+;; (defun ivy-bibtex-my-publications (&optional arg)
+;;   "Search BibTeX entries authored by “Jane Doe”.
+
+;; With a prefix ARG, the cache is invalidated and the bibliography reread."
+;;   (interactive "P")
+;;   (when arg
+;;     (bibtex-completion-clear-cache))
+;;   (bibtex-completion-init)
+;;   (ivy-read "BibTeX Items: "
+;;             (bibtex-completion-candidates)
+;;             :initial-input "Jane Doe"
+;;             :caller 'ivy-bibtex
+;;             :action ivy-bibtex-default-action))
+
+;; ;; Bind this search function to Ctrl-x p:
+;; (global-set-key (kbd "C-x p") 'ivy-bibtex-my-publications)
+
+(setq ivy-bibtex-default-action 'ivy-bibtex-insert-citation)
+
+;; alternative
+;; (setq bibtex-completion-pdf-open-function 'org-open-file)
+
 
 
 ;; ;;; helm-bibtex を使う場合は以下の変数も設定しておく

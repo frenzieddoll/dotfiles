@@ -38,7 +38,7 @@
 ;;
 ;; The most important is the `google-translate-request' function which
 ;; is intended to be used by other scripts and packages, expecially by
-;; the packages which provides UI. 
+;; the packages which provides UI.
 ;;
 ;; This, `google-translate-core', package doesn't provide any UI.
 ;;
@@ -49,7 +49,7 @@
 ;; There are also a set of helper functions which are going to be
 ;; useful to retrieve data from the mentioned JSON response:
 ;;
-;; `google-translate-json-text-phonetic' - retrieves text phonetic; 
+;; `google-translate-json-text-phonetic' - retrieves text phonetic;
 ;;
 ;; `google-translate-json-translation' - retrieves translation;
 ;;
@@ -246,14 +246,25 @@ speech."
   (if (> (length json) 12)
     (aref json 12)))
 
+;; (defun google-translate-json-suggestion (json)
+;;   "Retrieve from JSON (which returns by the
+;; `google-translate-request' function) suggestion. This function
+;; does matter when translating misspelled word. So instead of
+;; translation it is possible to get suggestion."
+;;   (let ((info (aref json 7)))
+;;     (when info
+;;       (aref info 1))))
+
 (defun google-translate-json-suggestion (json)
   "Retrieve from JSON (which returns by the
 `google-translate-request' function) suggestion. This function
 does matter when translating misspelled word. So instead of
 translation it is possible to get suggestion."
   (let ((info (aref json 7)))
-    (when info
-      (aref info 1))))
+    (if (and info (> (length info) 0))
+        (aref info 1)
+      nil)))
+
 
 (defun google-translate-version ()
   (interactive)
