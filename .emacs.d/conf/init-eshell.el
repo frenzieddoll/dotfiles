@@ -27,6 +27,8 @@
           (list "backup" "~/.emacs.d/script/backup.sh $1")
           (list "nvidiafix" "nvidia-settings --assign CurrentMetaMode='nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }'")
           (list "usbmount" "sudo mount -t vfat $1 $2 -o rw,umask=000")
+          (list "dvd" "mpv dvd:// -dvd-device $1")
+          (list "dvdCopy" "dvdbackup -i /dev/sr0 -o ~/Downloads/iso/ -M")
           ))))
 ;; eshell起動時にエイリアスを読み込む
 (add-hook 'eshell-mode-hook 'eshell-alias)
