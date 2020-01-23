@@ -68,9 +68,16 @@
 
 ;; init-visual.el
 ;; GUI環境でのみ見た目の設定を読み込む
-(if window-system (progn
-                    (load "init-visual" t)
-                    ))
+(if window-system
+    (progn
+      (load "init-visual" t)
+      ))
+;; CUI環境
+(if (not window-system)
+    (progn
+      (load "init-eww" t)))
+
+
 
 ;; init-googletranslate.el
 (load "init-googletranslate" t)
@@ -133,7 +140,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("a2286409934b11f2f3b7d89b1eaebb965fd63bc1e0be1c159c02e396afb893c8" "669e02142a56f63861288cc585bee81643ded48a19e36bfdf02b66d745bcc626" "2a3ffb7775b2fe3643b179f2046493891b0d1153e57ec74bbe69580b951699ca" "f30aded97e67a487d30f38a1ac48eddb49fdb06ac01ebeaff39439997cbdd869" "f2b83b9388b1a57f6286153130ee704243870d40ae9ec931d0a1798a5a916e76" "cdb4ffdecc682978da78700a461cdc77456c3a6df1c1803ae2dd55c59fa703e3" default))
+   '("ca849ae0c889eb918785cdc75452b1e11a00848a5128a95a23872e0119ccc8f4" "a2286409934b11f2f3b7d89b1eaebb965fd63bc1e0be1c159c02e396afb893c8" "669e02142a56f63861288cc585bee81643ded48a19e36bfdf02b66d745bcc626" "2a3ffb7775b2fe3643b179f2046493891b0d1153e57ec74bbe69580b951699ca" "f30aded97e67a487d30f38a1ac48eddb49fdb06ac01ebeaff39439997cbdd869" "f2b83b9388b1a57f6286153130ee704243870d40ae9ec931d0a1798a5a916e76" "cdb4ffdecc682978da78700a461cdc77456c3a6df1c1803ae2dd55c59fa703e3" default))
  '(haskell-indent-after-keywords
    '(("where" 4 0)
      ("of" 4)
@@ -147,7 +154,7 @@
  '(haskell-indent-spaces 4)
  '(org-agenda-files nil)
  '(package-selected-packages
-   '(visual-regexp-steroids pcre2el dired-recent lsp-ui lsp-haskell org-ref ivy-dired-history pkgbuild-mode image-dired+ peep-dired undo-tree lsp-mode ivy-yasnippet auto-async-byte-compile yasnippet lua-mode yaml-mode gitignore-mode recentf-ext smart-mode-line doom-themes iflipb counsel-notmuch notmuch abyss-theme counsel swiper selected google-this smart-mode-line-atom-one-dark-theme company-ghci eglot image+ dimmer exec-path-from-shell flycheck-haskell haskell-mode ox-pandoc company-jedi shackle popwin quickrun company-racer flycheck-rust racer imenus browse-kill-ring smex smooth-scroll dired-subtree let-alist google-translate org-plus-contrib org-preview-html ace-link dired-open dired-launch dired-filter company zoom-window ein rainbow-delimiters powerline multi-term exwm edit-server ddskk))
+   '(ivy-hydra visual-regexp-steroids pcre2el dired-recent lsp-ui lsp-haskell org-ref ivy-dired-history pkgbuild-mode image-dired+ peep-dired undo-tree lsp-mode ivy-yasnippet auto-async-byte-compile yasnippet lua-mode yaml-mode gitignore-mode recentf-ext smart-mode-line doom-themes iflipb counsel-notmuch notmuch abyss-theme counsel swiper selected google-this smart-mode-line-atom-one-dark-theme company-ghci eglot image+ dimmer exec-path-from-shell flycheck-haskell haskell-mode ox-pandoc company-jedi shackle popwin quickrun company-racer flycheck-rust racer imenus browse-kill-ring smex smooth-scroll dired-subtree let-alist google-translate org-plus-contrib org-preview-html ace-link dired-open dired-launch dired-filter company zoom-window ein rainbow-delimiters powerline multi-term exwm edit-server ddskk))
  '(skk-auto-insert-paren nil)
  '(skk-auto-okuri-process nil)
  '(skk-auto-start-henkan t)

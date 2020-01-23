@@ -71,30 +71,13 @@
 (scroll-bar-mode -1)
 
 ;; フォント
-;; (set-default-font "SourceHanCodeJP R")
-;; (set-frame-font "Ricty" 15)
-;; (set-face-attribute 'default nil
-;;                     :family "Ricty"
-;;                     :height 170)
-
-;; デスクトップPCでのみフォントサイズを変更する
-;; (if (string-match system-name "archlinuxhonda")
-
-;;     (set-face-attribute 'default nil
-;;                         :family "Hackgen"
-;;                         :height 170)
-
-;;   (set-face-attribute 'default nil
-;;                       :family "Hackgen"
-;;                       :height 100))
-
 ;; macと設定を共有
 (cond ((eq system-type 'gnu/linux)
        (if (string-match (system-name) "archlinuxhonda")
 
            (set-face-attribute 'default nil
                                :family "Hackgen"
-                               :height 170)
+                               :height 150)
 
          (set-face-attribute 'default nil
                              :family "Hackgen"

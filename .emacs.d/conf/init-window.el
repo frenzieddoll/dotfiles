@@ -18,6 +18,25 @@
 
 ;; ------------------------------------------
 
+
+(if (not window-system)
+    (progn
+      (global-set-key (kbd "M-n") 'windmove-down)
+      (global-set-key (kbd "M-f") 'windmove-right)
+      (global-set-key (kbd "M-b") 'windmove-left)
+      (global-set-key (kbd "M-p") 'windmove-up)
+      (global-set-key (kbd "M-a") 'zoom-window-zoom)
+      (global-set-key (kbd "M-q") 'kill-current-buffer)
+      (global-set-key (kbd "M-h") 'delete-window)
+      (global-set-key (kbd "C-M-i") 'output_toggle)
+      (global-set-key (kbd "C-M-m") 'mute_toggle)
+      (global-set-key (kbd "C-M-n") 'lower_volume )
+      (global-set-key (kbd "C-M-p") 'upper_volume)
+      (global-set-key (kbd "M-d") 'counsel-linux-app)
+      (global-hl-line-mode)
+      ))
+
+
 ;; window間の移動をループ
 (setq windmove-wrap-around t)
 

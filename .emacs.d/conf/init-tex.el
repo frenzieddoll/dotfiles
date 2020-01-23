@@ -1,9 +1,10 @@
-;;
+<;;
 ;; Org mode
 ;;
+
 (require 'ox-latex)
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
-(setq org-latex-default-class "bxjsarticle")
+(setq org-latex-default-class "thesis")
 
 (add-to-list 'org-latex-classes
              '("thesis"
@@ -33,35 +34,6 @@
                ("\\paragraph{%s}" . "\\paragraph*{%s}")
                ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
-
-(add-to-list 'org-latex-classes
-             '("bxjsarticle"
-               "\\documentclass[autodetect-engine,dvi=dvipdfmx,11pt,a4paper,ja=standard]{bxjsarticle}
-[NO-DEFAULT-PACKAGES]
-\\usepackage{amsmath}
-\\usepackage{newtxtext,newtxmath}
-\\usepackage{graphicx}
-\\usepackage{hyperref}
-\\ifdefined\\kanjiskip
-  \\usepackage{pxjahyper}
-  \\hypersetup{colorlinks=true}
-\\else
-  \\ifdefined\\XeTeXversion
-      \\hypersetup{colorlinks=true}
-  \\else
-    \\ifdefined\\directlua
-      \\hypersetup{pdfencoding=auto,colorlinks=true}
-    \\else
-      \\hypersetup{unicode,colorlinks=true}
-    \\fi
-  \\fi
-\\fi"
-               ("\\section{%s}" . "\\section*{%s}")
-               ("\\subsection{%s}" . "\\subsection*{%s}")
-               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-               ("\\paragraph{%s}" . "\\paragraph*{%s}")
-               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")
-               ("longnamesfirst,colon,sort&compress"     "natbib"  nil)))
 
 (add-to-list 'org-latex-classes
              '("koma-article"
@@ -115,19 +87,6 @@
                ("\\subsection{%s}" . "\\subsection*{%s}")
                 ("\\paragraph{%s}" . "\\paragraph*{%s}")))
 
-;; (add-to-list 'org-latex-classes
-;;              '("thesis"
-;;                "\\documentclass{jarticle}
-;;                 [NO-PACKAGES]
-;;                 [NO-DEFAULT-PACKAGES]
-;;                 \\usepackage[dvipdfmx]{graphicx}"
-;;                ("\\section{%s}" . "\\section*{%s}")
-;;                ("\\subsection{%s}" . "\\subsection*{%s}")
-;;                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-;;                ("\\paragraph{%s}" . "\\paragraph*{%s}")
-;;                ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-
-
 (add-to-list 'org-latex-classes
              '("jsarticle"
                "\\documentclass[dvipdfmx,12pt]{jsarticle}"
@@ -136,25 +95,37 @@
                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
                ("\\paragraph{%s}" . "\\paragraph*{%s}")
                ("\\subparagraph{%s}" . "\\subparagraph*{%s}")
-             )
-)
+             ))
 
-;; 参考文献を含むコンパイル
+
+;; Mac用の設定
+(when (eq system-type 'darwin)
+  (setenv "PATH" "/usr/local/bin:/Library/TeX/texbin/:/Applications/Skim.app/Contents/SharedSupport:$PATH" t)
+  (setq exec-path (append '("/usr/local/bin" "/Library/TeX/texbin" "/Applications/Skim.app/Contents/SharedSupport") exec-path))
+  (setq org-file-apps
+      '(("pdf" . "open %s"))))
+
+
+
+;; 参考文献を含まないコンパイル
 (setq org-latex-pdf-process
       '("uplatex %b"
-        "upbibtex %b"
-        "uplatex %b"
-        "uplatex %b"
         "dvipdfmx %b"))
-;; 参考文献を含まないコンパイル
-;; (setq org-latex-pdf-process
-;;       '("uplatex %b"
-;;         "dvipdfmx %b"))
-;; (setq org-latex-pdf-process
-;;       '("xelatex -interaction nonstopmode -output-directory %o %f"
-;;         "bibtex %b"
-;;         "xelatex -interaction nontopmode -output-directory %o %f"
-;;         "xelatex -interaction nonstopmode -output-directory %o %f"))
+
+(defun includeReference ()
+  (interactive)
+  (setq org-latex-pdf-process
+        '("uplatex %b"
+          "upbibtex %b"
+          "uplatex %b"
+          "uplatex %b"
+          "dvipdfmx %b")))
+
+(defun notIncludeReference ()
+  (interactive)
+  (setq org-latex-pdf-process
+      '("uplatex %b"
+        "dvipdfmx %b")))
 
 (require 'ox-bibtex)
 
@@ -218,3 +189,6 @@
 ;; (setq bibtex-completion-bibliography "~/tex/reference.bib")
 ;;       ;; bibtex-completion-library-path "~/Dropbox/bibliography/bibtex-pdfs"
 ;;       ;; bibtex-completion-notes-path "~/Dropbox/bibliography/helm-bibtex-notes")
+;; Local Variables:
+;; byte-compile-warnings: (not free-vars unresolved callargs redefine obsolete noruntime cl-functions interactive-only make-local)
+;; End:

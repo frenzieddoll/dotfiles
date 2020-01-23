@@ -89,6 +89,12 @@ function mm() {
     mpv --no-video --ytdl-format=bestaudio ytdl://ytsearch10:"$@"
     }
 
+case $TERM in
+  linux)
+    LANG=C
+    ;;
+esac
+
 # case $TERM in
 #     linux) LANG=C ;;
 #     *) LANG=ja_JP.UTF-8 ;;

@@ -60,10 +60,11 @@ export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
 fcitx-autostart  &
 
-if [ $(hostname) = "archlinuxhonda" ]; then
-    export GDK_SCALE=2
-    export QT_SCALE_FACTOR=1.5
-fi
+# if [ $(hostname) = "archlinuxhonda" ]; then
+#     # export GDK_SCALE=2
+#     # export QT_SCALE_FACTOR=1.5
+#     xrandr --output DP-0 --scale 0.9x0.9
+# fi
 
 export LANG=ja_JP.UTF-8
 

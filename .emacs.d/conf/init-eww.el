@@ -90,5 +90,7 @@
 (define-key eww-mode-map (kbd "L") 'eww-forward-url)
 (define-key eww-mode-map (kbd "J") 'previous-buffer)
 (define-key eww-mode-map (kbd "K") 'next-buffer)
+(define-key eww-mode-map (kbd "d") 'scroll-up)
+(define-key eww-mode-map (kbd "u") 'scroll-down)
 
 ;;; init-eww.el ends here

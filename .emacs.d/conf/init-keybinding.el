@@ -36,6 +36,12 @@
 ;; async shell command
 (global-set-key (kbd "s-s") 'async-shell-command)
 
+(global-set-key (kbd "<kp-divide>") 'insert-backslash)
+(defun insert-backslash ()
+  "insert backslash"
+  (interactive)
+  (insert "\\"))
+
 
 ;; audio操作の関数
 (defun output_toggle ()

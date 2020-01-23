@@ -24,7 +24,28 @@
 ;;; Code:
 
 (require 'yasnippet)
-(yas-global-mode 1)
 ;; (yas-global-mode 1)
+(yas-minor-mode)
+
+
+(define-key yas-minor-mode-map (kbd "C-c s i") 'yas-insert-snippet)
+(define-key yas-minor-mode-map (kbd "C-c s n") 'yas-new-snippet)
+(define-key yas-minor-mode-map (kbd "C-c s v") 'yas-visit-snippet-file)
+(define-key yas-minor-mode-map (kbd "C-c s l") 'yas-describe-tables)
+(define-key yas-minor-mode-map (kbd "C-c s g") 'yas-reload-all)
+
+(require 'cl)
+(defvar ivy-programing-hooks ()
+  '(emacs-lisp-mode
+    org-mode))
+(loop for hook in ivy-programing-hooks
+      do (add-hook hook 'yas-minor-mode))
+
+;; (define-key yas-minor-mode-map (kbd "C-;") 'yas/expand)
+;; (define-key yas-minor-mode-map (kbd "TAB") nil)
+;; (define-key yas-minor-mode-map [(tab)] nil)
 
 ;;; init-yasnippet.el ends here
+;; Local Variables:
+;; byte-compile-warnings: (not free-vars unresolved callargs redefine obsolete noruntime cl-functions interactive-only make-local)
+;; End:
