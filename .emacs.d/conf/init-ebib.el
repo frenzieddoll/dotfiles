@@ -7,11 +7,11 @@
 (setq bibtex-autokey-titleword-length nil)
 (setq bibtex-autokey-titlewords 1)
 (setq bibtex-autokey-year-length 4)
-(setq bibtex-autokey-year-title-separator ":")
+(setq bibtex-autokey-year-title-separator "_")
 (setq bibtex-autokey-titleword-ignore
       '("A" "An" "On" "The" "a" "an" "on" "the"
         "Le" "La" "Les" "le" "la" "les"
-        "Zur" "zur"))
+        "Zur" "zur" "Des" "Dir" "Die"))
 
 (setq ebib-keywords-use-only-file t)
 (setq ebib-keywords-file "~/tex/ebib-keywords.txt")

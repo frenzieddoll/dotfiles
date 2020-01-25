@@ -89,7 +89,8 @@
    ((eq system-type 'gnu/linux)
     (load "init-tex" t))
    ((eq system-type 'darwin)
-    (load "init-tex_for_mac"))))
+    (load "init-tex_for_mac")))
+  (load "init-ebib" t))
 
 
 ;; init-company.el
@@ -154,7 +155,7 @@
  '(haskell-indent-spaces 4)
  '(org-agenda-files nil)
  '(package-selected-packages
-   '(ivy-hydra visual-regexp-steroids pcre2el dired-recent lsp-ui lsp-haskell org-ref ivy-dired-history pkgbuild-mode image-dired+ peep-dired undo-tree lsp-mode ivy-yasnippet auto-async-byte-compile yasnippet lua-mode yaml-mode gitignore-mode recentf-ext smart-mode-line doom-themes iflipb counsel-notmuch notmuch abyss-theme counsel swiper selected google-this smart-mode-line-atom-one-dark-theme company-ghci eglot image+ dimmer exec-path-from-shell flycheck-haskell haskell-mode ox-pandoc company-jedi shackle popwin quickrun company-racer flycheck-rust racer imenus browse-kill-ring smex smooth-scroll dired-subtree let-alist google-translate org-plus-contrib org-preview-html ace-link dired-open dired-launch dired-filter company zoom-window ein rainbow-delimiters powerline multi-term exwm edit-server ddskk))
+   '(counsel-osx-app ivy-hydra visual-regexp-steroids pcre2el dired-recent lsp-ui lsp-haskell org-ref ivy-dired-history pkgbuild-mode image-dired+ peep-dired undo-tree lsp-mode ivy-yasnippet auto-async-byte-compile yasnippet lua-mode yaml-mode gitignore-mode recentf-ext smart-mode-line doom-themes iflipb counsel-notmuch notmuch abyss-theme counsel swiper selected google-this smart-mode-line-atom-one-dark-theme company-ghci eglot image+ dimmer exec-path-from-shell flycheck-haskell haskell-mode ox-pandoc company-jedi shackle popwin quickrun company-racer flycheck-rust racer imenus browse-kill-ring smex smooth-scroll dired-subtree let-alist google-translate org-plus-contrib org-preview-html ace-link dired-open dired-launch dired-filter company zoom-window ein rainbow-delimiters powerline multi-term exwm edit-server ddskk))
  '(skk-auto-insert-paren nil)
  '(skk-auto-okuri-process nil)
  '(skk-auto-start-henkan t)

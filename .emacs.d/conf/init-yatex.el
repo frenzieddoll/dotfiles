@@ -1,4 +1,11 @@
 ;;
+;; PATH
+;;
+(when (eq system-type 'darwin)
+  (setenv "PATH" "/usr/local/bin:/Library/TeX/texbin/:/Applications/Skim.app/Contents/SharedSupport:$PATH" t)
+  (setq exec-path (append '("/usr/local/bin" "/Library/TeX/texbin" "/Applications/Skim.app/Contents/SharedSupport") exec-path)))
+
+;;
 ;; YaTeX
 ;;
 (autoload 'yatex-mode "yatex" "Yet Another LaTeX mode" t)
