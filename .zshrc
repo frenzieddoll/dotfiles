@@ -48,7 +48,7 @@ export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.emacs.d/script:$PATH"
 
 # 言語を英語にする
-export LANG=C
+export LANG=en_US.utf-8
 
 # エイリアス
 alias la='ls -a'
@@ -91,8 +91,9 @@ function mm() {
 
 case $TERM in
   linux)
-    LANG=C
-    ;;
+      LANG=C;;
+  *)
+      LANG=ja_JP.UTF-8 ;;
 esac
 
 # case $TERM in

@@ -112,17 +112,18 @@
   (if (= exwm-workspace-current-index 0)
       (exwm-workspace-switch 2)
     (exwm-workspace-switch 0)))
-(defun start-pavucontrol ()
-  (interactive)
-  (start-process-shell-command
-   "start pavucontrol"
-   nil
-   (format "pavucontrol")))
 
-(defun application-lunch (command)
-  "Application lunch. command"
-  (interactive (list (read-shell-command "$ ")))
-  (start-process-shell-command command nil command))
+;; (defun start-pavucontrol ()
+;;   (interactive)
+;;   (start-process-shell-command
+;;    "start pavucontrol"
+;;    nil
+;;    (format "pavucontrol")))
+
+;; (defun application-lunch (command)
+;;   "Application lunch. command"
+;;   (interactive (list (read-shell-command "$ ")))
+;;   (start-process-shell-command command nil command))
 
 ;;; Those cannot be set globally: if Emacs would be run in another WM, the "s-"
 ;;; prefix will conflict with the WM bindings.
@@ -137,10 +138,10 @@
 ;; (exwm-input-set-key (kbd "s-R") 'exwm-restart)
 (exwm-input-set-key (kbd "C-M-v") 'scroll-other-window)
 (exwm-input-set-key (kbd "C-M-S-v") 'scroll-other-window-down)
-(exwm-input-set-key (kbd "<f9>") 'output_toggle)
-(exwm-input-set-key (kbd "<f10>") 'mute_toggle)
-(exwm-input-set-key (kbd "<f11>") 'lower_volume)
-(exwm-input-set-key (kbd "<f12>") 'upper_volume)
+;; (exwm-input-set-key (kbd "<f9>") 'output_toggle)
+;; (exwm-input-set-key (kbd "<f10>") 'mute_toggle)
+;; (exwm-input-set-key (kbd "<f11>") 'lower_volume)
+;; (exwm-input-set-key (kbd "<f12>") 'upper_volume)
 (exwm-input-set-key (kbd "C-s-i") 'output_toggle)
 (exwm-input-set-key (kbd "C-s-m") 'mute_toggle)
 (exwm-input-set-key (kbd "C-s-n") 'lower_volume )
@@ -148,12 +149,11 @@
 (exwm-input-set-key (kbd "s-q") 'kill-current-buffer)
 (exwm-input-set-key (kbd "s-h") 'delete-window)
 (define-key exwm-mode-map (kbd "s-SPC") 'exwm-floating-toggle-floating)
+(exwm-input-set-key (kbd "s-e") 'exwm-input-toggle-keyboard)
 
-;; chomeの起動
-;; (exwm-input-set-key (kbd "s-c")
-;;                     (lambda ()
-;;                       (interactive)
-;;                       (start-process-shell-command "google-chrome-stable" nil "google-chrome-stable")))
+(setq exwm-input-global-keys
+      '(([?\s-j] . [C-&])
+        ([?\s-l] . [C-^])))
 
 
 (setq exwm-input-simulation-keys
