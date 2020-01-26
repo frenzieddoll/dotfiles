@@ -16,7 +16,7 @@ abspath () {
 }
 
 target="$(abspath "$1")"
-find "$(dirname "$target")" -maxdepth 1 -type f -iregex '.*\(mp4\|mkv\|avi\|wmv\|webm\|mpg\|flv\|m4v\|rm\|rmvb\|mpeg\)$' > playlist
+find "$(dirname "$target")" -maxdepth 1 -type f -iregex '.*\(mp4\|mkv\|avi\|wmv\|webm\|mpg\|flv\|m4v\|rm\|rmvb\|mpeg\)$' | sort > playlist
 count="$(grep -n "$1" playlist | cut -d ":" -f 1)"
 
 if [ "$(wc -l playlist)" == 1 ]; then

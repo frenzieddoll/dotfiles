@@ -36,11 +36,17 @@
 ;; async shell command
 (global-set-key (kbd "s-s") 'async-shell-command)
 
-(global-set-key (kbd "<kp-divide>") 'insert-backslash)
-(defun insert-backslash ()
-  "insert backslash"
-  (interactive)
-  (insert "\\"))
+(global-set-key (kbd "<kp-divide>") '(lambda ()
+                                       "insert backslash"
+                                       (interactive)
+                                       (insert "\\")))
+
+(global-set-key (kbd "<kp-multiply>") '(lambda ()
+                                         "inisert pipe"
+                                         (interactive)
+                                         (insert "|")))
+
+(global-set-key (kbd "C-x g") 'magit-status)
 
 
 ;; audio操作の関数
