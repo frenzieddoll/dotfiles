@@ -150,6 +150,7 @@
 (exwm-input-set-key (kbd "s-h") 'delete-window)
 (define-key exwm-mode-map (kbd "s-SPC") 'exwm-floating-toggle-floating)
 (exwm-input-set-key (kbd "s-e") 'exwm-input-toggle-keyboard)
+(exwm-input-set-key (kbd "s-o") 'ivy-switch-buffer)
 
 (setq exwm-input-global-keys
       '(([?\s-j] . [C-&])

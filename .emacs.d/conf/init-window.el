@@ -14,7 +14,9 @@
   (global-set-key (kbd "s-p") 'windmove-up)
   (global-set-key (kbd "s-a") 'zoom-window-zoom)
   (global-set-key (kbd "s-q") 'kill-current-buffer)
-  (global-set-key (kbd "s-h") 'delete-window))
+  (global-set-key (kbd "s-h") 'delete-window)
+  (global-set-key (kbd "s-o") 'ivy-switch-buffer))
+
 
 ;; ------------------------------------------
 
@@ -33,6 +35,7 @@
       (global-set-key (kbd "C-M-n") 'lower_volume )
       (global-set-key (kbd "C-M-p") 'upper_volume)
       (global-set-key (kbd "M-d") 'counsel-linux-app)
+      (global-set-key (kbd "M-o") 'ivy-switch-buffer)
       (global-hl-line-mode)
       ))
 
@@ -89,3 +92,6 @@
 
 ;; (require 'smooth-scroll)
 ;; (smooth-scroll-mode t)
+;; Local Variables:
+;; byte-compile-warnings: (not free-vars unresolved callargs redefine obsolete noruntime cl-functions interactive-only make-local)
+;; End:
