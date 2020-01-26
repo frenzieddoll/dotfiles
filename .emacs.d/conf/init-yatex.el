@@ -47,28 +47,28 @@
 ;(setq tex-pdfview-command "texworks")
 ;(setq tex-pdfview-command "texstudio --pdf-viewer-only")
 (setq dviprint-command-format "wine cmd /c start AcroRd32.exe `echo %s | sed -e \"s/\\.[^.]*$/\\.pdf/\"`")
-(require 'dbus)
-(defun un-urlify (fname-or-url)
-  "A trivial function that replaces a prefix of file:/// with just /."
-  (if (string= (substring fname-or-url 0 8) "file:///")
-      (substring fname-or-url 7)
-    fname-or-url))
-(defun evince-inverse-search (file linecol &rest ignored)
-  (let* ((fname (decode-coding-string (url-unhex-string (un-urlify file)) 'utf-8))
-         (buf (find-file fname))
-         (line (car linecol))
-         (col (cadr linecol)))
-    (if (null buf)
-        (message "[Synctex]: %s is not opened..." fname)
-      (switch-to-buffer buf)
-      (goto-line (car linecol))
-      (unless (= col -1)
-        (move-to-column col))
-      (x-focus-frame (selected-frame)))))
-(dbus-register-signal
- :session nil "/org/gnome/evince/Window/0"
- "org.gnome.evince.Window" "SyncSource"
- 'evince-inverse-search)
+;; (require 'dbus)
+;; (defun un-urlify (fname-or-url)
+;;   "A trivial function that replaces a prefix of file:/// with just /."
+;;   (if (string= (substring fname-or-url 0 8) "file:///")
+;;       (substring fname-or-url 7)
+;;     fname-or-url))
+;; (defun evince-inverse-search (file linecol &rest ignored)
+;;   (let* ((fname (decode-coding-string (url-unhex-string (un-urlify file)) 'utf-8))
+;;          (buf (find-file fname))
+;;          (line (car linecol))
+;;          (col (cadr linecol)))
+;;     (if (null buf)
+;;         (message "[Synctex]: %s is not opened..." fname)
+;;       (switch-to-buffer buf)
+;;       (goto-line (car linecol))
+;;       (unless (= col -1)
+;;         (move-to-column col))
+;;       (x-focus-frame (selected-frame)))))
+;; (dbus-register-signal
+;;  :session nil "/org/gnome/evince/Window/0"
+;;  "org.gnome.evince.Window" "SyncSource"
+;;  'evince-inverse-search)
 (with-eval-after-load 'yatexprc
   (defun YaTeX-preview-jump-line ()
     "Call jump-line function of various previewer on current main file"

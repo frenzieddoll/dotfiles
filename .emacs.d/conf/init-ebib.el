@@ -19,6 +19,11 @@
 
 (setq ebib-file-search-dirs '("~/tex/papers" "~/tex/books"))
 
+
+(setq ebib-file-associations
+      '(("pdf" . "open")
+        ("ps"  . "open")))
+
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars unresolved callargs redefine obsolete noruntime cl-functions interactive-only make-local)
 ;; End:

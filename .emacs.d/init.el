@@ -90,8 +90,8 @@
     (load "init-tex" t))
    ((eq system-type 'darwin)
     (load "init-tex_for_mac")))
-  (load "init-ebib" t))
-
+  (load "init-ebib" t)
+  (load "init-yatex" t))
 
 ;; init-company.el
 (load "init-company" t)
