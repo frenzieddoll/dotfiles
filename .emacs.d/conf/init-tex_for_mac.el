@@ -2,9 +2,12 @@
 ;; latex on emacs org-mode for mac
 ;; PATH
 ;;
-(setenv "PATH" "/usr/local/bin:/Library/TeX/texbin/:/Applications/Skim.app/Contents/SharedSupport:$PATH" t)
-(setq exec-path (append '("/usr/local/bin" "/Library/TeX/texbin" "/Applications/Skim.app/Contents/SharedSupport") exec-path))
-
+;; Mac用の設定
+(when (eq system-type 'darwin)
+  (setenv "PATH" "/usr/local/bin:/Library/TeX/texbin/:/Applications/Skim.app/Contents/SharedSupport:$PATH" t)
+  (setq exec-path (append '("/usr/local/bin" "/Library/TeX/texbin" "/Applications/Skim.app/Contents/SharedSupport") exec-path))
+  (setq org-file-apps
+      '(("pdf" . "open %s"))))
 ;;
 ;; Org mode
 ;;
@@ -17,81 +20,111 @@
 ;; (setq org-file-apps
 ;;       '(("pdf" . "open -a Skim %s")))
 
-(setq org-file-apps
-      '(("pdf" . "open %s")))
-
-
 (add-to-list 'org-latex-classes
-             '("bxjsarticle"
+             '("thesis"
                "\\documentclass[autodetect-engine,dvi=dvipdfmx,11pt,a4paper,ja=standard]{bxjsarticle}
-[NO-DEFAULT-PACKAGES]
-\\usepackage{amsmath}
-\\usepackage{newtxtext,newtxmath}
-\\usepackage[dvipdfmx]{graphicx}
-\\usepackage{hyperref}
-\\ifdefined\\kanjiskip
-  \\usepackage{pxjahyper}
-  \\hypersetup{colorlinks=true,citecolor=blue,linkcolor=black}
-\\else
-  \\ifdefined\\XeTeXversion
-      \\hypersetup{colorlinks=true,citecolor=blue,linkcolor=black}
-  \\else
-    \\ifdefined\\directlua
-      \\hypersetup{pdfencoding=auto,colorlinks=true,citecolor=blue,linkcolor=black}
-    \\else
-      \\hypersetup{unicode,colorlinks=ture,citecolor=blue,linkcolor=black}
-    \\fi
-  \\fi
-\\fi"
+               [NO-DEFAULT-PACKAGES]
+               \\usepackage{siunitx}
+               \\usepackage{amsmath}
+               \\usepackage{newtxtext,newtxmath}
+               \\usepackage[dvipdfmx]{graphicx}
+               \\usepackage{hyperref}
+               \\usepackage[hang,small,bf]{caption}
+               \\usepackage[subrefformat=parens]{subcaption}
+               \\captionsetup{compatibility=false}
+
+               \\ifdefined\\kanjiskip
+                 \\usepackage{pxjahyper}
+                 \\hypersetup{colorlinks=true,citecolor=blue,linkcolor=black}
+               \\else
+                 \\ifdefined\\XeTeXversion
+                     \\hypersetup{colorlinks=true,citecolor=blue,linkcolor=black}
+                 \\else
+                   \\ifdefined\\directlua
+                     \\hypersetup{pdfencoding=auto,colorlinks=true,citecolor=blue,linkcolor=black}
+                   \\else
+                     \\hypersetup{unicode,colorlinks=ture,citecolor=blue,linkcolor=black}
+                   \\fi
+                 \\fi
+               \\fi"
                ("\\section{%s}" . "\\section*{%s}")
                ("\\subsection{%s}" . "\\subsection*{%s}")
                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
                ("\\paragraph{%s}" . "\\paragraph*{%s}")
                ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
-(add-to-list 'org-latex-classes
-             '("jlreq"
-               "\\documentclass[11pt,paper=a4]{jlreq}
-[NO-DEFAULT-PACKAGES]
-\\usepackage{amsmath}
-\\usepackage{newtxtext,newtxmath}
-\\ifdefined\\kanjiskip
-  \\usepackage[dvipdfmx]{graphicx}
-  \\usepackage[dvipdfmx]{hyperref}
-  \\usepackage{pxjahyper}
-  \\hypersetup{colorlinks=true}
-\\else
-  \\usepackage{graphicx}
-  \\usepackage{hyperref}
-  \\hypersetup{pdfencoding=auto,colorlinks=true}
-\\fi"
-               ("\\section{%s}" . "\\section*{%s}")
-               ("\\subsection{%s}" . "\\subsection*{%s}")
-               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-               ("\\paragraph{%s}" . "\\paragraph*{%s}")
-               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
-(add-to-list 'org-latex-classes
-             '("jlreq-tate"
-               "\\documentclass[tate,11pt,paper=a4]{jlreq}
-[NO-DEFAULT-PACKAGES]
-\\usepackage{amsmath}
-\\usepackage{newtxtext,newtxmath}
-\\ifdefined\\kanjiskip
-  \\usepackage[dvipdfmx]{graphicx}
-  \\usepackage[dvipdfmx]{hyperref}
-  \\usepackage{pxjahyper}
-  \\hypersetup{colorlinks=true}
-\\else
-  \\usepackage{graphicx}
-  \\usepackage{hyperref}
-  \\hypersetup{pdfencoding=auto,colorlinks=true}
-\\fi"
-               ("\\section{%s}" . "\\section*{%s}")
-               ("\\subsection{%s}" . "\\subsection*{%s}")
-               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-               ("\\paragraph{%s}" . "\\paragraph*{%s}")
-               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+;; (add-to-list 'org-latex-classes
+;;              '("bxjsarticle"
+;;                "\\documentclass[autodetect-engine,dvi=dvipdfmx,11pt,a4paper,ja=standard]{bxjsarticle}
+;; [NO-DEFAULT-PACKAGES]
+;; \\usepackage{amsmath}
+;; \\usepackage{newtxtext,newtxmath}
+;; \\usepackage[dvipdfmx]{graphicx}
+;; \\usepackage{hyperref}
+;; \\ifdefined\\kanjiskip
+;;   \\usepackage{pxjahyper}
+;;   \\hypersetup{colorlinks=true,citecolor=blue,linkcolor=black}
+;; \\else
+;;   \\ifdefined\\XeTeXversion
+;;       \\hypersetup{colorlinks=true,citecolor=blue,linkcolor=black}
+;;   \\else
+;;     \\ifdefined\\directlua
+;;       \\hypersetup{pdfencoding=auto,colorlinks=true,citecolor=blue,linkcolor=black}
+;;     \\else
+;;       \\hypersetup{unicode,colorlinks=ture,citecolor=blue,linkcolor=black}
+;;     \\fi
+;;   \\fi
+;; \\fi"
+;;                ("\\section{%s}" . "\\section*{%s}")
+;;                ("\\subsection{%s}" . "\\subsection*{%s}")
+;;                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+;;                ("\\paragraph{%s}" . "\\paragraph*{%s}")
+;;                ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+
+;; (add-to-list 'org-latex-classes
+;;              '("jlreq"
+;;                "\\documentclass[11pt,paper=a4]{jlreq}
+;; [NO-DEFAULT-PACKAGES]
+;; \\usepackage{amsmath}
+;; \\usepackage{newtxtext,newtxmath}
+;; \\ifdefined\\kanjiskip
+;;   \\usepackage[dvipdfmx]{graphicx}
+;;   \\usepackage[dvipdfmx]{hyperref}
+;;   \\usepackage{pxjahyper}
+;;   \\hypersetup{colorlinks=true}
+;; \\else
+;;   \\usepackage{graphicx}
+;;   \\usepackage{hyperref}
+;;   \\hypersetup{pdfencoding=auto,colorlinks=true}
+;; \\fi"
+;;                ("\\section{%s}" . "\\section*{%s}")
+;;                ("\\subsection{%s}" . "\\subsection*{%s}")
+;;                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+;;                ("\\paragraph{%s}" . "\\paragraph*{%s}")
+;;                ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+
+;; (add-to-list 'org-latex-classes
+;;              '("jlreq-tate"
+;;                "\\documentclass[tate,11pt,paper=a4]{jlreq}
+;; [NO-DEFAULT-PACKAGES]
+;; \\usepackage{amsmath}
+;; \\usepackage{newtxtext,newtxmath}
+;; \\ifdefined\\kanjiskip
+;;   \\usepackage[dvipdfmx]{graphicx}
+;;   \\usepackage[dvipdfmx]{hyperref}
+;;   \\usepackage{pxjahyper}
+;;   \\hypersetup{colorlinks=true}
+;; \\else
+;;   \\usepackage{graphicx}
+;;   \\usepackage{hyperref}
+;;   \\hypersetup{pdfencoding=auto,colorlinks=true}
+;; \\fi"
+;;                ("\\section{%s}" . "\\section*{%s}")
+;;                ("\\subsection{%s}" . "\\subsection*{%s}")
+;;                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+;;                ("\\paragraph{%s}" . "\\paragraph*{%s}")
+;;                ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
 
 ;; (setq org-latex-pdf-process
@@ -101,28 +134,28 @@
 ;;         "xelatex -interaction nonstopmode -output-directory %o %f"))
 
 
-
-;; (setq org-file-apps
-;;       '(("pdf" . "evince %s")))
-
-;; (setq org-latex-pdf-process
-;;       '("platex %f"
-;;         "platex %f"
-;;         "platex %b"
-;;         "platex %f"
-;;         "platex %f"))
-
-;; 参考文献を含むコンパイル
+;; 参考文献を含まないコンパイル
 (setq org-latex-pdf-process
       '("uplatex %b"
-        "upbibtex %b"
-        "uplatex %b"
-        "uplatex %b"
         "dvipdfmx %b"))
-;; 参考文献を含まないコンパイル
-;; (setq org-latex-pdf-process
-;;       '("uplatex %b"
-;;         "dvipdfmx %b"))
+
+(defun includeReference ()
+  (interactive)
+  (setq org-latex-pdf-process
+        '("uplatex %b"
+          "upbibtex %b"
+          "uplatex %b"
+          "uplatex %b"
+          "dvipdfmx %b")))
+
+(defun notIncludeReference ()
+  (interactive)
+  (setq org-latex-pdf-process
+      '("uplatex %b"
+        "dvipdfmx %b")))
+
+
+
 
 
 (require 'ox-bibtex)
@@ -170,6 +203,34 @@
 
 (setq ivy-bibtex-default-action 'ivy-bibtex-insert-citation)
 
+
+(require 'ox-bibtex)
+
+(setq org-ref-completion-library 'org-ref-ivy-cite)
+(setq ivy-bibtex-default-action 'ivy-bibtex-insert-citation)
+(require 'org-ref)
+(setq reftex-default-bibliography '("~/tex/references.bib"))
+(setq org-latex-prefer-user-labels t)
+
+;; ;; ノート、bib ファイル、PDF のディレクトリなどを設定
+(setq org-ref-bibliography-notes "~/tex/notes.org"
+      org-ref-default-bibliography '("~/tex/references.bib")
+      org-ref-pdf-directory "~/tex/papers")
+
+(setq bibtex-completion-bibliography "~/tex/references.bib"
+      bibtex-completion-library-path "~/tex/papers"
+      bibtex-completion-notes-path "~/tex/ivy-bibtex-notes")
+
+;; open pdf with system pdf viewer (works on mac)
+(setq bibtex-completion-pdf-open-function
+  (lambda (fpath)
+    (start-process "open" "*open*" "open" fpath)))
+
+(define-key org-mode-map (kbd "C-c c c") 'org-ref-ivy-insert-cite-link)
+(define-key org-mode-map (kbd "C-c c l") 'org-ref-ivy-insert-label-link)
+(define-key org-mode-map (kbd "C-c c r") 'org-ref-ivy-insert-ref-link)
+
+
 ;; alternative
 ;; (setq bibtex-completion-pdf-open-function 'org-open-file)
 
@@ -179,3 +240,6 @@
 ;; (setq bibtex-completion-bibliography "~/reference.bib")
 ;;       ;; bibtex-completion-library-path "~/Dropbox/bibliography/bibtex-pdfs"
 ;;       ;; bibtex-completion-notes-path "~/Dropbox/bibliography/helm-bibtex-notes")
+;; Local Variables:
+;; byte-compile-warnings: (not free-vars unresolved callargs redefine obsolete noruntime cl-functions interactive-only make-local)
+;; End:

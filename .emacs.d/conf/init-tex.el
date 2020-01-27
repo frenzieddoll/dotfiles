@@ -1,4 +1,15 @@
-<;;
+;; latex on emacs org-mode for mac
+;; PATH
+;;
+
+;; Mac用の設定
+(when (eq system-type 'darwin)
+  (setenv "PATH" "/usr/local/bin:/Library/TeX/texbin/:/Applications/Skim.app/Contents/SharedSupport:$PATH" t)
+  (setq exec-path (append '("/usr/local/bin" "/Library/TeX/texbin" "/Applications/Skim.app/Contents/SharedSupport") exec-path))
+  (setq org-file-apps
+      '(("pdf" . "open %s"))))
+
+;;
 ;; Org mode
 ;;
 
@@ -96,15 +107,6 @@
                ("\\paragraph{%s}" . "\\paragraph*{%s}")
                ("\\subparagraph{%s}" . "\\subparagraph*{%s}")
              ))
-
-
-;; Mac用の設定
-(when (eq system-type 'darwin)
-  (setenv "PATH" "/usr/local/bin:/Library/TeX/texbin/:/Applications/Skim.app/Contents/SharedSupport:$PATH" t)
-  (setq exec-path (append '("/usr/local/bin" "/Library/TeX/texbin" "/Applications/Skim.app/Contents/SharedSupport") exec-path))
-  (setq org-file-apps
-      '(("pdf" . "open %s"))))
-
 
 
 ;; 参考文献を含まないコンパイル
