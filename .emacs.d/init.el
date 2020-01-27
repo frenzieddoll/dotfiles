@@ -85,11 +85,12 @@
 (defun load-tex ()
   "Load tex setting."
   (interactive)
-  (cond
-   ((eq system-type 'gnu/linux)
-    (load "init-tex" t))
-   ((eq system-type 'darwin)
-    (load "init-tex_for_mac")))
+  ;; (cond
+  ;;  ((eq system-type 'gnu/linux)
+  ;;   (load "init-tex" t))
+  ;;  ((eq system-type 'darwin)
+  ;;   (load "init-tex_for_mac")))
+  (load "init-tex" t)
   (load "init-ebib" t)
   (load "init-yatex" t))
 
@@ -134,6 +135,8 @@
   (load "init-mySaveFrame" t))
 
 (load "init-auto-ansyc-byte-compile" t)
+
+(load "init-docView" t)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.

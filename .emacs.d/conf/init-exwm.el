@@ -152,6 +152,7 @@
 (exwm-input-set-key (kbd "s-e") 'exwm-input-toggle-keyboard)
 (exwm-input-set-key (kbd "s-o") 'ivy-switch-buffer)
 
+
 (setq exwm-input-global-keys
       '(([?\s-j] . [C-&])
         ([?\s-l] . [C-^])))
@@ -183,6 +184,7 @@
         ([?\C-w] . [?\C-x])
         ([?\M-w] . [?\C-c])
         ([?\C-y] . [?\C-v])
+        ([?\s-v] . [?\C-v])
         ;; ([?\C-x ?\h] . [?\C-a])
         ([?\M-d] . [C-S-right ?\C-x])
         ([M-backspace] . [C-S-left ?\C-x])
