@@ -67,19 +67,20 @@
   (when (eq system-type 'darwin)
    (global-set-key (kbd "s-d") 'counsel-osx-app)
    (with-eval-after-load "counsel-osx-app"
-     (custom-set-variables
-      '(counsel-osx-app-location
-        '("/Applications"
-          "/Applications/Downloads"
-          "/Applications/Flip4Mac"
-          "/Applications/GoogleJapaneseInput.localized"
-          ;; "/Applications/Igor Pro 6.1 Folder"
-          "/Applications/Igor Pro 6.3 Folder"
-          "/Applications/iWork '09"
-          "/Applications/Microsoft Office 2011"
-          "/Applications/Python 2.7"
-          "/Applications/RIETAN_VENUS"
-          "/Applications/Utilities"))))))
+     (setq counsel-osx-app-location
+           '("/Applications"
+             "/Applications/Downloads"
+             "/Applications/Flip4Mac"
+             "/Applications/GoogleJapaneseInput.localized"
+             ;; "/Applications/Igor Pro 6.1 Folder"
+             "/Applications/Igor Pro 6.3 Folder"
+             "/Applications/iWork '09"
+             "/Applications/Microsoft Office 2011"
+             "/Applications/Python 2.7"
+             "/Applications/RIETAN_VENUS"
+             "/Applications/Utilities")))))
+
+
 
 (when (require 'swiper nil t)
   (global-set-key (kbd "C-c C-;") 'swiper)

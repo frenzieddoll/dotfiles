@@ -66,21 +66,17 @@
 ;; init-regexp.el
 (load "init-regexp" t)
 
-;; init-visual.el
-;; GUI環境でのみ見た目の設定を読み込む
-(if window-system
-    (progn
-      (load "init-visual" t)
-      ))
-;; CUI環境
-(if (not window-system)
-    (progn
-      (load "init-eww" t)))
-
-
-
 ;; init-googletranslate.el
 (load "init-googletranslate" t)
+
+;; init-company.el
+(load "init-company" t)
+
+(add-hook 'newsticker-treeview-mode-hook
+          '(lambda ()
+             (load "init-rss" t)))
+
+(load "init-auto-ansyc-byte-compile" t)
 
 (defun load-tex ()
   "Load tex setting."
@@ -93,9 +89,6 @@
   (load "init-tex" t)
   (load "init-ebib" t)
   (load "init-yatex" t))
-
-;; init-company.el
-(load "init-company" t)
 
 (defun load-add-setting ()
   "Add setting."
@@ -117,26 +110,29 @@
       (require 'ein)
       ))
 
+;; init-visual.el
+;; GUI環境でのみ見た目の設定を読み込む
+(if window-system
+    (progn
+      (load "init-visual" t)
+      ))
+;; CUI環境
+(if (not window-system)
+    (progn
+      (load "init-eww" t)))
 
-;; (defun loadRssSetting ()
-;;   (load "init-rss" t))
-(add-hook 'newsticker-treeview-mode-hook
-          '(lambda ()
-             (load "init-rss" t)))
-
-;; exwmの設定
+;; linux用の設定
 (when (eq system-type 'gnu/linux)
   (if window-system (progn
                       (load "init-exwm" t)
-                      )))
+                      ))
+  (load "init-docView" t))
 
 ;; mac用の設定
 (when (eq system-type 'darwin)
   (load "init-mySaveFrame" t))
 
-(load "init-auto-ansyc-byte-compile" t)
 
-(load "init-docView" t)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.

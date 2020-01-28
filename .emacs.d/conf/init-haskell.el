@@ -11,13 +11,13 @@
 (add-hook 'haskell-mode-hook 'haskell-indentation-mode)
 
 (setq lsp-document-sync-method 'full)
-(custom-set-variables
- '(haskell-indent-after-keywords (quote (("where" 4 0) ("of" 4) ("do" 4) ("mdo" 4) ("rec" 4) ("in" 4 0) ("{" 4) "if" "then" "else" "let")))
- '(haskell-indent-offset 4)
- '(haskell-indent-spaces 4))
+(setq haskell-indent-after-keywords (quote (("where" 4 0) ("of" 4) ("do" 4) ("mdo" 4) ("rec" 4) ("in" 4 0) ("{" 4) "if" "then" "else" "let")))
+(setq haskell-indent-offset 4)
+(setq haskell-indent-spaces 4)
 
 
-flymakeのファイルの自動作成を無効化
+
+;; flymakeのファイルの自動作成を無効化
 (with-eval-after-load 'haskell-mode
   (setq flymake-proc-allowed-file-name-masks (delete '("\\.l?hs\\'" haskell-flymake-init) flymake-proc-allowed-file-name-masks))
   )
