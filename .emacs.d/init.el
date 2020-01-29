@@ -125,8 +125,7 @@
 (when (eq system-type 'gnu/linux)
   (if window-system (progn
                       (load "init-exwm" t)
-                      ))
-  (load "init-docView" t))
+                      )))
 
 ;; mac用の設定
 (when (eq system-type 'darwin)

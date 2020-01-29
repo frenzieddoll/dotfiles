@@ -61,10 +61,10 @@
           ("iso" . "mpv dvd:// -dvd-device")
           ("playlist" . "mpv --playlist")
           ("exe"  . "wine")
-          ("pdf"  . "mcomix")
-          ("zip"  . "mcomix")
-          ("rar"  . "mcomix")
-          ("tar"  . "mcomix")
+          ("pdf"  . "YACReader")
+          ("zip"  . "YACReader")
+          ("rar"  . "YACReader")
+          ("tar"  . "YACReader")
           ("xls"  . "xdg-open")
           ("xlsx" . "xdg-open")
           ("jpg"  . "sxiv-rifle")
@@ -170,3 +170,6 @@ kill previously selected buffer."
 ;; (define-key view-mode-map (kbd "K") 'View-scroll-line-backward)
 
 ;;; init-dired.el ends here
+;; Local Variables:
+;; byte-compile-warnings: (not free-vars unresolved callargs redefine obsolete noruntime cl-functions interactive-only make-local)
+;; End:
