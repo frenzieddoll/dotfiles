@@ -169,6 +169,13 @@ kill previously selected buffer."
 ;; (define-key view-mode-map (kbd "J") 'View-scroll-line-forward)
 ;; (define-key view-mode-map (kbd "K") 'View-scroll-line-backward)
 
+(require 'neotree)
+;; 隠しファイルをデフォルトで表示
+(setq neo-show-hidden-files t)
+;; cotrol + q でneotreeを起動
+(setq neo-theme (if (display-graphic-p) 'icons 'arrow))
+
+
 ;;; init-dired.el ends here
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars unresolved callargs redefine obsolete noruntime cl-functions interactive-only make-local)

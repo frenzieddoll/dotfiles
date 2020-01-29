@@ -4,8 +4,8 @@
 (when (eq system-type 'darwin)
   (setenv "PATH" "/usr/local/bin:/Library/TeX/texbin/:/Applications/Skim.app/Contents/SharedSupport:$PATH" t)
   (setq exec-path (append '("/usr/local/bin" "/Library/TeX/texbin" "/Applications/Skim.app/Contents/SharedSupport") exec-path))
-  (setq dvi2-command "open -a Preview")
-  (setq tex-pdfview-command "open -a Preview"))
+  (setq dvi2-command "open -a Skim")
+  (setq tex-pdfview-command "open -a Skim"))
 
 ;;
 ;; YaTeX
@@ -23,11 +23,34 @@
 (setq YaTeX-latex-message-code 'utf-8)
 (setq YaTeX-use-LaTeX2e t)
 (setq YaTeX-use-AMS-LaTeX t)
-;; (setq YaTeX-dvi2-command-ext-alist
-;;       '(("TeXworks\\|texworks\\|texstudio\\|mupdf\\|SumatraPDF\\|Preview\\|Skim\\|TeXShop\\|evince\\|atril\\|xreader\\|okular\\|zathura\\|qpdfview\\|Firefox\\|firefox\\|chrome\\|chromium\\|MicrosoftEdge\\|microsoft-edge\\|Adobe\\|Acrobat\\|AcroRd32\\|acroread\\|pdfopen\\|xdg-open\\|open\\|start" . ".pdf")))
-(setq tex-command "uplatex")
+(setq YaTeX-dvi2-command-ext-alist
+      '(("TeXworks\\|texworks\\|texstudio\\|mupdf\\|SumatraPDF\\|Preview\\|Skim\\|TeXShop\\|evince\\|atril\\|xreader\\|okular\\|zathura\\|qpdfview\\|Firefox\\|firefox\\|chrome\\|chromium\\|MicrosoftEdge\\|microsoft-edge\\|Adobe\\|Acrobat\\|AcroRd32\\|acroread\\|pdfopen\\|xdg-open\\|open\\|start" . ".pdf")))
+(setq tex-command "uplatex -synctex=-1")
+;; (setq tex-command "ptex2pdf -l -ot '-synctex=1")
 (setq bibtex-command "upbibtex")
+;; (setq makeindex-command "mendex")
+(setq dviprint-command-format "open -a \"Adobe Acrobat Reader DC\" `echo %s | gsed -e \"s/\\.[^.]*$/\\.pdf/\"`")
+;; (auto-fill-mode -1)
+;; (reftex-mode 1)
 
+;; (defun skim-forward-search ()
+;;   (interactive)
+;;   (progn
+;;     (process-kill-without-query
+;;      (start-process
+;;       "displayline"
+;;       nil
+;;       "/Applications/Skim.app/Contents/SharedSupport/displayline"
+;;       (number-to-string (save-restriction
+;;                           (widen)
+;;                           (count-lines (point-min) (point))))
+;;       (expand-file-name
+;;        (concat (file-name-sans-extension (or YaTeX-parent-file
+;;                                              (save-excursion
+;;                                                (YaTeX-visit-main t)
+;;                                                buffer-file-name)))
+;;                ".pdf"))
+;;       buffer-file-name))))
 
 ;; (setq tex-command "ptex2pdf -u -l -ot '-synctex=1'")
 ;(setq tex-command "lualatex -synctex=1")
@@ -36,8 +59,6 @@
 ;; (setq tex-command "latexmk -e '$lualatex=q/lualatex %O -synctex=1 %S/' -e '$bibtex=q/upbibtex %O %B/' -e '$biber=q/biber %O --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex %O -o %D %S/' -norc -gg -pdflua")
 ;; (setq bibtex-command "latexmk -e '$latex=q/uplatex %O -synctex=1 %S/' -e '$bibtex=q/upbibtex %O %B/' -e '$biber=q/biber %O --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex %O -o %D %S/' -e '$dvipdf=q/dvipdfmx %O -o %D %S/' -norc -gg -pdfdvi")
 ;; (setq makeindex-command  "latexmk -e '$latex=q/uplatex %O -synctex=1 %S/' -e '$bibtex=q/upbibtex %O %B/' -e '$biber=q/biber %O --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex %O -o %D %S/' -e '$dvipdf=q/dvipdfmx %O -o %D %S/' -norc -gg -pdfdvi")
-;; (setq dvi2-command "open -a Skim")
-;; (setq dviprint-command-format "open -a \"Adobe Acrobat Reader DC\" `echo %s | gsed -e \"s/\\.[^.]*$/\\.pdf/\"`")
 
 ;; (add-hook 'yatex-mode-hook
 ;;           '(lambda ()
@@ -123,6 +144,9 @@
 (add-hook 'yatex-mode-hook
           '(lambda ()
              (auto-fill-mode -1)))
+
+(setq YaTeX-nervous nil)
+(setq YaTeX-close-paren-always nil)
 ;;
 ;; RefTeX with YaTeX
 ;;
