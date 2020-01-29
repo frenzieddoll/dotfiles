@@ -18,4 +18,12 @@
 (setq calendar-holidays nil)
 (global-set-key (kbd "C-c a") 'org-agenda)
 
+
+;; table-mode
+(add-hook 'org-mode-hook '(lambda ()
+                            (define-key table-cell-map (kbd "C-j") 'skk-hiragana-set)))
+
 ;;; init-org.el ends here
+;; Local Variables:
+;; byte-compile-warnings: (not free-vars unresolved callargs redefine obsolete noruntime cl-functions interactive-only make-local)
+;; End:
