@@ -18,6 +18,7 @@
 !/.emacs.d/public_repos
 !/.emacs.d/script
 !/.emacs.d/snippets
+!/.emacs.d/.yatexrc
 # 設定ファイル
 !/X11ForNotePC
 !/.bashrc

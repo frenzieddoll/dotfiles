@@ -157,6 +157,8 @@
              (define-key reftex-mode-map (concat YaTeX-prefix ">") 'YaTeX-comment-region)
              (define-key reftex-mode-map (concat YaTeX-prefix "<") 'YaTeX-uncomment-region)))
 
+(setq reftex-label-alist '((nil ?e nil "~\eqref{%s}" nil nil)))
+
 (setq reftex-default-bibliography '("/Users/hondatoshiaki/tex/references.bib"))
 (setq reftex-bibliography-commands '("bibliography" "nobibliography" "addbibresorce"))
 ;; Local Variables:

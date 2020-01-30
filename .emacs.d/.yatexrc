@@ -1,0 +1,12 @@
+(setq user-section-table '(
+("SI" 2)
+("mathr")
+("labes")
+("textsubscript")
+("subcaption")
+))
+
+(setq user-singlecmd-table '(
+("degreeCelsius")
+("hsize")
+))
