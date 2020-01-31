@@ -26,6 +26,7 @@
 (setq YaTeX-dvi2-command-ext-alist
       '(("TeXworks\\|texworks\\|texstudio\\|mupdf\\|SumatraPDF\\|Preview\\|Skim\\|TeXShop\\|evince\\|atril\\|xreader\\|okular\\|zathura\\|qpdfview\\|Firefox\\|firefox\\|chrome\\|chromium\\|MicrosoftEdge\\|microsoft-edge\\|Adobe\\|Acrobat\\|AcroRd32\\|acroread\\|pdfopen\\|xdg-open\\|open\\|start" . ".pdf")))
 (setq tex-command "uplatex -synctex=-1")
+;; (setq tex-command "ptex2pdf -u -l -ot '-synctex=1 -file-line-error'")
 ;; (setq tex-command "ptex2pdf -l -ot '-synctex=1")
 (setq bibtex-command "upbibtex")
 ;; (setq makeindex-command "mendex")
@@ -156,6 +157,8 @@
              (reftex-mode 1)
              (define-key reftex-mode-map (concat YaTeX-prefix ">") 'YaTeX-comment-region)
              (define-key reftex-mode-map (concat YaTeX-prefix "<") 'YaTeX-uncomment-region)))
+
+(setq reftex-label-alist '((nil ?e nil "~\eqref{%s}" nil nil)))
 
 (setq reftex-default-bibliography '("/Users/hondatoshiaki/tex/references.bib"))
 (setq reftex-bibliography-commands '("bibliography" "nobibliography" "addbibresorce"))
