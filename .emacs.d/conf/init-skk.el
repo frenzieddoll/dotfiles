@@ -41,6 +41,58 @@
 (provide 'mylisp-skk-replace)
 
 
+(setq skk-rom-kana-rule-list
+      (append skk-rom-kana-rule-list
+              '(("ll" nil "っ")
+                ("xn" nil "ん")
+                ("xx" nil "っ")
+                ("z," nil ",")
+                ("z." nil ".")
+                ("z[" nil "[")
+                ("z]" nil "]")
+                ("z-" nil "-")
+                ("!" nil "!")
+                ("." nil "。")
+                ("," nil "、")
+                (":" nil ":")
+                (";" nil ";")
+                ("?" nil "?")
+                ("la" nil "ぁ" )
+                ("li" nil "ぃ" )
+                ("lu" nil "ぅ" )
+                ("le" nil "ぇ" )
+                ("lo" nil "ぉ" )
+            )))
+
+(setq skk-initial-search-jisyo "~/.emacs.d/ddskk/jisyo")
+(setq skk-large-jisyo "~/.emacs.d/skk-get-jisyo/SKK-JISYO.L")
+(setq skk-extra-jisyo-file-list
+      (list
+       '("~/.emacs.d/skk-get-jisyo/SKK-JISYO.JIS3_4")
+       '("~/.emacs.d/skk-get-jisyo/SKK-JISYO.lisp")
+       '("~/.emacs.d/skk-get-jisyo/SKK-JISYO.jinmei")
+       '("~/.emacs.d/skk-get-jisyo/SKK-JISYO.station")
+       '("~/.emacs.d/skk-get-jisyo/SKK-JISYO.itaiji")
+       '("~/.emacs.d/skk-get-jisyo/SKK-JISYO.geo")))
+
+
+(defun skk-hiragana-set nil
+  (interactive)
+  (cond (skk-katakana
+         (skk-toggle-kana nil))
+        (t
+         (skk-kakutei))))
+
+(defun skk-katakana-set nil
+  (interactive)
+  (cond (skk-katakana
+         (lambda))
+        (skk-j-mode
+         (skk-toggle-kana nil))
+        (skk-latin-mode
+         (dolist (skk-kakutei (skk-toggle-kana nil))))))
+
+
 ;;; C-/M-などをskkで入力するために
 ;;; (skk-henkan-M-)
 ;;; (skk-henkan-C-)
