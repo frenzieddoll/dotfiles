@@ -1,4 +1,6 @@
 (setq user-section-table '(
+("textsuperscript")
+("textupscript")
 ("SI" 2)
 ("mathr")
 ("labes")
@@ -7,6 +9,7 @@
 ))
 
 (setq user-singlecmd-table '(
+("angstrom")
 ("degreeCelsius")
 ("hsize")
 ))
