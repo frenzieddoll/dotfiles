@@ -1,9 +1,6 @@
 (setq user-section-table '(
 ("textsuperscript")
-("textupscript")
 ("SI" 2)
-("mathr")
-("labes")
 ("textsubscript")
 ("subcaption")
 ))
