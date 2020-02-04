@@ -48,6 +48,10 @@
 
 (global-set-key (kbd "C-x g") 'magit-status)
 
+;; カーソル固定のままスクロール
+(global-set-key (kbd "M-n") (lambda () (interactive) (scroll-up 1)))
+(global-set-key (kbd "M-p") (lambda () (interactive) (scroll-down 1)))
+
 
 ;; audio操作の関数
 (defun output_toggle ()

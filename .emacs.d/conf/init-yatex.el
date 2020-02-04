@@ -146,8 +146,11 @@
           '(lambda ()
              (auto-fill-mode -1)))
 
+
 (setq YaTeX-nervous nil)
 (setq YaTeX-close-paren-always nil)
+;; (define-key YaTeX-mode-map (kbd "C-c C-g") 'keyboard-quit)
+;; (define-key YaTeX-mode-map (kbd "C-c g") 'YaTeX-goto-corresponding-*)
 ;;
 ;; RefTeX with YaTeX
 ;;
@@ -162,6 +165,7 @@
 
 (setq reftex-default-bibliography '("/Users/hondatoshiaki/tex/references.bib"))
 (setq reftex-bibliography-commands '("bibliography" "nobibliography" "addbibresorce"))
+
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars unresolved callargs redefine obsolete noruntime cl-functions interactive-only make-local)
 ;; End:
