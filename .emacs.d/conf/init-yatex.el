@@ -25,7 +25,7 @@
 (setq YaTeX-use-AMS-LaTeX t)
 (setq YaTeX-dvi2-command-ext-alist
       '(("TeXworks\\|texworks\\|texstudio\\|mupdf\\|SumatraPDF\\|Preview\\|Skim\\|TeXShop\\|evince\\|atril\\|xreader\\|okular\\|zathura\\|qpdfview\\|Firefox\\|firefox\\|chrome\\|chromium\\|MicrosoftEdge\\|microsoft-edge\\|Adobe\\|Acrobat\\|AcroRd32\\|acroread\\|pdfopen\\|xdg-open\\|open\\|start" . ".pdf")))
-(setq tex-command "uplatex -synctex=-1")
+(setq tex-command "uplatex -synctex=1")
 ;; (setq tex-command "ptex2pdf -u -l -ot '-synctex=1 -file-line-error'")
 ;; (setq tex-command "ptex2pdf -l -ot '-synctex=1")
 (setq bibtex-command "upbibtex")
@@ -34,77 +34,6 @@
 ;; (auto-fill-mode -1)
 ;; (reftex-mode 1)
 
-;; (defun skim-forward-search ()
-;;   (interactive)
-;;   (progn
-;;     (process-kill-without-query
-;;      (start-process
-;;       "displayline"
-;;       nil
-;;       "/Applications/Skim.app/Contents/SharedSupport/displayline"
-;;       (number-to-string (save-restriction
-;;                           (widen)
-;;                           (count-lines (point-min) (point))))
-;;       (expand-file-name
-;;        (concat (file-name-sans-extension (or YaTeX-parent-file
-;;                                              (save-excursion
-;;                                                (YaTeX-visit-main t)
-;;                                                buffer-file-name)))
-;;                ".pdf"))
-;;       buffer-file-name))))
-
-;; (setq tex-command "ptex2pdf -u -l -ot '-synctex=1'")
-;(setq tex-command "lualatex -synctex=1")
-;(setq tex-command "latexmk")
-;; (setq tex-command "latexmk -e '$latex=q/uplatex %O -synctex=1 %S/' -e '$bibtex=q/upbibtex %O %B/' -e '$biber=q/biber %O --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex %O -o %D %S/' -e '$dvipdf=q/dvipdfmx %O -o %D %S/' -norc -gg -pdfdvi")
-;; (setq tex-command "latexmk -e '$lualatex=q/lualatex %O -synctex=1 %S/' -e '$bibtex=q/upbibtex %O %B/' -e '$biber=q/biber %O --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex %O -o %D %S/' -norc -gg -pdflua")
-;; (setq bibtex-command "latexmk -e '$latex=q/uplatex %O -synctex=1 %S/' -e '$bibtex=q/upbibtex %O %B/' -e '$biber=q/biber %O --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex %O -o %D %S/' -e '$dvipdf=q/dvipdfmx %O -o %D %S/' -norc -gg -pdfdvi")
-;; (setq makeindex-command  "latexmk -e '$latex=q/uplatex %O -synctex=1 %S/' -e '$bibtex=q/upbibtex %O %B/' -e '$biber=q/biber %O --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex %O -o %D %S/' -e '$dvipdf=q/dvipdfmx %O -o %D %S/' -norc -gg -pdfdvi")
-
-;; (add-hook 'yatex-mode-hook
-;;           '(lambda ()
-;;              (auto-fill-mode -1)))
-
-
-;(setq dvi2-command "xdg-open")
-;; (setq dvi2-command "evince")
-;(setq dvi2-command "atril")
-;(setq dvi2-command "okular --unique")
-;(setq dvi2-command "zathura -x \"emacsclient --no-wait +%{line} %{input}\"")
-;(setq dvi2-command "qpdfview --unique")
-;(setq dvi2-command "texworks")
-;(setq dvi2-command "texstudio --pdf-viewer-only")
-;(setq tex-pdfview-command "xdg-open")
-;; (setq tex-pdfview-command "evince")
-;(setq tex-pdfview-command "atril")
-;(setq tex-pdfview-command "okular --unique")
-;(setq tex-pdfview-command "zathura -x \"emacsclient --no-wait +%{line} %{input}\"")
-;(setq tex-pdfview-command "qpdfview --unique")
-;(setq tex-pdfview-command "texworks")
-;(setq tex-pdfview-command "texstudio --pdf-viewer-only")
-;; (setq dviprint-command-format "wine cmd /c start AcroRd32.exe `echo %s | sed -e \"s/\\.[^.]*$/\\.pdf/\"`")
-;; (require 'dbus)
-;; (defun un-urlify (fname-or-url)
-;;   "A trivial function that replaces a prefix of file:/// with just /."
-;;   (if (string= (substring fname-or-url 0 8) "file:///")
-;;       (substring fname-or-url 7)
-;;     fname-or-url))
-;; (defun evince-inverse-search (file linecol &rest ignored)
-;;   (let* ((fname (decode-coding-string (url-unhex-string (un-urlify file)) 'utf-8))
-;;          (buf (find-file fname))
-;;          (line (car linecol))
-;;          (col (cadr linecol)))
-;;     (if (null buf)
-;;         (message "[Synctex]: %s is not opened..." fname)
-;;       (switch-to-buffer buf)
-;;       (goto-line (car linecol))
-;;       (unless (= col -1)
-;;         (move-to-column col))
-;;       (x-focus-frame (selected-frame)))))
-;; (dbus-register-signal
-;;  :session nil "/org/gnome/evince/Window/0"
-;;  "org.gnome.evince.Window" "SyncSource"
-;;  'evince-inverse-search)
 (with-eval-after-load 'yatexprc
   (defun YaTeX-preview-jump-line ()
     "Call jump-line function of various previewer on current main file"

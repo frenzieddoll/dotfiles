@@ -24,6 +24,8 @@
       '(("pdf" . "open")
         ("ps"  . "open")))
 
+(global-set-key (kbd "C-c C-z") 'ebib)
+
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars unresolved callargs redefine obsolete noruntime cl-functions interactive-only make-local)
 ;; End:
