@@ -1,4 +1,7 @@
 (setq user-section-table '(
+("7")
+("転移温度の分布")
+("criticalTempMid" 3)
 ("tcm" 3)
 ("T")
 ("HfVFe" 5)
@@ -26,6 +29,9 @@
 ))
 
 (setq user-singlecmd-table '(
+("mgirsi")
+("mgirge")
+("ge")
 ("tcm")
 ("footnotesize")
 ("footnotsize")
@@ -56,5 +62,6 @@
 ("centering")
 ))
 (setq YaTeX::usepackage-alist-private '(
+("here")
 ("bmpsize")
 ))

@@ -174,3 +174,7 @@
 ;; シンボリック経由でファイルを開く
 (setq vc-follow-symlinks t)
 ;;; init-system.el ends here
+
+;; Local Variables:
+;; byte-compile-warnings: (not free-vars unresolved callargs redefine obsolete noruntime cl-functions interactive-only make-local)
+;; End:

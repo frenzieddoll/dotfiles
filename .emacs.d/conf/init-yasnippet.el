@@ -37,7 +37,8 @@
 (require 'cl)
 (defvar ivy-programing-hooks ()
   '(emacs-lisp-mode
-    org-mode))
+    org-mode
+    yatex-mode))
 (loop for hook in ivy-programing-hooks
       do (add-hook hook 'yas-minor-mode))
 
