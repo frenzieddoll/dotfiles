@@ -20,8 +20,8 @@
 
 
 ;; table-mode
-(add-hook 'org-mode-hook '(lambda ()
-                            (define-key table-cell-map (kbd "C-j") 'skk-hiragana-set)))
+;; (add-hook 'org-mode-hook '(lambda ()
+;;                             (define-key table-cell-map (kbd "C-j") 'skk-hiragana-set)))
 
 ;;; init-org.el ends here
 ;; Local Variables:

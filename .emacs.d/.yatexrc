@@ -65,3 +65,6 @@
 ("here")
 ("bmpsize")
 ))
+(setq user-env-table '(
+("Large")
+))
