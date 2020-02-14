@@ -1411,7 +1411,11 @@
 	      (:maintainer "Michael Heerdegen" . "michael_heerdegen@web.de")
 	      (:url . "https://github.com/michael-heerdegen/on-screen.el"))])
  (org .
+<<<<<<< HEAD
       [(9 3 6)
+=======
+      [(9 3 3)
+>>>>>>> 59205dca701944f1247ebfa5cf91fd6b1132616a
        nil "Outline-based notes management and organizer" tar
        ((:url . "https://orgmode.org")
 	(:maintainer "Bastien Guerry" . "bzg@gnu.org")
