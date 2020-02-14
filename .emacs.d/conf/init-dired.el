@@ -72,7 +72,7 @@
           ("jpeg" . "sxiv-rifle")
           ("gif"  . "sxiv-rifle")
           ("png"  . "sxiv-rifle")
-          ("gnumeric" . "gnumeric")
+          ;; ("gnumeric" . "gnumeric")
           )))
 
 (when (eq system-type 'darwin)
