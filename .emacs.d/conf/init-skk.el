@@ -185,3 +185,6 @@
 ;; (setq skk-search-katakana t)
 
 ;;; init-skk.el ends here
+;; Local Variables:
+;; byte-compile-warnings: (not free-vars unresolved callargs redefine obsolete noruntime cl-functions interactive-only make-local)
+;; End:

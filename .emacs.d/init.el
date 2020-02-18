@@ -119,7 +119,7 @@
   ;; (autoload 'picture-mode-init "init-picture")
   ;; linux環境でのみ読み込み
   (when (eq system-type 'gnu/linux)
-      (load "init-pdftools" t)
+      ;; (load "init-pdftools" t)
       (load "init-rust" t)
       (load "init-lspmode" t)
       ;; (load "init-haskell" t)

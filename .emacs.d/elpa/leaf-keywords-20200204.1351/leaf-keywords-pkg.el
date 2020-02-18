@@ -1,2 +1,0 @@
-;;; Generated package description from /home/toshiaki/.emacs.d/elpa/leaf-keywords-20200204.1351/leaf-keywords.el  -*- no-byte-compile: t -*-
-(define-package "leaf-keywords" "20200204.1351" "Additional leaf.el keywords for external packages" '((emacs "24.4") (leaf "3.5.0")) :commit "16e07754c9214eaa5228dfaa6a83313d45e317d8" :keywords '("lisp" "settings") :authors '(("Naoya Yamashita" . "conao3@gmail.com")) :maintainer '("Naoya Yamashita" . "conao3@gmail.com") :url "https://github.com/conao3/leaf-keywords.el")
