@@ -169,7 +169,7 @@
 
 
 ;; デフォルトのinput methodをskkにする
-(setq default-input-method "japanese-skk")
+;; (setq default-input-method "japanese-skk")
 
 ;; シンボリック経由でファイルを開く
 (setq vc-follow-symlinks t)

@@ -19,104 +19,102 @@
 ;; 引数のディレクトリとそのサブディレクトリをload-pathに追加
 (add-to-load-path "elisp" "conf" "public_repos")
 
-(setq load-path (cons "~/.emacs.d/elisp" load-path))
+;; (setq load-path (cons "~/.emacs.d/elisp" load-path))
 
-;; リポジトリの追加
-(require 'package)
-;;MELPA を追加
+;; ;; リポジトリの追加
+;; (require 'package)
+;; ;;MELPA を追加
 
-(setq package-archives
-      '(("gnu" . "http://elpa.gnu.org/packages/")
-        ("melpa" . "http://melpa.org/packages/")
-        ("org" . "http://orgmode.org/elpa/")))
-(package-initialize)
+;; (setq package-archives
+;;       '(("gnu" . "http://elpa.gnu.org/packages/")
+;;         ("melpa" . "http://melpa.org/packages/")
+;;         ("org" . "http://orgmode.org/elpa/")))
+;; (package-initialize)
+
+;; ----------leaf mode---------------------------------------------------------------
+(load "init_leaf" t)
+
+(leaf *programing
+  :config
+  (leaf ein)
+  (leaf rust-mode))
+
+;; ----------------------------------------------------------------------------------
+
+;; (load "init-cua" t)
+;; (load "init-eshell" t)
+;; (load "init-skk" t)
+;; (load "init-dired" t)
+;; (load "init-keybinding" t)
+;; GUI環境でのみ見た目の設定を読み込む
+;; (if window-system
+;;     (progn
+;;       (load "init-visual" t)
+;;       ))
+;; CUI環境
+;; (if (not window-system)
+;;     (progn
+;;       (load "init-eww" t)))
+;; (load "init-ivy" t)
 
 
 ;; init-system.el
-(load "init-system" t)
+;; (load "init-system" t)
 
-;; init-keybinding.el
-(load "init-keybinding" t)
-(load "init-viewMode" t)
+;; (load "init-yatex" t)
+;; (add-hook 'yatex-mode-hook '(lambda () (load "init-ebib" t)))
 
-;; init-cua.el
-(load "init-cua" t)
+;; (load "init-yasnippet" t)
+;; (load "init-window" t)
+;; (when (eq system-type 'darwin)
+;;   (load "init-mySaveFrame" t))
+;; (load "init-regexp" t)
 
-;; ddskk の設定
-;; init-ddskk.el
-(load "init-skk" t)
-(defvar skk-byte-compile-init-file t)
+;; (load "init-viewMode" t)
+;; (load "init-term" t)
+;; (load "init-eww" t)
+;; (load "init-org" t)
 
-;; multi-termの設定
-(load "init-term" t)
-
-;; init-eshell.el
-(load "init-eshell" t)
-
-;; 補完パッケージ
-(load "init-ivy" t)
 
 ;; init-shackle
-(load "init-shackle" t)
+;; (load "init-shackle" t)
 
 ;; init-window.el
-(load "init-window" t)
 
-;; init-dired.el
-(load "init-dired" t)
+
 
 ;; init-regexp.el
-(load "init-regexp" t)
+
 
 ;; init-googletranslate.el
-(load "init-googletranslate" t)
+;; (load "init-googletranslate" t)
 
 ;; init-company.el
-(load "init-company" t)
+;; (load "init-company" t)
+
 
 (add-hook 'newsticker-treeview-mode-hook
           '(lambda ()
              (load "init-rss" t)))
 
-(load "init-auto-ansyc-byte-compile" t)
+;; (load "init-auto-ansyc-byte-compile" t)
 
-(load "init-org" t)
-
-(defun load-tex ()
-  "Load tex setting."
-  (interactive)
-  ;; (cond
-  ;;  ((eq system-type 'gnu/linux)
-  ;;   (load "init-tex" t))
-  ;;  ((eq system-type 'darwin)
-  ;;   (load "init-tex_for_mac")))
-  ;; (load "init-tex" t)
-  (load "init-ebib" t)
-  (load "init-yatex" t))
-
-(load "init-yatex" t)
-(add-hook 'yatex-mode-hook '(lambda ()
-                             (load "init-ebib" t)))
-;; (setq auto-mode-alist
-;;       (append '(("\\.tex$" . load-tex)
-;;                 ("\\.ltx$" . load-tex)
-;;                 ("\\.cls$" . load-tex)
-;;                 ("\\.sty$" . load-tex)
-;;                 ("\\.clo$" . load-tex)
-;;                 ("\\.bbl$" . load-tex)
-;;                 ;; ("\\.tex$" . yatex-mode)
-;;                 ;; ("\\.ltx$" . yatex-mode)
-;;                 ;; ("\\.cls$" . yatex-mode)
-;;                 ;; ("\\.sty$" . yatex-mode)
-;;                 ;; ("\\.clo$" . yatex-mode)
-;;                 ;; ("\\.bbl$" . yatex-mode)) auto-mode-alist))
-(load "init-yasnippet")
+;; (defun load-tex ()
+;;   "Load tex setting."
+;;   (interactive)
+;;   ;; (cond
+;;   ;;  ((eq system-type 'gnu/linux)
+;;   ;;   (load "init-tex" t))
+;;   ;;  ((eq system-type 'darwin)
+;;   ;;   (load "init-tex_for_mac")))
+;;   ;; (load "init-tex" t)
+;;   (load "init-ebib" t)
+;;   (load "init-yatex" t))
 
 (defun load-add-setting ()
   "Add setting."
   (interactive)
   (load "init-flycheck" t)
-  (load "init-eww" t)
   ;; (add-hook 'picture-mode-hook 'picture-mode-init)
   ;; (autoload 'picture-mode-init "init-picture")
   ;; linux環境でのみ読み込み
@@ -135,16 +133,6 @@
   (interactive)
   (load "init-mew" t))
 
-;; init-visual.el
-;; GUI環境でのみ見た目の設定を読み込む
-(if window-system
-    (progn
-      (load "init-visual" t)
-      ))
-;; CUI環境
-(if (not window-system)
-    (progn
-      (load "init-eww" t)))
 ;; linux用の設定
 
 (when (eq system-type 'gnu/linux)
@@ -153,9 +141,6 @@
                       )))
 
 ;; mac用の設定
-(when (eq system-type 'darwin)
-  (load "init-mySaveFrame" t))
-
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (when (file-exists-p custom-file)
   (load custom-file))
