@@ -76,6 +76,24 @@
     (require 'eww)
   (file-error nil))
 
+;; ファイルサーチをビルドイン関数で行なう
+
+(load "google-contacts-mew.el" t)
+(load "google-contacts.el" t)
+(require 'google-contacts-mew)
+(setq google-contacts-email "frenzieddoll@gmail.com")
+
+(load "mew-search-with-buildin.el" t)
+(load "multipart-decode.el" t)
+;; (require 'mew-builtin-search)
+(setq mew-search-method 'buildin)
+
+;; 未読メールにUマークを付ける
+(setq mew-use-unread-mark t)
+
+;; (add-hook mew-init-hook '(lambda ()
+;;                            (load "init-visual" t)))
+
 ;; (require 'mew-w3m)
 ;; (setq mew-prog-text/html 'w3m-region)
 ;; (setq mew-prog-text/xml 'w3m-region)
@@ -87,3 +105,6 @@
 ;; veguharrgiapddif
 
 ;;; init-mew.el ends here
+;; Local Variables:
+;; byte-compile-warnings: (not free-vars unresolved callargs redefine obsolete noruntime cl-functions interactive-only make-local)
+;; End:

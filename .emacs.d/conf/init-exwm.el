@@ -219,10 +219,14 @@
         ([?\C-x ?\C-s] . [C-s])
         ([?\C-u ?\C-/] . [C-y])
         ;; ([?\C-u ?\C-/] . [C-y])
-        ([?\M-p] . [S-up])
-        ([?\M-n] . [S-down])
-        ([?\M-f] . [S-right])
-        ([?\M-b] . [S-left])
+        ;; ([?\M-p] . [M-up])
+        ;; ([?\M-n] . [M-down])
+        ;; ([?\M-f] . [M-right])
+        ;; ([?\M-b] . [M-left])
+        ([?\s-P] . [S-up])
+        ([?\s-N] . [S-down])
+        ([?\s-F] . [S-right])
+        ([?\s-B] . [S-left])
         ))
 
 

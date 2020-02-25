@@ -19,6 +19,8 @@
 ;; 引数のディレクトリとそのサブディレクトリをload-pathに追加
 (add-to-load-path "elisp" "conf" "public_repos")
 
+(setq load-path (cons "~/.emacs.d/elisp" load-path))
+
 ;; リポジトリの追加
 (require 'package)
 ;;MELPA を追加
@@ -124,10 +126,14 @@
       (load "init-lspmode" t)
       ;; (load "init-haskell" t)
       ;; (load "init-mail" t)
-      ;; (load "init-mew" t)
+
       (load "init-quickrun" t)
       (require 'ein)
       ))
+
+(defun start_mail ()
+  (interactive)
+  (load "init-mew" t))
 
 ;; init-visual.el
 ;; GUI環境でのみ見た目の設定を読み込む
@@ -139,8 +145,8 @@
 (if (not window-system)
     (progn
       (load "init-eww" t)))
-
 ;; linux用の設定
+
 (when (eq system-type 'gnu/linux)
   (if window-system (progn
                       (load "init-exwm" t)

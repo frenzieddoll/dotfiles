@@ -151,7 +151,7 @@ atomic name."
     eperiodic-colour-element-by-lattice-constant
     eperiodic-colour-element-by-lattice-c/a-ratio)
   "List of functions that use `eperiodic-colour-element-generic'.")
-    
+
 (defvar eperiodic-colour-element-functions
   (nconc
    '(eperiodic-colour-element-by-group
@@ -4931,7 +4931,7 @@ value (MINIMUM-VALUE)"
   (eperiodic-set-current-property-values)
   (setq eperiodic-current-temperature (default-value 'eperiodic-current-temperature)
         eperiodic-current-year (default-value 'eperiodic-current-year))
-  (eperiodic-display-preserve-point))    
+  (eperiodic-display-preserve-point))
 
 (defun eperiodic-next-colour-scheme ()
   "Cycle forward through elements of `eperiodic-colour-element-functions'."

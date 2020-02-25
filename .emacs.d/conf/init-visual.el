@@ -219,6 +219,15 @@
 ;; may have their own settings.
 (load-theme 'doom-one t)
 
+;; save時にmode line を光らせる
+(add-hook 'after-save-hook
+      (lambda ()
+        (let ((orig-fg (face-background 'mode-line)))
+          (set-face-background 'mode-line "dark green")
+          (run-with-idle-timer 0.1 nil
+                   (lambda (fg) (set-face-background 'mode-line fg))
+                   orig-fg))))
+
 ;; Enable flashing mode-line on errors
 ;; (doom-themes-visual-bell-config)
 
@@ -267,3 +276,6 @@
 ;; バッファの終わりをフリンジで確認
 ;; (setq-default indicate-buffer-boundaries
 ;;               '((top . nil) (bottom . right) (down . right)))
+;; Local Variables:
+;; byte-compile-warnings: (not free-vars unresolved callargs redefine obsolete noruntime cl-functions interactive-only make-local)
+;; End:

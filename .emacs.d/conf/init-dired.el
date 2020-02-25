@@ -21,7 +21,7 @@
 ;; diredバッファでC-sしたときにファイル名だけにマッチするように
 (setq dired-isearch-filenames t)
 ;; .zipで終るファイルをZキーで展開できるように
-(add-to-list 'dired-compress-file-suffixes '("\\.zip\\" ".zip" "unar"))
+;; (add-to-list 'dired-compress-file-suffixes '("\\.zip\\" ".zip" "unar"))
 ;; diredでlsオプションをつかう
 (setq dired-listing-switches (purecopy "-alht"))
 ;; diredのコピーをバックグラウンドで行なう
@@ -58,6 +58,7 @@
           ("rm"   . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
           ("rmvb" . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
           ("mpeg" . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+          ("VOB" . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
           ("iso" . "mpv dvd:// -dvd-device")
           ("playlist" . "mpv --playlist")
           ("exe"  . "wine")

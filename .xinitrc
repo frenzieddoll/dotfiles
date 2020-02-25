@@ -52,7 +52,7 @@ fi
 
 xhost +SI:localuser:$USER
 export _JAVA_AWT_WM_NONREPARENTING=1
-xsetroot -cursor_name left_ptr
+# xsetroot -cursor_name left_ptr
 
 export DefaultIMModule=fcitx
 export GTK_IM_MODULE=fcitx
