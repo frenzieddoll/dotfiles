@@ -56,7 +56,7 @@
            (ring-bell-function . 'ignore)
            ;; タブにスペースを使用する
            (tab-width . 4)
-           (indent-tabs-mode . nil)
+           (indent-tabs-mode . t)
            ;; カーソルの点滅をやめる
            (blink-cursor-mode . nil)
            ;; バッファの最後でnewlineで新規行を追加するのを禁止する
@@ -91,34 +91,43 @@
   :config
   (leaf delete-space
     :hook (before-save-hook . delete-trailing-whitespace))
+
   (leaf rainbow-delimiters
     :ensure t
     :hook (emacs-lisp-mode-hook . rainbow-delimiters-mode))
+
+  (leaf uniquify
+    :require t
+    :custom ((uniquify-buffer-name-style . 'post-forward-angle-brackets)
+             (uniquify-ignore-buffer-re . "[^*]+")))
+
   (leaf exec-path-from-shell
-    :config (exec-path-from-shell-initialize))
+    :ensure t
+    :custom ((exec-path-from-shell-initialize . t)))
+
   (leaf *fontSetting
     :config
-    (leaf *systemName
-      :when (eq system-type 'gnu/linux)
-      :config
-      (leaf *PCName
-        :when (string-match (system-name) "archlinuxhonda")
-        :config
-        (set-face-attribute 'default nil
-                            :family "Hackgen"
-                            :height 150))
-      (leaf *PCName
-        :unless (string-match (system-name) "archlinuxhonda")
-        :config
-        (set-face-attribute 'default nil
-                            :family "Hackgen"
-                            :height 100)))
-    (leaf *systemName
-      :when (eq system-type 'darwin)
+    (leaf *forArchlinux
+	  :when (eq system-type 'gnu/linux)
+      :when (string-match (system-name) "archlinuxhonda")
       :config
       (set-face-attribute 'default nil
                           :family "Hackgen"
-                          :height 150)))
+                          :height 150))
+    (leaf *forLinux
+	  :when (eq system-type 'gnu/linux)
+      :unless (string-match (system-name) "archlinuxhonda")
+      :config
+      (set-face-attribute 'default nil
+                          :family "Hackgen"
+                          :height 100))
+    (leaf *forMac
+	  :when (eq system-type 'darwin)
+	  :config
+	  (set-face-attribute 'default nil
+						  :family "Hackgen"
+						  :height 150)))
+
   (leaf *mics
     :config
     (display-time)
@@ -133,15 +142,6 @@
     (menu-bar-mode -1)
     (tool-bar-mode -1)
     (scroll-bar-mode -1))
-
-  (leaf uniquify
-    :require t
-    :custom ((uniquify-buffer-name-style . 'post-forward-angle-brackets)
-             (uniquify-ignore-buffer-re . "[^*]+")))
-
-  (leaf exec-path-from-shell
-    :ensure t
-    :custom ((exec-path-from-shell-initialize . t)))
   )
 
 (leaf *skk-tools
@@ -200,7 +200,6 @@
               )
   )
 
-
 (leaf *cua
   :bind (("C-x SPC" . cua-set-rectangle-mark))
   :custom ((cua-mode . t)
@@ -245,7 +244,6 @@
     :config (eval-after-load "esh-module"
               '(defvar eshell-modules-list (delq 'eshell-ls (delq 'eshell-unix eshell-modules-list)))))
   )
-
 
 (leaf *dired-tools
   :config
@@ -371,7 +369,6 @@
 
   )
 
-
 (leaf *keybinding
   :bind ((;; C-m : 改行プラスインデント
           ("C-m" . newline-and-indent)
@@ -452,7 +449,6 @@
       (local-set-key (kbd "C-h") 'delete-backward-char)))
   )
 
-
 (leaf *visual
   :when window-system
   :config
@@ -493,8 +489,44 @@
 (leaf *completions
   :config
   (leaf company
+	:ensure t
+	:custom ((company-transformers . company-sort-by-backend-importance) ;; ソート順
+             ;; デフォルトは0.5,nil:手動補完
+             (company-idle-delay . 0.01)
+             ;; デフォルトは4
+             (company-minimum-prefix-length . 3)
+             (company-selection-wrap-around . t) ; 候補の一番下でさらに下に行こうとすると一番上に戻る
+             (completion-ignore-case . t)
+             (company-dabbrev-downcase . nil)
+			 )
+	:bind (("C-M-i" . company-complete)
+		   (company-active-map
+			("C-n" . company-select-next)
+			("C-p" . company-select-previous)
+			("C-s" . company-filter-candidates) ;; C-sで絞り込む
+			("C-i" . company-complete-selection) ;; TABで候補を設定
+		   	("C-f" . company-complete-selection) ;; C-fで候補を設定
+			;; ("<tab>" . company-complete-selection) ;; TABで候補を設定
+			("C-h" . nil)) ;; バックスペースを取り
+		   (company-search-map
+			("C-n" . company-select-next)
+			("C-p" . company-select-previous))
+		   (emacs-lisp-mode-map
+			("C-i" . company-complete))) ;; 各種メジャーモードでも C-M-iで company-modeの補完を使う
+	:preface
+	(defun company-mode/backend-with-yas (backend)
+	  (if (or (not company-mode/enable-yas) (and (listp backend) (member 'company-yasnippet backend)))
+		  backend
+		(append (if (consp backend) backend (list backend))
+				'(:with company-yasnippet))))
+
     :config
-    (load "init-company" t))
+	(global-company-mode)
+	(leaf *company-yas
+	  :custom ((company-mode/enable-yas . t)
+			   (company-backends . (mapcar #'company-mode/backend-with-yas company-backends))))
+	;; (load "init-company" t)
+	)
 
   (leaf ivy
     ;; :ensure t
@@ -587,7 +619,6 @@
     (leaf yas-minor-mode
       :hook emacs-lisp-mode org-mode yatex-mode)))
 
-
 (leaf *tex
   :config
   (leaf yatex
@@ -627,30 +658,27 @@
               (">" . YaTeX-comment-region)
               ("<" . YaTeX-uncomment-region))))
 
-    )
+	(leaf ebib
+      :ensure t
+      :bind (("C-c C-z" . ebib))
+      :custom ((ebib-preload-bib-files . "~/tex/references.bib")
+               (bibtex-autokey-name-case-convert  . capitalize)
+               (bibtex-autokey-titleword-case-convert  . capitalize)
+               (bibtex-autokey-titleword-separator  . "")
+               (bibtex-autokey-titleword-length  . nil)
+               (bibtex-autokey-titlewords  . 1)
+               (bibtex-autokey-year-length  . 4)
+               (bibtex-autokey-year-title-separator  . "_")
+               (bibtex-autokey-titleword-ignore . '("A" "An" "On" "The" "a" "an" "on" "the" "Le" "La" "Les" "le" "la" "les" "Zur" "zur" "Des" "Dir" "Die"))
+               (ebib-keywords-use-only-file . t)
+               (ebib-keywords-file . "~/tex/ebib-keywords.txt")
+               (ebib-keywords-file-save-on-exit . always)
+
+               (ebib-file-search-dirs . '("~/tex/papers" "~/tex/books"))
 
 
-  (leaf ebib
-    :ensure t
-    :bind (("C-c C-z" . ebib))
-    :custom ((ebib-preload-bib-files . "~/tex/references.bib")
-             (bibtex-autokey-name-case-convert  . capitalize)
-             (bibtex-autokey-titleword-case-convert  . capitalize)
-             (bibtex-autokey-titleword-separator  . "")
-             (bibtex-autokey-titleword-length  . nil)
-             (bibtex-autokey-titlewords  . 1)
-             (bibtex-autokey-year-length  . 4)
-             (bibtex-autokey-year-title-separator  . "_")
-             (bibtex-autokey-titleword-ignore . '("A" "An" "On" "The" "a" "an" "on" "the" "Le" "La" "Les" "le" "la" "les" "Zur" "zur" "Des" "Dir" "Die"))
-             (ebib-keywords-use-only-file . t)
-             (ebib-keywords-file . "~/tex/ebib-keywords.txt")
-             (ebib-keywords-file-save-on-exit . always)
-
-             (ebib-file-search-dirs . '("~/tex/papers" "~/tex/books"))
-
-
-             (ebib-file-associations . '(("pdf" . "open") ("ps"  . "open"))))
-    )
+               (ebib-file-associations . '(("pdf" . "open") ("ps"  . "open")))))
+	)
   )
 
 (leaf google-translate
@@ -802,13 +830,13 @@
 
 (leaf visual-regexp-steroids
   :ensure t
-  :custom ((vr/engine . python))
   :bind (("M-%" . vr/query-replace)
          ;; multiple-cursorsを使っているならこれで
          ("C-c m" . vr/mc-mark)
          ;; 普段の正規表現isearchにも使いたいならこれを
          ("C-M-r" . vr/isearch-backward)
-         ("C-M-s" . vr/isearch-forward)))
+         ("C-M-s" . vr/isearch-forward))
+  :config (setq vr/engine 'python))
 
 (leaf *view_mode
   :config
@@ -884,7 +912,6 @@
                    (if (get-buffer "*terminal<1>*")
                        (switch-to-buffer "*terminal<1>*")
                      (multi-term)))))
-
 
 (leaf eww
   :hook (eww-mode-hook . eww-mode-hook--disable-image)
@@ -962,3 +989,11 @@
   (leaf org-mode
     :custom ((org-todo-keywords . '((sequence "TODO(t)" "WAIT(w)" "|" "DONE(d)" "SOMEDAY(s)"))))
     ))
+
+(leaf *miner-mode
+  :config
+  (leaf hs-minor-mode
+	:hook emacs-lisp-mode
+	:custom ((hs-minor-mode . t))
+	:bind ((hs-minor-mode-map
+			("C-'" . hs-toggle-hiding)))))
