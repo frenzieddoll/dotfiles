@@ -534,7 +534,7 @@
   (leaf company
     :ensure t
     :leaf-defer nil
-    ;; :diminish company-mode
+    :diminish company-mode
     :bind ((company-active-map
             ("M-n" . nil)
             ("M-p" . nil)
