@@ -26,58 +26,74 @@
     (leaf el-get :ensure t
       :custom ((el-get-git-shallow-clone  . t)))))
 
-(leaf init_system
-  :defvar show-paren-deley
-  :custom (
-           ;; システムの時計をCにする
-           (system-time-locale . "C")
-           ;; 改行コードを表示する
-           (eol-mnemonic-dos . "(CRLF)")
-           (eol-mnemonic-mac . "(CR)")
-           (eol-mnemonic-unix . "(LF)")
-           ;; 右から左に読む言語に対応させないことで描画高速化
-           (bidi-display-reordering . nil)
-           ;; splash screen を無効化
-           (inhibit-splash-screen . t)
-           ;; 同じ内容を履歴に記録しない
-           (history-delete-duplicates . t)
-           ;; バックアップファイ及び、自動セーブの無効
-           (make-backup-files . nil)
-           (delete-auto-save-files . t)
-           (auto-save-default . nil)
-           ;;列番号を表示
-           (column-number-mode . t)
-           ;; スタートアップメッセージを表示させない
-           (inhibit-startup-message . t)
-           ;; 起動時に*scratch*バッファを表示する
-           (initial-buffer-choice . t)
-           (initial-scratch-message . "")
-           ;; beep音を消す
-           (ring-bell-function . 'ignore)
-           ;; タブにスペースを使用する
-           (tab-width . 4)
-           (indent-tabs-mode . t)
-           ;; カーソルの点滅をやめる
-           (blink-cursor-mode . nil)
-           ;; バッファの最後でnewlineで新規行を追加するのを禁止する
-           (next-line-add-newlines . nil)
-           ;; auto-fill-modeを切る
-           (auto-fill-mode . nil)
-           ;; 補完で大文字小文字無視
-           (read-file-name-completion-ignore-case . t)
-           ;; ミニバッファの履歴を保存する
-           (savehist-mode . 1)
-           (history-length . 30000)
-           ;; 同じ内容を履歴に記録しない
-           (history-delete-duplicates . t)
-           ;; 対応する括弧を光らせる
-           (show-paren-mode . 1)
-           (show-paren-delay . 0.125)
-           ;; 折り返し禁止
-           (truncate-lines . t)
-           ;; シンボリック経由でファイルを開く
-           (vc-follow-symlinks . t)
-           )
+(leaf *init_system
+  (leaf cus-start
+    :doc "define customization properties of builtins"
+    :url "http://handlename.hatenablog.jp/entry/2011/12/11/214923" ; align sumple
+    :defvar show-paren-deley
+    :custom `((garbage-collection-messages . t)
+              (tab-width . 4)
+              (create-lockfiles                . nil)
+              (use-dialog-box                  . nil)
+              (use-file-dialog                 . nil)
+              (frame-resize-pixelwise          . t)
+              (enable-recursive-minibuffers    . t)
+              (history-length                  . 1000)
+              (history-delete-duplicates       . t)
+              (scroll-preserve-screen-position . t)
+              (scroll-conservatively           . 100)
+              (mouse-wheel-scroll-amount       . '(1 ((control) . 5)))
+              (ring-bell-function              . 'ignore)
+              (text-quoting-style              . 'straight)
+
+              (truncate-lines . t)
+              (menu-bar-mode . nil)
+              (tool-bar-mode . nil)
+              (scroll-bar-mode . nil)
+              (indent-tabs-mode . t)
+
+              ;; システムの時計をCにする
+              (system-time-locale . "C")
+              ;; 改行コードを表示する
+              (eol-mnemonic-dos . "(CRLF)")
+              (eol-mnemonic-mac . "(CR)")
+              (eol-mnemonic-unix . "(LF)")
+              ;; 右から左に読む言語に対応させないことで描画高速化
+              (bidi-display-reordering . nil)
+              ;; splash screen を無効化
+              (inhibit-splash-screen . t)
+              ;; 同じ内容を履歴に記録しない
+              (history-delete-duplicates . t)
+              ;; バックアップファイ及び、自動セーブの無効
+              (make-backup-files . nil)
+              (delete-auto-save-files . t)
+              (auto-save-default . nil)
+              ;;列番号を表示
+              (column-number-mode . t)
+              ;; スタートアップメッセージを表示させない
+              (inhibit-startup-message . t)
+              ;; 起動時に*scratch*バッファを表示する
+              (initial-buffer-choice . t)
+              (initial-scratch-message . "")
+              ;; カーソルの点滅をやめる
+              (blink-cursor-mode . nil)
+              ;; バッファの最後でnewlineで新規行を追加するのを禁止する
+              (next-line-add-newlines . nil)
+              ;; auto-fill-modeを切る
+              (auto-fill-mode . nil)
+              ;; 補完で大文字小文字無視
+              (read-file-name-completion-ignore-case . t)
+              ;; ミニバッファの履歴を保存する
+              (savehist-mode . 1)
+              (history-length . 30000)
+              ;; 同じ内容を履歴に記録しない
+              (history-delete-duplicates . t)
+              ;; 対応する括弧を光らせる
+              (show-paren-mode . 1)
+              (show-paren-delay . 0.125)
+              ;; シンボリック経由でファイルを開く
+              (vc-follow-symlinks . t)
+              ))
 
   :preface
   (defun reopen-with-sudo ()
@@ -128,6 +144,10 @@
 						  :family "Hackgen"
 						  :height 150)))
 
+  (leaf *gc-cons-threshold-arch
+    :when (string-match (system-name) "archlinuxhonda")
+    :custom `((gc-cons-threshold . ,(* 10 gc-cons-threshold))))
+
   (leaf *mics
     :config
     (display-time)
@@ -139,9 +159,7 @@
     (set-face-background 'region "#555")
     (fset 'yes-or-no-p 'y-or-n-p)
     ;; メニューバー、ツールバー、スクロールバーの非表示
-    (menu-bar-mode -1)
-    (tool-bar-mode -1)
-    (scroll-bar-mode -1))
+    )
   )
 
 (leaf *skk-tools
@@ -245,76 +263,80 @@
               '(defvar eshell-modules-list (delq 'eshell-ls (delq 'eshell-unix eshell-modules-list)))))
   )
 
-(leaf *dired-tools
+(leaf dired
+  :after dired
+  :custom `((dired-recursive-copies    . 'always)
+           (dired-recursive-deletes   . 'always)
+           (dired-copy-preserve-time  . t)
+           (dired-auto-revert-buffer  . t)
+           (dired-dwim-target         . t)
+           (delete-by-moving-to-trash . t)
+           (dired-launch-mailcap-frend . '("env" "xdg-open"))
+           (dired-launch-enable . t)
+           (dired-isearch-filenames . t)
+           (dired-listing-switches . ,(purecopy "-alht"))
+           ;; (dired-listing-switches    . "-Alhv --group-directories-first")
+           )
+
+  :preface
+  (defun kill-current-buffer-and/or-dired-open-file ()
+    "In Dired, dired-open-file for a file. For a directory, dired-find-file and kill previously selected buffer."
+    (interactive)
+    (if (file-directory-p (dired-get-file-for-visit))
+        (dired-find-alternate-file)
+      (dired-view-file)))
+  (defun kill-current-buffer-and-dired-up-directory (&optional other-window)
+    "In Dired, dired-up-directory and kill previously selected buffer."
+    (interactive "P")
+    (let ((b (current-buffer)))
+      (dired-up-directory other-window)
+      (kill-buffer b)))
+  (defun dired-open-file-other-window ()
+    "In Dired, open file on other-window and select previously selected buffer."
+    (interactive)
+    (let ((cur-buf (current-buffer)) (tgt-buf (dired-open-file)))
+      (switch-to-buffer cur-buf)
+      (when tgt-buf
+        (with-selected-window (next-window)
+          (switch-to-buffer tgt-buf)))))
+  (defun dired-up-directory-other-window ()
+    "In Dired, dired-up-directory on other-window"
+    (interactive)
+    (dired-up-directory t))
+
+  :bind ((dired-mode-map
+          :package dired
+          ("j" . dired-next-line)
+          ("k" . dired-previous-line)
+          ("h" . kill-current-buffer-and-dired-up-directory)
+          ("l" . kill-current-buffer-and/or-dired-open-file)
+          ("f" . kill-current-buffer-and/or-dired-open-file)
+          ("b" . kill-current-buffer-and-dired-up-directory)
+          ("q" . kill-current-buffer-and-dired-up-directory)))
+
   :config
-
-  (leaf *dired
-    :custom ((dired-dwim-target . t)
-             (dired-launch-mailcap-frend . '("env" "xdg-open"))
-             (dired-launch-enable . t)
-             (dired-isearch-filenames . t))
-
-    :bind ((dired-mode-map
-            :package dired
-            ("j" . dired-next-line)
-            ("k" . dired-previous-line)
-            ("h" . kill-current-buffer-and-dired-up-directory)
-            ("l" . kill-current-buffer-and/or-dired-open-file)
-            ("f" . kill-current-buffer-and/or-dired-open-file)
-            ("b" . kill-current-buffer-and-dired-up-directory)
-            ("q" . kill-current-buffer-and-dired-up-directory)))
-
-    :preface
-    (defun kill-current-buffer-and/or-dired-open-file ()
-      "In Dired, dired-open-file for a file. For a directory, dired-find-file and kill previously selected buffer."
-      (interactive)
-      (if (file-directory-p (dired-get-file-for-visit))
-          (dired-find-alternate-file)
-        (dired-view-file)))
-    (defun kill-current-buffer-and-dired-up-directory (&optional other-window)
-      "In Dired, dired-up-directory and kill previously selected buffer."
-      (interactive "P")
-      (let ((b (current-buffer)))
-        (dired-up-directory other-window)
-        (kill-buffer b)))
-    (defun dired-open-file-other-window ()
-      "In Dired, open file on other-window and select previously selected buffer."
-      (interactive)
-      (let ((cur-buf (current-buffer)) (tgt-buf (dired-open-file)))
-        (switch-to-buffer cur-buf)
-        (when tgt-buf
-          (with-selected-window (next-window)
-            (switch-to-buffer tgt-buf)))))
-    (defun dired-up-directory-other-window ()
-      "In Dired, dired-up-directory on other-window"
-      (interactive)
-      (dired-up-directory t))
-
-    :config
-    (setq dired-listing-switches (purecopy "-alht"))
-    (setq dired-recursive-copies 'always))
-
+  ;; (setq dired-listing-switches (purecopy "-alht"))
+  ;; (setq dired-recursive-copies 'always))
   (leaf dired-filter
     :ensure t
+    :hook ((dired-mode-map . dired-filter-mode))
     :bind ((dired-mode-map
             ("/" . dired-filter-map))))
-
   (leaf wdired
-    :ensure t
     :custom ((wdired-allow-to-change-permissions . t))
-    :bind (dired-mode-map ("e" . wdired-change-to-wdired-mode)))
-
+    :bind (dired-mode-map
+           :package dired
+           ("e" . wdired-change-to-wdired-mode)))
   (leaf peep-dired
      :ensure t
      :bind ((dired-mode-map
+             :package dired
              ("P" . peep-dired))))
-
   (leaf async
     :ensure t
     :custom ((dired-async-mode . 1)
              (async-bytecomp-package-mode . 1)
              (async-bytecomp-allowed-packages . '(all))))
-
   (leaf dired-open
     :ensure t
     :when (eq system-type 'gnu/linux)
@@ -359,14 +381,13 @@
                                       ("pxp" . "open")
                                       ("bmp" . "open")
                                       ))))
-
   (leaf dired-subtree
     :ensure t
     :bind ((dired-mode-map
+            :package dired
             ("<right>" . dired-subtree-insert)
             ("<left>" . dired-subtree-remove)
             ("C-x n n" . dired-subtree-narrow))))
-
   )
 
 (leaf *keybinding
@@ -452,80 +473,124 @@
 (leaf *visual
   :when window-system
   :config
-  (leaf smart-mode-line
-    :ensure t
-    :custom
-    (;; この変数を定義しておかないとエラーになるバグあり
-     (sml/active-background-color . "gray60")
-     ;; 読み込み専用バッファは%で表示
-     (sml/read-only-char . "%%")
-     ;; 修正済みバッファは*で表示
-     (sml/modified-char . "*")
-     ;; これがないと表示がはみでる
-     (sml/extra-filler . -10)
-     (sml/no-confirm-load-theme . t))
-    :config
-    ;; sml/replacer-regexp-listはモードラインでのファイル名表示方法を制御
-    ;; (add-to-list 'sml/replacer-regexp-list '("^.+/junk/[0-9]+/" ":J:") t)
-    (sml/setup)
-    (sml/apply-theme 'respectful))
-
   (leaf doom-themes
     :ensure t
-    :custom
-    ((doom-themes-enable-bold . t)
-     (doom-themes-enable-italic . t))
+    :custom ((doom-themes-enable-italic . t)
+             (doom-themes-enable-bold . t))
+    :custom-face ((doom-modeline-bar . '((t (:background "#6272a4")))))
     :config
-    (load-theme 'doom-one t))
+    (load-theme 'doom-dracula t)
+    ;; (doom-theme-org-config)
+    ;; (load-theme 'doom-one t)
+
+    (leaf smart-mode-line
+      :disable t
+      :ensure t
+      :custom
+      (;; この変数を定義しておかないとエラーになるバグあり
+       (sml/active-background-color . "gray60")
+       ;; 読み込み専用バッファは%で表示
+       (sml/read-only-char . "%%")
+       ;; 修正済みバッファは*で表示
+       (sml/modified-char . "*")
+       ;; これがないと表示がはみでる
+       (sml/extra-filler . -10)
+       (sml/no-confirm-load-theme . t))
+      :config
+      ;; sml/replacer-regexp-listはモードラインでのファイル名表示方法を制御
+      ;; (add-to-list 'sml/replacer-regexp-list '("^.+/junk/[0-9]+/" ":J:") t)
+      (sml/setup)
+      (sml/apply-theme 'respectful))
+
+    (leaf doom-modeline
+      :ensure t
+      :custom `((doom-modeline-buffer-file-name-style . 'truncate-with-project)
+                (doom-modeline-icon . t)
+                (doom-modeline-major-mode-icon . nil)
+                (doom-modeline-minor-modes . nil))
+      :config
+      (line-number-mode 0)
+      (column-number-mode 0))
+    ;;   (doom-modeline-def-modeline 'main
+    ;; '(bar workspace-number window-number evil-state god-state ryo-modal xah-fly-keys matches buffer-info remote-host buffer-position parrot selection-info)
+    ;; '(misc-info persp-name lsp github debug minor-modes input-method major-mode process vcs checker)))
+    )
 
   (leaf *afterSave
-    :hook (after-save-hook . (lambda ()
-                               (let ((orig-fg (face-background 'mode-line)))
-                                 (set-face-background 'mode-line "dark green")
-                                 (run-with-idle-timer 0.1 nil
-                                                      (lambda (fg) (set-face-background 'mode-line fg))
-                                                      orig-fg))))))
+    :hook (after-save-hook . flashAfterSave)
+    :preface
+    (defun flashAfterSave ()
+      (interactive)
+      (let ((orig-fg (face-background 'mode-line)))
+        (set-face-background 'mode-line "dark green")
+        (run-with-idle-timer 0.1 nil
+                             (lambda (fg) (set-face-background 'mode-line fg))
+                             orig-fg)))
+    )
+  )
 
 (leaf *completions
   :config
   (leaf company
-	:ensure t
-	:custom ((company-transformers . company-sort-by-backend-importance) ;; ソート順
-             ;; デフォルトは0.5,nil:手動補完
-             (company-idle-delay . 0.01)
-             ;; デフォルトは4
-             (company-minimum-prefix-length . 3)
-             (company-selection-wrap-around . t) ; 候補の一番下でさらに下に行こうとすると一番上に戻る
-             (completion-ignore-case . t)
-             (company-dabbrev-downcase . nil)
-			 )
-	:bind (("C-M-i" . company-complete)
-		   (company-active-map
-			("C-n" . company-select-next)
-			("C-p" . company-select-previous)
-			("C-s" . company-filter-candidates) ;; C-sで絞り込む
-			("C-i" . company-complete-selection) ;; TABで候補を設定
-		   	("C-f" . company-complete-selection) ;; C-fで候補を設定
-			;; ("<tab>" . company-complete-selection) ;; TABで候補を設定
-			("C-h" . nil)) ;; バックスペースを取り
-		   (company-search-map
-			("C-n" . company-select-next)
-			("C-p" . company-select-previous))
-		   (emacs-lisp-mode-map
-			("C-i" . company-complete))) ;; 各種メジャーモードでも C-M-iで company-modeの補完を使う
-	:preface
-	(defun company-mode/backend-with-yas (backend)
-	  (if (or (not company-mode/enable-yas) (and (listp backend) (member 'company-yasnippet backend)))
-		  backend
-		(append (if (consp backend) backend (list backend))
-				'(:with company-yasnippet))))
+    :ensure t
+    :leaf-defer nil
+    ;; :diminish company-mode
+    :bind ((company-active-map
+            ("M-n" . nil)
+            ("M-p" . nil)
+            ("C-s" . company-filter-candidates)
+            ("C-n" . company-select-next)
+            ("C-p" . company-select-previous)
+            ("<tab>" . company-complete-selection))
+           (company-search-map
+            ("C-n" . company-select-next)
+            ("C-p" . company-select-previous)))
+    :custom ((company-tooltip-limit         . 12)
+             (company-idle-delay            . 0)
+             (company-minimum-prefix-length . 1)
+             (company-transformers          . '(company-sort-by-occurrence))
+             (global-company-mode           . t))
+    )
+
+  (leaf company
+    :disable t
+	;; :ensure t
+	;; :custom ((company-transformers . company-sort-by-backend-importance) ;; ソート順
+    ;;          ;; デフォルトは0.5,nil:手動補完
+    ;;          (company-idle-delay . 0.01)
+    ;;          ;; デフォルトは4
+    ;;          (company-minimum-prefix-length . 3)
+    ;;          (company-selection-wrap-around . t) ; 候補の一番下でさらに下に行こうとすると一番上に戻る
+    ;;          (completion-ignore-case . t)
+    ;;          (company-dabbrev-downcase . nil)
+	;; 		 )
+	;; :bind (("C-M-i" . company-complete)
+	;; 	   (company-active-map
+	;; 		("C-n" . company-select-next)
+	;; 		("C-p" . company-select-previous)
+	;; 		("C-s" . company-filter-candidates) ;; C-sで絞り込む
+	;; 		("C-i" . company-complete-selection) ;; TABで候補を設定
+	;; 	   	("C-f" . company-complete-selection) ;; C-fで候補を設定
+	;; 		;; ("<tab>" . company-complete-selection) ;; TABで候補を設定
+	;; 		("C-h" . nil)) ;; バックスペースを取り
+	;; 	   (company-search-map
+	;; 		("C-n" . company-select-next)
+	;; 		("C-p" . company-select-previous))
+	;; 	   (emacs-lisp-mode-map
+	;; 		("C-i" . company-complete))) ;; 各種メジャーモードでも C-M-iで company-modeの補完を使う
+	;; :preface
+	;; (defun company-mode/backend-with-yas (backend)
+	;;   (if (or (not company-mode/enable-yas) (and (listp backend) (member 'company-yasnippet backend)))
+	;; 	  backend
+	;; 	(append (if (consp backend) backend (list backend))
+	;; 			'(:with company-yasnippet))))
 
     :config
-	(global-company-mode)
-	(leaf *company-yas
-	  :custom ((company-mode/enable-yas . t)
-			   (company-backends . (mapcar #'company-mode/backend-with-yas company-backends))))
-	;; (load "init-company" t)
+	;; (global-company-mode)
+	;; (leaf *company-yas
+	;;   :custom ((company-mode/enable-yas . t)
+	;; 		   (company-backends . (mapcar #'company-mode/backend-with-yas company-backends))))
+	(load "init-company" t)
 	)
 
   (leaf ivy
@@ -540,7 +605,9 @@
      (ivy-height . 15)
      (ivy-extra-directories . nil)
      (ivy-re-builders-alist . '((t . ivy--regex-plus)))
-     (ivy-mode . t))
+     (ivy-mode . t)
+     (ivy-format-function . "ivy-format-function-arrow")
+     )
 
     :bind
     (("C-x b" . ivy-switch-buffer)
@@ -570,7 +637,9 @@
                (recentf-max-saved-items . 2000)
                (recentf-auto-cleanup .'never)
                (recentf-exclude .'("/recentf" "COMMIT_EDITMSG" "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores" "/\\.emacs\\.d/\\.cask/"))
-               (recentf-mode . 1))
+               (recentf-mode . 1)
+               (counsel-yank-pop-separator . "\n-------\n")
+               )
 
       :bind
       (("M-x" . counsel-M-x)
@@ -645,7 +714,56 @@
              (dviprint-command-format . "open -a \"Adobe Acrobat Reader DC\" `echo %s | gsed -e \"s/\\.[^.]*$/\\.pdf/\"`")
              (YaTeX-nervous . nil)
              (YaTeX-close-paren-always . nil))
+
     :config
+    (setq YaTeX-latex-message-code 'utf-8)
+    (leaf *yatex_after_load
+      :after yatexprc
+      :config
+      (defun YaTeX-preview-jump-line ()
+        "Call jump-line function of various previewer on current main file"
+        (interactive)
+        (save-excursion
+          (save-restriction
+            (widen)
+            (let*((pf (or YaTeX-parent-file
+                          (save-excursion (YaTeX-visit-main t) (buffer-file-name))))
+                  (pdir (file-name-directory pf))
+                  (bnr (substring pf 0 (string-match "\\....$" pf)))
+                                        ;(cf (file-relative-name (buffer-file-name) pdir))
+                  (cf (buffer-file-name)) ;2016-01-08
+                  (buffer (get-buffer-create " *preview-jump-line*"))
+                  (line (count-lines (point-min) (point-end-of-line)))
+                  (previewer (YaTeX-preview-default-previewer))
+                  (cmd (cond
+                        ((string-match "Skim" previewer)
+                         (format "%s %d '%s.pdf' '%s'"
+                                 YaTeX-cmd-displayline line bnr cf))
+                        ((string-match "evince" previewer)
+                         (format "%s '%s.pdf' %d '%s'"
+                                 "fwdevince" bnr line cf))
+                        ((string-match "sumatra" previewer)
+                         (format "%s \"%s.pdf\" -forward-search \"%s\" %d"
+                                 previewer bnr cf line))
+                        ((string-match "zathura" previewer)
+                         (format "%s --synctex-forward '%d:0:%s' '%s.pdf'"
+                                 previewer line cf bnr))
+                        ((string-match "qpdfview" previewer)
+                         (format "%s '%s.pdf#src:%s:%d:0'"
+                                 previewer bnr cf line))
+                        ((string-match "okular" previewer)
+                         (format "%s '%s.pdf#src:%d %s'"
+                                 previewer bnr line (expand-file-name cf)))
+                        )))
+              (YaTeX-system cmd "jump-line" 'noask pdir)))))
+      )
+    (leaf *forMac
+      :when (eq system-type 'darwin)
+      :custom ((exec-path . (append '("/usr/local/bin" "/Library/TeX/texbin" "/Applications/Skim.app/Contents/SharedSupport") exec-path))
+               (dvi2-command . "open -a Skim")
+               (tex-pdfview-command . "open -a Skim"))
+      :config
+      (setenv "PATH" "/usr/local/bin:/Library/TeX/texbin/:/Applications/Skim.app/Contents/SharedSupport:$PATH" t))
     (leaf reftex
       :ensure t
       :hook yatex-mode-hook
@@ -990,10 +1108,12 @@
     :custom ((org-todo-keywords . '((sequence "TODO(t)" "WAIT(w)" "|" "DONE(d)" "SOMEDAY(s)"))))
     ))
 
-(leaf *miner-mode
+(leaf *minor-mode
   :config
   (leaf hs-minor-mode
-	:hook emacs-lisp-mode
+	:hook ((emacs-lisp-mode-hook . hs-minor-mode))
 	:custom ((hs-minor-mode . t))
 	:bind ((hs-minor-mode-map
-			("C-'" . hs-toggle-hiding)))))
+			("C-'" . hs-toggle-hiding)))
+    :config
+    (define-key hs-minor-mode-map (kbd "C-'") 'hs-toggle-hiding)))
