@@ -47,9 +47,6 @@
               (text-quoting-style              . 'straight)
 
               (truncate-lines . t)
-              (menu-bar-mode . nil)
-              (tool-bar-mode . nil)
-              (scroll-bar-mode . nil)
               (indent-tabs-mode . t)
 
               ;; システムの時計をCにする
@@ -159,6 +156,9 @@
     (set-face-background 'region "#555")
     (fset 'yes-or-no-p 'y-or-n-p)
     ;; メニューバー、ツールバー、スクロールバーの非表示
+    (menu-bar-mode -1)
+    (tool-bar-mode -1)
+    (scroll-bar-mode -1)
     )
   )
 
@@ -317,21 +317,25 @@
   :config
   ;; (setq dired-listing-switches (purecopy "-alht"))
   ;; (setq dired-recursive-copies 'always))
+  (leaf dired-x :require t)
   (leaf dired-filter
+    :disabled t
     :ensure t
     :hook ((dired-mode-map . dired-filter-mode))
     :bind ((dired-mode-map
             ("/" . dired-filter-map))))
   (leaf wdired
+    :disabled t
     :custom ((wdired-allow-to-change-permissions . t))
     :bind (dired-mode-map
            :package dired
            ("e" . wdired-change-to-wdired-mode)))
   (leaf peep-dired
-     :ensure t
-     :bind ((dired-mode-map
-             :package dired
-             ("P" . peep-dired))))
+    :disabled t
+    :ensure t
+    :bind ((dired-mode-map
+            :package dired
+            ("P" . peep-dired))))
   (leaf async
     :ensure t
     :custom ((dired-async-mode . 1)
@@ -383,6 +387,7 @@
                                       ))))
   (leaf dired-subtree
     :ensure t
+    :disabled t
     :bind ((dired-mode-map
             :package dired
             ("<right>" . dired-subtree-insert)
@@ -484,7 +489,7 @@
     ;; (load-theme 'doom-one t)
 
     (leaf smart-mode-line
-      :disable t
+      :disabled t
       :ensure t
       :custom
       (;; この変数を定義しておかないとエラーになるバグあり
@@ -531,7 +536,14 @@
 
 (leaf *completions
   :config
+  (leaf *original
+    :config
+    (load "init-company" t)
+    (load "init-ivy" t)
+    )
+
   (leaf company
+    :disabled t
     :ensure t
     :leaf-defer nil
     :diminish company-mode
@@ -546,14 +558,14 @@
             ("C-n" . company-select-next)
             ("C-p" . company-select-previous)))
     :custom ((company-tooltip-limit         . 12)
-             (company-idle-delay            . 0)
+             (company-idle-delay            . 0.05)
              (company-minimum-prefix-length . 1)
              (company-transformers          . '(company-sort-by-occurrence))
              (global-company-mode           . t))
     )
 
   (leaf company
-    :disable t
+    :disabled t
 	;; :ensure t
 	;; :custom ((company-transformers . company-sort-by-backend-importance) ;; ソート順
     ;;          ;; デフォルトは0.5,nil:手動補完
@@ -594,28 +606,25 @@
 	)
 
   (leaf ivy
+    :disabled t
     ;; :ensure t
-    :custom
-    (;; ivy-switch-buffer' (C-x b) のリストに recent files と bookmark を含める．
-     (ivy-use-virtual-buffers . t)
-     ;; プロンプトの表示が長い時に折り返す（選択候補も折り返される）
-     (ivy-truncate-lines . nil)
-     (ivy-wrap . t)
-     (enable-recursive-minibuffers . t)
-     (ivy-height . 15)
-     (ivy-extra-directories . nil)
-     (ivy-re-builders-alist . '((t . ivy--regex-plus)))
-     (ivy-mode . t)
-     (ivy-format-function . "ivy-format-function-arrow")
-     )
+    :custom ((ivy-use-virtual-buffers . t)
+             (ivy-truncate-lines . nil)
+             (ivy-wrap . t)
+             (enable-recursive-minibuffers . t)
+             (ivy-height . 15)
+             (ivy-extra-directories . nil)
+             (ivy-re-builders-alist . '((t . ivy--regex-plus)))
+             (ivy-format-function . "ivy-format-function-arrow")
+             (ivy-mode . t)
+             )
 
-    :bind
-    (("C-x b" . ivy-switch-buffer)
-     (ivy-minibuffer-map
-     ;; ESC連打でミニバッファを閉じる
-      ("<escape>" . minibuffer-keyboard-quit)
-      ("C-m" . ivy-alt-done)
-      ("C-i" . ivy-immediate-done)))
+    :bind (("C-x b" . ivy-switch-buffer)
+           (ivy-minibuffer-map
+            ;; ESC連打でミニバッファを閉じる
+            ("<escape>" . minibuffer-keyboard-quit)
+            ("C-m" . ivy-alt-done)
+            ("C-i" . ivy-immediate-done)))
     :config
 
     (leaf ivy-hidra
@@ -623,11 +632,16 @@
       :custom (ivy-read-action-function . #'ivy-hydra-read-action))
 
     (leaf ivy-dired-history
-      ;; :ensure t
+      ;; :disabled t
+      :ensure t
       :bind ((dired-mode-map
               ("," . dired))
              (ivy-dired-history-map
-              ("C-m" . ivy-alt-done))))
+              ("C-m" . ivy-alt-done)))
+      :config
+      (leaf *afterLoad
+        :after session
+        :config (add-to-list 'session-globals-include 'ivy-dired-history-variable)))
 
     (leaf counsel
       ;; :ensure t
@@ -677,16 +691,15 @@
 
   (leaf yasnippet
     :ensure t
+    :hook emacs-lisp-mode org-mode yatex-mode
     :bind
     ((yas-minor-mode-map
       ("C-c s i" . yas-insert-snippet)
       ("C-c s n" . yas-new-snippet)
       ("C-c s v" . yas-visit-snippet-file)
       ("C-c s l" . yas-describe-tables)
-      ("C-c s g" . yas-reload-all)))
-    :config
-    (leaf yas-minor-mode
-      :hook emacs-lisp-mode org-mode yatex-mode)))
+      ("C-c s g" . yas-reload-all))))
+  )
 
 (leaf *tex
   :config
