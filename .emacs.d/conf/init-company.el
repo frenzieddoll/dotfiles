@@ -25,7 +25,8 @@
 
 ;; (provide 'init-company)
 (require 'company)
-(global-company-mode) ; 全バッファで有効にする
+;; 全バッファで有効にする
+(global-company-mode 1)
 ;; 手動補完
 (setq company-transformers '(company-sort-by-backend-importance)) ;; ソート順
 ;; デフォルトは0.5,nil:手動補完

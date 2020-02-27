@@ -27,29 +27,16 @@
       :custom ((el-get-git-shallow-clone  . t)))))
 
 (leaf *init_system
-  (leaf cus-start
-    :doc "define customization properties of builtins"
-    :url "http://handlename.hatenablog.jp/entry/2011/12/11/214923" ; align sumple
-    :defvar show-paren-deley
-    :custom `((garbage-collection-messages . t)
-              (tab-width . 4)
-              (create-lockfiles                . nil)
-              (use-dialog-box                  . nil)
-              (use-file-dialog                 . nil)
-              (frame-resize-pixelwise          . t)
-              (enable-recursive-minibuffers    . t)
-              (history-length                  . 1000)
-              (history-delete-duplicates       . t)
-              (scroll-preserve-screen-position . t)
-              (scroll-conservatively           . 100)
-              (mouse-wheel-scroll-amount       . '(1 ((control) . 5)))
-              (ring-bell-function              . 'ignore)
-              (text-quoting-style              . 'straight)
-
-              (truncate-lines . t)
-              (indent-tabs-mode . t)
-
-              ;; システムの時計をCにする
+  :config
+  (leaf *start-up
+    :custom `((set-language-environment . 'japanese)
+			  (set-terminal-coding-system . 'utf-8)
+			  (set-keyboard-coding-system . 'utf-8)
+			  (set-buffer-file-coding-system . 'utf-8)
+			  (setq default-file-name-coding-system . 'utf-8)
+			  (set-default-coding-systems . 'utf-8)
+			  (prefer-coding-system  'utf-8)
+			  ;; システムの時計をCにする
               (system-time-locale . "C")
               ;; 改行コードを表示する
               (eol-mnemonic-dos . "(CRLF)")
@@ -90,6 +77,37 @@
               (show-paren-delay . 0.125)
               ;; シンボリック経由でファイルを開く
               (vc-follow-symlinks . t)
+			  (display-time-mode . t)
+			  (display-time-string-forms . '((format "%s/%s(%s)%s:%s"
+    												 month day dayname
+    												 24-hours minutes
+													 ))))
+	)
+
+  (leaf cus-start
+    :doc "define customization properties of builtins"
+    :url "http://handlename.hatenablog.jp/entry/2011/12/11/214923" ; align sumple
+    :defvar show-paren-deley
+    :custom `((garbage-collection-messages . t)
+              (tab-width . 4)
+              (create-lockfiles                . nil)
+              (use-dialog-box                  . nil)
+              (use-file-dialog                 . nil)
+              (frame-resize-pixelwise          . t)
+              (enable-recursive-minibuffers    . t)
+              (history-length                  . 1000)
+              (history-delete-duplicates       . t)
+              (scroll-preserve-screen-position . t)
+              (scroll-conservatively           . 100)
+              (mouse-wheel-scroll-amount       . '(1 ((control) . 5)))
+              (ring-bell-function              . 'ignore)
+              (text-quoting-style              . 'straight)
+
+              (truncate-lines . t)
+              (indent-tabs-mode . t)
+			  (menu-bar-mode . nil)
+			  (tool-bar-mode . nil)
+			  (scroll-bar-mode . nil)
               ))
 
   :preface
@@ -101,8 +119,7 @@
           (find-alternate-file (concat "/sudo::" file-name))
         (error "Cannot get a file name"))))
 
-  :config
-  (leaf delete-space
+  (leaf delete-trailing-whitespace
     :hook (before-save-hook . delete-trailing-whitespace))
 
   (leaf rainbow-delimiters
@@ -147,18 +164,15 @@
 
   (leaf *mics
     :config
-    (display-time)
-    (setq display-time-string-forms
-          '((format "%s/%s(%s)%s:%s"
-    	            month day dayname
-    	            24-hours minutes
-                    )))
+    ;; (display-time-mode t)
+    ;; (setq display-time-string-forms
+    ;;       '((format "%s/%s(%s)%s:%s"
+    ;; 	            month day dayname
+    ;; 	            24-hours minutes
+    ;;                 )))
     (set-face-background 'region "#555")
     (fset 'yes-or-no-p 'y-or-n-p)
     ;; メニューバー、ツールバー、スクロールバーの非表示
-    (menu-bar-mode -1)
-    (tool-bar-mode -1)
-    (scroll-bar-mode -1)
     )
   )
 
@@ -166,8 +180,11 @@
   :config
   (leaf skk
     :ensure ddskk
+	;; :defun (skk-get)
     :require t skk-study
     :defvar skk-user-directory
+    :hook ((isearch-mode-hook . skk-isearch-mode-setup)
+		   (isearch-mode-end-hook . skk-isearch-mode-cleanup))
     :bind (("C-x j" . skk-mode)
            ("C-j" . nil)
            ("C-j" . skk-hiragana-set)
@@ -175,30 +192,14 @@
            (minibuffer-local-map
             ("C-j" . skk-kakutei)
             ("C-l" . skk-latin-mode)))
-
     :custom `((skk-user-directory . "~/.emacs.d/ddskk")
               (skk-initial-search-jisyo . "~/.emacs.d/ddskk/jisyo")
               (skk-large-jisyo . "~/.emacs.d/skk-get-jisyo/SKK-JISYO.L")
-              (skk-rom-kana-rule-list . (append skk-rom-kana-rule-list
-                                                '(("ll" nil "っ")
-                                                  ("xn" nil "ん")
-                                                  ("xx" nil "っ")
-                                                  ("z," nil ",")
-                                                  ("z." nil ".")
-                                                  ("z[" nil "[")
-                                                  ("z]" nil "]")
-                                                  ("z-" nil "-")
-                                                  ("!" nil "!")
-                                                  ("." nil "。")
-                                                  ("," nil "、")
-                                                  (":" nil ":")
-                                                  (";" nil ";")
-                                                  ("?" nil "?")
-                                                  ("la" nil "ぁ" )
-                                                  ("li" nil "ぃ" )
-                                                  ("lu" nil "ぅ" )
-                                                  ("le" nil "ぇ" )
-                                                  ("lo" nil "ぉ" )))))
+			  (skk-egg-like-newline . t)
+			  (skk-delete-implies-kakutei . t)
+			  (skk-henkan-strict-okuri-precedence . t)
+			  (skk-isearch-start-mode . 'latin)
+			  (skk-search-katakana . t))
 
     :preface
     (defun skk-hiragana-set nil
@@ -215,7 +216,7 @@
              (skk-toggle-kana nil))
             (skk-latin-mode
              (dolist (skk-kakutei (skk-toggle-kana nil))))))
-              )
+    )
   )
 
 (leaf *cua
@@ -961,13 +962,14 @@
 
 (leaf visual-regexp-steroids
   :ensure t
+  :require t
   :bind (("M-%" . vr/query-replace)
-         ;; multiple-cursorsを使っているならこれで
+	 ;; multiple-cursorsを使っているならこれで
          ("C-c m" . vr/mc-mark)
          ;; 普段の正規表現isearchにも使いたいならこれを
          ("C-M-r" . vr/isearch-backward)
          ("C-M-s" . vr/isearch-forward))
-  :config (setq vr/engine 'python))
+  :custom `((vr/engine 'python)))
 
 (leaf *view_mode
   :config
@@ -1126,7 +1128,13 @@
   (leaf hs-minor-mode
 	:hook ((emacs-lisp-mode-hook . hs-minor-mode))
 	:custom ((hs-minor-mode . t))
-	:bind ((hs-minor-mode-map
-			("C-'" . hs-toggle-hiding)))
-    :config
-    (define-key hs-minor-mode-map (kbd "C-'") 'hs-toggle-hiding)))
+	:config
+	(leaf *hs-minor-mode-bind
+	  :disabled t
+	  :hook ((hs-minor-mode-hook . hs-hide-all))
+	  :after hs-minor-mode
+	  :bind ((hs-minor-mode-map
+			  ("C-'" . hs-toggle-hiding))))
+
+	)
+  )
