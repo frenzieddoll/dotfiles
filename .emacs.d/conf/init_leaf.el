@@ -1,10 +1,15 @@
 (prog1 "prepare leaf"
   (prog1 "package"
     (custom-set-variables
-     '(package-archives '(("org"   . "https://orgmode.org/elpa/")
+	 (when (eq system-type 'darwin)
+     '(package-archives '(("org"   . "http://orgmode.org/elpa/")
+                          ("melpa" . "http://melpa.org/packages/")
+                          ("gnu"   . "http://elpa.gnu.org/packages/")))
+	 '(package-archives '(("org"   . "https://orgmode.org/elpa/")
                           ("melpa" . "https://melpa.org/packages/")
-                          ("gnu"   . "https://elpa.gnu.org/packages/"))))
-    (package-initialize))
+                          ("gnu"   . "https://elpa.gnu.org/packages/")))
+	 )
+    (package-initialize)))
 
   (prog1 "leaf"
     (unless (package-installed-p 'leaf)
@@ -28,6 +33,7 @@
 
 (leaf *init_system
   :config
+<<<<<<< HEAD
   (leaf *start-up
     :custom `((set-language-environment . 'japanese)
 			  (set-terminal-coding-system . 'utf-8)
@@ -37,6 +43,31 @@
 			  (set-default-coding-systems . 'utf-8)
 			  (prefer-coding-system  'utf-8)
 			  ;; システムの時計をCにする
+=======
+  (leaf cus-start
+    :doc "define customization properties of builtins"
+    :url "http://handlename.hatenablog.jp/entry/2011/12/11/214923" ; align sumple
+    :defvar show-paren-deley
+    :custom `((garbage-collection-messages . t)
+              (tab-width . 4)
+              (create-lockfiles                . nil)
+              (use-dialog-box                  . nil)
+              (use-file-dialog                 . nil)
+              (frame-resize-pixelwise          . t)
+              (enable-recursive-minibuffers    . t)
+              (history-length                  . 1000)
+              (history-delete-duplicates       . t)
+              (scroll-preserve-screen-position . t)
+              (scroll-conservatively           . 100)
+              (mouse-wheel-scroll-amount       . '(1 ((control) . 5)))
+              (ring-bell-function              . 'ignore)
+              (text-quoting-style              . 'straight)
+
+              (truncate-lines . t)
+              (indent-tabs-mode . t)
+
+              ;; システムの時計をCにする
+>>>>>>> 2841f695e6fdb79928c545a7dcf837edbe7ee2f8
               (system-time-locale . "C")
               ;; 改行コードを表示する
               (eol-mnemonic-dos . "(CRLF)")
@@ -44,8 +75,6 @@
               (eol-mnemonic-unix . "(LF)")
               ;; 右から左に読む言語に対応させないことで描画高速化
               (bidi-display-reordering . nil)
-              ;; splash screen を無効化
-              (inhibit-splash-screen . t)
               ;; 同じ内容を履歴に記録しない
               (history-delete-duplicates . t)
               ;; バックアップファイ及び、自動セーブの無効
@@ -54,8 +83,6 @@
               (auto-save-default . nil)
               ;;列番号を表示
               (column-number-mode . t)
-              ;; スタートアップメッセージを表示させない
-              (inhibit-startup-message . t)
               ;; 起動時に*scratch*バッファを表示する
               (initial-buffer-choice . t)
               (initial-scratch-message . "")
@@ -77,6 +104,7 @@
               (show-paren-delay . 0.125)
               ;; シンボリック経由でファイルを開く
               (vc-follow-symlinks . t)
+<<<<<<< HEAD
 			  (display-time-mode . t)
 			  (display-time-string-forms . '((format "%s/%s(%s)%s:%s"
     												 month day dayname
@@ -109,17 +137,35 @@
 			  (tool-bar-mode . nil)
 			  (scroll-bar-mode . nil)
               ))
+=======
+              )
+>>>>>>> 2841f695e6fdb79928c545a7dcf837edbe7ee2f8
 
-  :preface
-  (defun reopen-with-sudo ()
-    "Reopen current buffer-file with sudo using tramp."
-    (interactive)
-    (let ((file-name (buffer-file-name)))
-      (if file-name
-          (find-alternate-file (concat "/sudo::" file-name))
-        (error "Cannot get a file name"))))
+	:preface
+	(defun reopen-with-sudo ()
+      "Reopen current buffer-file with sudo using tramp."
+      (interactive)
+      (let ((file-name (buffer-file-name)))
+		(if file-name
+			(find-alternate-file (concat "/sudo::" file-name))
+          (error "Cannot get a file name"))))
+	)
+  (leaf startup
+	:custom ((inhibit-splash-screen . t)
+			 (inhibit-startup-screen . t)
+             (inhibit-startup-message . t)
+			 (inhibit-startup-echo-area-message . t)
+			 (initial-scratch-message . nil)
+			 ))
 
+  (leaf autorevert
+	:hook ((emacs-startup-hook . global-auto-revert-mode)))
+
+<<<<<<< HEAD
   (leaf delete-trailing-whitespace
+=======
+  (leaf delete-space
+>>>>>>> 2841f695e6fdb79928c545a7dcf837edbe7ee2f8
     :hook (before-save-hook . delete-trailing-whitespace))
 
   (leaf rainbow-delimiters
@@ -133,7 +179,42 @@
 
   (leaf exec-path-from-shell
     :ensure t
-    :custom ((exec-path-from-shell-initialize . t)))
+	:defun (exec-path-from-shell-initialize)
+    :custom ((exec-path-from-shell-check-startup-files . nil)
+			 (exec-path-from-shell-variables . '("SHELL"))
+			 (exec-path-from-shell-initialize . t)))
+
+  (leaf *keepscratchbuffer
+	:doc "不死鳥と化したscratch buffer"
+	:preface
+	(defun my:make-scratch (&optional arg)
+      (interactive)
+      (progn
+		;; "*scratch*" を作成して buffer-list に放り込む
+		(set-buffer (get-buffer-create "*scratch*"))
+		(funcall initial-major-mode)
+		(erase-buffer)
+		(when (and initial-scratch-message (not inhibit-startup-message))
+          (insert initial-scratch-message))
+		(or arg
+			(progn
+              (setq arg 0)
+              (switch-to-buffer "*scratch*")))
+		(cond ((= arg 0) (message "*scratch* is cleared up."))
+              ((= arg 1) (message "another *scratch* is created")))))
+	;;
+	(defun my:buffer-name-list ()
+      (mapcar (function buffer-name) (buffer-list)))
+	:hook  ((kill-buffer-query-functions
+			 . (lambda ()
+				 (if (string= "*scratch*" (buffer-name))
+					 (progn (my:make-scratch 0) nil)
+                   t)))
+			(after-save-hook
+			 . (lambda ()
+				 (unless (member "*scratch*" (my:buffer-name-list))
+                   (my:make-scratch 1)))))
+	)
 
   (leaf *fontSetting
     :config
@@ -264,7 +345,11 @@
               '(defvar eshell-modules-list (delq 'eshell-ls (delq 'eshell-unix eshell-modules-list)))))
   )
 
+(leaf *original
+  :config
+  (load "init-dired" t))
 (leaf dired
+  :disabled t
   :after dired
   :custom `((dired-recursive-copies    . 'always)
            (dired-recursive-deletes   . 'always)
@@ -704,7 +789,11 @@
 
 (leaf *tex
   :config
+  (leaf *original
+	:config
+	(load "init-yatex" t))
   (leaf yatex
+	:disabled t
     :ensure t
     :mode "\\.tex\\'" "\\.ltx\\'" "\\.cls\\'" "\\.sty\\'" "\\.clo\\'" "\\.bbl\\'"
     :custom (
