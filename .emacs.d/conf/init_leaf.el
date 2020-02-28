@@ -34,7 +34,12 @@
 (leaf *initialize-emacs
   :config
   (leaf cus-edit
-	:custom `((custom-file . ,(locate-user-emacs-file "custom.el"))))
+	:preface (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+	:custom `((custom-file . ,(expand-file-name "custom.el" user-emacs-directory)))
+	:hook `(kill-emacs-hook . (lambda ()
+								(if (file-exists-p custom-file)
+									(delete-file custom-file))))
+	)
 
   (leaf exec-path-from-shell
     :ensure t
@@ -54,9 +59,8 @@
     :doc "define customization properties of builtins"
     :url "http://handlename.hatenablog.jp/entry/2011/12/11/214923" ; align sumple
     :defvar show-paren-deley
-    :custom `(
-			  ;; GC
-			  (gc-cons-threshold . ,(* 10 gc-cons-threshold))
+    :custom `(;; GC
+			  (gc-cons-threshold . ,(* 128 1024 1024))
 			  (garbage-collection-messages . t)
 			  ;; 表示
 			  (tool-bar-mode . nil)
@@ -69,7 +73,7 @@
               (tab-width . 4)
               (indent-tabs-mode . t)
 			  (fill-column            . 72)   ;; RFC2822 風味
-			  (truncate-lines         . nil)  ;; 折り返し無し
+			  (truncate-lines         . t)  ;; 折り返し無し
 			  (truncate-partial-width-windows . nil)
 			  (paragraph-start        . '"^\\([ 　・○<\t\n\f]\\|(?[0-9a-zA-Z]+)\\)")
 			  (auto-fill-mode         . nil)
@@ -132,7 +136,6 @@
     (set-face-background 'region "#555")
     (defalias 'yes-or-no-p 'y-or-n-p)
 
-
 	)
   (leaf startup
 	:doc "起動を静かに"
@@ -167,7 +170,14 @@
 						  :family "Hackgen"
 						  :height 150)))
 
-
+	(leaf *byte-compile
+	  :init
+	  (leaf development
+		:custom
+		((debug-on-error . nil)
+		 (byte-compile-no-warnings . t))
+		)
+	  )
 
   :preface
   (defun reopen-with-sudo ()
@@ -519,7 +529,6 @@
     )
   )
 
-
 (leaf *tex
   :config
   (leaf *original
@@ -732,7 +741,7 @@
            ("s-o" . ivy-switch-buffer))
     :config
     (leaf *mySaveFrame
-      ;; :hook (emacs-startup-hook . my-load-frame-size) (kill-emacs-hook . my-save-frame-size)
+      :hook (emacs-startup-hook . my-load-frame-size) (kill-emacs-hook . my-save-frame-size)
       :preface
       (defconst my-save-frame-file
         "~/.emacs.d/.framesize"
@@ -774,7 +783,8 @@
             (load-file file))))
       :config
       (run-with-idle-timer 60 t 'my-save-frame-size)
-      ))
+      )
+	)
 
   (leaf *ForCUI
     :unless window-system
@@ -791,7 +801,9 @@
            ("C-M-p" . upper_volume)
            ("M-d" . counsel-linux-app)
            ("M-o" . ivy-switch-buffer))
-    :config (global-hl-line-mode)))
+    :config (global-hl-line-mode)
+	)
+  )
 
 (leaf *view_mode
   :config
@@ -1028,6 +1040,7 @@
 	  )
 
 	(leaf company-quickhelp
+	  :disabled t
 	  :when (display-graphic-p)
 	  :ensure t
 	  :custom ((company-quickhelp-delay . 0.8)
@@ -1038,6 +1051,7 @@
 	  )
 
 	(leaf *companyFor
+	  :disabled t
 	  :when (eq system-type 'gnu/linux)
 	  :config
       (leaf company-tabnine
@@ -1107,20 +1121,18 @@
 	:ensure t
 	:leaf-defer nil
     ;; :disabled t
-    :custom `(;; (ivy-initial-inputs-alist . t)
-			  (ivy-re-builders-alist . '((t . ivy--regex-plus)))
+    :custom `((ivy-re-builders-alist . '((t . ivy--regex-plus)))
 			  (ivy-use-selectable-prompt . t)
 			  (ivy-mode . t)
 			  (counsel-mode . t)
 			  (dired-recent-mode . t)
-              (ivy-use-virtual-buffers . t)
-              (ivy-truncate-lines . nil)
-              (ivy-wrap . t)
-              (enable-recursive-minibuffers . t)
-              (ivy-height . 15)
-              (ivy-extra-directories . nil)
-              ;; (ivy-format-functions-alist . ,(t. ivy-format-function-arrow))
-             )
+			  (ivy-use-virtual-buffers . t)
+			  (ivy-truncate-lines . nil)
+			  (ivy-wrap . t)
+			  (enable-recursive-minibuffers . t)
+			  (ivy-height . 15)
+			  (ivy-extra-directories . nil)
+			  )
 
     :bind (("C-x b" . ivy-switch-buffer)
 		   (ivy-minibuffer-map
@@ -1207,8 +1219,12 @@
 	)
 
   (leaf highlight-indent-guides-mode
-	:hook ((yaml-mode . highlight-indent-guides-mode))
-	:custom ((highlight-indent-guides-mode . t))
+	:hook ((prog-mode-hook . highlight-indent-guides-mode))
+	:custom '((highlight-indent-guides-method . 'column)
+			  ;; (highlight-indent-guides-auto-enable . t)
+			  ;; (highlight-indent-guides-responsive . t)
+			  ;; (highlight-indent-guides-mode . t)
+			  )
 	)
 
   (leaf visual-regexp-steroids
