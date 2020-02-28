@@ -8,8 +8,8 @@
 	   '(package-archives '(("org"   . "https://orgmode.org/elpa/")
 							("melpa" . "https://melpa.org/packages/")
 							("gnu"   . "https://elpa.gnu.org/packages/")))
-	 )
-    (package-initialize)))
+	   ))
+    (package-initialize))
 
   (prog1 "leaf"
     (unless (package-installed-p 'leaf)
@@ -488,7 +488,19 @@
 
 (leaf *visual
   :when window-system
-  :init
+  :config
+  (leaf doom-themes
+	;; :disabled t
+    :ensure t
+    :custom ((doom-themes-enable-italic . t)
+             (doom-themes-enable-bold . t))
+	:custom-face ((doom-modeline-bar . '((t (:background "#6272a4")))))
+	:config
+	(load-theme 'doom-one t)
+	(doom-themes-visual-bell-config)
+	(doom-themes-org-config)
+	)
+
   (leaf doom-modeline
 	;; :disabled t
 	:require t
@@ -501,22 +513,6 @@
 			  (column-number-mode . 0)
 			  (doom-modeline-mode . t))
     )
-  (leaf doom-themes
-	;; :disabled t
-    :ensure t
-    :custom ((doom-themes-enable-italic . t)
-             (doom-themes-enable-bold . t))
-	:custom-face ((doom-modeline-bar . '((t (:background "#6272a4")))))
-	:config
-	;; (setq doom-themes-enable-bold t
-	;; 	  doom-themes-enable-italic t)
-	;; (load-theme 'doom-one t)
-	;; (doom-themes-visual-bell-config)
-	;; (doom-themes-org-config)
-	)
-
-  :config
-  ;; (load-theme 'doom-one t)
 
   (leaf *afterSave
     :hook (after-save-hook . flashAfterSave)
