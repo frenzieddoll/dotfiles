@@ -368,6 +368,7 @@
 (leaf *eshell-tools
   :bind (("C-c e" . eshell))
   :hook (eshell-mode-hook . eshell-alias)
+  :defvar eshell-command-aliases-list
   :preface
   (defun eshell-alias ()
     (interactive)
@@ -487,22 +488,7 @@
 
 (leaf *visual
   :when window-system
-  :config
-  (leaf doom-themes
-	;; :disabled t
-    :ensure t
-    ;; :custom `((doom-themes-enable-italic . t)
-    ;;           (doom-themes-enable-bold . t)
-	;; 		  (doom-theme . 'doom-one))
-	;; :custom-face ((doom-modeline-bar . '((t (:background "#6272a4")))))
-	:config
-	(setq doom-themes-enable-bold t
-		  doom-themes-enable-italic t)
-	(load-theme 'doom-one t)
-	(doom-themes-visual-bell-config)
-	(doom-themes-org-config)
-	)
-
+  :init
   (leaf doom-modeline
 	;; :disabled t
 	:require t
@@ -515,6 +501,22 @@
 			  (column-number-mode . 0)
 			  (doom-modeline-mode . t))
     )
+  (leaf doom-themes
+	;; :disabled t
+    :ensure t
+    :custom ((doom-themes-enable-italic . t)
+             (doom-themes-enable-bold . t))
+	:custom-face ((doom-modeline-bar . '((t (:background "#6272a4")))))
+	:config
+	;; (setq doom-themes-enable-bold t
+	;; 	  doom-themes-enable-italic t)
+	;; (load-theme 'doom-one t)
+	;; (doom-themes-visual-bell-config)
+	;; (doom-themes-org-config)
+	)
+
+  :config
+  ;; (load-theme 'doom-one t)
 
   (leaf *afterSave
     :hook (after-save-hook . flashAfterSave)
@@ -882,7 +884,8 @@
 
 (leaf eww
   :hook (eww-mode-hook . eww-mode-hook--disable-image)
-  :defvar eww-disable-colorize
+  :defvar eww-disable-colorize shr-put-image-function
+  :defun eww-reload
   :custom ((eww-search-prefix . "https://www.google.co.jp/search?btnl&q=")
            (eww-browse-with-external-link . t)
            (eww-disable-colorize . t))
@@ -933,7 +936,9 @@
                                                           (cdr url-region))))
       ;; org-link
       (setq browse-url-browser-function 'eww-browse-url)
-      (org-open-at-point)))
+      ;; (org-open-at-point)
+	  )
+	)
   (defun shr-colorize-region--disable (orig start end fg &optional bg &rest _)
     (unless eww-disable-colorize
       (funcall orig start end fg)))
@@ -1199,6 +1204,7 @@
 	  ;; :disabled t
 	  :require t
 	  :ensure t
+	  :defvar session-globals-include
 	  :bind ((dired-mode-map
 			  ("," . dired))
              (ivy-dired-history-map
@@ -1213,7 +1219,6 @@
 
   (leaf *hs-minor-mode
 	:hook ((emacs-lisp-mode-hook . hs-minor-mode))
-	;; :require t
 	:custom ((hs-minor-mode . t))
 	:bind (("C-'" . hs-toggle-hiding))
 	)
