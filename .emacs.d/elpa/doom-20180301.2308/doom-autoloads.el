@@ -6,10 +6,17 @@
                          (or (file-name-directory #$) (car load-path))))
 
 
-;;;### (autoloads nil "doom" "doom.el" (0 0 0 0))
-;;; Generated autoloads from doom.el
+;;;### (autoloads "actual autoloads are elsewhere" "doom" "../../../../../.emacs.d/elpa/doom-20180301.2308/doom.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-20180301.2308/doom.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom" '("doom-")))
+
+;;;***
+
+;;;### (autoloads nil nil ("../../../../../.emacs.d/elpa/doom-20180301.2308/doom-autoloads.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-20180301.2308/doom.el")
+;;;;;;  (0 0 0 0))
 
 ;;;***
 

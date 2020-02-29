@@ -21,15 +21,15 @@
 
 ;; (setq load-path (cons "~/.emacs.d/elisp" load-path))
 
-;; ;; リポジトリの追加
-;; (require 'package)
-;; ;;MELPA を追加
+;; リポジトリの追加
+(require 'package)
+;;MELPA を追加
 
-;; (setq package-archives
-;;       '(("gnu" . "http://elpa.gnu.org/packages/")
-;;         ("melpa" . "http://melpa.org/packages/")
-;;         ("org" . "http://orgmode.org/elpa/")))
-;; (package-initialize)
+(setq package-archives
+      '(("gnu" . "http://elpa.gnu.org/packages/")
+        ("melpa" . "http://melpa.org/packages/")
+        ("org" . "http://orgmode.org/elpa/")))
+(package-initialize)
 
 ;; ----------leaf mode---------------------------------------------------------------
 (load "init_leaf" t)

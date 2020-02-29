@@ -6,256 +6,288 @@
                          (or (file-name-directory #$) (car load-path))))
 
 
-;;;### (autoloads nil "doom-Iosvkem-theme" "doom-Iosvkem-theme.el"
+;;;### (autoloads "actual autoloads are elsewhere" "doom-Iosvkem-theme"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-Iosvkem-theme.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from doom-Iosvkem-theme.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-Iosvkem-theme.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-Iosvkem-theme" '("doom-Iosvkem")))
 
 ;;;***
 
-;;;### (autoloads nil "doom-acario-dark-theme" "doom-acario-dark-theme.el"
+;;;### (autoloads "actual autoloads are elsewhere" "doom-acario-dark-theme"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-acario-dark-theme.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from doom-acario-dark-theme.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-acario-dark-theme.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-acario-dark-theme" '("doom-acario-dark")))
 
 ;;;***
 
-;;;### (autoloads nil "doom-acario-light-theme" "doom-acario-light-theme.el"
+;;;### (autoloads "actual autoloads are elsewhere" "doom-acario-light-theme"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-acario-light-theme.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from doom-acario-light-theme.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-acario-light-theme.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-acario-light-theme" '("doom-acario-light")))
 
 ;;;***
 
-;;;### (autoloads nil "doom-challenger-deep-theme" "doom-challenger-deep-theme.el"
+;;;### (autoloads "actual autoloads are elsewhere" "doom-challenger-deep-theme"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-challenger-deep-theme.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from doom-challenger-deep-theme.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-challenger-deep-theme.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-challenger-deep-theme" '("doom-challenger-deep")))
 
 ;;;***
 
-;;;### (autoloads nil "doom-city-lights-theme" "doom-city-lights-theme.el"
+;;;### (autoloads "actual autoloads are elsewhere" "doom-city-lights-theme"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-city-lights-theme.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from doom-city-lights-theme.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-city-lights-theme.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-city-lights-theme" '("doom-city-lights")))
 
 ;;;***
 
-;;;### (autoloads nil "doom-dark+-theme" "doom-dark+-theme.el" (0
-;;;;;;  0 0 0))
-;;; Generated autoloads from doom-dark+-theme.el
+;;;### (autoloads "actual autoloads are elsewhere" "doom-dark+-theme"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-dark+-theme.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-dark+-theme.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-dark+-theme" '("doom-dark+")))
 
 ;;;***
 
-;;;### (autoloads nil "doom-dracula-theme" "doom-dracula-theme.el"
+;;;### (autoloads "actual autoloads are elsewhere" "doom-dracula-theme"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-dracula-theme.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from doom-dracula-theme.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-dracula-theme.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-dracula-theme" '("doom-dracula")))
 
 ;;;***
 
-;;;### (autoloads nil "doom-fairy-floss-theme" "doom-fairy-floss-theme.el"
+;;;### (autoloads "actual autoloads are elsewhere" "doom-fairy-floss-theme"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-fairy-floss-theme.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from doom-fairy-floss-theme.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-fairy-floss-theme.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-fairy-floss-theme" '("doom-fairy-floss")))
 
 ;;;***
 
-;;;### (autoloads nil "doom-gruvbox-theme" "doom-gruvbox-theme.el"
+;;;### (autoloads "actual autoloads are elsewhere" "doom-gruvbox-theme"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-gruvbox-theme.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from doom-gruvbox-theme.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-gruvbox-theme.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-gruvbox-theme" '("doom-gruvbox")))
 
 ;;;***
 
-;;;### (autoloads nil "doom-horizon-theme" "doom-horizon-theme.el"
+;;;### (autoloads "actual autoloads are elsewhere" "doom-horizon-theme"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-horizon-theme.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from doom-horizon-theme.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-horizon-theme.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-horizon-theme" '("doom-horizon")))
 
 ;;;***
 
-;;;### (autoloads nil "doom-laserwave-theme" "doom-laserwave-theme.el"
+;;;### (autoloads "actual autoloads are elsewhere" "doom-laserwave-theme"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-laserwave-theme.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from doom-laserwave-theme.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-laserwave-theme.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-laserwave-theme" '("doom-laserwave")))
 
 ;;;***
 
-;;;### (autoloads nil "doom-manegarm-theme" "doom-manegarm-theme.el"
+;;;### (autoloads "actual autoloads are elsewhere" "doom-manegarm-theme"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-manegarm-theme.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from doom-manegarm-theme.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-manegarm-theme.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-manegarm-theme" '("doom-manegarm")))
 
 ;;;***
 
-;;;### (autoloads nil "doom-material-theme" "doom-material-theme.el"
+;;;### (autoloads "actual autoloads are elsewhere" "doom-material-theme"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-material-theme.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from doom-material-theme.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-material-theme.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-material-theme" '("doom-material")))
 
 ;;;***
 
-;;;### (autoloads nil "doom-molokai-theme" "doom-molokai-theme.el"
+;;;### (autoloads "actual autoloads are elsewhere" "doom-molokai-theme"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-molokai-theme.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from doom-molokai-theme.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-molokai-theme.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-molokai-theme" '("doom-molokai")))
 
 ;;;***
 
-;;;### (autoloads nil "doom-moonlight-theme" "doom-moonlight-theme.el"
+;;;### (autoloads "actual autoloads are elsewhere" "doom-moonlight-theme"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-moonlight-theme.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from doom-moonlight-theme.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-moonlight-theme.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-moonlight-theme" '("doom-moonlight")))
 
 ;;;***
 
-;;;### (autoloads nil "doom-nord-light-theme" "doom-nord-light-theme.el"
+;;;### (autoloads "actual autoloads are elsewhere" "doom-nord-light-theme"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-nord-light-theme.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from doom-nord-light-theme.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-nord-light-theme.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-nord-light-theme" '("doom-nord-light")))
 
 ;;;***
 
-;;;### (autoloads nil "doom-nord-theme" "doom-nord-theme.el" (0 0
-;;;;;;  0 0))
-;;; Generated autoloads from doom-nord-theme.el
+;;;### (autoloads "actual autoloads are elsewhere" "doom-nord-theme"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-nord-theme.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-nord-theme.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-nord-theme" '("doom-nord")))
 
 ;;;***
 
-;;;### (autoloads nil "doom-nova-theme" "doom-nova-theme.el" (0 0
-;;;;;;  0 0))
-;;; Generated autoloads from doom-nova-theme.el
+;;;### (autoloads "actual autoloads are elsewhere" "doom-nova-theme"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-nova-theme.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-nova-theme.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-nova-theme" '("doom-nova")))
 
 ;;;***
 
-;;;### (autoloads nil "doom-oceanic-next-theme" "doom-oceanic-next-theme.el"
+;;;### (autoloads "actual autoloads are elsewhere" "doom-oceanic-next-theme"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-oceanic-next-theme.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from doom-oceanic-next-theme.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-oceanic-next-theme.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-oceanic-next-theme" '("doom-oceanic-next")))
 
 ;;;***
 
-;;;### (autoloads nil "doom-one-light-theme" "doom-one-light-theme.el"
+;;;### (autoloads "actual autoloads are elsewhere" "doom-one-light-theme"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-one-light-theme.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from doom-one-light-theme.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-one-light-theme.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-one-light-theme" '("doom-one-light")))
 
 ;;;***
 
-;;;### (autoloads nil "doom-one-theme" "doom-one-theme.el" (0 0 0
-;;;;;;  0))
-;;; Generated autoloads from doom-one-theme.el
+;;;### (autoloads "actual autoloads are elsewhere" "doom-one-theme"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-one-theme.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-one-theme.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-one-theme" '("doom-one")))
 
 ;;;***
 
-;;;### (autoloads nil "doom-opera-light-theme" "doom-opera-light-theme.el"
+;;;### (autoloads "actual autoloads are elsewhere" "doom-opera-light-theme"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-opera-light-theme.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from doom-opera-light-theme.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-opera-light-theme.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-opera-light-theme" '("doom-opera-light")))
 
 ;;;***
 
-;;;### (autoloads nil "doom-opera-theme" "doom-opera-theme.el" (0
-;;;;;;  0 0 0))
-;;; Generated autoloads from doom-opera-theme.el
+;;;### (autoloads "actual autoloads are elsewhere" "doom-opera-theme"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-opera-theme.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-opera-theme.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-opera-theme" '("doom-opera")))
 
 ;;;***
 
-;;;### (autoloads nil "doom-outrun-electric-theme" "doom-outrun-electric-theme.el"
+;;;### (autoloads "actual autoloads are elsewhere" "doom-outrun-electric-theme"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-outrun-electric-theme.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from doom-outrun-electric-theme.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-outrun-electric-theme.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-outrun-electric-theme" '("doom-outrun-electric")))
 
 ;;;***
 
-;;;### (autoloads nil "doom-palenight-theme" "doom-palenight-theme.el"
+;;;### (autoloads "actual autoloads are elsewhere" "doom-palenight-theme"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-palenight-theme.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from doom-palenight-theme.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-palenight-theme.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-palenight-theme" '("doom-palenight")))
 
 ;;;***
 
-;;;### (autoloads nil "doom-peacock-theme" "doom-peacock-theme.el"
+;;;### (autoloads "actual autoloads are elsewhere" "doom-peacock-theme"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-peacock-theme.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from doom-peacock-theme.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-peacock-theme.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-peacock-theme" '("doom-peacock")))
 
 ;;;***
 
-;;;### (autoloads nil "doom-snazzy-theme" "doom-snazzy-theme.el"
+;;;### (autoloads "actual autoloads are elsewhere" "doom-snazzy-theme"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-snazzy-theme.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from doom-snazzy-theme.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-snazzy-theme.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-snazzy-theme" '("doom-snazzy")))
 
 ;;;***
 
-;;;### (autoloads nil "doom-solarized-dark-theme" "doom-solarized-dark-theme.el"
+;;;### (autoloads "actual autoloads are elsewhere" "doom-solarized-dark-theme"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-solarized-dark-theme.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from doom-solarized-dark-theme.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-solarized-dark-theme.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-solarized-dark-theme" '("doom-solarized-dark")))
 
 ;;;***
 
-;;;### (autoloads nil "doom-solarized-light-theme" "doom-solarized-light-theme.el"
+;;;### (autoloads "actual autoloads are elsewhere" "doom-solarized-light-theme"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-solarized-light-theme.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from doom-solarized-light-theme.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-solarized-light-theme.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-solarized-light-theme" '("doom-solarized-light")))
 
 ;;;***
 
-;;;### (autoloads nil "doom-sourcerer-theme" "doom-sourcerer-theme.el"
+;;;### (autoloads "actual autoloads are elsewhere" "doom-sourcerer-theme"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-sourcerer-theme.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from doom-sourcerer-theme.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-sourcerer-theme.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-sourcerer-theme" '("doom-sourcerer")))
 
 ;;;***
 
-;;;### (autoloads nil "doom-spacegrey-theme" "doom-spacegrey-theme.el"
+;;;### (autoloads "actual autoloads are elsewhere" "doom-spacegrey-theme"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-spacegrey-theme.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from doom-spacegrey-theme.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-spacegrey-theme.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-spacegrey-theme" '("doom-spacegrey")))
 
 ;;;***
 
-;;;### (autoloads nil "doom-themes" "doom-themes.el" (0 0 0 0))
-;;; Generated autoloads from doom-themes.el
+;;;### (autoloads nil "doom-themes" "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-themes.el"
+;;;;;;  "9e2aaa3d6e134d896d7e2fcef8130616")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-themes.el
 
 (autoload 'doom-name-to-rgb "doom-themes" "\
 Retrieves the hexidecimal string repesented the named COLOR (e.g. \"red\")
@@ -309,59 +341,88 @@ theme face specs. These is a simplified spec. For example:
 (function-put 'doom-themes-set-faces 'lisp-indent-function 'defun)
 
 (when (and (boundp 'custom-theme-load-path) load-file-name) (let* ((base (file-name-directory load-file-name)) (dir (expand-file-name "themes/" base))) (add-to-list 'custom-theme-load-path (or (and (file-directory-p dir) dir) base))))
+
+;;;### (autoloads "actual autoloads are elsewhere" "doom-themes"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-themes.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-themes.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-themes" '("def-doom-theme" "doom-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "doom-themes-base" "doom-themes-base.el" (0
-;;;;;;  0 0 0))
-;;; Generated autoloads from doom-themes-base.el
+;;;### (autoloads "actual autoloads are elsewhere" "doom-themes-base"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-themes-base.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-themes-base.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-themes-base" '("doom-themes-base-")))
 
 ;;;***
 
-;;;### (autoloads nil "doom-themes-ext-neotree" "doom-themes-ext-neotree.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from doom-themes-ext-neotree.el
+;;;### (autoloads nil "doom-themes-ext-neotree" "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-themes-ext-neotree.el"
+;;;;;;  "31aa5835629fa0eebc8538e9444e2e7e")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-themes-ext-neotree.el
 
 (autoload 'doom-themes-neotree-config "doom-themes-ext-neotree" "\
 Install doom-themes' neotree configuration.
 
 Includes an Atom-esque icon theme and highlighting based on filetype." nil nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "doom-themes-ext-neotree"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-themes-ext-neotree.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-themes-ext-neotree.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-themes-ext-neotree" '("doom-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "doom-themes-ext-org" "doom-themes-ext-org.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from doom-themes-ext-org.el
+;;;### (autoloads nil "doom-themes-ext-org" "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-themes-ext-org.el"
+;;;;;;  "7a3dd92c32a3357add69c37ac9996563")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-themes-ext-org.el
 
 (autoload 'doom-themes-org-config "doom-themes-ext-org" "\
 Enable custom fontification & improves theme integration with org-mode." nil nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "doom-themes-ext-org"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-themes-ext-org.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-themes-ext-org.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-themes-ext-org" '("doom-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "doom-themes-ext-treemacs" "doom-themes-ext-treemacs.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from doom-themes-ext-treemacs.el
+;;;### (autoloads nil "doom-themes-ext-treemacs" "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-themes-ext-treemacs.el"
+;;;;;;  "85007c5cc646ccc26e819fdcffe838c8")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-themes-ext-treemacs.el
 
 (autoload 'doom-themes-treemacs-config "doom-themes-ext-treemacs" "\
 Install doom-themes' treemacs configuration.
 
 Includes an Atom-esque icon theme and highlighting based on filetype." nil nil)
+
+;;;### (autoloads "actual autoloads are elsewhere" "doom-themes-ext-treemacs"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-themes-ext-treemacs.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-themes-ext-treemacs.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-themes-ext-treemacs" '("doom-themes-")))
 
 ;;;***
+
+;;;***
 
-;;;### (autoloads nil "doom-themes-ext-visual-bell" "doom-themes-ext-visual-bell.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from doom-themes-ext-visual-bell.el
+;;;### (autoloads nil "doom-themes-ext-visual-bell" "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-themes-ext-visual-bell.el"
+;;;;;;  "6c385021f721317c67ec90d0d67240c6")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-themes-ext-visual-bell.el
 
 (autoload 'doom-themes-visual-bell-fn "doom-themes-ext-visual-bell" "\
 Blink the mode-line red briefly. Set `ring-bell-function' to this to use it." nil nil)
@@ -371,39 +432,86 @@ Enable flashing the mode-line on error." nil nil)
 
 ;;;***
 
-;;;### (autoloads nil "doom-tomorrow-day-theme" "doom-tomorrow-day-theme.el"
+;;;### (autoloads "actual autoloads are elsewhere" "doom-tomorrow-day-theme"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-tomorrow-day-theme.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from doom-tomorrow-day-theme.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-tomorrow-day-theme.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-tomorrow-day-theme" '("doom-tomorrow-day")))
 
 ;;;***
 
-;;;### (autoloads nil "doom-tomorrow-night-theme" "doom-tomorrow-night-theme.el"
+;;;### (autoloads "actual autoloads are elsewhere" "doom-tomorrow-night-theme"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-tomorrow-night-theme.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from doom-tomorrow-night-theme.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-tomorrow-night-theme.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-tomorrow-night-theme" '("doom-tomorrow-night")))
 
 ;;;***
 
-;;;### (autoloads nil "doom-vibrant-theme" "doom-vibrant-theme.el"
+;;;### (autoloads "actual autoloads are elsewhere" "doom-vibrant-theme"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-vibrant-theme.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from doom-vibrant-theme.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-vibrant-theme.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-vibrant-theme" '("doom-vibrant")))
 
 ;;;***
 
-;;;### (autoloads nil "doom-wilmersdorf-theme" "doom-wilmersdorf-theme.el"
+;;;### (autoloads "actual autoloads are elsewhere" "doom-wilmersdorf-theme"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-wilmersdorf-theme.el"
 ;;;;;;  (0 0 0 0))
-;;; Generated autoloads from doom-wilmersdorf-theme.el
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-wilmersdorf-theme.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-wilmersdorf-theme" '("doom-wilmersdorf")))
 
 ;;;***
 
-;;;### (autoloads nil nil ("doom-themes-pkg.el") (0 0 0 0))
+;;;### (autoloads nil nil ("../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-Iosvkem-theme.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-acario-dark-theme.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-acario-light-theme.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-challenger-deep-theme.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-city-lights-theme.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-dark+-theme.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-dracula-theme.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-fairy-floss-theme.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-gruvbox-theme.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-horizon-theme.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-laserwave-theme.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-manegarm-theme.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-material-theme.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-molokai-theme.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-moonlight-theme.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-nord-light-theme.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-nord-theme.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-nova-theme.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-oceanic-next-theme.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-one-light-theme.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-one-theme.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-opera-light-theme.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-opera-theme.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-outrun-electric-theme.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-palenight-theme.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-peacock-theme.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-snazzy-theme.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-solarized-dark-theme.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-solarized-light-theme.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-sourcerer-theme.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-spacegrey-theme.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-themes-autoloads.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-themes-base.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-themes-ext-neotree.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-themes-ext-org.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-themes-ext-treemacs.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-themes-ext-visual-bell.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-themes-pkg.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-themes.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-tomorrow-day-theme.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-tomorrow-night-theme.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-vibrant-theme.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doom-themes-20200225.1641/doom-wilmersdorf-theme.el")
+;;;;;;  (0 0 0 0))
 
 ;;;***
 
