@@ -46,6 +46,7 @@ bindkey "^[[3~" delete-char
 # pathを通す
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.emacs.d/script:$PATH"
+export PATH="/Library/Frameworks/Python.framework/Versions/3.7/bin/:$PATH"
 
 # 言語を英語にする
 export LANG=en_US.utf-8
@@ -85,16 +86,16 @@ prompt pure
 # PROMPT="%{$fg[cyan]%}[@%m]%(!.#.$)${reset_color}"
 # RPROMPT="%~"
 
-function mm() {
-    mpv --no-video --ytdl-format=bestaudio ytdl://ytsearch10:"$@"
-    }
+# function mm() {
+#     mpv --no-video --ytdl-format=bestaudio ytdl://ytsearch10:"$@"
+#     }
 
-case $TERM in
-  linux)
-      LANG=C;;
-  *)
-      LANG=ja_JP.UTF-8 ;;
-esac
+# case $TERM in
+#   linux)
+#       LANG=C;;
+#   *)
+#       LANG=ja_JP.UTF-8 ;;
+# esac
 
 # case $TERM in
 #     linux) LANG=C ;;
