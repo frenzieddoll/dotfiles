@@ -5,9 +5,9 @@
        '(package-archives '(("org"   . "http://orgmode.org/elpa/")
 							("melpa" . "http://melpa.org/packages/")
 							("gnu"   . "http://elpa.gnu.org/packages/")))
-	   '(package-archives '(("org"   . "https://orgmode.org/elpa/")
-							("melpa" . "https://melpa.org/packages/")
-							("gnu"   . "https://elpa.gnu.org/packages/")))
+	   '(package-archives '(("org"   . "http://orgmode.org/elpa/")
+							("melpa" . "http://melpa.org/packages/")
+							("gnu"   . "http://elpa.gnu.org/packages/")))
 	   ))
     (package-initialize))
 
@@ -60,7 +60,7 @@
     :url "http://handlename.hatenablog.jp/entry/2011/12/11/214923" ; align sumple
     :defvar show-paren-deley
     :custom `(;; GC
-			  (gc-cons-threshold . ,(* 128 1024 1024))
+			  ;; (gc-cons-threshold . ,(* 128 1024 1024))
 			  (garbage-collection-messages . t)
 			  ;; 表示
 			  (tool-bar-mode . nil)
@@ -301,65 +301,73 @@
 		:custom ((wdired-allow-to-change-permissions . t))
 		:bind ((dired-mode-map
 				:package dired
-				("e" . wdired-change-to-wdired-mode))))
+				("e" . wdired-change-to-wdired-mode)))
+		)
 	  (leaf dired-filter
 		:ensure t
-		:hook ((dired-mode-hook . dired-filter-mode)))
+		:require t
+		;; :hook ((dired-mode-hook . dired-filter-mode))
+		:bind ((dired-mode-map
+				:package dired
+				("/" . dired-filer-map)))
+		)
 	  (leaf peep-dired
 		:disabled t
 		:ensure t
 		:bind ((dired-mode-map
 				:package dired
-				("P" . peep-dired))))
+				("P" . peep-dired)))
+		)
 	  (leaf async
 		:ensure t
 		:custom ((dired-async-mode . 1)
 				 (async-bytecomp-package-mode . 1)
-				 (async-bytecomp-allowed-packages . '(all))))
+				 (async-bytecomp-allowed-packages . '(all)))
+		)
 	  (leaf dired-open
 		:ensure t
 		:when (eq system-type 'gnu/linux)
-		:custom ((dired-open-extensions '(("mkv"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-										  ("mp4"  . "~/projects/dotfilesotfiles/.emacs.d/script/mpv-rifle.sh")
-										  ("avi"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-										  ("wmv"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-										  ("webm" . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-										  ("mpg"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-										  ("flv"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-										  ("m4v"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-										  ("mp3"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-										  ("wav"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-										  ("m4a"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-										  ("3gp"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-										  ("rm"   . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-										  ("rmvb" . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-										  ("mpeg" . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-										  ("VOB" . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-										  ("iso" . "mpv dvd:// -dvd-device")
-										  ("playlist" . "mpv --playlist")
-										  ("exe"  . "wine")
-										  ("pdf"  . "YACReader")
-										  ("zip"  . "YACReader")
-										  ("rar"  . "YACReader")
-										  ("tar"  . "YACReader")
-										  ("xls"  . "xdg-open")
-										  ("xlsx" . "xdg-open")
-										  ("jpg"  . "sxiv-rifle")
-										  ("png"  . "sxiv-rifle")
-										  ("jpeg" . "sxiv-rifle")
-										  ("gif"  . "sxiv-rifle")
-										  ("png"  . "sxiv-rifle")))))
+		:custom ((dired-open-extensions . '(("mkv"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											("mp4"  . "~/projects/dotfilesotfiles/.emacs.d/script/mpv-rifle.sh")
+											("avi"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											("wmv"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											("webm" . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											("mpg"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											("flv"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											("m4v"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											("mp3"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											("wav"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											("m4a"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											("3gp"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											("rm"   . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											("rmvb" . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											("mpeg" . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											("VOB" . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											("iso" . "mpv dvd:// -dvd-device")
+											("playlist" . "mpv --playlist")
+											("exe"  . "wine")
+											("pdf"  . "YACReader")
+											("zip"  . "YACReader")
+											("rar"  . "YACReader")
+											("tar"  . "YACReader")
+											("xls"  . "xdg-open")
+											("xlsx" . "xdg-open")
+											("jpg"  . "sxiv-rifle")
+											("png"  . "sxiv-rifle")
+											("jpeg" . "sxiv-rifle")
+											("gif"  . "sxiv-rifle")
+											("png"  . "sxiv-rifle")))))
 	  (leaf dired-open
 		:ensure t
 		:when (eq system-type 'darwin)
-		:custom ((dired-open-extensions '(("key" . "open")
-										  ("docx" . "open")
-										  ("pdf" . "open")
-										  ("cmdf" . "open")
-										  ("xlsx" . "open")
-										  ("pxp" . "open")
-										  ("bmp" . "open")
-										  ))))
+		:custom ((dired-open-extensions . '(("key" . "open")
+											("docx" . "open")
+											("pdf" . "open")
+											("cmdf" . "open")
+											("xlsx" . "open")
+											("pxp" . "open")
+											("bmp" . "open")
+											))))
 
 	  )
 	)
