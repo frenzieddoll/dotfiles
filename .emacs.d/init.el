@@ -21,15 +21,15 @@
 
 ;; (setq load-path (cons "~/.emacs.d/elisp" load-path))
 
-;; リポジトリの追加
-(require 'package)
-;;MELPA を追加
+;; ;; リポジトリの追加
+;; (require 'package)
+;; ;;MELPA を追加
 
-(setq package-archives
-      '(("gnu" . "http://elpa.gnu.org/packages/")
-        ("melpa" . "http://melpa.org/packages/")
-        ("org" . "http://orgmode.org/elpa/")))
-(package-initialize)
+;; (setq package-archives
+;;       '(("gnu" . "http://elpa.gnu.org/packages/")
+;;         ("melpa" . "http://melpa.org/packages/")
+;;         ("org" . "http://orgmode.org/elpa/")))
+;; (package-initialize)
 
 ;; ----------leaf mode---------------------------------------------------------------
 (load "init_leaf" t)
@@ -51,7 +51,6 @@
   ;; (autoload 'picture-mode-init "init-picture")
   ;; linux環境でのみ読み込み
   (when (eq system-type 'gnu/linux)
-      ;; (load "init-pdftools" t)
       (load "init-rust" t)
       (load "init-lspmode" t)
       ;; (load "init-haskell" t)
@@ -64,6 +63,12 @@
 (defun start_mail ()
   (interactive)
   (load "init-mew" t))
+
+(defun load-pdf-tools ()
+  (interactive)
+  (load "init-pdftools" t))
+
+
 
 ;; linux用の設定
 

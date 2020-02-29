@@ -1,13 +1,15 @@
 (prog1 "prepare leaf"
   (prog1 "package"
-    (custom-set-variables
-	 ;; (when (eq system-type 'darwin)
-     ;;   '(package-archives '(("org"   . "http://orgmode.org/elpa/")
-	 ;; 						("melpa" . "http://melpa.org/packages/")
-	 ;; 						("gnu"   . "http://elpa.gnu.org/packages/")))
-	 '(package-archives '(("org"   . "https://orgmode.org/elpa/")
-						  ("melpa" . "https://melpa.org/packages/")
-						  ("gnu"   . "https://elpa.gnu.org/packages/"))))
+	(when (eq system-type 'darwin)
+	  (custom-set-variables
+	   '(package-archives '(("org"   . "http://orgmode.org/elpa/")
+							("melpa" . "http://melpa.org/packages/")
+							("gnu"	 . "http://elpa.gnu.org/packages/"))))
+	  (custom-set-variables
+	   '(package-archives '(("org"   . "https://orgmode.org/elpa/")
+							("melpa" . "https://melpa.org/packages/")
+							("gnu"   . "https://elpa.gnu.org/packages/"))))
+	  )
     (package-initialize))
 
   (prog1 "leaf"
@@ -134,40 +136,44 @@
 	:config
     (set-face-background 'region "#555")
     (defalias 'yes-or-no-p 'y-or-n-p)
+	(leaf *gc-cons-threshold-arch
+	  :when (string-match "archlinuxhonda" (system-name))
+	  :custom `((gc-cons-threshold . ,(* 128 1024 1024)))
+	  )
 
-	)
-  (leaf startup
-	:doc "起動を静かに"
-	:custom ((inhibit-splash-screen . t)
-			 (inhibit-startup-screen . t)
-             (inhibit-startup-message . t)
-			 (inhibit-startup-echo-area-message . t)
-			 (initial-buffer-choice . t)
-			 (initial-scratch-message . nil)
-			 )
-	)
-    (leaf *fontSetting
-    :config
-    (leaf *forArchlinux
-	  :when (eq system-type 'gnu/linux)
-      :when (string-match (system-name) "archlinuxhonda")
+	(leaf startup
+	  :doc "起動を静かに"
+	  :custom ((inhibit-splash-screen . t)
+			   (inhibit-startup-screen . t)
+               (inhibit-startup-message . t)
+			   (inhibit-startup-echo-area-message . t)
+			   (initial-buffer-choice . t)
+			   (initial-scratch-message . nil)
+			   )
+	  )
+
+	(leaf *fontSetting
       :config
-      (set-face-attribute 'default nil
-                          :family "Hackgen"
-                          :height 150))
-    (leaf *forLinux
-	  :when (eq system-type 'gnu/linux)
-      :unless (string-match (system-name) "archlinuxhonda")
-      :config
-      (set-face-attribute 'default nil
-                          :family "Hackgen"
-                          :height 100))
-    (leaf *forMac
-	  :when (eq system-type 'darwin)
-	  :config
-	  (set-face-attribute 'default nil
-						  :family "Hackgen"
-						  :height 150)))
+      (leaf *forArchlinux
+		:when (eq system-type 'gnu/linux)
+		:when (string-match (system-name) "archlinuxhonda")
+		:config
+		(set-face-attribute 'default nil
+							:family "Hackgen"
+							:height 150))
+      (leaf *forLinux
+		:when (eq system-type 'gnu/linux)
+		:unless (string-match (system-name) "archlinuxhonda")
+		:config
+		(set-face-attribute 'default nil
+							:family "Hackgen"
+							:height 100))
+      (leaf *forMac
+		:when (eq system-type 'darwin)
+		:config
+		(set-face-attribute 'default nil
+							:family "Hackgen"
+							:height 150)))
 
 	(leaf *byte-compile
 	  :init
@@ -178,323 +184,342 @@
 		)
 	  )
 
-  :preface
-  (defun reopen-with-sudo ()
-    "Reopen current buffer-file with sudo using tramp."
-    (interactive)
-    (let ((file-name (buffer-file-name)))
-	  (if file-name
-		  (find-alternate-file (concat "/sudo::" file-name))
-        (error "Cannot get a file name"))))
+	:preface
+	(defun reopen-with-sudo ()
+      "Reopen current buffer-file with sudo using tramp."
+      (interactive)
+      (let ((file-name (buffer-file-name)))
+		(if file-name
+			(find-alternate-file (concat "/sudo::" file-name))
+          (error "Cannot get a file name"))))
 
-  (leaf *lisp
-    :config
-    (leaf simple
-      :custom ((kill-ring-max . 100)
-               (kill-read-only-ok . t)
-               (kill-whole-line . t)
-               (eval-expression-print-length . nil)
-               (eval-expression-print-level  . nil))
-      ;; :hook ((before-save-hook . delete-trailing-whitespace))
-      )
+	(leaf *lisp
+      :config
+      (leaf simple
+		:custom ((kill-ring-max . 100)
+				 (kill-read-only-ok . t)
+				 (kill-whole-line . t)
+				 (eval-expression-print-length . nil)
+				 (eval-expression-print-level  . nil))
+		;; :hook ((before-save-hook . delete-trailing-whitespace))
+		)
 
 
-	(leaf autorevert
-	  :custom ((auto-revert-interval . 0.1)
-			   (global-auto-revert-mode . t)))
+	  (leaf autorevert
+		:custom ((auto-revert-interval . 0.1)
+				 (global-auto-revert-mode . t)))
 
-	(leaf delete-trailing-whitespace
-      :hook (before-save-hook . delete-trailing-whitespace))
+	  (leaf delete-trailing-whitespace
+		:hook (before-save-hook . delete-trailing-whitespace))
 
-	(leaf rainbow-delimiters
-      :ensure t
-      :hook (emacs-lisp-mode-hook . rainbow-delimiters-mode))
+	  (leaf rainbow-delimiters
+		:ensure t
+		:hook (emacs-lisp-mode-hook . rainbow-delimiters-mode))
 
-	(leaf *keepscratchbuffer
-	  :doc "不死鳥と化したscratch buffer"
-	  :preface
-	  (defun my:make-scratch (&optional arg)
-		(interactive)
-		(progn
-		  ;; "*scratch*" を作成して buffer-list に放り込む
-		  (set-buffer (get-buffer-create "*scratch*"))
-		  (funcall initial-major-mode)
-		  (erase-buffer)
-		  (when (and initial-scratch-message (not inhibit-startup-message))
-			(insert initial-scratch-message))
-		  (or arg
-			  (progn
-				(setq arg 0)
-				(switch-to-buffer "*scratch*")))
-		  (cond ((= arg 0) (message "*scratch* is cleared up."))
-				((= arg 1) (message "another *scratch* is created")))))
-	  ;;
-	  (defun my:buffer-name-list ()
-		(mapcar (function buffer-name) (buffer-list)))
-	  :hook  ((kill-buffer-query-functions
-			   . (lambda ()
-				   (if (string= "*scratch*" (buffer-name))
-					   (progn (my:make-scratch 0) nil)
-					 t)))
-			  (after-save-hook
-			   . (lambda ()
-				   (unless (member "*scratch*" (my:buffer-name-list))
-					 (my:make-scratch 1)))))
+	  (leaf *keepscratchbuffer
+		:doc "不死鳥と化したscratch buffer"
+		:preface
+		(defun my:make-scratch (&optional arg)
+		  (interactive)
+		  (progn
+			;; "*scratch*" を作成して buffer-list に放り込む
+			(set-buffer (get-buffer-create "*scratch*"))
+			(funcall initial-major-mode)
+			(erase-buffer)
+			(when (and initial-scratch-message (not inhibit-startup-message))
+			  (insert initial-scratch-message))
+			(or arg
+				(progn
+				  (setq arg 0)
+				  (switch-to-buffer "*scratch*")))
+			(cond ((= arg 0) (message "*scratch* is cleared up."))
+				  ((= arg 1) (message "another *scratch* is created")))))
+		;;
+		(defun my:buffer-name-list ()
+		  (mapcar (function buffer-name) (buffer-list)))
+		:hook  ((kill-buffer-query-functions
+				 . (lambda ()
+					 (if (string= "*scratch*" (buffer-name))
+						 (progn (my:make-scratch 0) nil)
+					   t)))
+				(after-save-hook
+				 . (lambda ()
+					 (unless (member "*scratch*" (my:buffer-name-list))
+					   (my:make-scratch 1)))))
+		)
+
+
+	  (leaf dired
+		;; :disabled t
+		:after dired
+		:bind ((dired-mode-map
+				:package dired
+				("j" . dired-next-line)
+				("k" . dired-previous-line)
+				("h" . kill-current-buffer-and-dired-up-directory)
+				("l" . kill-current-buffer-and/or-dired-open-file)
+				("f" . kill-current-buffer-and/or-dired-open-file)
+				("b" . kill-current-buffer-and-dired-up-directory)
+				("q" . kill-current-buffer-and-dired-up-directory)))
+		:custom `((dired-recursive-copies    . 'always)
+				  (dired-recursive-deletes   . 'always)
+				  (dired-copy-preserve-time  . t)
+				  (dired-auto-revert-buffer  . t)
+				  (dired-dwim-target         . t)
+				  ;; (delete-by-moving-to-trash . t)
+				  ;; (dired-listing-switches    . "-Alhv --group-directories-first")
+				  ;; 追加
+				  (dired-launch-mailcap-frend . '("env" "xdg-open"))
+				  (dired-launch-enable . t)
+				  (dired-isearch-filenames . t)
+				  (dired-listing-switches . ,(purecopy "-alht"))
+				  )
+		:preface
+		(defun kill-current-buffer-and/or-dired-open-file ()
+		  "In Dired, dired-open-file for a file. For a directory, dired-find-file and kill previously selected buffer."
+		  (interactive)
+		  (if (file-directory-p (dired-get-file-for-visit))
+			  (dired-find-alternate-file)
+			(dired-view-file)))
+		(defun kill-current-buffer-and-dired-up-directory (&optional other-window)
+		  "In Dired, dired-up-directory and kill previously selected buffer."
+		  (interactive "P")
+		  (let ((b (current-buffer)))
+			(dired-up-directory other-window)
+			(kill-buffer b)))
+		(defun dired-open-file-other-window ()
+		  "In Dired, open file on other-window and select previously selected buffer."
+		  (interactive)
+		  (let ((cur-buf (current-buffer)) (tgt-buf (dired-open-file)))
+			(switch-to-buffer cur-buf)
+			(when tgt-buf
+			  (with-selected-window (next-window)
+				(switch-to-buffer tgt-buf)))))
+		(defun dired-up-directory-other-window ()
+		  "In Dired, dired-up-directory on other-window"
+		  (interactive)
+		  (dired-up-directory t))
+
+		:config
+		(leaf dired-x :require t)
+		(leaf wdired
+		  :custom ((wdired-allow-to-change-permissions . t))
+		  :bind ((dired-mode-map
+				  :package dired
+				  ("e" . wdired-change-to-wdired-mode)))
+		  )
+		(leaf dired-filter
+		  :ensure t
+		  :require t
+		  ;; :hook ((dired-mode-hook . dired-filter-mode))
+		  :bind ((dired-mode-map
+				  :package dired
+				  ("/" . dired-filer-map)))
+		  )
+		(leaf peep-dired
+		  :disabled t
+		  :ensure t
+		  :bind ((dired-mode-map
+				  :package dired
+				  ("P" . peep-dired)))
+		  )
+		(leaf async
+		  :ensure t
+		  :custom ((dired-async-mode . 1)
+				   (async-bytecomp-package-mode . 1)
+				   (async-bytecomp-allowed-packages . '(all)))
+		  )
+		(leaf dired-open
+		  :ensure t
+		  :require t
+		  :when (eq system-type 'gnu/linux)
+		  :custom ((dired-open-extensions . '(("mkv"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											  ("mp4"  . "~/projects/dotfilesotfiles/.emacs.d/script/mpv-rifle.sh")
+											  ("avi"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											  ("wmv"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											  ("webm" . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											  ("mpg"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											  ("flv"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											  ("m4v"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											  ("mp3"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											  ("wav"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											  ("m4a"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											  ("3gp"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											  ("rm"   . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											  ("rmvb" . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											  ("mpeg" . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											  ("VOB" . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											  ("iso" . "mpv dvd:// -dvd-device")
+											  ("playlist" . "mpv --playlist")
+											  ("exe"  . "wine")
+											  ("pdf"  . "YACReader")
+											  ("zip"  . "YACReader")
+											  ("rar"  . "YACReader")
+											  ("tar"  . "YACReader")
+											  ("xls"  . "xdg-open")
+											  ("xlsx" . "xdg-open")
+											  ("jpg"  . "sxiv-rifle")
+											  ("png"  . "sxiv-rifle")
+											  ("jpeg" . "sxiv-rifle")
+											  ("gif"  . "sxiv-rifle")
+											  ("png"  . "sxiv-rifle"))))
+		  )
+		(leaf dired-open
+		  :ensure t
+		  :require t
+		  :when (eq system-type 'darwin)
+		  :custom ((dired-open-extensions . '(("key" . "open")
+											  ("docx" . "open")
+											  ("pdf" . "open")
+											  ("cmdf" . "open")
+											  ("xlsx" . "open")
+											  ("pxp" . "open")
+											  ("bmp" . "open")
+											  ))))
+
+		)
 	  )
+	)
 
+  (leaf *eshell-tools
+	:bind (("C-c e" . eshell))
+	:hook (eshell-mode-hook . eshell-alias)
+	:defvar eshell-command-aliases-list
+	:preface
+	(defun eshell-alias ()
+      (interactive)
+      "eshell alias set"
+      (setq eshell-command-aliases-list
+			(append
+			 (list
+              (list "ll" "ls -ltrh")
+              (list "la" "ls -a")
+              (list "o" "xdg-open")
+              (list "emacs" "find-file $1")
+              (list "m" "find-file $1")
+              (list "mc" "find-file $1")
+              (list "d" "dired .")
+              (list "l" "eshell/less $1")
+              (list "translate" "~/python/translate.py")
+              (list "pacmandate" "expac --timefmt='%Y-%m-%d %T' '%l\t%n' | sort | tail -n $1")
+              (list "manga" "wine ~/Documents/Software/picture/MangaMeeya_73/MangaMeeya.exe")
+              (list "backup" "~/.emacs.d/script/backup.sh $1")
+              (list "nvidiafix" "nvidia-settings --assign CurrentMetaMode='nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }'")
+              (list "usbmount" "sudo mount -t vfat $1 $2 -o rw,umask=000")
+              (list "dvd" "mpv dvd:// -dvd-device $1")
+              (list "dvdCopy" "dvdbackup -i /dev/sr0 -o ~/Downloads/iso/ -M")
+              ))))
+	(defun pcomplete/sudo ()
+      "Completion rules for the `sudo' command."
+      (let ((pcomplete-ignore-case t))
+		(pcomplete-here (funcall pcomplete-command-completion-function))
+		(while (pcomplete-here (pcomplete-entries)))))
 
-	(leaf dired
-	  ;; :disabled t
-	  :after dired
-	  :bind ((dired-mode-map
-			  :package dired
-			  ("j" . dired-next-line)
-			  ("k" . dired-previous-line)
-			  ("h" . kill-current-buffer-and-dired-up-directory)
-			  ("l" . kill-current-buffer-and/or-dired-open-file)
-			  ("f" . kill-current-buffer-and/or-dired-open-file)
-			  ("b" . kill-current-buffer-and-dired-up-directory)
-			  ("q" . kill-current-buffer-and-dired-up-directory)))
-	  :custom `((dired-recursive-copies    . 'always)
-			   (dired-recursive-deletes   . 'always)
-			   (dired-copy-preserve-time  . t)
-			   (dired-auto-revert-buffer  . t)
-			   (dired-dwim-target         . t)
-			   ;; (delete-by-moving-to-trash . t)
-			   ;; (dired-listing-switches    . "-Alhv --group-directories-first")
-			   ;; 追加
-			   (dired-launch-mailcap-frend . '("env" "xdg-open"))
-			   (dired-launch-enable . t)
-			   (dired-isearch-filenames . t)
-			   (dired-listing-switches . ,(purecopy "-alht"))
-			   )
-	  :preface
-	  (defun kill-current-buffer-and/or-dired-open-file ()
-		"In Dired, dired-open-file for a file. For a directory, dired-find-file and kill previously selected buffer."
-		(interactive)
-		(if (file-directory-p (dired-get-file-for-visit))
-			(dired-find-alternate-file)
-		  (dired-view-file)))
-	  (defun kill-current-buffer-and-dired-up-directory (&optional other-window)
-		"In Dired, dired-up-directory and kill previously selected buffer."
-		(interactive "P")
-		(let ((b (current-buffer)))
-		  (dired-up-directory other-window)
-		  (kill-buffer b)))
-	  (defun dired-open-file-other-window ()
-		"In Dired, open file on other-window and select previously selected buffer."
-		(interactive)
-		(let ((cur-buf (current-buffer)) (tgt-buf (dired-open-file)))
-		  (switch-to-buffer cur-buf)
-		  (when tgt-buf
-			(with-selected-window (next-window)
-			  (switch-to-buffer tgt-buf)))))
-	  (defun dired-up-directory-other-window ()
-		"In Dired, dired-up-directory on other-window"
-		(interactive)
-		(dired-up-directory t))
+	:config
+	(leaf *unixCommandEmu
+      :when (eq system-type 'gnu/linux)
+      :config (eval-after-load "esh-module"
+				'(defvar eshell-modules-list (delq 'eshell-ls (delq 'eshell-unix eshell-modules-list)))))
+	)
 
+  (leaf *keybinding
+	:bind (;; C-m : 改行プラスインデント
+		   ("C-m" . newline-and-indent)
+		   ;; ;; exwm用
+		   ;; ("C-h" . delete-backward-char)
+		   ;; C-x ? : help
+		   ("C-c ?" . help-command)
+		   ;;折り返しトグルコマンド
+		   ("C-c l" . toggle-truncate-lines)
+		   ;; ウィンドウサイズの変更のキーバインド
+		   ("C-c r" . window-resizer)
+		   ;; 行番号を表示
+		   ("C-c t" . display-line-numbers-mode)
+		   ;;スペース、改行、タブを表示する
+		   ("C-c w" . whitespace-mode)
+		   ;; 検索結果のリストアップ
+		   ("C-c o" . occur)
+		   ;; S式の評価
+		   ("C-c C-j" . eval-print-last-sexp)
+		   ;; async shell command
+		   ("s-s" . async-shell-command)
+		   ("C-x g" . magit-status)
+		   ("C-S-n" . scroll-up_alt)
+		   ("C-S-p" . scroll-down_alt)
+		   ("<kp-divide>" . insertBackslash)
+		   ("<kp-multiply>" . insertPipe)
+		   ;; (isearch-mode-map
+		   ;; 	("C-h" . isearch-del-char))
+		   )
+
+	:preface
+	(defun scroll-up_alt ()
+      (interactive)
+      (scroll-up 1))
+	(defun scroll-down_alt ()
+      (interactive)
+      (scroll-down 1))
+	(defun insertBackslash ()
+      (interactive)
+      (insert "\\"))
+	(defun insertPipe ()
+      (interactive)
+      (insert "|"))
+	(defun output_toggle ()
+      "Exchange output source."
+      (interactive)
+      (start-process-shell-command
+       "output-toggle"
+       nil
+       (format "~/.emacs.d/script/output_toggle.sh")))
+	(defun upper_volume ()
+      "Volume up."
+      (interactive)
+      (start-process-shell-command
+       "upper_volume"
+       nil
+       (format "~/.emacs.d/script/upper_volume.sh")))
+	(defun lower_volume ()
+      "Volume down."
+      (interactive)
+      (start-process-shell-command
+       "lower_volume"
+       nil
+       (format "~/.emacs.d/script/lower_volume.sh")))
+	(defun mute_toggle ()
+      "Volume mute."
+      (interactive)
+      (start-process-shell-command
+       "mute_toggle"
+       nil
+       (format "~/.emacs.d/script/mute_toggle.sh")))
+
+	:config
+	;; (leaf *minibufferBackward
+    ;;   :hook (minibuffer-setup-hook . minibuffer-delete-backward-char)
+    ;;   :preface
+    ;;   (defun minibuffer-delete-backward-char ()
+	;; 	(local-set-key (kbd "C-h") 'delete-backward-char))
+	;;   :bind ((isearch-mode-map
+	;; 		  ("C-h" . isearch-delete-char)))
+	;;   )
+	:init
+	(leaf *c-hSetting
 	  :config
-	  (leaf dired-x :require t)
-	  (leaf wdired
-		:custom ((wdired-allow-to-change-permissions . t))
-		:bind ((dired-mode-map
-				:package dired
-				("e" . wdired-change-to-wdired-mode)))
-		)
-	  (leaf dired-filter
-		:ensure t
-		:require t
-		;; :hook ((dired-mode-hook . dired-filter-mode))
-		:bind ((dired-mode-map
-				:package dired
-				("/" . dired-filer-map)))
-		)
-	  (leaf peep-dired
-		:disabled t
-		:ensure t
-		:bind ((dired-mode-map
-				:package dired
-				("P" . peep-dired)))
-		)
-	  (leaf async
-		:ensure t
-		:custom ((dired-async-mode . 1)
-				 (async-bytecomp-package-mode . 1)
-				 (async-bytecomp-allowed-packages . '(all)))
-		)
-	  (leaf dired-open
-		:ensure t
-		:require
-		:when (eq system-type 'gnu/linux)
-		:custom ((dired-open-extensions . '(("mkv"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-											("mp4"  . "~/projects/dotfilesotfiles/.emacs.d/script/mpv-rifle.sh")
-											("avi"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-											("wmv"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-											("webm" . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-											("mpg"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-											("flv"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-											("m4v"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-											("mp3"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-											("wav"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-											("m4a"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-											("3gp"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-											("rm"   . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-											("rmvb" . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-											("mpeg" . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-											("VOB" . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-											("iso" . "mpv dvd:// -dvd-device")
-											("playlist" . "mpv --playlist")
-											("exe"  . "wine")
-											("pdf"  . "YACReader")
-											("zip"  . "YACReader")
-											("rar"  . "YACReader")
-											("tar"  . "YACReader")
-											("xls"  . "xdg-open")
-											("xlsx" . "xdg-open")
-											("jpg"  . "sxiv-rifle")
-											("png"  . "sxiv-rifle")
-											("jpeg" . "sxiv-rifle")
-											("gif"  . "sxiv-rifle")
-											("png"  . "sxiv-rifle"))))
-		)
-	  (leaf dired-open
-		:ensure t
-		:require
-		:when (eq system-type 'darwin)
-		:custom ((dired-open-extensions . '(("key" . "open")
-											("docx" . "open")
-											("pdf" . "open")
-											("cmdf" . "open")
-											("xlsx" . "open")
-											("pxp" . "open")
-											("bmp" . "open")
-											))))
-
+	  (global-set-key (kbd "C-h") 'delete-backward-char)
+	  (defun minibuffer-delete-backward-char ()
+		(local-set-key (kbd "C-h") 'delete-backward-char))
+	  (add-hook 'minibuffer-setup-hook 'minibuffer-delete-backward-char)
+	  (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char)
 	  )
+	)
+  (leaf *originalKeybingd
+	:disabled t
+	:config
+	(load "init-keybinding" t)
 	)
   )
 
-(leaf *eshell-tools
-  :bind (("C-c e" . eshell))
-  :hook (eshell-mode-hook . eshell-alias)
-  :defvar eshell-command-aliases-list
-  :preface
-  (defun eshell-alias ()
-    (interactive)
-    "eshell alias set"
-    (setq eshell-command-aliases-list
-          (append
-           (list
-            (list "ll" "ls -ltrh")
-            (list "la" "ls -a")
-            (list "o" "xdg-open")
-            (list "emacs" "find-file $1")
-            (list "m" "find-file $1")
-            (list "mc" "find-file $1")
-            (list "d" "dired .")
-            (list "l" "eshell/less $1")
-            (list "translate" "~/python/translate.py")
-            (list "pacmandate" "expac --timefmt='%Y-%m-%d %T' '%l\t%n' | sort | tail -n $1")
-            (list "manga" "wine ~/Documents/Software/picture/MangaMeeya_73/MangaMeeya.exe")
-            (list "backup" "~/.emacs.d/script/backup.sh $1")
-            (list "nvidiafix" "nvidia-settings --assign CurrentMetaMode='nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }'")
-            (list "usbmount" "sudo mount -t vfat $1 $2 -o rw,umask=000")
-            (list "dvd" "mpv dvd:// -dvd-device $1")
-            (list "dvdCopy" "dvdbackup -i /dev/sr0 -o ~/Downloads/iso/ -M")
-            ))))
-  (defun pcomplete/sudo ()
-    "Completion rules for the `sudo' command."
-    (let ((pcomplete-ignore-case t))
-      (pcomplete-here (funcall pcomplete-command-completion-function))
-      (while (pcomplete-here (pcomplete-entries)))))
-
-  :config
-  (leaf *unixCommandEmu
-    :when (eq system-type 'gnu/linux)
-    :config (eval-after-load "esh-module"
-              '(defvar eshell-modules-list (delq 'eshell-ls (delq 'eshell-unix eshell-modules-list)))))
-  )
-
-(leaf *keybinding
-  :bind ((;; C-m : 改行プラスインデント
-          ("C-m" . newline-and-indent)
-          ;;exwmを使う時はこっち
-          ("C-h" . delete-backward-char)
-          ;; C-x ? : help
-          ("C-c ?" . help-command)
-          ;;折り返しトグルコマンド
-          ("C-c l" . toggle-truncate-lines)
-          ;; ウィンドウサイズの変更のキーバインド
-          ("C-c r" . window-resizer)
-          ;; 行番号を表示
-          ("C-c t" . display-line-numbers-mode)
-          ;;スペース、改行、タブを表示する
-          ("C-c w" . whitespace-mode)
-          ;; 検索結果のリストアップ
-          ("C-c o" . occur)
-          ;; S式の評価
-          ("C-c C-j" . eval-print-last-sexp)
-          ;; async shell command
-          ("s-s" . async-shell-command)
-          ("C-x g" . magit-status)
-          ("C-S-n" . scroll-up_alt)
-          ("C-S-p" . scroll-down_alt)
-          ("<kp-divide>" . insertBackslash)
-          ("<kp-multiply>" . insertPipe)
-          (isearch-mode-map
-           ("C-h" . isearch-delete-char)
-          )))
-
-  :preface
-  (defun scroll-up_alt ()
-    (interactive)
-    (scroll-up 1))
-  (defun scroll-down_alt ()
-    (interactive)
-    (scroll-down 1))
-  (defun insertBackslash ()
-    (interactive)
-    (insert "\\"))
-  (defun insertPipe ()
-    (interactive)
-    (insert "|"))
-  (defun output_toggle ()
-    "Exchange output source."
-    (interactive)
-    (start-process-shell-command
-     "output-toggle"
-     nil
-     (format "~/.emacs.d/script/output_toggle.sh")))
-  (defun upper_volume ()
-    "Volume up."
-    (interactive)
-    (start-process-shell-command
-     "upper_volume"
-     nil
-     (format "~/.emacs.d/script/upper_volume.sh")))
-  (defun lower_volume ()
-    "Volume down."
-    (interactive)
-    (start-process-shell-command
-     "lower_volume"
-     nil
-     (format "~/.emacs.d/script/lower_volume.sh")))
-  (defun mute_toggle ()
-    "Volume mute."
-    (interactive)
-    (start-process-shell-command
-     "mute_toggle"
-     nil
-     (format "~/.emacs.d/script/mute_toggle.sh")))
-
-  :config
-  (leaf *minibufferBackward
-    :hook (minibuffer-setup-hook . delete-backward-char)
-    :preface
-    (defun minibuffer-delete-backward-char ()
-      (local-set-key (kbd "C-h") 'delete-backward-char)))
-  )
 
 (leaf *visual
   :when window-system
@@ -814,7 +839,7 @@
 (leaf *view_mode
   :config
   (leaf view
-  ;; (leaf keys-in-view-mode
+	;; (leaf keys-in-view-mode
     ;; :ensure t
     :custom ((view-read-only . t))
     :bind
@@ -880,11 +905,11 @@
                (define-key term-raw-map (kbd "C-l") 'skk-latin-mode-on)
                ))
   (global-set-key (kbd "C-c q")
-                '(lambda ()
-                   (interactive)
-                   (if (get-buffer "*terminal<1>*")
-                       (switch-to-buffer "*terminal<1>*")
-                     (multi-term)))))
+                  '(lambda ()
+					 (interactive)
+					 (if (get-buffer "*terminal<1>*")
+						 (switch-to-buffer "*terminal<1>*")
+                       (multi-term)))))
 
 (leaf eww
   :hook (eww-mode-hook . eww-mode-hook--disable-image)
@@ -960,11 +985,19 @@
     (eww-reload)))
 
 (leaf *org_tools
-  :disabled
+  :disabled t
   :config
   (leaf org-mode
     :custom ((org-todo-keywords . '((sequence "TODO(t)" "WAIT(w)" "|" "DONE(d)" "SOMEDAY(s)"))))
     ))
+
+(leaf pdf-tools
+  :when (eq system-type 'gnu/linux)
+  :ensure t
+  :hook ((pdf-view-mode-hook . pdf-misc-size-indication-minor-mode)
+		 (pdf-view-mode-hook . pdf-links-minor-mode)
+		 (pdf-view-mode-hook . pdf-isearch-minor-mode))
+  )
 
 (leaf *minor-mode
   :config
@@ -1023,15 +1056,17 @@
             ("C-s" . company-filter-candidates)
             ("C-n" . company-select-next)
             ("C-p" . company-select-previous)
-            ("<tab>" . company-complete-selection))
+            ("<tab>" . company-complete-selection)
+			("C-h" . nil)
+			)
            (company-search-map
             ("C-n" . company-select-next)
             ("C-p" . company-select-previous)))
-    :custom ((company-tooltip-limit         . 12)
-             (company-idle-delay            . 0)
-             (company-minimum-prefix-length . 1)
-             (company-transformers          . '(company-sort-by-occurrence))
-             (global-company-mode           . t))
+    :custom `((company-tooltip-limit         . 12)
+              (company-idle-delay            . 0)
+              (company-minimum-prefix-length . 3)
+              (company-transformers          . '(company-sort-by-occurrence))
+              (global-company-mode           . t))
     :config
     (leaf company-math
 	  :ensure t
@@ -1247,6 +1282,5 @@
            ("C-M-s" . vr/isearch-forward))
 	:custom `((vr/engine . 'python))
 	)
-
 
   )
