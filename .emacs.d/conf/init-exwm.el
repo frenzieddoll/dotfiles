@@ -39,7 +39,7 @@
 ;; (setq exwm-systemtray-height 16)
 
 ;; フローティングモードで右下をドラックするとサイズ変更
-(setq window-divider-default-right-width 1)
+(setq window-divider-default-right-width t)
 (window-divider-mode)
 
 ;;; Allow non-floating resizing with mouse.

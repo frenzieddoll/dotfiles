@@ -7,9 +7,9 @@
 							("melpa" . "http://melpa.org/packages/")
 							("gnu"	 . "http://elpa.gnu.org/packages/"))))
 	  (custom-set-variables
-	   '(package-archives '(("org"   . "http://orgmode.org/elpa/")
-							("melpa" . "http://melpa.org/packages/")
-							("gnu"	 . "http://elpa.gnu.org/packages/"))))
+	   '(package-archives '(("org"   . "https://orgmode.org/elpa/")
+							("melpa" . "https://melpa.org/packages/")
+							("gnu"	 . "https://elpa.gnu.org/packages/"))))
 	  )
     (package-initialize))
 
@@ -41,8 +41,8 @@
 	:preface (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 	:custom `((custom-file . ,(expand-file-name "custom.el" user-emacs-directory)))
 	:hook `(kill-emacs-hook . (lambda ()
-								(if (file-exists-p custom-file)
-									(delete-file custom-file))))
+				    (if (file-exists-p custom-file)
+					(delete-file custom-file))))
 	)
 
   (leaf exec-path-from-shell
@@ -365,7 +365,7 @@
 											  ("iso" . "mpv dvd:// -dvd-device")
 											  ("playlist" . "mpv --playlist")
 											  ("exe"  . "wine")
-											  ("pdf"  . "YACReader")
+											  ;; ("pdf"  . "YACReader")
 											  ("zip"  . "YACReader")
 											  ("rar"  . "YACReader")
 											  ("tar"  . "YACReader")
@@ -1052,8 +1052,9 @@
     ))
 
 (leaf pdf-tools
-  :when (eq system-type 'gnu/linux)
+  :when (file-exists-p "/usr/bin/epdfinfo")
   :ensure t
+  :require pdf-tools pdf-annot pdf-history pdf-info pdf-isearch pdf-links pdf-misc pdf-occur pdf-outline pdf-sync tablist-filter tablist
   :hook ((pdf-view-mode-hook . pdf-misc-size-indication-minor-mode)
 		 (pdf-view-mode-hook . pdf-links-minor-mode)
 		 (pdf-view-mode-hook . pdf-isearch-minor-mode))
@@ -1069,7 +1070,7 @@
 	;; :defun (skk-get)
     :require t skk-study
     :defvar skk-user-directory
-	:defun skk-toggle-kana
+	:defun skk-toggle-kana skk-hiragana-set skk-katakana-set
     :hook ((isearch-mode-hook . skk-isearch-mode-setup)
 		   (isearch-mode-end-hook . skk-isearch-mode-cleanup))
     :bind (("C-x j" . skk-mode)
@@ -1399,151 +1400,6 @@
 	'mew-send-hook)
   )
 
-(leaf exwm
-  :disabled t
-  :ensure t
-  ;; :when (string= "yes" (getenv "exwm_enable"))
-  :when (eq system-type 'gnu/linux)
-  :config
-  (leaf exwm-system-tray
-	:defun (exwm-system-tray-enable)
-	:config
-	(exwm-systemtray-enable))
-  (leaf *exwm-config
-	:require exwm
-	:defun (exwm-workspace-rename-buffer exwm-workspace-toggle)
-	:custom `((use-dialog-box . nil)
-			  (window-divider-default-right-width . 1)
-			  (exwm-workspace-show-all-buffers . t)
-			  (exwm-layout-show-all-buffers . t)
-			  (exwm-workspace-number . 3)
-			  (exwm-input-simulation-keys . '(
-											  ;; like emacs
-											  ;; charactor
-											  ([?\C-b] . [left])
-											  ([?\M-b] . [C-left])
-											  ([?\C-f] . [right])
-											  ([?\M-f] . [C-right])
-											  ([?\C-p] . [up])
-											  ([?\C-n] . [down])
-											  ([?\C-a] . [home])
-											  ([?\C-e] . [end])
-											  ([?\M-v] . [prior])
-											  ([?\C-v] . [next])
-											  ([?\C-d] . [delete])
-											  ([?\C-k] . [S-end ?\C-x])
-											  ([?\M-<] . [C-home])
-											  ([?\M->] . [C-end])
-											  ([?\C-/] . [C-z])
-											  ([?\C-h] . [backspace])
-											  ([?\C-m] . [return])
-											  ([?\C-/] . [C-z])
-											  ;; cut/paste.
-											  ([?\C-w] . [?\C-x])
-											  ([?\M-w] . [?\C-c])
-											  ([?\C-y] . [?\C-v])
-											  ([?\s-v] . [?\C-v])
-											  ;; ([?\C-x ?\h] . [?\C-a])
-											  ([?\M-d] . [C-S-right ?\C-x])
-											  ([M-backspace] . [C-S-left ?\C-x])
-											  ;; search
-											  ([?\C-s] . [?\C-f])
-											  ;; others
-											  ;; ([?\C-c ?s] . [?\C-s])
-											  ;; ([?\C-c ?p] . [?\C-p])
-											  ;; ([?\C-c ?n] . [?\C-n])
-											  ;; ([?\C-c ?h] . [?\C-h])
-											  ;; ([?\C-c ?b] . [?\C-b])
-											  ;; escape
-											  ([?\C-g] . [escape])
-											  ;; like mac
-											  ([?\s-w] . [C-w])
-											  ([s-left] . [C-S-tab])
-											  ([s-right] . [C-tab])
-											  ;; ([s-up] . [C-tab])
-											  ;; ([s-down] . [C-tab])
-											  ([?\s-t] . [C-t])
-											  ([?\s-T] . [C-T])
-											  ;; ([?\s-n] . [C-n])
-											  ;; ([?\s-N] . [C-N])
-											  ;; ([?\s-p] . [C-p])
-											  ;; ([?\s-r] . [C-r])
-											  ;; skk switch change
-											  ([?\C-j] . [C-&])
-											  ([?\C-l] . [C-^])
-											  ([?\s-l] . [C-k])
-											  ([?\s-k] . [C-l])
-											  ;; test
-											  ([?\C-x ?\C-s] . [C-s])
-											  ([?\C-u ?\C-/] . [C-y])
-											  ;; ([?\C-u ?\C-/] . [C-y])
-											  ;; ([?\M-p] . [M-up])
-											  ;; ([?\M-n] . [M-down])
-											  ;; ([?\M-f] . [M-right])
-											  ;; ([?\M-b] . [M-left])
-											  ([?\s-P] . [S-up])
-											  ([?\s-N] . [S-down])
-											  ([?\s-F] . [S-right])
-											  ([?\s-B] . [S-left])
-											  ))
-			  )
-	:bind ((exwm-mode-map
-			:package exwm
-			("s-n" . windmove-down)
-			("s-f" . windmove-right)
-			("s-b" . windmove-left)
-			("s-p" . windmove-up)
-			("s-<tab>" . exwm-workspace-toggle)
-			;; (exwm-input-set-key (kbd "s-m") #'exwm-workspace-move-window)
-			;; ("s-m" . exwm-workspace-switch-to-buffer)
-			("s-a" . zoom-window-zoom)
-			;; ("s-R" . exwm-restart)
-			("C-M-v" . scroll-other-window)
-			("C-M-S-v" . scroll-other-window-down)
-			;; ("<f9>" . output_toggle)
-			;; ("<f10>" . mute_toggle)
-			;; ("<f11>" . lower_volume)
-			;; ("<f12>" . upper_volume)
-			("C-s-i" . output_toggle)
-			("C-s-m" . mute_toggle)
-			("C-s-n" . lower_volume )
-			("C-s-p" . upper_volume)
-			("s-q" . kill-current-buffer)
-			("s-h" . delete-window)
-			("s-SPC" . exwm-floating-toggle-floating)
-			("s-e" . exwm-input-toggle-keyboard)
-			("s-o" . ivy-switch-buffer)
-			("s-r" . exwm-reset)
-			("s-d" . counsel-linux-app)
-			)
-		   )
-
-	:preface
-	(defun exwm-workspace-toggle ()
-	  (interactive)
-	  (if (= exwm-workspace-current-index 0)
-		  (exwm-workspace-switch 2)
-		(exwm-workspace-switch 0)))
-	:config
-	(add-hook 'exwm-updatde-class-hook (lambda ()
-										 (exwm-workspace-rename-buffer exwm-class-name)))
-	)
-  (leaf exwm-randr
-	:require t
-	:custom (
-			 (exwm-randr-workspace-monitor-plist . '(0 "DP-0" 1 "HDMI-0" 2 "DP-0" 3 "DP-0" 4 "DP-0" 5 "DP-0"))
-
-			 )
-	:config
-	(exwm-randr-enable)
-
-	)
-  (leaf exwm-enable
-	:defun (exwm-enable)
-	:config
-	(exwm-enable)
-	)
-  )
 
 (leaf *lsp-tools
   :when (eq system-type 'gnu/linux)
@@ -1618,4 +1474,160 @@
   ;; (setq-default newsticker-url-list-defaults
   ;;             '(("オレ的ゲーム速報JIN" "http://jin115.com/index.rdf")))
 
+  )
+
+(leaf exwm
+  ;; :disabled t
+  :ensure t
+  ;; :when (string= "yes" (getenv "exwm_enable"))
+  :when (eq system-type 'gnu/linux)
+  :init
+  (server-start)
+  :config
+  (leaf *exwm-config
+	:require exwm
+	:defun (exwm-workspace-rename-buffer exwm-workspace-toggle)
+	:hook (exwm-update-class-hook . (lambda ()
+									  (exwm-workspace-rename-buffer exwm-class-name)))
+
+	:hook (exwm-manage-finish-hook . (lambda ()
+									   (when (and exwm-class-name
+												  (string= "Alacritty" exwm-class-name))
+										 (exwm-input-release-keyboard))))
+	:custom `((use-dialog-box . nil)
+			  (window-divider-default-right-width . 1)
+			  (exwm-workspace-show-all-buffers . t)
+			  (exwm-layout-show-all-buffers . t)
+			  (exwm-workspace-number . 3)
+			  (exwm-input-global-keys . '((,(kbd "s-r") . exwm-reset)
+										  (,(kbd "s-d") . counsel-linux-app)
+										  (,(kbd "s-n") . windmove-down)
+										  (,(kbd "s-f") . windmove-right)
+										  (,(kbd "s-b") . windmove-left)
+										  (,(kbd "s-p") . windmove-up)
+										  (,(kbd "s-<tab>") . exwm-workspace-toggle)
+										  (,(kbd "s-a") . zoom-window-zoom)
+										  (,(kbd "C-s-i") . output_toggle)
+										  (,(kbd "C-s-m") . mute_toggle)
+										  (,(kbd "C-s-n") . lower_volume)
+										  (,(kbd "C-s-p") . upper_volume)
+										  (,(kbd "s-q") . kill-current-buffer)
+										  (,(kbd "s-h") . delete-window)
+										  (,(kbd "s-SPC") . exwm-floating-toggle-floating)
+										  (,(kbd "s-e") . exwm-input-toggle-keyboard)
+										  (,(kbd "s-o") . ivy-switch-buffer)
+										  (,(kbd "s-r") . exwm-reset)
+										  (,(kbd "s-d") . counsel-linux-app)
+										  (,(kbd "C-j") . ,(kbd "C-&"))
+										  (,(kbd "C-l") . ,(kbd "C-^"))
+										  ,@(mapcar (lambda (i)
+													  `(,(kbd (format "s-%d" i)) .
+														(lambda ()
+														  (interactive)
+														  (exwm-workspace-switch-create ,i))))
+													(number-sequence 0 9))
+										  )
+									  )
+			  (exwm-input-simulation-keys . '(
+											  ;; new version
+											  (,(kbd "C-b") . [left])
+											  (,(kbd "M-b") . [C-left])
+											  (,(kbd "C-f") . [right])
+											  (,(kbd "M-f") . [C-right])
+											  (,(kbd "C-p") . [up])
+											  (,(kbd "C-n") . [down])
+											  (,(kbd "C-a") . [home])
+											  (,(kbd "C-e") . [end])
+											  (,(kbd "M-v") . [prior])
+											  (,(kbd "C-v") . [next])
+											  (,(kbd "C-d") . [delete])
+											  (,(kbd "C-k") . [S-end ?\C-x])
+											  (,(kbd "M-<") . [C-home])
+											  (,(kbd "M->") . [C-end])
+											  (,(kbd "C-/") . [C-z])
+											  ;; C-h は特別扱い扱い
+											  ([?\C-h] . [backspace])
+											  (,(kbd "C-m") . [return])
+											  (,(kbd "C-/") . [C-z])
+											  (,(kbd "C-S-f") . [S-right])
+											  (,(kbd "C-S-b") . [S-left])
+											  (,(kbd "C-S-p") . [S-up])
+											  (,(kbd "C-S-n") . [S-down])
+											  (,(kbd "C-w") . ,(kbd "C-x"))
+											  (,(kbd "M-w") . ,(kbd "C-c"))
+											  (,(kbd "C-y") . ,(kbd "C-v"))
+											  (,(kbd "s-v") . ,(kbd "C-v"))
+											  (,(kbd "C-x h") . ,(kbd "C-a"))
+											  (,(kbd "M-d") . [C-S-right ?\C-x])
+											  (,(kbd "M-<backspace>") . [C-S-left ?\C-x])
+											  ;; search
+											  (,(kbd "C-s") . ,(kbd "C-f"))
+											  ;; escape
+											  (,(kbd "C-g") . [escape])
+											  ;; like mac
+											  (,(kbd "s-w") . [C-w])
+											  ([s-left] . [C-S-tab])
+											  ([s-right] . [C-tab])
+											  ;; ([s-up] . [C-tab])
+											  ;; ([s-down] . [C-tab])
+											  (,(kbd "s-t") . [C-t])
+											  (,(kbd "s-T") . [C-T])
+											  ;; skk switch change
+											  ;; (,(kbd "C-j") . [C-&])
+											  ;; (,(kbd "C-l") . [C-^])
+											  (,(kbd "s-l") . [C-k])
+											  (,(kbd "s-k") . [C-l])
+											  ;; test
+											  (,(kbd "C-x C-s") . [C-s])
+											  (,(kbd "C-u C-/") . [C-y])
+											  ))
+			  )
+	:bind (("C-&" . skk-hiragana-set)
+		   ("C-^" . skk-latin-mode))
+	:preface
+	(defun exwm-workspace-toggle ()
+	  (interactive)
+	  (if (= exwm-workspace-current-index 0)
+		  (exwm-workspace-switch 2)
+		(exwm-workspace-switch 0)))
+	:config
+	(exwmx-floating-smart-hide)
+    (exwmx-button-enable)
+	)
+
+  (leaf exwm-systemtray
+	:require t
+	:defun exwm-systemtray-enable
+	:config
+	(exwm-systemtray-enable)
+	)
+
+  (leaf exwm-randr
+	:require t
+	:custom (
+			 (exwm-randr-workspace-monitor-plist . '(0 "DP-0" 1 "HDMI-0" 2 "DP-0" 3 "DP-0" 4 "DP-0" 5 "DP-0"))
+
+			 )
+	:config
+	(exwm-randr-enable)
+
+	)
+
+  ;; (leaf *exwm-keybinding
+  ;; 	:custom
+  ;; 	:config)
+
+  (leaf exwm-enable
+	:defun (exwm-enable)
+	:config
+	(exwm-enable)
+	;; (provide 'init-exwm)
+	)
+
+  (leaf *fix_ediff
+	:after ediff-wind
+	:custom `((ediff-window-setup-function . 'ediff-setup-windows-plain)
+			  ;; (ediff-control-frame-parameters . (cons '(unsplittable . t) ediff-control-frame-parameters))
+			  )
+	)
   )

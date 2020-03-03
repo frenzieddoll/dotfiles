@@ -25,11 +25,11 @@
 ;; (require 'package)
 ;; ;;MELPA を追加
 
-(setq package-archives
-      '(("gnu" . "http://elpa.gnu.org/packages/")
-        ("melpa" . "http://melpa.org/packages/")
-        ("org" . "http://orgmode.org/elpa/")))
-(package-initialize)
+;; (setq package-archives
+;;       '(("gnu" . "http://elpa.gnu.org/packages/")
+;;         ("melpa" . "http://melpa.org/packages/")
+;;         ("org" . "http://orgmode.org/elpa/")))
+;; (package-initialize)
 
 ;; ----------leaf mode---------------------------------------------------------------
 (load "conf" t)
@@ -67,10 +67,10 @@
 
 ;; linux用の設定
 
-(when (eq system-type 'gnu/linux)
-  (if window-system (progn
-                      (load "init-exwm" t)
-                      )))
+;; (when (eq system-type 'gnu/linux)
+;;   (if window-system (progn
+;;                       (load "init-exwm" t)
+;;                       )))
 
 ;; mac用の設定
 ;; (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
