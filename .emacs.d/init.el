@@ -25,48 +25,43 @@
 ;; (require 'package)
 ;; ;;MELPA を追加
 
-;; (setq package-archives
-;;       '(("gnu" . "http://elpa.gnu.org/packages/")
-;;         ("melpa" . "http://melpa.org/packages/")
-;;         ("org" . "http://orgmode.org/elpa/")))
-;; (package-initialize)
+(setq package-archives
+      '(("gnu" . "http://elpa.gnu.org/packages/")
+        ("melpa" . "http://melpa.org/packages/")
+        ("org" . "http://orgmode.org/elpa/")))
+(package-initialize)
 
 ;; ----------leaf mode---------------------------------------------------------------
-(load "init_leaf" t)
+(load "conf" t)
 
-(leaf *programing
-  :config
-  (leaf ein)
-  (leaf rust-mode))
+;; (add-hook 'newsticker-treeview-mode-hook
+;;           '(lambda ()
+;;              (load "init-rss" t)))
 
-(add-hook 'newsticker-treeview-mode-hook
-          '(lambda ()
-             (load "init-rss" t)))
+;; (defun load-add-setting ()
+;;   "Add setting."
+;;   (interactive)
+;;   ;; (load "init-flycheck" t)
+;;   ;; (add-hook 'picture-mode-hook 'picture-mode-init)
+;;   ;; (autoload 'picture-mode-init "init-picture")
+;;   ;; linux環境でのみ読み込み
+;;   (when (eq system-type 'gnu/linux)
+;;       ;; (load "init-rust" t)
+;;       (load "init-lspmode" t)
+;;       ;; (load "init-haskell" t)
+;;       ;; (load "init-mail" t)
 
-(defun load-add-setting ()
-  "Add setting."
-  (interactive)
-  (load "init-flycheck" t)
-  ;; (add-hook 'picture-mode-hook 'picture-mode-init)
-  ;; (autoload 'picture-mode-init "init-picture")
-  ;; linux環境でのみ読み込み
-  (when (eq system-type 'gnu/linux)
-      (load "init-rust" t)
-      (load "init-lspmode" t)
-      ;; (load "init-haskell" t)
-      ;; (load "init-mail" t)
+;;       (load "init-quickrun" t)
+;;       (require 'ein)
+;;       ))
 
-      (load "init-quickrun" t)
-      (require 'ein)
-      ))
+;; (defun start_mail ()
+;;   (interactive)
+;;   (load "init-mew" t))
 
-(defun start_mail ()
-  (interactive)
-  (load "init-mew" t))
-
-(defun load-pdf-tools ()
-  (interactive)
-  (load "init-pdftools" t))
+;; (defun load-pdf-tools ()
+;;   (interactive)
+;;   (load "init-pdftools" t))
 
 
 

@@ -83,6 +83,7 @@
 (require 'google-contacts-mew)
 (setq google-contacts-email "frenzieddoll@gmail.com")
 
+;; ファイルサーチをビルドイン関数で行なう
 (load "mew-search-with-buildin.el" t)
 (load "multipart-decode.el" t)
 ;; (require 'mew-builtin-search)
