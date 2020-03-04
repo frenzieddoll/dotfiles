@@ -1,16 +1,21 @@
 ;; leaf 起動前の設定
 (prog1 "prepare leaf"
   (prog1 "package"
-	(when (eq system-type 'darwin)
-	  (custom-set-variables
-	   '(package-archives '(("org"   . "http://orgmode.org/elpa/")
-							("melpa" . "http://melpa.org/packages/")
-							("gnu"	 . "http://elpa.gnu.org/packages/"))))
-	  (custom-set-variables
-	   '(package-archives '(("org"   . "https://orgmode.org/elpa/")
-							("melpa" . "https://melpa.org/packages/")
-							("gnu"	 . "https://elpa.gnu.org/packages/"))))
-	  )
+	;; (when (eq system-type 'darwin)
+	;;   (custom-set-variables
+	;;    '(package-archives '(("org"   . "http://orgmode.org/elpa/")
+	;; 						("melpa" . "http://melpa.org/packages/")
+	;; 						("gnu"	 . "http://elpa.gnu.org/packages/"))))
+	;;   (custom-set-variables
+	;;    '(package-archives '(("org"   . "https://orgmode.org/elpa/")
+	;; 						("melpa" . "https://melpa.org/packages/")
+	;; 						("gnu"	 . "https://elpa.gnu.org/packages/"))))
+	;;   )
+	(custom-set-variables
+	 '(package-archives '(("org"   . "http://orgmode.org/elpa/")
+						  ("melpa" . "http://melpa.org/packages/")
+						  ("gnu"   . "http://elpa.gnu.org/packages/"))))
+
     (package-initialize))
 
   (prog1 "leaf"
@@ -586,7 +591,9 @@
 
   (leaf csv-mode :ensure t)
 
-  (leaf vlf :ensure t)
+  (leaf vlf
+	:ensure t
+	:require vlf-setup)
 
   (leaf yaml-mode)
 
