@@ -72,9 +72,9 @@
 
 (setq mew-use-text/html t)
 (setq browse-url-browser-function 'eww-browse-url)
-(condition-case nil
-    (require 'eww)
-  (file-error nil))
+;; (condition-case nil
+;;     (require 'eww)
+;;   (file-error nil))
 
 ;; ファイルサーチをビルドイン関数で行なう
 
@@ -91,6 +91,8 @@
 
 ;; 未読メールにUマークを付ける
 (setq mew-use-unread-mark t)
+
+(setq mew-thread-indent-strings ["+" "+" "|" " "])
 
 ;; (add-hook mew-init-hook '(lambda ()
 ;;                            (load "init-visual" t)))

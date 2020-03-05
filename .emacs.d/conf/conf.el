@@ -370,7 +370,7 @@
 											  ("iso" . "mpv dvd:// -dvd-device")
 											  ("playlist" . "mpv --playlist")
 											  ("exe"  . "wine")
-											  ;; ("pdf"  . "YACReader")
+											  ("pdf"  . "zathura")
 											  ("zip"  . "YACReader")
 											  ("rar"  . "YACReader")
 											  ("tar"  . "YACReader")
@@ -661,21 +661,23 @@
               (dviprint-command-format . "open -a \"Adobe Acrobat Reader DC\" `echo %s | gsed -e \"s/\\.[^.]*$/\\.pdf/\"`")
               (YaTeX-nervous . nil)
               (YaTeX-close-paren-always . nil))
-	:init
-	(leaf *YatexforMac
+
+    :config
+	(leaf *yatexForLinux
+	  :when (eq system-type 'gnu/linux)
+	  :custom ((dvi2-command . "zathura -x \"emacsclient --no-wait +%{line} %{input}\"")
+			   (tex-pdfview-command . "zathura -x \"emacsclient --no-wait +%{line} %{input}\"")
+			   )
+	  )
+
+	(leaf *yatexforMac
 	  ;; :disabled t
 	  :when (eq system-type 'darwin)
 	  :custom ((dvi2-command . "open -a Skim")
 			   (tex-pdfview-command . "open -a Skim")
 			   )
-	  :init
-	  ;; (setenv "PATH" "/usr/local/bin:/Library/TeX/texbin/:/Applications/Skim.app/Contents/SharedSupport:$PATH" t)
-	  ;; (setq exec-path (append '("/usr/local/bin" "/Library/TeX/texbin" "/Applications/Skim.app/Contents/SharedSupport") exec-path))
-
 	  )
 
-
-    :config
     (leaf *yatex_after_load
       :after yatexprc
 	  :defvar YaTeX-parent-file YaTeX-cmd-displayline
@@ -920,79 +922,185 @@
   )
 
 (leaf *view_mode
-  :config
-  (leaf view
-	;; (leaf keys-in-view-mode
-    ;; :ensure t
-    :custom ((view-read-only . t))
-    :bind
-    (("C-;" . view-mode)
-     (view-mode-map
-      ("SPC" . ignore)
-      ("C-m" . ignore)
-      ("h" . backward-char)
-      ("j" . next-line)
-      ("k" . previous-line)
-      ("l" . forward-char)
-      ("J" . View-scroll-line-forward)
-      ("K" . View-scroll-line-backward)
-      ("b" . backward-char)
-      ("n" . next-line)
-      ("p" . previous-line)
-      ("f" . forward-char)
-      ("C-;" . ignore)
-      ("a" . vim-forward-char-to-insert)
-      ("A" . vim-end-of-line-to-insert)
-      ("I" . vim-beginning-of-line-to-insert)
-      ("i" . View-exit)
-      ("x" . vim-del-char)
-      ("X" . vim-backward-kill-line)
-      ("0" . beginning-of-line)
-      ("$" . move-end-of-line)
-      ("e" . end-of-line)
-      ("o" . vim-o)
-      ("O" . vim-O)
-      ("y" . copy-region-as-kill)
-      ("Y" . vim-copy-line)
-      ("w" . forward-word+1)
-      ("W" . backward-word)
-      ;; ("P" . vim-P)
-      ("D" . vim-kill-line)
-      (":" . save-buffer)
-      ("u" . ignore)
-      ("u" . vim-undo)
-      ("r" . vim-redo)
-      ("d" . vim-kill-whole-line)
-      ("c" . vim-kill-whole-line-to-insert)
-      ("g" . View-goto-line)
-      ("G" . View-goto-percent)))))
-
-(leaf multi-term
-  :disabled t
-  :ensure t
-  :custom ((multi-term-program . shell-file-name))
-  :config
-  ;; キーを取り戻す
-  (add-to-list 'term-unbind-key-list '"M-x")
-  (add-to-list 'term-unbind-key-list '"C-j")
-  (add-to-list 'term-unbind-key-list '"C-l")
-  (add-to-list 'term-unbind-key-list '"C-o")
-  (add-hook 'term-mode-hook
-            '(lambda ()
-               ;; C-hをterm内文字削除にする
-               (define-key term-raw-map (kbd "C-h") 'term-send-backspace)
-               ;; C-yをterm内ペーストにする
-               (define-key term-raw-map (kbd "C-y") 'term-paste)
-               (define-key term-raw-map (kbd "C-j") 'skk-hiragana-set)
-               (define-key term-raw-map (kbd "C-q") 'skk-katakana-set)
-               (define-key term-raw-map (kbd "C-l") 'skk-latin-mode-on)
-               ))
-  (global-set-key (kbd "C-c q")
-                  '(lambda ()
-					 (interactive)
-					 (if (get-buffer "*terminal<1>*")
-						 (switch-to-buffer "*terminal<1>*")
-                       (multi-term)))))
+  :custom ((view-read-only . t))
+  :bind (("C-;" . view-mode)
+		 (view-mode-map
+		  ("SPC" . ignore)
+		  ("C-m" . ignore)
+		  ("h" . backward-char)
+		  ("j" . next-line)
+		  ("k" . previous-line)
+		  ("l" . forward-char)
+		  ("J" . View-scroll-line-forward)
+		  ("K" . View-scroll-line-backward)
+		  ("b" . backward-char)
+		  ("n" . next-line)
+		  ("p" . previous-line)
+		  ("f" . forward-char)
+		  ("C-;" . ignore)
+		  ("a" . vim-forward-char-to-insert)
+		  ("A" . vim-end-of-line-to-insert)
+		  ("I" . vim-beginning-of-line-to-insert)
+		  ("i" . View-exit)
+		  ("x" . vim-del-char)
+		  ("X" . vim-backward-kill-line)
+		  ("0" . beginning-of-line)
+		  ("$" . move-end-of-line)
+		  ("e" . end-of-line)
+		  ("o" . vim-o)
+		  ("O" . vim-O)
+		  ("y" . copy-region-as-kill)
+		  ("Y" . vim-copy-line)
+		  ("w" . forward-word+1)
+		  ("W" . backward-word)
+		  ("P" . vim-P)
+		  ("D" . vim-kill-line)
+		  (":" . save-buffer)
+		  ;; ("u" . ignore)
+		  ("u" . vim-undo)
+		  ("r" . vim-redo)
+		  ("d" . vim-kill-whole-line)
+		  ("c" . vim-kill-whole-line-to-insert)
+		  ("g" . View-goto-line)
+		  ("G" . View-goto-percent)))
+  :preface
+  (leaf *keys-in-view-mode
+	:config
+	(defun vim-forward-char-to-insert ()
+	  (interactive)
+	  (view-mode 0)
+	  (forward-char 1)
+	  (message "edit-mode !"))
+	;; like A
+	(defun vim-end-of-line-to-insert ()
+	  (interactive)
+	  (view-mode 0)
+	  (end-of-line)
+	  (message "edit-mode !"))
+	;; like I
+	(defun vim-beginning-of-line-to-insert ()
+	  (interactive)
+	  (view-mode 0)
+	  (beginning-of-line)
+	  (message "edit-mode !"))
+	;; like cc
+	(defun vim-kill-whole-line-to-insert ()
+	  (interactive)
+	  (view-mode 0)
+	  (kill-whole-line)
+	  (open-line 1)
+	  (backward-line)
+	  (beginning-of-line)
+	  (message ":kill-whole-line and edit-mode !"))
+	;; like dd
+	(defun vim-kill-whole-line ()
+	  (interactive)
+	  (view-mode 0)
+	  (kill-whole-line)
+	  (view-mode 1)
+	  (message "kill-whole-line"))
+	;; like D
+	(defun vim-kill-line ()
+	  (interactive)
+	  (view-mode 0)
+	  (kill-line)
+	  (view-mode 1)
+	  (message "kill-line"))
+	;; like C
+	(defun vim-kill-line-to-insert ()
+	  (interactive)
+	  (view-mode 0)
+	  (kill-line)
+	  (message "kill-line and edit-mode !"))
+	;; like o
+	(defun vim-o ()
+	  (interactive)
+	  (view-mode 0)
+	  (forward-line)
+	  (open-line 1)
+	  (beginning-of-line)
+	  (message "edit-mode !"))
+	;; like O
+	(defun vim-O ()
+	  (interactive)
+	  (view-mode 0)
+	  (open-line 1)
+	  (beginning-of-line)
+	  (message "edit-mode !"))
+	;; like x
+	(defun vim-del-char ()
+	  (interactive)
+	  (view-mode 0)
+	  (delete-char 1)
+	  (view-mode 1)
+	  (message "delete-char"))
+	;; like c
+	(defun vim-del-char-to-insert ()
+	  (interactive)
+	  (view-mode 0)
+	  (delete-char 1)
+	  (message "delete-char and edit mode !"))
+	;; like u
+	(defun vim-undo ()
+	  (interactive)
+	  (view-mode 0)
+	  (undo)
+	  (view-mode 1)
+	  (message "undo !"))
+	;; like C-r
+	(defun vim-redo ()
+	  (interactive)
+	  (view-mode 0)
+	  (redo)
+	  (view-mode 1)
+	  (message "redo !"))
+	;; like Y
+	(defun vim-copy-line (arg)
+	  (interactive "p")
+	  (kill-ring-save (line-beginning-position)
+					  (line-beginning-position (+ 1 arg)))
+	  (message "%d line%s copied" arg (if (= 1 arg) "" "s")))
+	;; like P
+	(defun vim-P ()
+	  (interactive)
+	  (view-mode 0)
+	  (beginning-of-line)
+	  (yank)
+	  (beginning-of-line)
+	  (forward-line -1)
+	  (view-mode 1)
+	  (message "yank !"))
+	;; like p
+	(defun vim-p ()
+	  (interactive)
+	  (view-mode 0)
+	  (yank)
+	  (view-mode 1)
+	  (message "yank !"))
+	;; like w
+	(defun forward-word+1 ()
+	  (interactive)
+	  (forward-word)
+	  (forward-char))
+	;; like %
+	(defun vim-jump-brace()
+	  "Jump to correspondence parenthesis"
+	  (interactive)
+	  (let ((c (following-char))
+			(p (preceding-char)))
+		(if (eq (char-syntax c) 40) (forward-list)
+		  (if (eq (char-syntax p) 41) (backward-list)
+			(backward-up-list)))))
+	;; Delete from cursor position to beginning-of-line
+	(defun vim-backward-kill-line (arg)
+	  "Kill chars backward until encountering the beginning of line."
+	  (interactive "p")
+	  (view-mode 0)
+	  (kill-line 0)
+	  (view-mode 1)
+	  (message "backward-kill-line"))
+	)
+  )
 
 (leaf eww
   ;; :disabled t
@@ -1492,7 +1600,8 @@
 
 			 (mew-use-text/html . t)
 			 (browse-url-broser-function . eww-browser-url)
-			 (mew-thread-indent-strings . ["+" "+" "|" " "])
+			 ;; (mew-thread-indent-strings . ["+" "+" "|" " "])
+
 			 )
 	:config
 	(define-mail-user-agent
@@ -1501,6 +1610,12 @@
 	  'mew-draft-send-message
 	  'mew-draft-kill
 	  'mew-send-hook)
+	;; ファイルサーチをビルドイン関数で行なう
+	(load "mew-search-with-buildin.el" t)
+	(load "multipart-decode.el" t)
+	;; (require 'mew-builtin-search)
+	(setq mew-search-method 'buildin)
+
 	;; (setq mew-thread-indent-strings  ["+" "+" "|" " "])
 	(leaf *addSettings
 	  :when (fboundp 'shr-render-region)
@@ -1508,6 +1623,11 @@
 	  :custom ((mew-prog-text/html . shr-render-region))
 	  )
 	)
+
+(leaf *mewOriginal
+  :config
+  (load "init-mew" t)
+  )
 
 (leaf *lsp-tools
   :when (eq system-type 'gnu/linux)

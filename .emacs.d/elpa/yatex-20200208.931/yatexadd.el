@@ -201,7 +201,7 @@ YaTeX-make-begin-end."
 	 (concat "[" lines "]")))
    "{" (YaTeX:read-oneof "rlioRLIO" t) "}"
    "{" (YaTeX:read-length "Image width: ") "}"))
- 
+
 
 ;;;
 ;;Sample functions for section-type command.
@@ -818,7 +818,7 @@ If optional third argument NOSET is non-nil, do not generate new label."
 	  (setq newlabel
 		(funcall YaTeX-ref-generate-label-function command arg)))
 	(delete-region (point) (progn (skip-chars-backward " \t") (point)))
-	(if mathp nil 
+	(if mathp nil
 	  (insert "\n")
 	  (YaTeX-reindent cc))
 	(put 'YaTeX::ref-getset-label 'foundpoint (point))
@@ -866,7 +866,7 @@ YaTeX-sectioning-levelの数値で指定.")
 					;(goto-char (match-beginning 0))
       (setq e0 (match-end 0))
       (cond
-       ;; 
+       ;;
        ;;2005/10/21 Skip it if predicate function returns nil
        ((and predf
 	     (let ((md (match-data)))
@@ -877,7 +877,7 @@ YaTeX-sectioning-levelの数値で指定.")
 		 (store-match-data md)))))
        ((YaTeX-literal-p) nil)
        ((YaTeX-match-string 1)
-	;;if standard counter commands found 
+	;;if standard counter commands found
 	(setq cmd (YaTeX-match-string 2)
 	      m0 (match-beginning 0))
 	(setq match-point (match-beginning 0))
@@ -1002,7 +1002,7 @@ YaTeX-sectioning-levelの数値で指定.")
 		(if b0		  ;Inspect sentence after previous \item
 		    (save-excursion
 		      (save-restriction
-			(let ((md (match-data))) ;save-match-data 
+			(let ((md (match-data))) ;save-match-data
 			  (unwind-protect
 			      (progn
 				(narrow-to-region b0 (or x (point)))
@@ -1200,7 +1200,7 @@ YaTeX-sectioning-levelの数値で指定.")
 
 	    (YaTeX::ref-1)
 
-	    
+
 	    (princ YaTeX-label-menu-other)
 	    (princ YaTeX-label-menu-repeat)
 	    (princ YaTeX-label-menu-any)
@@ -1344,7 +1344,7 @@ Don't forget to exit from recursive edit by typing \\[exit-recursive-edit]
 		 (not (equal old label))
 		 (YaTeX::label-rename-refs old label))))
       label))))
-      
+
 
 (fset 'YaTeX::pageref 'YaTeX::ref)
 (fset 'YaTeX::cref 'YaTeX::ref)
@@ -1512,7 +1512,7 @@ and print them to standard output."
 	;;;(switch-to-buffer bbuf)
 	(if (fboundp 'font-lock-fontify-buffer) (font-lock-fontify-buffer))
 	(YaTeX::ref
-	 argp 
+	 argp
 	 (concat "\\\\\\("
 		 YaTeX::cite-bibitem-macro-regexp
 		 "\\)\\(\\[.*\\]\\)?")
@@ -1921,7 +1921,7 @@ and print them to standard output."
 	    "chapter"
 	  "section"))
   "")
-      
+
 
 (defvar YaTeX:latex2e-named-color-alist
   '(("GreenYellow") ("Yellow") ("Goldenrod") ("Dandelion") ("Apricot")
@@ -2071,7 +2071,8 @@ This function relies on gs(ghostscript) command installed."
 	(imgfilepath
 	 (save-excursion
 	   (YaTeX-visit-main t)
-	   (expand-file-name imgfile default-directory)))
+	   (expand-file-name imgfile default-directory)
+	   ))
 	(case-fold-search t) info bb noupdate needclose c)
     (and (string-match "\\.\\(jpe?g\\|png\\|gif\\|bmp\\|pdf\\)$" imgfile)
 	 (file-exists-p imgfilepath)
@@ -2125,11 +2126,11 @@ This function relies on gs(ghostscript) command installed."
 	    (t (YaTeX-push-to-kill-ring bb)))))
     (setq YaTeX-section-name "caption")
     imgfile))
- 
+
 (defun YaTeX::verbfile (argp)
   "Add-in for \\verbfile"
   (YaTeX::include argp "Virbatim File: "))
- 
+
 (defun YaTeX:caption ()
   (setq YaTeX-section-name "label")
   nil)
@@ -2146,7 +2147,7 @@ This function relies on gs(ghostscript) command installed."
 ;; for okumacro
 (defun YaTeX::ruby (argp)
   (cond
-   ((= argp 1) (YaTeX-read-string-or-skip "Kanji: ")) 
+   ((= argp 1) (YaTeX-read-string-or-skip "Kanji: "))
    ((= argp 2) (YaTeX-read-string-or-skip "Yomi: "))))
 
 ;;(require 'yatexpkg)
@@ -2319,7 +2320,7 @@ This function relies on gs(ghostscript) command installed."
 (fset 'YaTeX::widehat		'YaTeX::widetilde)
 (fset 'YaTeX::overline		'YaTeX::widetilde)
 (fset 'YaTeX::overrightarrow	'YaTeX::widetilde)
-	
+
 ;
 ; for \frac{}{} region
 (defun YaTeX::frac-region (beg end)
