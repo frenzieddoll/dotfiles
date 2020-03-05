@@ -69,7 +69,7 @@
     :url "http://handlename.hatenablog.jp/entry/2011/12/11/214923" ; align sumple
     :defvar show-paren-deley
     :custom `(;; GC
-			  ;; (gc-cons-threshold . ,(* 128 1024 1024))
+			  ;; (gc-cons-threshold . ,(* 64 1024 1024))
 			  (garbage-collection-messages . t)
 			  ;; 表示
 			  (tool-bar-mode . nil)
@@ -146,7 +146,7 @@
     (defalias 'yes-or-no-p 'y-or-n-p)
 	(leaf *gc-cons-threshold-arch
 	  :when (string-match "archlinuxhonda" (system-name))
-	  :custom `((gc-cons-threshold . ,(* 128 1024 1024)))
+	  :custom `((gc-cons-threshold . ,(* 1024 1024 1024)))
 	  )
 	(leaf *gc-cons-threshold-mac
 	  :when (eq system-type 'darwin)
@@ -352,7 +352,7 @@
 		  :require t
 		  :when (eq system-type 'gnu/linux)
 		  :custom ((dired-open-extensions . '(("mkv"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-											  ("mp4"  . "~/projects/dotfilesotfiles/.emacs.d/script/mpv-rifle.sh")
+											  ("mp4"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
 											  ("avi"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
 											  ("wmv"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
 											  ("webm" . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
@@ -403,6 +403,23 @@
 	:bind (("C-c e" . eshell))
 	:hook (eshell-mode-hook . eshell-alias)
 	:defvar eshell-command-aliases-list
+	;; :custom `((eshell-command-aliase-list . '(list '(list "ll" "ls -ltrh")
+	;; 											   '(list "la" "ls -a")
+	;; 											   '(list "o" "xdg-open")
+	;; 											   '(list "emacs" "find-file $1")
+	;; 											   '(list "m" "find-file $1")
+	;; 											   '(list "mc" "find-file $1")
+	;; 											   '(list "d" "dired .")
+	;; 											   '(list "l" "eshell/less $1")
+	;; 											   '(list "translate" "~/python/translate.py")
+	;; 											   '(list "pacmandate" "expac --timefmt='%Y-%m-%d %T' '%l\t%n' | sort | tail -n $1")
+	;; 											   '(list "manga" "wine ~/Documents/Software/picture/MangaMeeya_73/MangaMeeya.exe")
+	;; 											   '(list "backup" "~/.emacs.d/script/backup.sh $1")
+	;; 											   '(list "nvidiafix" "nvidia-settings --assign CurrentMetaMode='nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }'")
+	;; 											   '(list "usbmount" "sudo mount -t vfat $1 $2 -o rw,umask=000")
+	;; 											   '(list "dvd" "mpv dvd:// -dvd-device $1")
+	;; 											   '(list "dvdCopy" "dvdbackup -i /dev/sr0 -o ~/Downloads/iso/ -M"))))
+
 	:preface
 	(defun eshell-alias ()
       (interactive)
@@ -426,6 +443,7 @@
               (list "usbmount" "sudo mount -t vfat $1 $2 -o rw,umask=000")
               (list "dvd" "mpv dvd:// -dvd-device $1")
               (list "dvdCopy" "dvdbackup -i /dev/sr0 -o ~/Downloads/iso/ -M")
+			  (list "pkglist" "yay -Qe | cut -f 1 -d " " > ~/.emacs.d/pkglist")
               ))))
 	(defun pcomplete/sudo ()
       "Completion rules for the `sudo' command."
@@ -435,7 +453,7 @@
 
 	:config
 	(leaf *unixCommandEmu
-      :when (eq system-type 'gnu/linux)
+      :unless (eq system-type 'windows)
       :config (eval-after-load "esh-module"
 				'(defvar eshell-modules-list (delq 'eshell-ls (delq 'eshell-unix eshell-modules-list)))))
 	)
@@ -597,18 +615,17 @@
 
   (leaf yaml-mode)
 
+  (leaf neotree :ensure t)
+
   (leaf *git-tool
 	:config
 	(leaf magit
-	 :when (version<= "25.1" emacs-version)
-	 :ensure t
-	 )
+	  :when (version<= "25.1" emacs-version)
+	  :ensure t
+	  )
 
 	(leaf gitignore-mode :ensure t)
-	)
-
-  (leaf neotree :ensure t
-	)
+  )
 
   )
 
@@ -1278,7 +1295,8 @@
 	   ("C-c i" . imenus)
 	   ("M-y" . counsel-yank-pop)
 	   ("C-x C-b" . counsel-ibuffer)
-	   ("C-M-f" . counsel-ag))
+	   ;; ("C-M-f" . counsel-ag)
+	   )
 	  :config
 
 	  (leaf counsel-osx-app
@@ -1337,6 +1355,7 @@
 	)
 
   (leaf highlight-indent-guides-mode
+	:when (eq system-type 'gnu/linux)
 	:hook ((prog-mode-hook . highlight-indent-guides-mode))
 	:custom '((highlight-indent-guides-method . 'column)
 			  ;; (highlight-indent-guides-auto-enable . t)
@@ -1361,13 +1380,82 @@
 	;; :disabled t
 	:require t)
 
+  (leaf smartparens
+	:disabled t
+	:when window-system
+	:ensure t
+	:require smartparens-config
+	:custom ((sp-highlight-pari-overly . nil)
+			 (sp-navigate-interactive-always-progress-point . t)
+			 (smartparens-global-strict-mode . t))
+	:bind ((smartparens-mode-map
+            ;;;;
+            ;;;; navigation
+
+            ;; basic (fbnp-ae)
+            ("C-M-f" . sp-forward-sexp)
+            ("C-M-b" . sp-backward-sexp)
+            ("C-M-n" . sp-next-sexp)
+            ("C-M-p" . sp-previous-sexp)
+            ("C-M-a" . sp-beginning-of-sexp)
+            ("C-M-e" . sp-end-of-sexp)
+
+            ;; checkin/checkout
+            ("C-M-i" . sp-down-sexp)
+            ("C-M-o" . sp-backward-up-sexp)
+
+            ;; misc
+            ("C-M-k"   . sp-kill-sexp)
+            ("C-M-w"   . sp-copy-sexp)
+            ("C-M-t"   . sp-transpose-sexp)
+            ("C-M-SPC" . sp-mark-sexp)
+
+            ;;;;
+            ;;;; depth-changing commands
+
+            ;; basic
+            ("M-s"           . sp-splice-sexp)
+            ("M-r"           . sp-splice-sexp-killing-around)
+            ("M-<up>"        . nil)
+            ("M-<down>"      . nil)
+            ("C-M-u"         . sp-splice-sexp-killing-backward)
+            ("C-M-d"         . sp-splice-sexp-killing-forward)
+            ("M-("           . sp-wrap-round)
+            ("M-["           . sp-wrap-square)
+            ("M-{"           . sp-wrap-qurly)
+
+            ;; barf/slurp
+            ("C-)" . sp-forward-slurp-sexp)
+            ("C-}" . sp-forward-barf-sexp)
+            ("C-(" . sp-backward-slurp-sexp)
+            ("C-{" . sp-backward-barf-sexp)
+
+            ;; split/join
+            ("M-S-s" . sp-split-sexp)
+            ("M-j"   . sp-join-sexp)
+
+            ;;;;
+            ;;;; misc
+
+            ;; change constructure
+            ("M-?"     . sp-convolute-sexp)
+            ("C-c s a" . sp-absorb-sexp)
+            ("C-c s e" . sp-emit-sexp)
+            ("C-c s p" . sp-convolute-sexp)
+            ("C-c s t" . sp-transpose-hybrid-sexp)
+
+            ;; change elements
+            ("C-c s (" . sp-rewrap-sexp)
+            ("C-c s r" . sp-change-inner)
+            ("C-c s s" . sp-change-enclosing)))
+	)
+
   )
 
 
 ;; 途中の設定
-
 (leaf mew
-	;; :disabled t
+	:disabled t
 	:when (file-exists-p '"/usr/bin/stunnel")
 	:ensure t
 	:require t
@@ -1420,7 +1508,6 @@
 	  :custom ((mew-prog-text/html . shr-render-region))
 	  )
 	)
-
 
 (leaf *lsp-tools
   :when (eq system-type 'gnu/linux)
