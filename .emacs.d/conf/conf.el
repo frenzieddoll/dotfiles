@@ -596,6 +596,164 @@
   )
 
 
+;; window maneger
+(leaf exwm
+  ;; :disabled t
+  :ensure t
+  ;; :when (string= "yes" (getenv "exwm_enable"))
+  :when (eq system-type 'gnu/linux)
+  :init
+  (server-start)
+  :config
+  (leaf *exwm-config
+	:require exwm
+	:defun (exwm-workspace-rename-buffer exwm-workspace-toggle)
+	:hook (exwm-update-class-hook . (lambda ()
+									  (exwm-workspace-rename-buffer exwm-class-name)))
+
+	:hook (exwm-manage-finish-hook . (lambda ()
+									   (when (and exwm-class-name
+												  (string= "Alacritty" exwm-class-name))
+										 (exwm-input-release-keyboard))))
+	:custom `((use-dialog-box . nil)
+			  (window-divider-default-right-width . 1)
+			  (exwm-workspace-show-all-buffers . t)
+			  (exwm-layout-show-all-buffers . t)
+			  (exwm-workspace-number . 3)
+			  (exwm-input-global-keys . '((,(kbd "s-r") . exwm-reset)
+										  (,(kbd "s-d") . counsel-linux-app)
+										  (,(kbd "s-n") . windmove-down)
+										  (,(kbd "s-f") . windmove-right)
+										  (,(kbd "s-b") . windmove-left)
+										  (,(kbd "s-p") . windmove-up)
+										  (,(kbd "s-<tab>") . exwm-workspace-toggle)
+										  (,(kbd "s-a") . zoom-window-zoom)
+										  (,(kbd "C-s-i") . output_toggle)
+										  (,(kbd "C-s-m") . mute_toggle)
+										  (,(kbd "C-s-n") . lower_volume)
+										  (,(kbd "C-s-p") . upper_volume)
+										  (,(kbd "s-q") . kill-current-buffer)
+										  (,(kbd "s-h") . delete-window)
+										  (,(kbd "s-SPC") . exwm-floating-toggle-floating)
+										  (,(kbd "s-e") . exwm-input-toggle-keyboard)
+										  (,(kbd "s-o") . ivy-switch-buffer)
+										  (,(kbd "s-r") . exwm-reset)
+										  (,(kbd "s-d") . counsel-linux-app)
+										  (,(kbd "C-j") . ,(kbd "C-&"))
+										  (,(kbd "C-l") . ,(kbd "C-^"))
+										  ,@(mapcar (lambda (i)
+													  `(,(kbd (format "s-%d" i)) .
+														(lambda ()
+														  (interactive)
+														  (exwm-workspace-switch-create ,i))))
+													(number-sequence 0 9))
+										  )
+									  )
+			  (exwm-input-simulation-keys . '(
+											  ;; new version
+											  (,(kbd "C-b") . [left])
+											  (,(kbd "M-b") . [C-left])
+											  (,(kbd "C-f") . [right])
+											  (,(kbd "M-f") . [C-right])
+											  (,(kbd "C-p") . [up])
+											  (,(kbd "C-n") . [down])
+											  (,(kbd "C-a") . [home])
+											  (,(kbd "C-e") . [end])
+											  (,(kbd "M-v") . [prior])
+											  (,(kbd "C-v") . [next])
+											  (,(kbd "C-d") . [delete])
+											  (,(kbd "C-k") . [S-end ?\C-x])
+											  (,(kbd "M-<") . [C-home])
+											  (,(kbd "M->") . [C-end])
+											  (,(kbd "C-/") . [C-z])
+											  ;; C-h は特別扱い扱い
+											  ([?\C-h] . [backspace])
+											  (,(kbd "C-m") . [return])
+											  (,(kbd "C-/") . [C-z])
+											  (,(kbd "C-S-f") . [S-right])
+											  (,(kbd "C-S-b") . [S-left])
+											  (,(kbd "C-S-p") . [S-up])
+											  (,(kbd "C-S-n") . [S-down])
+											  (,(kbd "C-w") . ,(kbd "C-x"))
+											  (,(kbd "M-w") . ,(kbd "C-c"))
+											  (,(kbd "C-y") . ,(kbd "C-v"))
+											  (,(kbd "s-v") . ,(kbd "C-v"))
+											  (,(kbd "C-x h") . ,(kbd "C-a"))
+											  (,(kbd "M-d") . [C-S-right ?\C-x])
+											  (,(kbd "M-<backspace>") . [C-S-left ?\C-x])
+											  ;; search
+											  (,(kbd "C-s") . ,(kbd "C-f"))
+											  ;; escape
+											  (,(kbd "C-g") . [escape])
+											  ;; like mac
+											  (,(kbd "s-w") . [C-w])
+											  ([s-left] . [C-S-tab])
+											  ([s-right] . [C-tab])
+											  ;; ([s-up] . [C-tab])
+											  ;; ([s-down] . [C-tab])
+											  (,(kbd "s-t") . [C-t])
+											  (,(kbd "s-T") . [C-T])
+											  ;; skk switch change
+											  ;; (,(kbd "C-j") . [C-&])
+											  ;; (,(kbd "C-l") . [C-^])
+											  (,(kbd "s-l") . [C-k])
+											  (,(kbd "s-k") . [C-l])
+											  ;; test
+											  (,(kbd "C-x C-s") . [C-s])
+											  (,(kbd "C-u C-/") . [C-y])
+											  ))
+			  )
+	:bind (("C-&" . skk-hiragana-set)
+		   ("C-^" . skk-latin-mode))
+	:preface
+	(defun exwm-workspace-toggle ()
+	  (interactive)
+	  (if (= exwm-workspace-current-index 0)
+		  (exwm-workspace-switch 2)
+		(exwm-workspace-switch 0)))
+	:config
+	(exwmx-floating-smart-hide)
+    (exwmx-button-enable)
+	)
+
+  (leaf exwm-systemtray
+	:require t
+	:defun exwm-systemtray-enable
+	:config
+	(exwm-systemtray-enable)
+	)
+
+  (leaf exwm-randr
+	:require t
+	:custom (
+			 (exwm-randr-workspace-monitor-plist . '(0 "DP-0" 1 "HDMI-0" 2 "DP-0" 3 "DP-0" 4 "DP-0" 5 "DP-0"))
+
+			 )
+	:config
+	(exwm-randr-enable)
+
+	)
+
+  ;; (leaf *exwm-keybinding
+  ;; 	:custom
+  ;; 	:config)
+
+  (leaf exwm-enable
+	:defun (exwm-enable)
+	:config
+	(exwm-enable)
+	;; (provide 'init-exwm)
+	)
+
+  (leaf *fix_ediff
+	:after ediff-wind
+	:custom `((ediff-window-setup-function . 'ediff-setup-windows-plain)
+			  ;; (ediff-control-frame-parameters . (cons '(unsplittable . t) ediff-control-frame-parameters))
+			  )
+	)
+  )
+
+
 ;; メジャーモードの設定
 (leaf *major_mode
   :config
@@ -922,183 +1080,186 @@
   )
 
 (leaf *view_mode
-  :custom ((view-read-only . t))
-  :bind (("C-;" . view-mode)
-		 (view-mode-map
-		  ("SPC" . ignore)
-		  ("C-m" . ignore)
-		  ("h" . backward-char)
-		  ("j" . next-line)
-		  ("k" . previous-line)
-		  ("l" . forward-char)
-		  ("J" . View-scroll-line-forward)
-		  ("K" . View-scroll-line-backward)
-		  ("b" . backward-char)
-		  ("n" . next-line)
-		  ("p" . previous-line)
-		  ("f" . forward-char)
-		  ("C-;" . ignore)
-		  ("a" . vim-forward-char-to-insert)
-		  ("A" . vim-end-of-line-to-insert)
-		  ("I" . vim-beginning-of-line-to-insert)
-		  ("i" . View-exit)
-		  ("x" . vim-del-char)
-		  ("X" . vim-backward-kill-line)
-		  ("0" . beginning-of-line)
-		  ("$" . move-end-of-line)
-		  ("e" . end-of-line)
-		  ("o" . vim-o)
-		  ("O" . vim-O)
-		  ("y" . copy-region-as-kill)
-		  ("Y" . vim-copy-line)
-		  ("w" . forward-word+1)
-		  ("W" . backward-word)
-		  ("P" . vim-P)
-		  ("D" . vim-kill-line)
-		  (":" . save-buffer)
-		  ;; ("u" . ignore)
-		  ("u" . vim-undo)
-		  ("r" . vim-redo)
-		  ("d" . vim-kill-whole-line)
-		  ("c" . vim-kill-whole-line-to-insert)
-		  ("g" . View-goto-line)
-		  ("G" . View-goto-percent)))
-  :preface
-  (leaf *keys-in-view-mode
-	:config
-	(defun vim-forward-char-to-insert ()
-	  (interactive)
-	  (view-mode 0)
-	  (forward-char 1)
-	  (message "edit-mode !"))
-	;; like A
-	(defun vim-end-of-line-to-insert ()
-	  (interactive)
-	  (view-mode 0)
-	  (end-of-line)
-	  (message "edit-mode !"))
-	;; like I
-	(defun vim-beginning-of-line-to-insert ()
-	  (interactive)
-	  (view-mode 0)
-	  (beginning-of-line)
-	  (message "edit-mode !"))
-	;; like cc
-	(defun vim-kill-whole-line-to-insert ()
-	  (interactive)
-	  (view-mode 0)
-	  (kill-whole-line)
-	  (open-line 1)
-	  (backward-line)
-	  (beginning-of-line)
-	  (message ":kill-whole-line and edit-mode !"))
-	;; like dd
-	(defun vim-kill-whole-line ()
-	  (interactive)
-	  (view-mode 0)
-	  (kill-whole-line)
-	  (view-mode 1)
-	  (message "kill-whole-line"))
-	;; like D
-	(defun vim-kill-line ()
-	  (interactive)
-	  (view-mode 0)
-	  (kill-line)
-	  (view-mode 1)
-	  (message "kill-line"))
-	;; like C
-	(defun vim-kill-line-to-insert ()
-	  (interactive)
-	  (view-mode 0)
-	  (kill-line)
-	  (message "kill-line and edit-mode !"))
-	;; like o
-	(defun vim-o ()
-	  (interactive)
-	  (view-mode 0)
-	  (forward-line)
-	  (open-line 1)
-	  (beginning-of-line)
-	  (message "edit-mode !"))
-	;; like O
-	(defun vim-O ()
-	  (interactive)
-	  (view-mode 0)
-	  (open-line 1)
-	  (beginning-of-line)
-	  (message "edit-mode !"))
-	;; like x
-	(defun vim-del-char ()
-	  (interactive)
-	  (view-mode 0)
-	  (delete-char 1)
-	  (view-mode 1)
-	  (message "delete-char"))
-	;; like c
-	(defun vim-del-char-to-insert ()
-	  (interactive)
-	  (view-mode 0)
-	  (delete-char 1)
-	  (message "delete-char and edit mode !"))
-	;; like u
-	(defun vim-undo ()
-	  (interactive)
-	  (view-mode 0)
-	  (undo)
-	  (view-mode 1)
-	  (message "undo !"))
-	;; like C-r
-	(defun vim-redo ()
-	  (interactive)
-	  (view-mode 0)
-	  (redo)
-	  (view-mode 1)
-	  (message "redo !"))
-	;; like Y
-	(defun vim-copy-line (arg)
-	  (interactive "p")
-	  (kill-ring-save (line-beginning-position)
-					  (line-beginning-position (+ 1 arg)))
-	  (message "%d line%s copied" arg (if (= 1 arg) "" "s")))
-	;; like P
-	(defun vim-P ()
-	  (interactive)
-	  (view-mode 0)
-	  (beginning-of-line)
-	  (yank)
-	  (beginning-of-line)
-	  (forward-line -1)
-	  (view-mode 1)
-	  (message "yank !"))
-	;; like p
-	(defun vim-p ()
-	  (interactive)
-	  (view-mode 0)
-	  (yank)
-	  (view-mode 1)
-	  (message "yank !"))
-	;; like w
-	(defun forward-word+1 ()
-	  (interactive)
-	  (forward-word)
-	  (forward-char))
-	;; like %
-	(defun vim-jump-brace()
-	  "Jump to correspondence parenthesis"
-	  (interactive)
-	  (let ((c (following-char))
-			(p (preceding-char)))
-		(if (eq (char-syntax c) 40) (forward-list)
-		  (if (eq (char-syntax p) 41) (backward-list)
-			(backward-up-list)))))
-	;; Delete from cursor position to beginning-of-line
-	(defun vim-backward-kill-line (arg)
-	  "Kill chars backward until encountering the beginning of line."
-	  (interactive "p")
-	  (view-mode 0)
-	  (kill-line 0)
-	  (view-mode 1)
-	  (message "backward-kill-line"))
+  :config
+  (leaf view
+	:custom ((view-read-only . t))
+	:bind (("C-;" . view-mode)
+		   (view-mode-map
+			("SPC" . ignore)
+			("C-m" . ignore)
+			("h" . backward-char)
+			("j" . next-line)
+			("k" . previous-line)
+			("l" . forward-char)
+			("J" . View-scroll-line-forward)
+			("K" . View-scroll-line-backward)
+			("b" . backward-char)
+			("n" . next-line)
+			("p" . previous-line)
+			("f" . forward-char)
+			("C-;" . ignore)
+			("a" . vim-forward-char-to-insert)
+			("A" . vim-end-of-line-to-insert)
+			("I" . vim-beginning-of-line-to-insert)
+			("i" . View-exit)
+			("x" . vim-del-char)
+			("X" . vim-backward-kill-line)
+			("0" . beginning-of-line)
+			("$" . move-end-of-line)
+			("e" . end-of-line)
+			("o" . vim-o)
+			("O" . vim-O)
+			("y" . copy-region-as-kill)
+			("Y" . vim-copy-line)
+			("w" . forward-word+1)
+			("W" . backward-word)
+			("P" . vim-P)
+			("D" . vim-kill-line)
+			(":" . save-buffer)
+			;; ("u" . ignore)
+			("u" . vim-undo)
+			("r" . vim-redo)
+			("d" . vim-kill-whole-line)
+			("c" . vim-kill-whole-line-to-insert)
+			("g" . View-goto-line)
+			("G" . View-goto-percent)))
+	:preface
+	(leaf *keys-in-view-mode
+	  :config
+	  (defun vim-forward-char-to-insert ()
+		(interactive)
+		(view-mode 0)
+		(forward-char 1)
+		(message "edit-mode !"))
+	  ;; like A
+	  (defun vim-end-of-line-to-insert ()
+		(interactive)
+		(view-mode 0)
+		(end-of-line)
+		(message "edit-mode !"))
+	  ;; like I
+	  (defun vim-beginning-of-line-to-insert ()
+		(interactive)
+		(view-mode 0)
+		(beginning-of-line)
+		(message "edit-mode !"))
+	  ;; like cc
+	  (defun vim-kill-whole-line-to-insert ()
+		(interactive)
+		(view-mode 0)
+		(kill-whole-line)
+		(open-line 1)
+		(backward-line)
+		(beginning-of-line)
+		(message ":kill-whole-line and edit-mode !"))
+	  ;; like dd
+	  (defun vim-kill-whole-line ()
+		(interactive)
+		(view-mode 0)
+		(kill-whole-line)
+		(view-mode 1)
+		(message "kill-whole-line"))
+	  ;; like D
+	  (defun vim-kill-line ()
+		(interactive)
+		(view-mode 0)
+		(kill-line)
+		(view-mode 1)
+		(message "kill-line"))
+	  ;; like C
+	  (defun vim-kill-line-to-insert ()
+		(interactive)
+		(view-mode 0)
+		(kill-line)
+		(message "kill-line and edit-mode !"))
+	  ;; like o
+	  (defun vim-o ()
+		(interactive)
+		(view-mode 0)
+		(forward-line)
+		(open-line 1)
+		(beginning-of-line)
+		(message "edit-mode !"))
+	  ;; like O
+	  (defun vim-O ()
+		(interactive)
+		(view-mode 0)
+		(open-line 1)
+		(beginning-of-line)
+		(message "edit-mode !"))
+	  ;; like x
+	  (defun vim-del-char ()
+		(interactive)
+		(view-mode 0)
+		(delete-char 1)
+		(view-mode 1)
+		(message "delete-char"))
+	  ;; like c
+	  (defun vim-del-char-to-insert ()
+		(interactive)
+		(view-mode 0)
+		(delete-char 1)
+		(message "delete-char and edit mode !"))
+	  ;; like u
+	  (defun vim-undo ()
+		(interactive)
+		(view-mode 0)
+		(undo)
+		(view-mode 1)
+		(message "undo !"))
+	  ;; like C-r
+	  (defun vim-redo ()
+		(interactive)
+		(view-mode 0)
+		(redo)
+		(view-mode 1)
+		(message "redo !"))
+	  ;; like Y
+	  (defun vim-copy-line (arg)
+		(interactive "p")
+		(kill-ring-save (line-beginning-position)
+						(line-beginning-position (+ 1 arg)))
+		(message "%d line%s copied" arg (if (= 1 arg) "" "s")))
+	  ;; like P
+	  (defun vim-P ()
+		(interactive)
+		(view-mode 0)
+		(beginning-of-line)
+		(yank)
+		(beginning-of-line)
+		(forward-line -1)
+		(view-mode 1)
+		(message "yank !"))
+	  ;; like p
+	  (defun vim-p ()
+		(interactive)
+		(view-mode 0)
+		(yank)
+		(view-mode 1)
+		(message "yank !"))
+	  ;; like w
+	  (defun forward-word+1 ()
+		(interactive)
+		(forward-word)
+		(forward-char))
+	  ;; like %
+	  (defun vim-jump-brace()
+		"Jump to correspondence parenthesis"
+		(interactive)
+		(let ((c (following-char))
+			  (p (preceding-char)))
+		  (if (eq (char-syntax c) 40) (forward-list)
+			(if (eq (char-syntax p) 41) (backward-list)
+			  (backward-up-list)))))
+	  ;; Delete from cursor position to beginning-of-line
+	  (defun vim-backward-kill-line (arg)
+		"Kill chars backward until encountering the beginning of line."
+		(interactive "p")
+		(view-mode 0)
+		(kill-line 0)
+		(view-mode 1)
+		(message "backward-kill-line"))
+	  )
 	)
   )
 
@@ -1567,49 +1728,46 @@
 	:when (file-exists-p '"/usr/bin/stunnel")
 	:ensure t
 	:require t
+	:commands mew mew-send
 	:defvar mew-fcc mew-smtp-server mew-smtp-auth
 	:custom ((mew-fcc . "+outbox")
 			 (exec-path . '(cons "/usr/bin" exec-path))
-  			 (user-mail-address . "frenzieddoll@gmail.com")
-  			 (user-full-name . "frenzieddoll")
-  			 (mew-smtp-server . "smtp.gmail.com")
-  			 (mail-user-agent . 'mew-user-agent)
-  			 ;; Stunnel
-  			 (mew-prog-ssl . "/usr/bin/stunnel")
-  			 ;; IMAP for Gmail
-  			 (mew-proto . "%")
-  			 (mew-imap-server . "imap.gmail.com")
-  			 (mew-imap-user . "frenzieddoll@gmail.com")
-  			 (mew-imap-auth .  t)
-  			 (mew-imap-ssl . t)
-  			 (mew-imap-ssl-port . "993")
-  			 (mew-smtp-auth . t)
-  			 (mew-smtp-ssl . t)
-  			 (mew-smtp-ssl-port . "465")
-  			 (mew-smtp-user . "frenzieddoll@gmail.com")
-  			 (mew-smtp-server . "smtp.gmail.com")
-  			 (mew-fcc . "%Sent")
-  			 (mew-imap-trash-folder . "%[Gmail]/Trash")
-  			 (mew-use-cached-passwd . t)
-  			 (mew-ssl-verify-level . 0)
-
-  			 (mew-use-cached-passwd . t)
-  			 (mew-use-master-passwd . t)
-  			 ;; 未読メールにUマークを付ける
-  			 (mew-use-unread-mark . t)
-
+			 (user-mail-address . "frenzieddoll@gmail.com")
+			 (user-full-name . "frenzieddoll")
+			 (mew-smtp-server . "smtp.gmail.com")
+			 (mail-user-agent . 'mew-user-agent)
+			 (mew-prog-ssl . "/usr/bin/stunnel")
+			 (mew-proto . "%")
+			 (mew-imap-server . "imap.gmail.com")
+			 (mew-imap-user . "frenzieddoll@gmail.com")
+			 (mew-imap-auth .  t)
+			 (mew-imap-ssl . t)
+			 (mew-imap-ssl-port . "993")
+			 (mew-smtp-auth . t)
+			 (mew-smtp-ssl . t)
+			 (mew-smtp-ssl-port . "465")
+			 (mew-smtp-user . "frenzieddoll@gmail.com")
+			 (mew-smtp-server . "smtp.gmail.com")
+			 (mew-fcc . "%Sent")
+			 (mew-imap-trash-folder . "%[Gmail]/Trash")
+			 (mew-use-cached-passwd . t)
+			 (mew-ssl-verify-level . 0)
+			 (mew-use-cached-passwd . t)
+			 (mew-use-master-passwd . t)
 			 (mew-use-text/html . t)
-			 (browse-url-broser-function . eww-browser-url)
-			 ;; (mew-thread-indent-strings . ["+" "+" "|" " "])
+			 (browse-url-browser-function . 'eww-browse-url)
+			 (mew-use-unread-mark . t)
+			 (mew-thread-indent-strings . ["+" "+" "|" " "])
 
 			 )
-	:config
+	:init
 	(define-mail-user-agent
 	  'mew-user-agent
 	  'mew-user-agent-compose
 	  'mew-draft-send-message
 	  'mew-draft-kill
 	  'mew-send-hook)
+	:config
 	;; ファイルサーチをビルドイン関数で行なう
 	(load "mew-search-with-buildin.el" t)
 	(load "multipart-decode.el" t)
@@ -1620,13 +1778,85 @@
 	(leaf *addSettings
 	  :when (fboundp 'shr-render-region)
 	  :when (fboundp 'libxml-parse-html-region)
-	  :custom ((mew-prog-text/html . shr-render-region))
+	  :custom ((mew-prog-text/html . 'shr-render-region))
 	  )
 	)
 
 (leaf *mewOriginal
+  ;; :disabled t
+  :when (file-exists-p "/bin/stunnel")
   :config
-  (load "init-mew" t)
+  ;; (load "init-mew" t)
+  (autoload 'mew "mew" nil t)
+  (autoload 'mew-send "mew" nil t)
+  (defvar mew-fcc "+outbox")
+  (setq exec-path (cons "/usr/bin" exec-path))
+
+  (setq user-mail-address "frenzieddoll@gmail.com")
+  (setq user-full-name "frenzieddoll")
+  (defvar mew-smtp-server "smtp.gmail.com")
+  (require 'mew)
+  (setq mail-user-agent 'mew-user-agent)
+  (define-mail-user-agent
+	'mew-user-agent
+	'mew-user-agent-compose
+	'mew-draft-send-message
+	'mew-draft-kill
+	'mew-send-hook)
+
+										; Stunnel
+  (setq mew-prog-ssl "/usr/bin/stunnel")
+										; IMAP for Gmail
+  (setq mew-proto "%")
+  (setq mew-imap-server "imap.gmail.com")
+  (setq mew-imap-user "frenzieddoll@gmail.com")
+  (setq mew-imap-auth  t)
+  (setq mew-imap-ssl t)
+  (setq mew-imap-ssl-port "993")
+  (defvar mew-smtp-auth t)
+  (setq mew-smtp-ssl t)
+  (setq mew-smtp-ssl-port "465")
+  (setq mew-smtp-user "frenzieddoll@gmail.com")
+  (setq mew-smtp-server "smtp.gmail.com")
+  (setq mew-fcc "%Sent")
+  (setq mew-imap-trash-folder "%[Gmail]/Trash")
+  (setq mew-use-cached-passwd t)
+  (setq mew-ssl-verify-level 0)
+
+  (setq mew-use-cached-passwd t)
+  (setq mew-use-master-passwd t)
+
+  ;; http://suzuki.tdiary.net/20140813.html#c04
+  (when (and (fboundp 'shr-render-region)
+			 ;; \\[shr-render-region] requires Emacs to be compiled with libxml2.
+			 (fboundp 'libxml-parse-html-region))
+	(defvar mew-prog-text/html 'shr-render-region)) ;; 'mew-mime-text/html-w3m
+
+  (setq mew-use-text/html t)
+  (setq browse-url-browser-function 'eww-browse-url)
+  ;; (condition-case nil
+  ;;     (require 'eww)
+  ;;   (file-error nil))
+
+  ;; ファイルサーチをビルドイン関数で行なう
+
+  (load "google-contacts-mew.el" t)
+  (load "google-contacts.el" t)
+  (require 'google-contacts-mew)
+  (setq google-contacts-email "frenzieddoll@gmail.com")
+
+  ;; ファイルサーチをビルドイン関数で行なう
+  (load "mew-search-with-buildin.el" t)
+  (load "multipart-decode.el" t)
+  ;; (require 'mew-builtin-search)
+  (setq mew-search-method 'buildin)
+
+  ;; 未読メールにUマークを付ける
+  (setq mew-use-unread-mark t)
+
+  (setq mew-thread-indent-strings ["+" "+" "|" " "])
+
+
   )
 
 (leaf *lsp-tools
@@ -1702,160 +1932,4 @@
   ;; (setq-default newsticker-url-list-defaults
   ;;             '(("オレ的ゲーム速報JIN" "http://jin115.com/index.rdf")))
 
-  )
-
-(leaf exwm
-  ;; :disabled t
-  :ensure t
-  ;; :when (string= "yes" (getenv "exwm_enable"))
-  :when (eq system-type 'gnu/linux)
-  :init
-  (server-start)
-  :config
-  (leaf *exwm-config
-	:require exwm
-	:defun (exwm-workspace-rename-buffer exwm-workspace-toggle)
-	:hook (exwm-update-class-hook . (lambda ()
-									  (exwm-workspace-rename-buffer exwm-class-name)))
-
-	:hook (exwm-manage-finish-hook . (lambda ()
-									   (when (and exwm-class-name
-												  (string= "Alacritty" exwm-class-name))
-										 (exwm-input-release-keyboard))))
-	:custom `((use-dialog-box . nil)
-			  (window-divider-default-right-width . 1)
-			  (exwm-workspace-show-all-buffers . t)
-			  (exwm-layout-show-all-buffers . t)
-			  (exwm-workspace-number . 3)
-			  (exwm-input-global-keys . '((,(kbd "s-r") . exwm-reset)
-										  (,(kbd "s-d") . counsel-linux-app)
-										  (,(kbd "s-n") . windmove-down)
-										  (,(kbd "s-f") . windmove-right)
-										  (,(kbd "s-b") . windmove-left)
-										  (,(kbd "s-p") . windmove-up)
-										  (,(kbd "s-<tab>") . exwm-workspace-toggle)
-										  (,(kbd "s-a") . zoom-window-zoom)
-										  (,(kbd "C-s-i") . output_toggle)
-										  (,(kbd "C-s-m") . mute_toggle)
-										  (,(kbd "C-s-n") . lower_volume)
-										  (,(kbd "C-s-p") . upper_volume)
-										  (,(kbd "s-q") . kill-current-buffer)
-										  (,(kbd "s-h") . delete-window)
-										  (,(kbd "s-SPC") . exwm-floating-toggle-floating)
-										  (,(kbd "s-e") . exwm-input-toggle-keyboard)
-										  (,(kbd "s-o") . ivy-switch-buffer)
-										  (,(kbd "s-r") . exwm-reset)
-										  (,(kbd "s-d") . counsel-linux-app)
-										  (,(kbd "C-j") . ,(kbd "C-&"))
-										  (,(kbd "C-l") . ,(kbd "C-^"))
-										  ,@(mapcar (lambda (i)
-													  `(,(kbd (format "s-%d" i)) .
-														(lambda ()
-														  (interactive)
-														  (exwm-workspace-switch-create ,i))))
-													(number-sequence 0 9))
-										  )
-									  )
-			  (exwm-input-simulation-keys . '(
-											  ;; new version
-											  (,(kbd "C-b") . [left])
-											  (,(kbd "M-b") . [C-left])
-											  (,(kbd "C-f") . [right])
-											  (,(kbd "M-f") . [C-right])
-											  (,(kbd "C-p") . [up])
-											  (,(kbd "C-n") . [down])
-											  (,(kbd "C-a") . [home])
-											  (,(kbd "C-e") . [end])
-											  (,(kbd "M-v") . [prior])
-											  (,(kbd "C-v") . [next])
-											  (,(kbd "C-d") . [delete])
-											  (,(kbd "C-k") . [S-end ?\C-x])
-											  (,(kbd "M-<") . [C-home])
-											  (,(kbd "M->") . [C-end])
-											  (,(kbd "C-/") . [C-z])
-											  ;; C-h は特別扱い扱い
-											  ([?\C-h] . [backspace])
-											  (,(kbd "C-m") . [return])
-											  (,(kbd "C-/") . [C-z])
-											  (,(kbd "C-S-f") . [S-right])
-											  (,(kbd "C-S-b") . [S-left])
-											  (,(kbd "C-S-p") . [S-up])
-											  (,(kbd "C-S-n") . [S-down])
-											  (,(kbd "C-w") . ,(kbd "C-x"))
-											  (,(kbd "M-w") . ,(kbd "C-c"))
-											  (,(kbd "C-y") . ,(kbd "C-v"))
-											  (,(kbd "s-v") . ,(kbd "C-v"))
-											  (,(kbd "C-x h") . ,(kbd "C-a"))
-											  (,(kbd "M-d") . [C-S-right ?\C-x])
-											  (,(kbd "M-<backspace>") . [C-S-left ?\C-x])
-											  ;; search
-											  (,(kbd "C-s") . ,(kbd "C-f"))
-											  ;; escape
-											  (,(kbd "C-g") . [escape])
-											  ;; like mac
-											  (,(kbd "s-w") . [C-w])
-											  ([s-left] . [C-S-tab])
-											  ([s-right] . [C-tab])
-											  ;; ([s-up] . [C-tab])
-											  ;; ([s-down] . [C-tab])
-											  (,(kbd "s-t") . [C-t])
-											  (,(kbd "s-T") . [C-T])
-											  ;; skk switch change
-											  ;; (,(kbd "C-j") . [C-&])
-											  ;; (,(kbd "C-l") . [C-^])
-											  (,(kbd "s-l") . [C-k])
-											  (,(kbd "s-k") . [C-l])
-											  ;; test
-											  (,(kbd "C-x C-s") . [C-s])
-											  (,(kbd "C-u C-/") . [C-y])
-											  ))
-			  )
-	:bind (("C-&" . skk-hiragana-set)
-		   ("C-^" . skk-latin-mode))
-	:preface
-	(defun exwm-workspace-toggle ()
-	  (interactive)
-	  (if (= exwm-workspace-current-index 0)
-		  (exwm-workspace-switch 2)
-		(exwm-workspace-switch 0)))
-	:config
-	(exwmx-floating-smart-hide)
-    (exwmx-button-enable)
-	)
-
-  (leaf exwm-systemtray
-	:require t
-	:defun exwm-systemtray-enable
-	:config
-	(exwm-systemtray-enable)
-	)
-
-  (leaf exwm-randr
-	:require t
-	:custom (
-			 (exwm-randr-workspace-monitor-plist . '(0 "DP-0" 1 "HDMI-0" 2 "DP-0" 3 "DP-0" 4 "DP-0" 5 "DP-0"))
-
-			 )
-	:config
-	(exwm-randr-enable)
-
-	)
-
-  ;; (leaf *exwm-keybinding
-  ;; 	:custom
-  ;; 	:config)
-
-  (leaf exwm-enable
-	:defun (exwm-enable)
-	:config
-	(exwm-enable)
-	;; (provide 'init-exwm)
-	)
-
-  (leaf *fix_ediff
-	:after ediff-wind
-	:custom `((ediff-window-setup-function . 'ediff-setup-windows-plain)
-			  ;; (ediff-control-frame-parameters . (cons '(unsplittable . t) ediff-control-frame-parameters))
-			  )
-	)
   )
