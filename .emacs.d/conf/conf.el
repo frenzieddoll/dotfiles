@@ -54,7 +54,7 @@
     :ensure t
     :defun (exec-path-from-shell-initialize)
     :custom ((exec-path-from-shell-check-startup-files . nil)
-			 (exec-path-from-shell-variables . '("SHELL" "PATH"))
+			 (exec-path-from-shell-variables           . '("SHELL" "PATH"))
 			 ;; (exec-path-from-shell-initialize . t)
 			 )
 	:config
@@ -70,28 +70,28 @@
     :defvar show-paren-deley
     :custom `(;; GC
 			  ;; (gc-cons-threshold . ,(* 64 1024 1024))
-			  (garbage-collection-messages . t)
+			  (garbage-collection-messages           . t)
 			  ;; 表示
-			  (tool-bar-mode . nil)
-			  (scroll-bar-mode . nil)
-			  (menu-bar-mode . nil)
-			  (blink-cursor-mode . nil)
-			  (column-number-mode . nil)
-			  (ring-bell-function . 'ignore)
+			  (tool-bar-mode                         . nil)
+			  (scroll-bar-mode                       . nil)
+			  (menu-bar-mode                         . nil)
+			  (blink-cursor-mode                     . nil)
+			  (column-number-mode                    . nil)
+			  (ring-bell-function                    . 'ignore)
 			  ;; 編集
-              (tab-width . 4)
-              (indent-tabs-mode . t)
-			  (fill-column            . 72)   ;; RFC2822 風味
-			  (truncate-lines         . t)  ;; 折り返し無し
-			  (truncate-partial-width-windows . nil)
-			  (paragraph-start        . '"^\\([ 　・○<\t\n\f]\\|(?[0-9a-zA-Z]+)\\)")
-			  (auto-fill-mode         . nil)
-			  (next-line-add-newlines . nil)  ;; バッファ終端で newline を入れない
+              (tab-width                             . 4)
+              (indent-tabs-mode                      . nil)
+			  (fill-column                           . 72)   ;; RFC2822 風味
+			  (truncate-lines                        . t)  ;; 折り返し無し
+			  (truncate-partial-width-windows        . nil)
+			  (paragraph-start                       . '"^\\([ 　・○<\t\n\f]\\|(?[0-9a-zA-Z]+)\\)")
+			  (auto-fill-mode                        . nil)
+			  (next-line-add-newlines                . nil)  ;; バッファ終端で newline を入れない
 			  (read-file-name-completion-ignore-case . t)  ; 大文字小文字区別無し
 			  ;; undo/redo - 数字に根拠無し
-			  (undo-limit              . 200000)
-			  (undo-strong-limit       . 260000)
-			  (history-length          . t)  ;; 無制限(の筈)
+			  (undo-limit                            . 200000)
+			  (undo-strong-limit                     . 260000)
+			  (history-length                        . t)  ;; 無制限(の筈)
 
               (create-lockfiles                . nil)
               (use-dialog-box                  . nil)
@@ -107,40 +107,41 @@
 
 
               ;; システムの時計をCにする
-              (system-time-locale . "C")
+              (system-time-locale                    . "C")
               ;; 改行コードを表示する
-              (eol-mnemonic-dos . "(CRLF)")
-              (eol-mnemonic-mac . "(CR)")
-              (eol-mnemonic-unix . "(LF)")
+              (eol-mnemonic-dos                      . "(CRLF)")
+              (eol-mnemonic-mac                      . "(CR)")
+              (eol-mnemonic-unix                     . "(LF)")
               ;; 右から左に読む言語に対応させないことで描画高速化
-              (bidi-display-reordering . nil)
+              (bidi-display-reordering               . nil)
               ;; 同じ内容を履歴に記録しない
-              (history-delete-duplicates . t)
+              (history-delete-duplicates             . t)
               ;; バックアップファイ及び、自動セーブの無効
-              (make-backup-files . nil)
-              (delete-auto-save-files . t)
-              (auto-save-default . nil)
+              (make-backup-files                     . nil)
+              (delete-auto-save-files                . t)
+              (auto-save-default                     . nil)
               ;; バッファの最後でnewlineで新規行を追加するのを禁止する
-              (next-line-add-newlines . nil)
+              (next-line-add-newlines                . nil)
               ;; auto-fill-modeを切る
-              (auto-fill-mode . nil)
+              (auto-fill-mode                        . nil)
               ;; 補完で大文字小文字無視
               (read-file-name-completion-ignore-case . t)
               ;; ミニバッファの履歴を保存する
-              (savehist-mode . 1)
-              (history-length . 30000)
-              ;; 同じ内容を履歴に記録しない
-              (history-delete-duplicates . t)
-              ;; 対応する括弧を光らせる
-              (show-paren-mode . 1)
-              (show-paren-delay . 0.125)
-              ;; シンボリック経由でファイルを開く
-              (vc-follow-symlinks . t)
-			  (display-time-mode . t)
-			  (display-time-string-forms . '((format "%s/%s(%s)%s:%s"
-    												 month day dayname
-    												 24-hours minutes
-													 ))))
+              (savehist-mode                         . 1)
+              (history-length                        . 30000)
+              ;;
+              (history-delete-duplicates             . t)
+              ;;
+              (show-paren-mode                       . 1)
+              (show-paren-delay                      . 0.125)
+              ;;
+              (vc-follow-symlinks                    . t)
+			  (display-time-mode                     . t)
+			  (display-time-string-forms             . '((format "%s/%s(%s)%s:%s"
+    												             month day dayname
+    												             24-hours minutes
+													             )))
+              )
 	:config
     (set-face-background 'region "#555")
     (defalias 'yes-or-no-p 'y-or-n-p)
@@ -155,12 +156,12 @@
 
 	(leaf startup
 	  :doc "起動を静かに"
-	  :custom ((inhibit-splash-screen . t)
-			   (inhibit-startup-screen . t)
-               (inhibit-startup-message . t)
+	  :custom ((inhibit-splash-screen             . t)
+			   (inhibit-startup-screen            . t)
+               (inhibit-startup-message           . t)
 			   (inhibit-startup-echo-area-message . t)
-			   (initial-buffer-choice . t)
-			   (initial-scratch-message . nil)
+			   (initial-buffer-choice             . t)
+			   (initial-scratch-message           . nil)
 			   )
 	  )
 
@@ -171,24 +172,25 @@
 		:when (string-match (system-name) "archlinuxhonda")
 		:config
 		(set-face-attribute 'default nil
-							:family "Hackgen"
-							:height 150))
+							:family "HackGen"
+							:height 140))
       (leaf *forLinux
 		:when (eq system-type 'gnu/linux)
 		:unless (string-match (system-name) "archlinuxhonda")
 		:config
 		(set-face-attribute 'default nil
-							:family "Hackgen"
+							:family "HackGen"
 							:height 100))
       (leaf *forMac
 		:when (eq system-type 'darwin)
 		:config
 		(set-face-attribute 'default nil
-							:family "Hackgen"
+							:family "HackGen"
 							:height 150)
 		(set-fontset-font (frame-parameter nil 'font)
 				  'japanese-jisx0208
-				  (font-spec :family "Hackgen" :height 150))
+				  (font-spec :family "HackGen"
+							 :height 150))
 
 		)
 	  )
@@ -214,9 +216,9 @@
 	(leaf *lisp
       :config
       (leaf simple
-		:custom ((kill-ring-max . 100)
-				 (kill-read-only-ok . t)
-				 (kill-whole-line . t)
+		:custom ((kill-ring-max                . 100)
+				 (kill-read-only-ok            . t)
+				 (kill-whole-line              . t)
 				 (eval-expression-print-length . nil)
 				 (eval-expression-print-level  . nil))
 		;; :hook ((before-save-hook . delete-trailing-whitespace))
@@ -351,49 +353,51 @@
 		  :ensure t
 		  :require t
 		  :when (eq system-type 'gnu/linux)
-		  :custom ((dired-open-extensions . '(("mkv"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-											  ("mp4"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-											  ("avi"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-											  ("wmv"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-											  ("webm" . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-											  ("mpg"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-											  ("flv"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-											  ("m4v"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-											  ("mp3"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-											  ("wav"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-											  ("m4a"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-											  ("3gp"  . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-											  ("rm"   . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-											  ("rmvb" . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-											  ("mpeg" . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-											  ("VOB" . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-											  ("iso" . "mpv dvd:// -dvd-device")
-											  ("playlist" . "mpv --playlist")
-											  ("exe"  . "wine")
-											  ("pdf"  . "zathura")
-											  ("zip"  . "YACReader")
-											  ("rar"  . "YACReader")
-											  ("tar"  . "YACReader")
-											  ("xls"  . "xdg-open")
-											  ("xlsx" . "xdg-open")
-											  ("jpg"  . "sxiv-rifle")
-											  ("png"  . "sxiv-rifle")
-											  ("jpeg" . "sxiv-rifle")
-											  ("gif"  . "sxiv-rifle")
-											  ("png"  . "sxiv-rifle"))))
+		  :custom ((dired-open-extensions .
+                                          '(("mkv"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											("mp4"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											("avi"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											("wmv"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											("webm"     . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											("mpg"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											("flv"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											("m4v"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											("mp3"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											("wav"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											("m4a"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											("3gp"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											("rm"       . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											("rmvb"     . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											("mpeg"     . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											("VOB"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+											("iso"      . "mpv dvd:// -dvd-device")
+											("playlist" . "mpv --playlist")
+											("exe"      . "wine")
+											("pdf"      . "zathura")
+											("zip"      . "YACReader")
+											("rar"      . "YACReader")
+											("tar"      . "YACReader")
+											("xls"      . "xdg-open")
+											("xlsx"     . "xdg-open")
+											("jpg"      . "sxiv-rifle")
+											("png"      . "sxiv-rifle")
+											("jpeg"     . "sxiv-rifle")
+											("gif"      . "sxiv-rifle")
+											("png"      . "sxiv-rifle"))))
 		  )
 		(leaf dired-open
 		  :ensure t
 		  :require t
 		  :when (eq system-type 'darwin)
-		  :custom ((dired-open-extensions . '(("key" . "open")
-											  ("docx" . "open")
-											  ("pdf" . "open")
-											  ("cmdf" . "open")
-											  ("xlsx" . "open")
-											  ("pxp" . "open")
-											  ("bmp" . "open")
-											  ))))
+		  :custom ((dired-open-extensions .
+                                          '(("key"  . "open")
+											("docx" . "open")
+											("pdf"  . "open")
+											("cmdf" . "open")
+											("xlsx" . "open")
+											("pxp"  . "open")
+											("bmp"  . "open")
+											))))
 
 		)
 	  )
@@ -460,32 +464,32 @@
 
   (leaf *keybinding
 	:bind (;; C-m : 改行プラスインデント
-		   ("C-m" . newline-and-indent)
+		   ("C-m"           . newline-and-indent)
 		   ;; ;; exwm用
 		   ;; ("C-h" . delete-backward-char)
 		   ;; C-x ? : help
-		   ("C-c ?" . help-command)
+		   ("C-c ?"         . help-command)
 		   ;;折り返しトグルコマンド
-		   ("C-c l" . toggle-truncate-lines)
+		   ("C-c l"         . toggle-truncate-lines)
 		   ;; ウィンドウサイズの変更のキーバインド
-		   ("C-c r" . window-resizer)
+		   ("C-c r"         . window-resizer)
 		   ;; 行番号を表示
-		   ("C-c t" . display-line-numbers-mode)
+		   ("C-c t"         . display-line-numbers-mode)
 		   ;;スペース、改行、タブを表示する
-		   ("C-c w" . whitespace-mode)
+		   ("C-c w"         . whitespace-mode)
 		   ;; 検索結果のリストアップ
-		   ("C-c o" . occur)
+		   ("C-c o"         . occur)
 		   ;; S式の評価
-		   ("C-c C-j" . eval-print-last-sexp)
+		   ("C-c C-j"       . eval-print-last-sexp)
 		   ;; async shell command
-		   ("s-s" . async-shell-command)
-		   ("C-x g" . magit-status)
-		   ("C-S-n" . scroll-up_alt)
-		   ("C-S-p" . scroll-down_alt)
-		   ("<kp-divide>" . insertBackslash)
+		   ("s-s"           . async-shell-command)
+		   ("C-x g"         . magit-status)
+		   ("C-S-n"         . scroll-up_alt)
+		   ("C-S-p"         . scroll-down_alt)
+		   ("<kp-divide>"   . insertBackslash)
 		   ("<kp-multiply>" . insertPipe)
-		   ;; (isearch-mode-map
-		   ;; 	("C-h" . isearch-del-char))
+		   ;;
+		   ;;
 		   )
 
 	:preface
@@ -574,12 +578,12 @@
 	:require t
     :ensure t
     :custom `((doom-modeline-buffer-file-name-style . 'truncate-with-project)
-              (doom-modeline-icon . nil)
-              (doom-modeline-major-mode-icon . nil)
-              (doom-modeline-minor-modes . nil)
-			  (line-number-mode . 0)
-			  (column-number-mode . 0)
-			  (doom-modeline-mode . t))
+              (doom-modeline-icon                   . nil)
+              (doom-modeline-major-mode-icon        . nil)
+              (doom-modeline-minor-modes            . nil)
+			  (line-number-mode                     . 0)
+			  (column-number-mode                   . 0)
+			  (doom-modeline-mode                   . t))
     )
 
   (leaf *afterSave
@@ -620,87 +624,88 @@
 			  (exwm-workspace-show-all-buffers . t)
 			  (exwm-layout-show-all-buffers . t)
 			  (exwm-workspace-number . 3)
-			  (exwm-input-global-keys . '((,(kbd "s-r") . exwm-reset)
-										  (,(kbd "s-d") . counsel-linux-app)
-										  (,(kbd "s-n") . windmove-down)
-										  (,(kbd "s-f") . windmove-right)
-										  (,(kbd "s-b") . windmove-left)
-										  (,(kbd "s-p") . windmove-up)
-										  (,(kbd "s-<tab>") . exwm-workspace-toggle)
-										  (,(kbd "s-a") . zoom-window-zoom)
-										  (,(kbd "C-s-i") . output_toggle)
-										  (,(kbd "C-s-m") . mute_toggle)
-										  (,(kbd "C-s-n") . lower_volume)
-										  (,(kbd "C-s-p") . upper_volume)
-										  (,(kbd "s-q") . kill-current-buffer)
-										  (,(kbd "s-h") . delete-window)
-										  (,(kbd "s-SPC") . exwm-floating-toggle-floating)
-										  (,(kbd "s-e") . exwm-input-toggle-keyboard)
-										  (,(kbd "s-o") . ivy-switch-buffer)
-										  (,(kbd "s-r") . exwm-reset)
-										  (,(kbd "s-d") . counsel-linux-app)
-										  (,(kbd "C-j") . ,(kbd "C-&"))
-										  (,(kbd "C-l") . ,(kbd "C-^"))
-										  ,@(mapcar (lambda (i)
-													  `(,(kbd (format "s-%d" i)) .
-														(lambda ()
-														  (interactive)
-														  (exwm-workspace-switch-create ,i))))
-													(number-sequence 0 9))
-										  )
+			  (exwm-input-global-keys .
+                                      '((,(kbd "s-r")     . exwm-reset)
+										(,(kbd "s-d")     . counsel-linux-app)
+										(,(kbd "s-n")     . windmove-down)
+										(,(kbd "s-f")     . windmove-right)
+										(,(kbd "s-b")     . windmove-left)
+										(,(kbd "s-p")     . windmove-up)
+										(,(kbd "s-<tab>") . exwm-workspace-toggle)
+										(,(kbd "s-a")     . zoom-window-zoom)
+										(,(kbd "C-s-i")   . output_toggle)
+										(,(kbd "C-s-m")   . mute_toggle)
+										(,(kbd "C-s-n")   . lower_volume)
+										(,(kbd "C-s-p")   . upper_volume)
+										(,(kbd "s-q")     . kill-current-buffer)
+										(,(kbd "s-h")     . delete-window)
+										(,(kbd "s-SPC")   . exwm-floating-toggle-floating)
+										(,(kbd "s-e")     . exwm-input-toggle-keyboard)
+										(,(kbd "s-o")     . ivy-switch-buffer)
+										(,(kbd "s-r")     . exwm-reset)
+										(,(kbd "s-d")     . counsel-linux-app)
+										(,(kbd "C-j")     . ,(kbd "C-&"))
+										(,(kbd "C-l")     . ,(kbd "C-^"))
+										,@(mapcar (lambda (i)
+													`(,(kbd (format "s-%d" i)) .
+													  (lambda ()
+														(interactive)
+														(exwm-workspace-switch-create ,i))))
+												  (number-sequence 0 9))
+										)
 									  )
 			  (exwm-input-simulation-keys . '(
 											  ;; new version
-											  (,(kbd "C-b") . [left])
-											  (,(kbd "M-b") . [C-left])
-											  (,(kbd "C-f") . [right])
-											  (,(kbd "M-f") . [C-right])
-											  (,(kbd "C-p") . [up])
-											  (,(kbd "C-n") . [down])
-											  (,(kbd "C-a") . [home])
-											  (,(kbd "C-e") . [end])
-											  (,(kbd "M-v") . [prior])
-											  (,(kbd "C-v") . [next])
-											  (,(kbd "C-d") . [delete])
-											  (,(kbd "C-k") . [S-end ?\C-x])
-											  (,(kbd "M-<") . [C-home])
-											  (,(kbd "M->") . [C-end])
-											  (,(kbd "C-/") . [C-z])
+											  (,(kbd "C-b")           . [left])
+											  (,(kbd "M-b")           . [C-left])
+											  (,(kbd "C-f")           . [right])
+											  (,(kbd "M-f")           . [C-right])
+											  (,(kbd "C-p")           . [up])
+											  (,(kbd "C-n")           . [down])
+											  (,(kbd "C-a")           . [home])
+											  (,(kbd "C-e")           . [end])
+											  (,(kbd "M-v")           . [prior])
+											  (,(kbd "C-v")           . [next])
+											  (,(kbd "C-d")           . [delete])
+											  (,(kbd "C-k")           . [S-end ?\C-x])
+											  (,(kbd "M-<")           . [C-home])
+											  (,(kbd "M->")           . [C-end])
+											  (,(kbd "C-/")           . [C-z])
 											  ;; C-h は特別扱い扱い
-											  ([?\C-h] . [backspace])
-											  (,(kbd "C-m") . [return])
-											  (,(kbd "C-/") . [C-z])
-											  (,(kbd "C-S-f") . [S-right])
-											  (,(kbd "C-S-b") . [S-left])
-											  (,(kbd "C-S-p") . [S-up])
-											  (,(kbd "C-S-n") . [S-down])
-											  (,(kbd "C-w") . ,(kbd "C-x"))
-											  (,(kbd "M-w") . ,(kbd "C-c"))
-											  (,(kbd "C-y") . ,(kbd "C-v"))
-											  (,(kbd "s-v") . ,(kbd "C-v"))
-											  (,(kbd "C-x h") . ,(kbd "C-a"))
-											  (,(kbd "M-d") . [C-S-right ?\C-x])
+											  ([?\C-h]                . [backspace])
+											  (,(kbd "C-m")           . [return])
+											  (,(kbd "C-/")           . [C-z])
+											  (,(kbd "C-S-f")         . [S-right])
+											  (,(kbd "C-S-b")         . [S-left])
+											  (,(kbd "C-S-p")         . [S-up])
+											  (,(kbd "C-S-n")         . [S-down])
+											  (,(kbd "C-w")           . ,(kbd "C-x"))
+											  (,(kbd "M-w")           . ,(kbd "C-c"))
+											  (,(kbd "C-y")           . ,(kbd "C-v"))
+											  (,(kbd "s-v")           . ,(kbd "C-v"))
+											  (,(kbd "C-x h")         . ,(kbd "C-a"))
+											  (,(kbd "M-d")           . [C-S-right ?\C-x])
 											  (,(kbd "M-<backspace>") . [C-S-left ?\C-x])
 											  ;; search
-											  (,(kbd "C-s") . ,(kbd "C-f"))
+											  (,(kbd "C-s")           . ,(kbd "C-f"))
 											  ;; escape
-											  (,(kbd "C-g") . [escape])
+											  (,(kbd "C-g")           . [escape])
 											  ;; like mac
-											  (,(kbd "s-w") . [C-w])
-											  ([s-left] . [C-S-tab])
-											  ([s-right] . [C-tab])
+											  (,(kbd "s-w")           . [C-w])
+											  ([s-left]               . [C-S-tab])
+											  ([s-right]              . [C-tab])
 											  ;; ([s-up] . [C-tab])
 											  ;; ([s-down] . [C-tab])
-											  (,(kbd "s-t") . [C-t])
-											  (,(kbd "s-T") . [C-T])
-											  ;; skk switch change
-											  ;; (,(kbd "C-j") . [C-&])
-											  ;; (,(kbd "C-l") . [C-^])
-											  (,(kbd "s-l") . [C-k])
-											  (,(kbd "s-k") . [C-l])
-											  ;; test
-											  (,(kbd "C-x C-s") . [C-s])
-											  (,(kbd "C-u C-/") . [C-y])
+											  (,(kbd "s-t")           . [C-t])
+											  (,(kbd "s-T")           . [C-T])
+											  ;;
+											  ;;
+											  ;;
+											  (,(kbd "s-l")           . [C-k])
+											  (,(kbd "s-k")           . [C-l])
+											  ;;
+											  (,(kbd "C-x C-s")       . [C-s])
+											  (,(kbd "C-u C-/")       . [C-y])
 											  ))
 			  )
 	:bind (("C-&" . skk-hiragana-set)
@@ -771,7 +776,7 @@
 	:ensure t
 	:require vlf-setup)
 
-  (leaf yaml-mode)
+  (leaf yaml-mode :ensure t)
 
   (leaf neotree :ensure t)
 
@@ -805,34 +810,49 @@
 		   ("\\.sty\\'"	. yatex-mode)
 		   ("\\.clo\\'"	. yatex-mode)
 		   ("\\.bbl\\'"	. yatex-mode))
-    :custom `((YaTeX-inhibit-prefix-letter . t)
-              (YaTeX-kanji-code . 4)
-              (YaTeX-latex-message-code . 'utf-8)
-              (YaTeX-use-LaTeX2e . t)
-              (YaTeX-use-AMS-LaTeX . t)
-              (YaTeX-dvi2-command-ext-alist . '(("TeXworks\\|texworks\\|texstudio\\|mupdf\\|SumatraPDF\\|Preview\\|Skim\\|TeXShop\\|evince\\|atril\\|xreader\\|okular\\|zathura\\|qpdfview\\|Firefox\\|firefox\\|chrome\\|chromium\\|MicrosoftEdge\\|microsoft-edge\\|Adobe\\|Acrobat\\|AcroRd32\\|acroread\\|pdfopen\\|xdg-open\\|open\\|start" . ".pdf")))
-              (tex-command . "uplatex -synctex=1")
-              ;; (tex-command  . "ptex2pdf -u -l -ot '-synctex=1 -file-line-error'")
-              ;; (tex-command  . "ptex2pdf -l -ot '-synctex=1")
-              (bibtex-command . "upbibtex")
-              ;; (makeindex-command  . "mendex")
-              (dviprint-command-format . "open -a \"Adobe Acrobat Reader DC\" `echo %s | gsed -e \"s/\\.[^.]*$/\\.pdf/\"`")
-              (YaTeX-nervous . nil)
-              (YaTeX-close-paren-always . nil))
+    :custom `((YaTeX-inhibit-prefix-letter	.	t)
+			  (YaTeX-kanji-code				.	4)
+			  (YaTeX-latex-message-code		.	'utf-8)
+			  (YaTeX-use-LaTeX2e			.	t)
+			  (YaTeX-use-AMS-LaTeX			.	t)
+			  (YaTeX-dvi2-command-ext-alist .	'(("TeXworks\\|texworks\\|texstudio\\|mupdf\\|SumatraPDF\\|Preview\\|Skim\\|TeXShop\\|evince\\|atril\\|xreader\\|okular\\|zathura\\|qpdfview\\|Firefox\\|firefox\\|chrome\\|chromium\\|MicrosoftEdge\\|microsoft-edge\\|Adobe\\|Acrobat\\|AcroRd32\\|acroread\\|pdfopen\\|xdg-open\\|open\\|start" . ".pdf")))
+			  (tex-command					.	"uplatex -synctex=1")
+			  ;; (tex-command  . "ptex2pdf -u -l -ot '-synctex=1 -file-line-error'")
+			  ;; (tex-command  . "ptex2pdf -l -ot '-synctex=1")
+			  (bibtex-command				.	"upbibtex")
+			  ;; (makeindex-command  . "mendex")
+			  (dviprint-command-format		.	"open -a \"Adobe Acrobat Reader DC\" `echo %s | gsed -e \"s/\\.[^.]*$/\\.pdf/\"`")
+			  (YaTeX-nervous				.	nil)
+			  (YaTeX-close-paren-always		.	nil))
 
     :config
+    (leaf align
+      :require t
+      :config
+	  (add-to-list 'align-rules-list
+				   '(yatex-table
+				     (regexp . "\\( *\\)&")
+				     (repeat . t)
+				     (modes . '(yatex-mode))))
+	  (add-to-list 'align-rules-list
+				   '(yatex-table
+				     (regexp . "\\( *\\)\\\\\\\\")
+				     (repeat . t)
+				     (modes . '(yatex-mode))))
+      )
+
 	(leaf *yatexForLinux
 	  :when (eq system-type 'gnu/linux)
-	  :custom ((dvi2-command . "zathura -x \"emacsclient --no-wait +%{line} %{input}\"")
-			   (tex-pdfview-command . "zathura -x \"emacsclient --no-wait +%{line} %{input}\"")
+	  :custom ((dvi2-command		.	"zathura -x \"emacsclient --no-wait +%{line} %{input}\"")
+			   (tex-pdfview-command .	"zathura -x \"emacsclient --no-wait +%{line} %{input}\"")
 			   )
 	  )
 
 	(leaf *yatexforMac
 	  ;; :disabled t
 	  :when (eq system-type 'darwin)
-	  :custom ((dvi2-command . "open -a Skim")
-			   (tex-pdfview-command . "open -a Skim")
+	  :custom ((dvi2-command		.	"open -a Skim")
+			   (tex-pdfview-command .	"open -a Skim")
 			   )
 	  )
 
@@ -902,21 +922,25 @@
 	(leaf ebib
       :ensure t
       ;; :bind (("C-c C-z" . ebib))
-      :custom ((ebib-preload-bib-files . "~/tex/references.bib")
-               (bibtex-autokey-name-case-convert  . capitalize)
-               (bibtex-autokey-titleword-case-convert  . capitalize)
-               (bibtex-autokey-titleword-separator  . "")
-               (bibtex-autokey-titleword-length  . nil)
-               (bibtex-autokey-titlewords  . 1)
-               (bibtex-autokey-year-length  . 4)
-               (bibtex-autokey-year-title-separator  . "_")
-               (bibtex-autokey-titleword-ignore . '("A" "An" "On" "The" "a" "an" "on" "the" "Le" "La" "Les" "le" "la" "les" "Zur" "zur" "Des" "Dir" "Die"))
-               (ebib-keywords-use-only-file . t)
-               (ebib-keywords-file . "~/tex/ebib-keywords.txt")
-               (ebib-keywords-file-save-on-exit . always)
-
-               (ebib-file-search-dirs . '("~/tex/papers" "~/tex/books"))
-               (ebib-file-associations . '(("pdf" . "open") ("ps"  . "open")))))
+      :custom ((ebib-preload-bib-files                . "~/tex/references.bib")
+               (bibtex-autokey-name-case-convert      . capitalize)
+               (bibtex-autokey-titleword-case-convert . capitalize)
+               (bibtex-autokey-titleword-separator    . "")
+               (bibtex-autokey-titleword-length       . nil)
+               (bibtex-autokey-titlewords             . 1)
+               (bibtex-autokey-year-length            . 4)
+               (bibtex-autokey-year-title-separator   . "_")
+               (bibtex-autokey-titleword-ignore       . '("A" "An" "On" "The" "a" "an" "on" "the" "Le" "La" "Les" "le" "la" "les" "Zur" "zur" "Des" "Dir" "Die"))
+               (ebib-keywords-use-only-file           . t)
+               (ebib-keywords-file                    . "~/tex/ebib-keywords.txt")
+               (ebib-keywords-file-save-on-exit       . always)
+               (ebib-file-search-dirs                 . '("~/tex/papers" "~/tex/books"))
+               )
+      :config
+      (leaf *ebibForMac
+        :when (eq system-type 'darwin)
+        :custom ((ebib-file-associations . '(("pdf" . "open") ("ps"  . "open"))))
+      )
 	)
   )
 
@@ -949,14 +973,14 @@
 
 (leaf *window-tools
   :custom (;; スクロールした際のカーソルの移動行数
-           (scroll-conservatively . 1)
+           (scroll-conservatively           . 1)
            ;; スクロール開始のマージン
-           (scroll-margin . 5)
+           (scroll-margin                   . 5)
            ;; 1画面スクロール時に重複させる行数
-           (next-screen-context-lines . 10)
+           (next-screen-context-lines       . 10)
            ;; 1画面スクロール時にカーソルの画面上の位置をなるべく変えない
            (scroll-preserve-screen-position . t)
-           (windmove-wrap-around . t)
+           (windmove-wrap-around            . t)
            )
   :preface
   ;; ウィンドウのサイズ変更
@@ -1075,9 +1099,10 @@
            ("C-M-p" . upper_volume)
            ("M-d" . counsel-linux-app)
            ("M-o" . ivy-switch-buffer))
-    :config (global-hl-line-mode)
+    :custom ((global-hl-line-mode . t))
 	)
   )
+)
 
 (leaf *view_mode
   :config
@@ -1087,42 +1112,42 @@
 		   (view-mode-map
 			("SPC" . ignore)
 			("C-m" . ignore)
-			("h" . backward-char)
-			("j" . next-line)
-			("k" . previous-line)
-			("l" . forward-char)
-			("J" . View-scroll-line-forward)
-			("K" . View-scroll-line-backward)
-			("b" . backward-char)
-			("n" . next-line)
-			("p" . previous-line)
-			("f" . forward-char)
+			("h"   . backward-char)
+			("j"   . next-line)
+			("k"   . previous-line)
+			("l"   . forward-char)
+			("J"   . View-scroll-line-forward)
+			("K"   . View-scroll-line-backward)
+			("b"   . backward-char)
+			("n"   . next-line)
+			("p"   . previous-line)
+			("f"   . forward-char)
 			("C-;" . ignore)
-			("a" . vim-forward-char-to-insert)
-			("A" . vim-end-of-line-to-insert)
-			("I" . vim-beginning-of-line-to-insert)
-			("i" . View-exit)
-			("x" . vim-del-char)
-			("X" . vim-backward-kill-line)
-			("0" . beginning-of-line)
-			("$" . move-end-of-line)
-			("e" . end-of-line)
-			("o" . vim-o)
-			("O" . vim-O)
-			("y" . copy-region-as-kill)
-			("Y" . vim-copy-line)
-			("w" . forward-word+1)
-			("W" . backward-word)
-			("P" . vim-P)
-			("D" . vim-kill-line)
-			(":" . save-buffer)
+			("a"   . vim-forward-char-to-insert)
+			("A"   . vim-end-of-line-to-insert)
+			("I"   . vim-beginning-of-line-to-insert)
+			("i"   . View-exit)
+			("x"   . vim-del-char)
+			("X"   . vim-backward-kill-line)
+			("0"   . beginning-of-line)
+			("$"   . move-end-of-line)
+			("e"   . end-of-line)
+			("o"   . vim-o)
+			("O"   . vim-O)
+			("y"   . copy-region-as-kill)
+			("Y"   . vim-copy-line)
+			("w"   . forward-word+1)
+			("W"   . backward-word)
+			("P"   . vim-P)
+			("D"   . vim-kill-line)
+			(":"   . save-buffer)
 			;; ("u" . ignore)
-			("u" . vim-undo)
-			("r" . vim-redo)
-			("d" . vim-kill-whole-line)
-			("c" . vim-kill-whole-line-to-insert)
-			("g" . View-goto-line)
-			("G" . View-goto-percent)))
+			("u"   . vim-undo)
+			("r"   . vim-redo)
+			("d"   . vim-kill-whole-line)
+			("c"   . vim-kill-whole-line-to-insert)
+			("g"   . View-goto-line)
+			("G"   . View-goto-percent)))
 	:preface
 	(leaf *keys-in-view-mode
 	  :config
@@ -1273,25 +1298,25 @@
            (eww-disable-colorize . t))
   :bind (("C-c m" . browse-url-with-eww)
          (eww-mode-map
-          ("f" . ace-link-eww)
-          ("s-l" . eww-search-words)
-          ("M" . eww-open-in-new-buffer)
-          ("s-w" . eww-buffer-kill)
+          ("f"     . ace-link-eww)
+          ("s-l"   . eww-search-words)
+          ("M"     . eww-open-in-new-buffer)
+          ("s-w"   . eww-buffer-kill)
           ("C-s-v" . eww-enable-images)
-          ("s-v" . eww-disable-images)
-          ("s-e" . eww-browse-with-external-browser)
-          ("h" . backward-char)
-          ("j" . next-line)
-          ("k" . previous-line)
-          ("l" . forward-char)
-          ("J" . View-scroll-line-forward)
-          ("K" . View-scroll-line-backward)
-          ("H" . eww-back-url)
-          ("L" . eww-forward-url)
-          ("J" . previous-buffer)
-          ("K" . next-buffer)
-          ("d" . scroll-up)
-          ("u" . scroll-down)))
+          ("s-v"   . eww-disable-images)
+          ("s-e"   . eww-browse-with-external-browser)
+          ("h"     . backward-char)
+          ("j"     . next-line)
+          ("k"     . previous-line)
+          ("l"     . forward-char)
+          ("J"     . View-scroll-line-forward)
+          ("K"     . View-scroll-line-backward)
+          ("H"     . eww-back-url)
+          ("L"     . eww-forward-url)
+          ("J"     . previous-buffer)
+          ("K"     . next-buffer)
+          ("d"     . scroll-up)
+          ("u"     . scroll-down)))
 
   :preface
   (defun eww-disable-images ()

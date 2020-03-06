@@ -10,26 +10,28 @@
 
 # gitで管理する
 # emacs関係
-!/.emacs.d/init.el
+!/.emacs.d/.yatexrc
 !/.emacs.d/conf
-!/.emacs/ddskk/init
 !/.emacs.d/elisp
 !/.emacs.d/elpa
+!/.emacs.d/init.el
 !/.emacs.d/public_repos
 !/.emacs.d/script
 !/.emacs.d/snippets
-!/.emacs.d/.yatexrc
+!/.emacs/ddskk/init
 # 設定ファイル
-!/X11ForNotePC
-!/.bashrc
 !/.Xmodmap
-!/.xinitrc
-!/.zshrc
-!/.config/libskk
-!/.config/fcitx
-!/.config/termite
+!/.Xresources
+!/.bashrc
+!/.config/alacritty
 !/.config/chrome-dev-flags.conf
 !/.config/chromium-flags.conf
+!/.config/fcitx
+!/.config/libskk
 !/.config/mpv
-!/.Xresources
+!/.config/termite
+!/.config/zathura
 !/.pkglist
+!/.xinitrc
+!/.zshrc
+!/X11ForNotePC
