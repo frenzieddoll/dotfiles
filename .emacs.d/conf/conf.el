@@ -205,13 +205,13 @@
 	  )
 
 	:preface
-	(defun reopen-with-sudo ()
-      "Reopen current buffer-file with sudo using tramp."
-      (interactive)
-      (let ((file-name (buffer-file-name)))
-		(if file-name
-			(find-alternate-file (concat "/sudo::" file-name))
-          (error "Cannot get a file name"))))
+	;; (defun reopen-with-sudo ()
+    ;;   "Reopen current buffer-file with sudo using tramp."
+    ;;   (interactive)
+    ;;   (let ((file-name (buffer-file-name)))
+	;; 	(if file-name
+	;; 		(find-alternate-file (concat "/sudo::" file-name))
+    ;;       (error "Cannot get a file name"))))
 
 	(leaf *lisp
       :config
@@ -1744,6 +1744,11 @@
             ("C-c s s" . sp-change-enclosing)))
 	)
 
+  (leaf sudo-edit
+    :ensure t
+    :custom ((sudo-edit-indicator-mode . t))
+    )
+
   )
 
 
@@ -1889,13 +1894,27 @@
   :config
   (leaf eglot
 	:ensure t
+    :hook ((c-mode-hook c++-mode-hook haskell-mode-hook) . eglot-ensure)
 	:custom `((lsp-document-sync-method . 'full)
-			  (haskell-indent-after-keywords . '(("where" 4 0) ("of" 4) ("do" 4) ("mdo" 4) ("rec" 4) ("in" 4 0) ("{" 4) "if" "then" "else" "let"))
-			  (haskell-indent-offset . 4)
-			  (haskell-indendt-spaces . 4)
 			  )
 	:config
 	(fset #'eglot--snippet-expansion-fn #'ignore)
+
+    (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
+
+    (leaf projectile
+      :ensure t
+      :custom `((projectile-indexing-method . 'alien)
+                (projectile-enable-caching . t)
+                (projectile-global-mode . t))
+      :config
+      (defun my-projectile-project-find-function (dir)
+        (let ((root (projectile-project-root dir)))
+          (and root (cons 'transient root))))
+      (projectile-mode t)
+      (with-eval-after-load 'project
+        (add-to-list 'project-find-functions 'my-projectile-project-find-function))
+      )
 
 	(leaf haskell-mode
 	  :disabled t
@@ -1903,9 +1922,12 @@
 	  :ensure t
 	  :defvar haskell-process-args-ghcie
 	  :custom `(;; (flymake-proc-allowed-file-name-masks . ,(delete '("\\.l?hs\\'" haskell-flymake-init) flymake-proc-allowed-file-name-masks))
-	  			(haskell-process-type . 'stack-ghci)
-	  			(haskell-process-path-ghci . "stack")
-	  			(haskell-process-args-ghcie . "ghci")
+	  			(haskell-process-type          . 'stack-ghci)
+	  			(haskell-process-path-ghci     . "stack")
+	  			(haskell-process-args-ghcie    . "ghci")
+                (haskell-indent-after-keywords . '(("where" 4 0) ("of" 4) ("do" 4) ("mdo" 4) ("rec" 4) ("in" 4 0) ("{" 4) "if" "then" "else" "let"))
+			    (haskell-indent-offset         . 4)
+			    (haskell-indendt-spaces        . 4)
 	  			)
 
 	  :bind ((haskell-mode-map
@@ -1926,7 +1948,6 @@
 		:after haskell-mode
 		:custom `((flymake-proc-allowed-file-name-masks . ,(delete '("\\.l?hs\\'" haskell-flymake-init) flymake-proc-allowed-file-name-masks))
 				  )
-
 		)
 
 	  (add-to-list 'company-backends 'company-ghci)
