@@ -180,7 +180,7 @@
 		:config
 		(set-face-attribute 'default nil
 							:family "HackGen"
-							:height 100))
+							:height 140))
       (leaf *forMac
 		:when (eq system-type 'darwin)
 		:config

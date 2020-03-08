@@ -70,4 +70,3 @@ export LANG=ja_JP.UTF-8
 
 xset r rate 200 30
 exec emacs
-# exec cinnamon-session
