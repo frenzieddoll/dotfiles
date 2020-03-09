@@ -18,7 +18,7 @@
 !/.emacs.d/public_repos
 !/.emacs.d/script
 !/.emacs.d/snippets
-!/.emacs/ddskk/init
+!/.emacs.d/ddskk/init
 # 設定ファイル
 !/.Xmodmap
 !/.Xresources
