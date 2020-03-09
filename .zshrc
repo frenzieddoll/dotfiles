@@ -55,12 +55,18 @@ export LANG=en_US.utf-8
 alias la='ls -a'
 alias ll='ls -lh'
 alias rm='rm -i'
-alias startx='startx -- -dpi 138'
+# alias startx='startx -- -dpi 138'
 alias ghc="stack ghc"
 alias ghci="stack ghci"
 alias runghc="stack runghc"
 alias runhaskell="stack runghc"
 alias pacmanlist="pacman -Qqe > ~/projects/dotfiles/.pkglist"
+
+case `uname -n` in
+    "ArchLinuxonLaptopPC" ) alias startx='statx' ;;
+    "archlinuxhonda" ) alias startx='statx' ;;
+esac
+
 
 # グローバルエイリアス
 alias -g L='| less'
