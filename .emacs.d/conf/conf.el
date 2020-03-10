@@ -69,7 +69,7 @@
     :url "http://handlename.hatenablog.jp/entry/2011/12/11/214923" ; align sumple
     :defvar show-paren-deley
     :custom `(;; GC
-			  ;; (gc-cons-threshold . ,(* 64 1024 1024))
+			  (gc-cons-threshold . ,(* 64 1024 1024))
 			  (garbage-collection-messages           . t)
 			  ;; 表示
 			  (tool-bar-mode                         . nil)
@@ -148,6 +148,10 @@
 	(leaf *gc-cons-threshold-arch
 	  :when (string-match "archlinuxhonda" (system-name))
 	  :custom `((gc-cons-threshold . ,(* 1024 1024 1024)))
+	  )
+    (leaf *gc-cons-threshold-arch-laptop
+	  :when (string-match "ArchLinuxonLaptopPC" (system-name))
+	  :custom `((gc-cons-threshold . ,(* 512 1024 1024)))
 	  )
 	(leaf *gc-cons-threshold-mac
 	  :when (eq system-type 'darwin)
@@ -643,6 +647,8 @@
 										(,(kbd "s-d")     . counsel-linux-app)
 										(,(kbd "C-j")     . ,(kbd "C-&"))
 										(,(kbd "C-l")     . ,(kbd "C-^"))
+                                        (,(kbd "s-j")     . lower_volume)
+                                        (,(kbd "s-k")     . upper_volume)
 										,@(mapcar (lambda (i)
 													`(,(kbd (format "s-%d" i)) .
 													  (lambda ()
