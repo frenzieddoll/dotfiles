@@ -1745,6 +1745,12 @@
     :custom ((sudo-edit-indicator-mode . t))
     )
 
+  (leaf undo-tree
+    :ensure t
+    :custom ((global-undo-tree-mode . t))
+    :bind (("M-/" . undo-tree-redo))
+    )
+
   )
 
 
