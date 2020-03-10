@@ -606,6 +606,7 @@
   :ensure t
   ;; :when (string= "yes" (getenv "exwm_enable"))
   :when (eq system-type 'gnu/linux)
+  ;; :when (string= "archlinuxhonda" (system-name))
   :init
   (server-start)
   :config
@@ -615,10 +616,6 @@
 	:hook (exwm-update-class-hook . (lambda ()
 									  (exwm-workspace-rename-buffer exwm-class-name)))
 
-	:hook (exwm-manage-finish-hook . (lambda ()
-									   (when (and exwm-class-name
-												  (string= "Alacritty" exwm-class-name))
-										 (exwm-input-release-keyboard))))
 	:custom `((use-dialog-box . nil)
 			  (window-divider-default-right-width . 1)
 			  (exwm-workspace-show-all-buffers . t)
@@ -730,24 +727,17 @@
 
   (leaf exwm-randr
 	:require t
-	:custom (
-			 (exwm-randr-workspace-monitor-plist . '(0 "DP-0" 1 "HDMI-0" 2 "DP-0" 3 "DP-0" 4 "DP-0" 5 "DP-0"))
-
+    :when (eq "archlinuxhonda" (system-name))
+	:custom ((exwm-randr-workspace-monitor-plist . '(0 "DP-0" 1 "HDMI-0" 2 "DP-0" 3 "DP-0" 4 "DP-0" 5 "DP-0"))
 			 )
 	:config
 	(exwm-randr-enable)
-
 	)
-
-  ;; (leaf *exwm-keybinding
-  ;; 	:custom
-  ;; 	:config)
 
   (leaf exwm-enable
 	:defun (exwm-enable)
 	:config
 	(exwm-enable)
-	;; (provide 'init-exwm)
 	)
 
   (leaf *fix_ediff

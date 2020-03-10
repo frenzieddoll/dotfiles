@@ -36,7 +36,7 @@ color-14=55FFFF
 color-15=FFFFFF
 
 # max scroll-back history lines of every window, value must be [0 - 65535], 0 means disable it
-history-lines=1000
+history-lines=100
 
 # up to 5 additional text encodings, multiple encodings must be seperated by ','
 # run 'iconv --list' to get available encodings.
@@ -58,4 +58,4 @@ screen-rotate=0
 input-method=
 
 # treat ambiguous width characters as wide
-#ambiguous-wide=yes
+# ambiguous-wide=yes

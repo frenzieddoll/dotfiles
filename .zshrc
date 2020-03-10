@@ -63,8 +63,8 @@ alias runhaskell="stack runghc"
 alias pacmanlist="pacman -Qqe > ~/projects/dotfiles/.pkglist"
 
 case `uname -n` in
-    "ArchLinuxonLaptopPC" ) alias startx='statx' ;;
-    "archlinuxhonda" ) alias startx='statx' ;;
+    "ArchLinuxonLaptopPC" ) alias startx='startx -- -dpi 138' ;;
+    "archlinuxhonda" ) alias startx='startx' ;;
 esac
 
 
@@ -87,7 +87,6 @@ prompt pure
 
 # # This will set the default prompt to the walters theme
 # prompt walters
-
 # # PS1="%{$fg[cyan]%}[${USER}@${HOST%%.*} %1~]%(!.#.$)${reset_color} "
 # PROMPT="%{$fg[cyan]%}[@%m]%(!.#.$)${reset_color}"
 # RPROMPT="%~"
