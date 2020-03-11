@@ -1,6 +1,6 @@
 [Hotkey]
 # Trigger Input Method
-TriggerKey=
+TriggerKey=CTRL_SHIFT_SPACE
 # Use extra trigger key only after using it to inactivate
 # Available Value:
 # True False
@@ -144,4 +144,3 @@ ShowInputWindowOnlyWhenActive=False
 # Available Value:
 # True False
 #HideInputWindowWhenOnlyOneCandidate=False
-
