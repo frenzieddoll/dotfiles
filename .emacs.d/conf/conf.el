@@ -69,7 +69,7 @@
     :url "http://handlename.hatenablog.jp/entry/2011/12/11/214923" ; align sumple
     :defvar show-paren-deley
     :custom `(;; GC
-			  (gc-cons-threshold . ,(* 64 1024 1024))
+			  ;; (gc-cons-threshold . ,(* 64 1024 1024))
 			  (garbage-collection-messages           . t)
 			  ;; 表示
 			  (tool-bar-mode                         . nil)
@@ -907,7 +907,7 @@
       ;; :ensure t
       :hook (yatex-mode . reftex-mode)
       :custom ((reftex-mode . 1)
-               (reftex-label-alist . '((nil ?e nil "\eqref{%s}" nil nil)))
+               (reftex-label-alist . '((nil ?e nil "\\eqref{%s}" nil nil)))
                (reftex-default-bibliography . '("~/tex/references.bib"))
                (reftex-bibliography-commands . '("bibliography" "nobibliography" "addbibresorce")))
 
