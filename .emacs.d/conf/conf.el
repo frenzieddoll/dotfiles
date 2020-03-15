@@ -911,7 +911,7 @@
                (reftex-default-bibliography . '("~/tex/references.bib"))
                (reftex-bibliography-commands . '("bibliography" "nobibliography" "addbibresorce")))
 
-      :bind ((reftex-mode-map
+      :bind ((YaTeX-mode-map
               (">" . YaTeX-comment-region)
               ("<" . YaTeX-uncomment-region))))
 
