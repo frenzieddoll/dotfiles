@@ -151,7 +151,7 @@
 	  )
     (leaf *gc-cons-threshold-arch-laptop
 	  :when (string-match "ArchLinuxonLaptopPC" (system-name))
-	  :custom `((gc-cons-threshold . ,(* 512 1024 1024)))
+	  :custom `((gc-cons-threshold . ,(* 8 1024 1024)))
 	  )
 	(leaf *gc-cons-threshold-mac
 	  :when (eq system-type 'darwin)

@@ -4,7 +4,6 @@
 /.emacs.d/*
 /.xkeysnail/*
 /.config/*
-/.ddskk/*
 /.config/fcitx/skk/user.dict
 /.config/fcitx/clipboard/history.dat
 

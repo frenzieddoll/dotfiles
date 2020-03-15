@@ -89,7 +89,7 @@ ShareStateAmongWindow=PerProgram
 # Available Value:
 # Inactive
 # Active
-#DefaultInputMethodState=Inactive
+DefaultInputMethodState=Active
 
 [Output]
 # Type half width Punc After a Number

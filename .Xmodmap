@@ -1,6 +1,6 @@
 clear lock
 clear control
-add control = Caps_Lock Control_L Control_R
+add control = Caps_Lock Control_L
 
 keycode   8 =
 keycode   9 = Escape NoSymbol Escape
@@ -37,8 +37,8 @@ keycode  39 = s S s S
 keycode  40 = d D d D
 keycode  41 = f F f F
 keycode  42 = g G g G
-keycode  43 = h H h H
-keycode  44 = j J j J
+keycode  43 = h H KP_Multiply KP_Multiply
+keycode  44 = j J KP_Divide KP_Divide
 keycode  45 = k K k K
 keycode  46 = l L Prior L
 keycode  47 = semicolon colon Left colon
@@ -99,7 +99,7 @@ keycode 101 = Super_R NoSymbol Super_R
 keycode 102 = Mode_switch
 keycode 103 =
 keycode 104 = KP_Enter NoSymbol KP_Enter
-keycode 105 = Alt_R NoSymbol Alt_R
+keycode 105 = Alt_R Meta_R Alt_R Meta_R
 keycode 106 = KP_Divide KP_Divide KP_Divide KP_Divide KP_Divide KP_Divide XF86Ungrab
 keycode 107 = Print Sys_Req Print Sys_Req
 keycode 108 = Alt_R Meta_R Alt_R Meta_R
