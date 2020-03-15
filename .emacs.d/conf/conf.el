@@ -1895,6 +1895,7 @@
   :when (eq system-type 'gnu/linux)
   :config
   (leaf eglot
+    :disabled t
 	:ensure t
     :hook ((c-mode-hook c++-mode-hook haskell-mode-hook) . eglot-ensure)
 	:custom `((lsp-document-sync-method . 'full)
@@ -1957,6 +1958,32 @@
 	  )
 
 	)
+  (leaf lsp-mode
+    :ensure t
+    :require lsp
+    :hook (haskell-mode-hook . lsp)
+    :config
+    (leaf lsp-ui
+      :ensure t
+      :commands lsp-ui-mode
+      )
+    (leaf company-lsp
+      :ensure t
+      :hook (lsp-mode-hook . company-mode)
+      :commands company-lsp)
+    (leaf lsp-ivy
+      :ensure t
+      :commands lsp-ivy-workspace-symbol)
+    (leaf lsp-treemacs
+      :ensure t
+      :commands lsp-treemacs-errors-list)
+
+    (leaf lsp-haskell
+      :ensure t
+      :require t
+      :hook (haskell-mode-hook . flycheck-mode)
+      )
+    )
   )
 
 (leaf *news
