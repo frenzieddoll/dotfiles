@@ -100,8 +100,6 @@
               (enable-recursive-minibuffers    . t)
               (history-length                  . 1000)
               (history-delete-duplicates       . t)
-              (scroll-preserve-screen-position . t)
-              (scroll-conservatively           . 100)
               (mouse-wheel-scroll-amount       . '(1 ((control) . 5)))
               (text-quoting-style              . 'straight)
 
@@ -939,6 +937,7 @@
       )
 	)
   )
+  )
 
 (leaf google-translate
   :ensure t
@@ -968,10 +967,10 @@
     (list 427110 1469889687)))
 
 (leaf *window-tools
-  :custom (;; スクロールした際のカーソルの移動行数
-           (scroll-conservatively           . 1)
+  :custom ((scroll-preserve-screen-position . t)
            ;; スクロール開始のマージン
            (scroll-margin                   . 5)
+           (scroll-conservatively           . 100)
            ;; 1画面スクロール時に重複させる行数
            (next-screen-context-lines       . 10)
            ;; 1画面スクロール時にカーソルの画面上の位置をなるべく変えない
@@ -1098,7 +1097,7 @@
     :custom ((global-hl-line-mode . t))
 	)
   )
-)
+
 
 (leaf *view_mode
   :config
@@ -1283,11 +1282,10 @@
 	  )
 	)
   )
-
 (leaf eww
   ;; :disabled t
   :hook (eww-mode-hook . eww-mode-hook--disable-image)
-  :defvar eww-disable-colorize shr-put-image-function
+;  :defvar eww-disable-colorize shr-put-image-function
   :defun eww-reload
   :custom ((eww-search-prefix . "https://www.google.co.jp/search?btnl&q=")
            (eww-browse-with-external-link . t)
@@ -1301,10 +1299,18 @@
           ("C-s-v" . eww-enable-images)
           ("s-v"   . eww-disable-images)
           ("s-e"   . eww-browse-with-external-browser)
+          ("r" . eww-reload)
+
+          ;; vi風
           ("h"     . backward-char)
           ("j"     . next-line)
           ("k"     . previous-line)
           ("l"     . forward-char)
+          ("g" . eww-top)
+          ("/" . isearch-forward)
+          ("n" . isearch-next)
+          ("?" . isearch-backward)
+          ;; vimium風
           ("J"     . View-scroll-line-forward)
           ("K"     . View-scroll-line-backward)
           ("H"     . eww-back-url)
@@ -1356,7 +1362,11 @@
     "eww で文字色を反映させる"
     (interactive)
     (setq-local eww-disable-colorize nil)
-    (eww-reload)))
+    (eww-reload))
+  ;; (defun eww-mode-hook--rename-buffer ()
+  ;;   "Rename eww browser's buffer so sites open in new page."
+  ;;   (rename-buffer "eww" t))
+  )
 
 (leaf *org_tools
   :disabled t
