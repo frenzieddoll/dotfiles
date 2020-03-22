@@ -92,16 +92,15 @@
 			  (undo-limit                            . 200000)
 			  (undo-strong-limit                     . 260000)
 			  (history-length                        . t)  ;; 無制限(の筈)
-
-              (create-lockfiles                . nil)
-              (use-dialog-box                  . nil)
-              (use-file-dialog                 . nil)
-              (frame-resize-pixelwise          . t)
-              (enable-recursive-minibuffers    . t)
-              (history-length                  . 1000)
-              (history-delete-duplicates       . t)
-              (mouse-wheel-scroll-amount       . '(1 ((control) . 5)))
-              (text-quoting-style              . 'straight)
+              (create-lockfiles                      . nil)
+              (use-dialog-box                        . nil)
+              (use-file-dialog                       . nil)
+              (frame-resize-pixelwise                . t)
+              (enable-recursive-minibuffers          . t)
+              (history-length                        . 1000)
+              (history-delete-duplicates             . t)
+              (mouse-wheel-scroll-amount             . '(1 ((control) . 5)))
+              (text-quoting-style                    . 'straight)
 
 
               ;; システムの時計をCにする
@@ -283,18 +282,18 @@
 				("f" . kill-current-buffer-and/or-dired-open-file)
 				("b" . kill-current-buffer-and-dired-up-directory)
 				("q" . kill-current-buffer-and-dired-up-directory)))
-		:custom `((dired-recursive-copies    . 'always)
-				  (dired-recursive-deletes   . 'always)
-				  (dired-copy-preserve-time  . t)
-				  (dired-auto-revert-buffer  . t)
-				  (dired-dwim-target         . t)
+		:custom `((dired-recursive-copies     . 'always)
+				  (dired-recursive-deletes    . 'always)
+				  (dired-copy-preserve-time   . t)
+				  (dired-auto-revert-buffer   . t)
+				  (dired-dwim-target          . t)
 				  ;; (delete-by-moving-to-trash . t)
 				  ;; (dired-listing-switches    . "-Alhv --group-directories-first")
 				  ;; 追加
 				  (dired-launch-mailcap-frend . '("env" "xdg-open"))
-				  (dired-launch-enable . t)
-				  (dired-isearch-filenames . t)
-				  (dired-listing-switches . ,(purecopy "-alht"))
+				  (dired-launch-enable        . t)
+				  (dired-isearch-filenames    . t)
+				  (dired-listing-switches     . ,(purecopy "-alht"))
 				  )
 		:preface
 		(defun kill-current-buffer-and/or-dired-open-file ()
@@ -569,7 +568,7 @@
 	;; :disabled t
     :ensure t
     :custom ((doom-themes-enable-italic . t)
-             (doom-themes-enable-bold . t))
+             (doom-themes-enable-bold   . t))
 	:custom-face ((doom-modeline-bar . '((t (:background "#6272a4")))))
 	:config
 	(load-theme 'doom-one t)
@@ -600,13 +599,12 @@
                              orig-fg)))
     )
   )
-
 
 ;; window maneger
 (leaf exwm
   ;; :disabled t
   :ensure t
-  ;; :when (string= "yes" (getenv "exwm_enable"))
+  :when (string= "enable" (getenv "EXWM"))
   :when (eq system-type 'gnu/linux)
   ;; :when (string= "archlinuxhonda" (system-name))
   :init
@@ -1506,7 +1504,8 @@
       (leaf company-box
 		:url "https://github.com/seagle0128/.emacs.d/blob/master/lisp/init-company.el"
 		:when (version<= "26.1" emacs-version)
-		:disabled (eq window-system 'x)
+		;; :disabled (eq window-system 'x)
+        :disabled t
 		:ensure t
 		:diminish company-box-mode
 		:defvar (company-box-icons-alist company-box-icons-all-the-icons)
@@ -1555,45 +1554,45 @@
 	:ensure t
 	:leaf-defer nil
     ;; :disabled t
-    :custom `((ivy-re-builders-alist . '((t . ivy--regex-plus)))
-			  (ivy-use-selectable-prompt . t)
-			  (ivy-mode . t)
-			  (counsel-mode . t)
-			  (dired-recent-mode . t)
-			  (ivy-use-virtual-buffers . t)
-			  (ivy-truncate-lines . nil)
-			  (ivy-wrap . t)
+    :custom `((ivy-re-builders-alist        . '((t . ivy--regex-plus)))
+			  (ivy-use-selectable-prompt    . t)
+			  (ivy-mode                     . t)
+			  (counsel-mode                 . t)
+			  (dired-recent-mode            . t)
+			  (ivy-use-virtual-buffers      . t)
+			  (ivy-truncate-lines           . nil)
+			  (ivy-wrap                     . t)
 			  (enable-recursive-minibuffers . t)
-			  (ivy-height . 15)
-			  (ivy-extra-directories . nil)
-			  (ivy-format-functions-alist . '((t . ivy-format-function-arrow)))
+			  (ivy-height                   . 15)
+			  (ivy-extra-directories        . nil)
+			  (ivy-format-functions-alist   . '((t . ivy-format-function-arrow)))
 			  )
 
     :bind (("C-x b" . ivy-switch-buffer)
 		   (ivy-minibuffer-map
             ;; ESC連打でミニバッファを閉じる
             ("<escape>" . minibuffer-keyboard-quit)
-            ("C-m" . ivy-alt-done)
-            ("C-i" . ivy-immediate-done)))
+            ("C-m"      . ivy-alt-done)
+            ("C-i"      . ivy-immediate-done)))
 	:init
 	(leaf counsel
 	  ;; :ensure t
 	  :defvar counsel-find-file-ignore-regexp
-	  :custom ((counsel-mode . 1)
+	  :custom ((counsel-mode                    . 1)
 			   (counsel-find-file-ignore-regexp . (regexp-opt '("./" "../")))
-			   (recentf-max-saved-items . 2000)
-			   (recentf-auto-cleanup .'never)
-			   (recentf-exclude .'("/recentf" "COMMIT_EDITMSG" "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores" "/\\.emacs\\.d/\\.cask/"))
-			   (recentf-mode . 1)
-			   (counsel-yank-pop-separator . "\n-------\n")
+			   (recentf-max-saved-items         . 2000)
+			   (recentf-auto-cleanup            . 'never)
+			   (recentf-exclude                 . '("/recentf" "COMMIT_EDITMSG" "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores" "/\\.emacs\\.d/\\.cask/"))
+			   (recentf-mode                    . 1)
+			   (counsel-yank-pop-separator      . "\n-------\n")
 			   )
 
 	  :bind
-	  (("M-x" . counsel-M-x)
+	  (("M-x"     . counsel-M-x)
 	   ("C-x C-f" . counsel-find-file)
-	   ("C-c h" . counsel-recentf)
-	   ("C-c i" . imenus)
-	   ("M-y" . counsel-yank-pop)
+	   ("C-c h"   . counsel-recentf)
+	   ("C-c i"   . imenus)
+	   ("M-y"     . counsel-yank-pop)
 	   ("C-x C-b" . counsel-ibuffer)
 	   ;; ("C-M-f" . counsel-ag)
 	   )
