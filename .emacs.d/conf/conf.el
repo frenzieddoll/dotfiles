@@ -2017,3 +2017,18 @@
   ;;             '(("オレ的ゲーム速報JIN" "http://jin115.com/index.rdf")))
 
   )
+
+
+(leaf japanese-holidays
+  :after calendar
+  :require t
+  :hook ((calendar-today-visible-hook . japanese-holiday-mark-weekend)
+         (calendar-today-invisible-hook .  japanese-holiday-mark-weekend)
+         (calendar-today-visible-hook . calendar-mark-today)
+         )
+  :custom ((calendar-mark-holidays-flag . t)
+           (japanese-holiday-weekend . '(0 6))
+           (japanese-holiday-weekend-marker . '(holiday nil nil nil nil nil japanese-holiday-saturday))
+           (org-agenda-include-diary . t)
+           )
+)
