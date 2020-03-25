@@ -182,6 +182,7 @@
 		(set-face-attribute 'default nil
 							:family "HackGen"
 							:height 140))
+
       (leaf *forMac
 		:when (eq system-type 'darwin)
 		:config
@@ -205,7 +206,7 @@
 		)
 	  )
 
-	:preface
+	;; :preface
 	;; (defun reopen-with-sudo ()
     ;;   "Reopen current buffer-file with sudo using tramp."
     ;;   (interactive)
@@ -442,8 +443,6 @@
               (list "l" "eshell/less $1")
               (list "translate" "~/python/translate.py")
               (list "pacmandate" "expac --timefmt='%Y-%m-%d %T' '%l\t%n' | sort | tail -n $1")
-              (list "manga" "wine ~/Documents/Software/picture/MangaMeeya_73/MangaMeeya.exe")
-              (list "backup" "~/.emacs.d/script/backup.sh $1")
               (list "nvidiafix" "nvidia-settings --assign CurrentMetaMode='nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }'")
               (list "usbmount" "sudo mount -t vfat $1 $2 -o rw,umask=000")
               (list "dvd" "mpv dvd:// -dvd-device $1")
@@ -1367,11 +1366,14 @@
   )
 
 (leaf *org_tools
-  :disabled t
   :config
   (leaf org-mode
-    :custom ((org-todo-keywords . '((sequence "TODO(t)" "WAIT(w)" "|" "DONE(d)" "SOMEDAY(s)"))))
-    ))
+    :custom ((org-agenda-files . '("~/Dropbox/org/todo.org"
+                                   "~/Dropbox/org/todo_SonyLSI.org"))
+             )
+    :bind (("C-c a" . org-agenda))
+    )
+  )
 
 (leaf pdf-tools
   :when (file-exists-p "/usr/bin/epdfinfo")
@@ -1969,7 +1971,7 @@
 	)
   (leaf lsp-mode
     :ensure t
-    :require lsp
+    :require t
     :hook (haskell-mode-hook . lsp)
     :config
     (leaf lsp-ui
