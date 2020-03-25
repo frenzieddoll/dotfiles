@@ -17,7 +17,7 @@
 !/.emacs.d/public_repos
 !/.emacs.d/script
 !/.emacs.d/snippets
-!/.emacs.d/ddskk
+!/.emacs.d/ddskk/init
 # 設定ファイル
 !/.Xmodmap
 !/.Xresources
@@ -35,8 +35,3 @@
 !/.xinitrc
 !/.zshrc
 !/X11ForNotePC
-/.emacs.d/ddskk/jisyo
-/.emacs.d/ddskk/jisyo.bak
-/.emacs.d/ddskk/record
-/.emacs.d/ddskk/study
-/.emacs.d/ddskk/study.bak
