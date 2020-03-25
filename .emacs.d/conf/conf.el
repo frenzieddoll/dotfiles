@@ -2033,4 +2033,22 @@
            (japanese-holiday-weekend-marker . '(holiday nil nil nil nil nil japanese-holiday-saturday))
            (org-agenda-include-diary . t)
            )
+  :config
+
 )
+
+(leaf calfw
+  :ensure t
+  :require t
+  :config
+  (leaf calfw-org
+    :ensure t
+    :require t
+    )
+  (leaf calfw-ical
+    :ensure t
+    :require t
+    :config
+    (load "calfw_functions" t)
+    )
+  )
