@@ -1221,14 +1221,14 @@
 	  (defun vim-undo ()
 		(interactive)
 		(view-mode 0)
-		(undo)
+		(undo-tree-undo)
 		(view-mode 1)
 		(message "undo !"))
 	  ;; like C-r
 	  (defun vim-redo ()
 		(interactive)
 		(view-mode 0)
-		(redo)
+        (undo-tree-redo)
 		(view-mode 1)
 		(message "redo !"))
 	  ;; like Y

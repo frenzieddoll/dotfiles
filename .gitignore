@@ -24,8 +24,6 @@
 !/.bashrc
 !/.config/alacritty
 !/.config/brave-flags.conf
-!/.config/chrome-dev-flags.conf
-!/.config/chromium-flags.conf
 !/.config/fcitx
 !/.config/libskk
 !/.config/mpv
