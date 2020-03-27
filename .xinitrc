@@ -70,4 +70,5 @@ export LANG=ja_JP.UTF-8
 export EXWM=enable
 
 xset r rate 200 30
-exec emacs
+# exec emacs
+exec dbus-launch --exit-with-session --sh-syntax emacs

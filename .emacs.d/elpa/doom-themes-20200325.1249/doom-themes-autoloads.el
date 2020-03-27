@@ -142,6 +142,14 @@
 
 ;;;***
 
+;;;### (autoloads nil "doom-monokai-spectrum-theme" "doom-monokai-spectrum-theme.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from doom-monokai-spectrum-theme.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-monokai-spectrum-theme" '("doom-monokai-spectrum")))
+
+;;;***
+
 ;;;### (autoloads nil "doom-moonlight-theme" "doom-moonlight-theme.el"
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from doom-moonlight-theme.el
