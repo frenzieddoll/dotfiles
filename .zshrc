@@ -63,8 +63,8 @@ alias runhaskell="stack runghc"
 alias pacmanlist="pacman -Qqe > ~/projects/dotfiles/.pkglist"
 
 case `uname -n` in
-    "ArchLinuxonLaptopPC" ) alias startx='startx -- -dpi 138' ;;
-    "archlinuxhonda" ) alias startx='startx' ;;
+    "ArchLinuxonLaptopPC" ) alias startx='startx' ;;
+    "archlinuxhonda" ) alias startx='startx -- -dpi 138' ;;
 esac
 
 
