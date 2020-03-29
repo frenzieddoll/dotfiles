@@ -910,30 +910,36 @@
               (">" . YaTeX-comment-region)
               ("<" . YaTeX-uncomment-region))))
 
-	(leaf ebib
+
+    )
+  (leaf ebib
       :ensure t
-      ;; :bind (("C-c C-z" . ebib))
-      :custom ((ebib-preload-bib-files                . "~/tex/references.bib")
-               (bibtex-autokey-name-case-convert      . capitalize)
-               (bibtex-autokey-titleword-case-convert . capitalize)
+      :custom ((ebib-preload-bib-files                . '("~/tex/references.bib"))
+               (bibtex-autokey-name-case-convert      . 'capitalize)
+               (bibtex-autokey-titleword-case-convert . 'capitalize)
                (bibtex-autokey-titleword-separator    . "")
                (bibtex-autokey-titleword-length       . nil)
                (bibtex-autokey-titlewords             . 1)
                (bibtex-autokey-year-length            . 4)
                (bibtex-autokey-year-title-separator   . "_")
-               (bibtex-autokey-titleword-ignore       . '("A" "An" "On" "The" "a" "an" "on" "the" "Le" "La" "Les" "le" "la" "les" "Zur" "zur" "Des" "Dir" "Die"))
+               (bibtex-autokey-titleword-ignore       . '("A" "An" "On" "The" "a" "an"
+                                                          "on" "the" "Le" "La" "Les"
+                                                          "le" "la" "les" "Zur" "zur" "Des" "Dir" "Die"))
                (ebib-keywords-use-only-file           . t)
                (ebib-keywords-file                    . "~/tex/ebib-keywords.txt")
-               (ebib-keywords-file-save-on-exit       . always)
-               (ebib-file-search-dirs                 . '("~/tex/papers" "~/tex/books"))
+               (ebib-keywords-file-save-on-exit       . 'always)
+               (ebib-file-search-dirs                 . '("~/tex/pdfs" "~/tex/papers" "~/tex/books"))
                )
       :config
       (leaf *ebibForMac
         :when (eq system-type 'darwin)
         :custom ((ebib-file-associations . '(("pdf" . "open") ("ps"  . "open"))))
+        )
+      (leaf *ebibForLinux
+        :when (eq system-type 'gnu/linux)
+        :custom ((ebib-file-associations . '(("pdf" . "zathura") ("ps"  . "zathura"))))
       )
 	)
-  )
   )
 
 (leaf google-translate
@@ -2051,4 +2057,9 @@
     :config
     (load "calfw_functions" t)
     )
+  (add-hook 'calendar-load-hook (lambda ()
+                                  (require 'japanese-holidays)
+                                  (setq calendar-holidays
+                                        (append japanese-holidays local-holidays other-holidays))))
+
   )
