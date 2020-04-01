@@ -33,3 +33,5 @@
 !/.xinitrc
 !/.zshrc
 !/X11ForNotePC
+/.local/share/xorg/
+/.local/share/recently-used.xbel
