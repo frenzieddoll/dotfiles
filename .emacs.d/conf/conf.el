@@ -1139,7 +1139,6 @@
 			("P"   . vim-P)
 			("D"   . vim-kill-line)
 			(":"   . save-buffer)
-			;; ("u" . ignore)
 			("u"   . vim-undo)
 			("r"   . vim-redo)
 			("d"   . vim-kill-whole-line)
