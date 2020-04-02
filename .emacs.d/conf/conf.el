@@ -51,6 +51,7 @@
 	)
 
   (leaf exec-path-from-shell
+    :unless (eq system-type 'windows-nt)
     :ensure t
     :defun (exec-path-from-shell-initialize)
     :custom ((exec-path-from-shell-check-startup-files . nil)
@@ -185,6 +186,18 @@
 
       (leaf *forMac
 		:when (eq system-type 'darwin)
+		:config
+		(set-face-attribute 'default nil
+							:family "HackGen"
+							:height 150)
+		(set-fontset-font (frame-parameter nil 'font)
+				  'japanese-jisx0208
+				  (font-spec :family "HackGen"
+							 :height 150))
+
+		)
+      (leaf *forMac
+		:when (eq system-type 'windows-nt)
 		:config
 		(set-face-attribute 'default nil
 							:family "HackGen"
@@ -776,9 +789,14 @@
 	(leaf magit
 	  :when (version<= "25.1" emacs-version)
 	  :ensure t
-	  )
+      :config
+      (leaf *forWindows
+        :when (eq system-type 'windows-nt)
+        :custom ((magit-git-executable . "c:/Program Files/Git/bin/git.exe"))
+        )
+      )
 
-	(leaf gitignore-mode :ensure t)
+    (leaf gitignore-mode :ensure t)
   )
 
   )
@@ -1029,7 +1047,7 @@
 	)
 
   (leaf *mySaveFrame
-	:when (eq system-type 'darwin)
+	:when (or (eq system-type 'darwin) (eq system-type 'windows-nt))
     :hook ((emacs-startup-hook . my-load-frame-size)
 	  	   (kill-emacs-hook . my-save-frame-size))
 	:defun my-save-frame-size my-load-frame-size
@@ -1098,6 +1116,22 @@
            ("M-d" . counsel-linux-app)
            ("M-o" . ivy-switch-buffer))
     :custom ((global-hl-line-mode . t))
+	)
+  (leaf *ForWindows
+    :when (eq system-type 'windows-nt)
+    :bind (("M-n" . windmove-down)
+           ("M-f" . windmove-right)
+           ("M-b" . windmove-left)
+           ("M-p" . windmove-up)
+           ("M-a" . zoom-window-zoom)
+           ("M-q" . kill-current-buffer)
+           ("M-h" . delete-window)
+           ("C-M-i" . output_toggle)
+           ("C-M-m" . mute_toggle)
+           ("C-M-n" . lower_volume )
+           ("C-M-p" . upper_volume)
+           ("M-d" . counsel-linux-app)
+           ("M-o" . ivy-switch-buffer))
 	)
   )
 
