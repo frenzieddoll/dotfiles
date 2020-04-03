@@ -46,7 +46,8 @@ bindkey "^[[3~" delete-char
 # pathを通す
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.emacs.d/script:$PATH"
-export PATH="/Library/Frameworks/Python.framework/Versions/3.7/bin/:$PATH"
+
+# export PATH="/Library/Frameworks/Python.framework/Versions/3.7/bin/:$PATH"
 
 # 言語を英語にする
 export LANG=en_US.utf-8

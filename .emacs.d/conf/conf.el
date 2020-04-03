@@ -462,11 +462,41 @@
               (list "dvdCopy" "dvdbackup -i /dev/sr0 -o ~/Downloads/iso/ -M")
 			  (list "pkglist" "yay -Qe | cut -f 1 -d " " > ~/.emacs.d/pkglist")
               ))))
-	(defun pcomplete/sudo ()
-      "Completion rules for the `sudo' command."
-      (let ((pcomplete-ignore-case t))
-		(pcomplete-here (funcall pcomplete-command-completion-function))
-		(while (pcomplete-here (pcomplete-entries)))))
+    (leaf *pcomplete
+      :preface
+	  (defun pcomplete/sudo ()
+        "Completion rules for the `sudo' command."
+        (let ((pcomplete-ignore-case t))
+		  (pcomplete-here (funcall pcomplete-command-completion-function))
+		  (while (pcomplete-here (pcomplete-entries)))))
+
+      ;;systemctlの補完
+      (defcustom pcomplete-systemctl-commands
+        '("disable" "enable" "status" "start" "restart" "stop" "reenable"
+          "list-units" "list-unit-files")
+        "p-completion candidates for `systemctl' main commands"
+        :type '(repeat (string :tag "systemctl command"))
+        :group 'pcomplete)
+      (defvar pcomplete-systemd-units
+        (split-string
+         (shell-command-to-string
+          "(systemctl list-units --all --full --no-legend;systemctl list-unit-files --full --no-legend)|while read -r a b; do echo \" $a\";done;"))
+        "p-completion candidates for all `systemd' units")
+
+      (defvar pcomplete-systemd-user-units
+        (split-string
+         (shell-command-to-string
+          "(systemctl list-units --user --all --full --no-legend;systemctl list-unit-files --user --full --no-legend)|while read -r a b;do echo \" $a\";done;"))
+        "p-completion candidates for all `systemd' user units")
+
+      (defun pcomplete/systemctl ()
+        "Completion rules for the `systemctl' command."
+        (pcomplete-here (append pcomplete-systemctl-commands '("--user")))
+        (cond ((pcomplete-test "--user")
+               (pcomplete-here pcomplete-systemctl-commands)
+               (pcomplete-here pcomplete-systemd-user-units))
+              (t (pcomplete-here pcomplete-systemd-units))))
+    )
 
 	:config
 	(leaf *unixCommandEmu
@@ -812,7 +842,7 @@
     :ensure t
 	:hook (yatex-mode-hook . (lambda () (auto-fill-mode -1)))
 	:hook (yatex-mode-hook . reftex-mode)
-	:bind (("C-c C-z" . ebib))
+	;; :bind (("C-c C-z" . ebib))
     :mode (("\\.tex\\'" . yatex-mode)
 		   ("\\.ltx\\'"	. yatex-mode)
 		   ("\\.cls\\'"	. yatex-mode)
@@ -1798,10 +1828,10 @@
   (leaf undo-tree
     :ensure t
     :custom ((global-undo-tree-mode . t))
-    :bind (("M-/" . undo-tree-redo))
     )
-
   )
+
+
 
 
 ;; 途中の設定
@@ -2027,11 +2057,36 @@
     (leaf lsp-treemacs
       :ensure t
       :commands lsp-treemacs-errors-list)
-
     (leaf lsp-haskell
       :ensure t
       :require t
       :hook (haskell-mode-hook . flycheck-mode)
+      )
+    (leaf haskell-mode
+      :ensure t
+      :after lsp-mode
+      :defvar haskell-process-args-ghcie
+	  :custom `(;; (flymake-proc-allowed-file-name-masks . ,(delete '("\\.l?hs\\'" haskell-flymake-init) flymake-proc-allowed-file-name-masks))
+	  			(haskell-process-type          . 'stack-ghci)
+	  			(haskell-process-path-ghci     . "stack")
+	  			(haskell-process-args-ghcie    . "ghci")
+                (haskell-indent-after-keywords . '(("where" 4 0) ("of" 4) ("do" 4) ("mdo" 4) ("rec" 4) ("in" 4 0) ("{" 4) "if" "then" "else" "let"))
+			    (haskell-indent-offset         . 4)
+			    (haskell-indendt-spaces        . 4)
+	  			)
+
+	  :bind ((haskell-mode-map
+              ("C-c C-z" . haskell-interactive-bring)
+              ("C-c C-l" . haskell-process-load-file)
+			  )
+			 )
+	  :hook ((haskell-mode-hook . eglot-ensure)
+	  		 (haskell-mode-hook . interactive-haskell-mode)
+	  		 (haskell-mode-hook . haskell-decl-scan-mode)
+	  		 (haskell-mode-hook . haskell-doc-mode)
+	  		 (haskell-mode-hook . haskell-indentation-mode)
+	  		 )
+
       )
     )
   )
