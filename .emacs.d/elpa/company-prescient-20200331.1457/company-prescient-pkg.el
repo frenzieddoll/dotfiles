@@ -1,2 +1,0 @@
-;;; Generated package description from /home/toshiaki/.emacs.d/elpa/company-prescient-20200331.1457/company-prescient.el  -*- no-byte-compile: t -*-
-(define-package "company-prescient" "20200331.1457" "prescient.el + Company" '((emacs "25.1") (prescient "4.1") (company "0.9.6")) :commit "aa3110281a0622fa7b5da115cefb71a319b5b1a0" :keywords '("extensions") :authors '(("Radon Rosborough" . "radon.neon@gmail.com")) :maintainer '("Radon Rosborough" . "radon.neon@gmail.com") :url "https://github.com/raxod502/prescient.el")

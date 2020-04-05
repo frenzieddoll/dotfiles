@@ -14,7 +14,7 @@ time=1585405321
 jumplist=
 
 [G4pEBIp7pEancwLgWlpALGf6EcZ4FbyA2j26b6vtioQ=]
-page=0
+page=24
 offset=0
 zoom=2.0274551214361138
 rotate=0
@@ -22,8 +22,8 @@ pages-per-row=1
 first-page-column=1:2
 page-right-to-left=false
 position-x=0.5
-position-y=0.00040064479506744316
-time=1585495926
+position-y=0.04849683717983698
+time=1585974621
 
 [/mnt/externalHDD/Downloads/atmarkit_ebook53_linux.pdf]
 page=0
@@ -450,7 +450,7 @@ first-page-column=1:2
 page-right-to-left=false
 position-x=0.5
 position-y=0.19208103130755064
-time=1585498578
+time=1585974429
 jumplist=
 
 [M/mP0B8BvCKMCUj/B6Qb7WxDmXBF4T/LIv74HFbnOqs=]
@@ -463,7 +463,7 @@ first-page-column=1:2
 page-right-to-left=false
 position-x=0.5
 position-y=0.19208103130755064
-time=1585498578
+time=1585974429
 
 [/mnt/sdb/Documents/grive_frenzieddoll/sony/入社書類フォーマット/00_【重要】最初に必ずお読みください.pdf]
 page=3
@@ -752,3 +752,16 @@ page-right-to-left=false
 position-x=0.5
 position-y=0.27343395928983821
 time=1585907585
+
+[/mnt/sdb/Downloads/category-theory-for-programmers.pdf]
+page=24
+offset=0
+zoom=2.0274551214361138
+rotate=0
+pages-per-row=1
+first-page-column=1:2
+page-right-to-left=false
+position-x=0.5
+position-y=0.04849683717983698
+time=1585974621
+jumplist=

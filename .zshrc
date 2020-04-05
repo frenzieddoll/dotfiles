@@ -56,6 +56,7 @@ export LANG=en_US.utf-8
 alias la='ls -a'
 alias ll='ls -lh'
 alias rm='rm -i'
+alias cp='cp -p'
 # alias startx='startx -- -dpi 138'
 alias ghc="stack ghc"
 alias ghci="stack ghci"

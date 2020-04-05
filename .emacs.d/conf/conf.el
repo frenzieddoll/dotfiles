@@ -134,6 +134,7 @@
               (show-paren-delay                      . 0.125)
               ;;
               (vc-follow-symlinks                    . t)
+              (temp-buffer-resize-mode               . 1)
 			  (display-time-mode                     . t)
 			  (display-time-string-forms             . '((format "%s/%s(%s)%s:%s"
     												             month day dayname
@@ -155,6 +156,7 @@
 	  :when (eq system-type 'darwin)
 	  :custom `((gc-cons-threshold . ,(* 32 1024 1024)))
 	  )
+    (run-with-idle-timer 60.0 t #'garbage-collect)
 
 	(leaf startup
 	  :doc "起動を静かに"
@@ -865,21 +867,6 @@
 			  (YaTeX-close-paren-always		.	nil))
 
     :config
-    (leaf align
-      :require t
-      :config
-	  (add-to-list 'align-rules-list
-				   '(yatex-table
-				     (regexp . "\\( *\\)&")
-				     (repeat . t)
-				     (modes . '(yatex-mode))))
-	  (add-to-list 'align-rules-list
-				   '(yatex-table
-				     (regexp . "\\( *\\)\\\\\\\\")
-				     (repeat . t)
-				     (modes . '(yatex-mode))))
-      )
-
 	(leaf *yatexForLinux
 	  :when (eq system-type 'gnu/linux)
 	  :custom ((dvi2-command		.	"zathura -x \"emacsclient --no-wait +%{line} %{input}\"")
@@ -1457,7 +1444,6 @@
 ;; マイナーモードの設定
 (leaf *minor-mode
   :config
-
   (leaf skk
     :ensure ddskk
 	;; :defun (skk-get)
@@ -1524,7 +1510,9 @@
               (company-idle-delay            . 0)
               (company-minimum-prefix-length . 3)
               (company-transformers          . '(company-sort-by-occurrence))
-              (global-company-mode           . t))
+              (global-company-mode           . t)
+              (company-dabbrev-downcase      . nil)
+              )
     :config
     (leaf company-math
 	  :ensure t
@@ -1653,7 +1641,7 @@
 			   (counsel-find-file-ignore-regexp . (regexp-opt '("./" "../")))
 			   (recentf-max-saved-items         . 2000)
 			   (recentf-auto-cleanup            . 'never)
-			   (recentf-exclude                 . '("/recentf" "COMMIT_EDITMSG" "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores" "/\\.emacs\\.d/\\.cask/"))
+			   (recentf-exclude                 . '("/recentf" "COMMIT_EDITMSG" "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores" "/\\.emacs\\.d/\\.cask/" "/Geheimnis"))
 			   (recentf-mode                    . 1)
 			   (counsel-yank-pop-separator      . "\n-------\n")
 			   )
@@ -1829,6 +1817,27 @@
     :ensure t
     :custom ((global-undo-tree-mode . t))
     )
+
+  (leaf align
+      :require t
+      :config
+	  (add-to-list 'align-rules-list
+				   '(yatex-table
+				     (regexp . "\\( *\\)&")
+				     (repeat . t)
+				     (modes . '(yatex-mode))))
+	  (add-to-list 'align-rules-list
+				   '(yatex-table
+				     (regexp . "\\( *\\)\\\\\\\\")
+				     (repeat . t)
+				     (modes . '(yatex-mode))))
+      (add-to-list 'align-rules-list
+                   '(haskell-equal
+                     (regexp . "\\( *\\)=\\(\\s-*\\)")
+                     (repeat . t)
+                     (modes . '(haskell-mode))))
+      )
+
   )
 
 
@@ -2079,6 +2088,11 @@
               ("C-c C-z" . haskell-interactive-bring)
               ("C-c C-l" . haskell-process-load-file)
 			  )
+             (haskell-interactive-mode-map
+              ("<up>" . haskell-interactive-mode-history-previous)
+              ("<down>" . haskell-interactive-mode-history-next)
+              ("C-c C-l" . haskell-interactive-switch-back)
+              )
 			 )
 	  :hook ((haskell-mode-hook . eglot-ensure)
 	  		 (haskell-mode-hook . interactive-haskell-mode)

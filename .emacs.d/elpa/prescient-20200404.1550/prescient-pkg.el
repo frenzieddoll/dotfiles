@@ -1,0 +1,2 @@
+;;; Generated package description from /home/toshiaki/.emacs.d/elpa/prescient-20200404.1550/prescient.el  -*- no-byte-compile: t -*-
+(define-package "prescient" "20200404.1550" "Better sorting and filtering" '((emacs "25.1")) :commit "14b91f8c1c2401e7c67bd111095402ed8552b0bc" :keywords '("extensions") :authors '(("Radon Rosborough" . "radon.neon@gmail.com")) :maintainer '("Radon Rosborough" . "radon.neon@gmail.com") :url "https://github.com/raxod502/prescient.el")
