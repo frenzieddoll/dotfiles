@@ -5,8 +5,8 @@
 ;; Author: Naoya Yamashita <conao3@gmail.com>
 ;; Maintainer: Naoya Yamashita <conao3@gmail.com>
 ;; Keywords: lisp settings
-;; Package-Version: 20200328.845
-;; Version: 1.4.0
+;; Package-Version: 20200406.1107
+;; Version: 1.4.5
 ;; URL: https://github.com/conao3/leaf-keywords.el
 ;; Package-Requires: ((emacs "24.4") (leaf "3.5.0"))
 
@@ -73,17 +73,24 @@
    hydra key-combo smartrep key-chord
 
    ;; `leaf-keywords-after-load'
-
+   diminish delight
 
    ;; `leaf-keywords-after-require'
-   diminish delight)
+   )
   "List of dependent packages.")
 
-(defcustom leaf-keywords-before-protection
+(defcustom leaf-keywords-before-protection nil
+  "Additional `leaf-keywords' before protection.
+:disabled <this place> :leaf-protect"
+  :set #'leaf-keywords-set-keywords
+  :type 'sexp
+  :group 'leaf-keywords)
+
+(defcustom leaf-keywords-documentation-keywords
   (leaf-list
    :added `(,@leaf--body))
-  "Additional `leaf-keywords' before protection.
-:disabled :doc ... :url <this place> :leaf-protect"
+  "Additional `leaf-keywords' documentation keywords.
+:doc :req :tag <this place> :file :url"
   :set #'leaf-keywords-set-keywords
   :type 'sexp
   :group 'leaf-keywords)
@@ -147,17 +154,18 @@
   :type 'sexp
   :group 'leaf-keywords)
 
-(defcustom leaf-keywords-after-require nil
+(defcustom leaf-keywords-after-require
+  (leaf-list
+   :delight    `(,@(mapcar (lambda (elm) `(delight ,@elm)) leaf--value) ,@leaf--body)
+   :diminish   `((with-eval-after-load ',leaf--name ,@(mapcar (lambda (elm) `(diminish ',(car elm) ,(cdr elm))) leaf--value)) ,@leaf--body)
+   :blackout   `((with-eval-after-load ',leaf--name ,@(mapcar (lambda (elm) `(blackout ',(car elm) ,(cdr elm))) leaf--value)) ,@leaf--body))
   "Additional `leaf-keywords' after require.
 :require <this place> :config"
   :set #'leaf-keywords-set-keywords
   :type 'sexp
   :group 'leaf-keywords)
 
-(defcustom leaf-keywords-after-config
-  (leaf-list
-   :diminish   `(,@(mapcar (lambda (elm) `(diminish ,@elm)) leaf--value) ,@leaf--body)
-   :delight    `(,@(mapcar (lambda (elm) `(delight ,@elm)) leaf--value) ,@leaf--body))
+(defcustom leaf-keywords-after-config nil
   "Additional `leaf-keywords' after config.
 :config <this place> :setq"
   :set #'leaf-keywords-set-keywords
@@ -183,7 +191,7 @@
      ;; Return: list of ([:{{hoge}}-map] [:package {{pkg}}] (bind . func))
      (eval `(leaf-key-chords ,leaf--value ,leaf--name)))
 
-    ((memq leaf--key '(:feather))
+    ((memq leaf--key '(:feather :diminish :blackout))
      ;; Accept: (sym . val), ((sym sym ...) . val), (sym sym ... . val)
      ;; Return: list of pair (sym . val)
      ;; Note  : atom ('t, 'nil, symbol) is just ignored
@@ -198,8 +206,12 @@
                  `(,@elm . ,leaf--name))
                 ((memq leaf--key '())
                  `(,@elm . leaf-default-plstore))
-                ((memq leaf--key '())
-                 elm)
+                ((memq leaf--key '(:diminish :blackout))
+                 (let ((elm* (car elm)))
+                   (cond
+                    ((equal t elm*) `(,(leaf-mode-sym leaf--name) . nil))
+                    ((symbolp elm*) `(,(leaf-mode-sym elm*) . nil))
+                    ((stringp elm*) `(,(leaf-mode-sym leaf--name) . ,elm*)))))
                 (t
                  elm)))
              (mapcan
@@ -302,12 +314,12 @@
                                   ((and (listp elm) (eq 'quote (car elm))) (eval elm))))
                           fns)))))
 
-    ((memq leaf--key '(:delight :diminish))
+    ((memq leaf--key '(:delight))
      (mapcan
       (lambda (elm)
         (cond
          ((eq t elm) `((',(leaf-mode-sym leaf--name))))
-         ((symbolp elm) `((',elm)))
+         ((symbolp elm) `((',(leaf-mode-sym elm))))
          ((stringp elm) `((',(leaf-mode-sym leaf--name) ,elm)))
          ((and (listp elm) (listp (car elm))) (mapcar (lambda (el) `(',(car el) ,@(cdr el))) elm))
          ((listp elm) `((',(car elm) ,@(cdr elm))))))
@@ -600,7 +612,7 @@ If RENEW is non-nil, renew leaf-{keywords, normalize} cache."
   (setq leaf-keywords leaf-keywords-raw-keywords)
   (setq leaf-normalize leaf-keywords-raw-normalize)
 
-  ;; :disabled :doc ... :url <this place> :leaf-protect
+  ;; :disabled <this place> :leaf-protect
   (setq leaf-keywords
         (leaf-insert-list-before leaf-keywords :leaf-protect
           leaf-keywords-before-protection))
@@ -609,6 +621,11 @@ If RENEW is non-nil, renew leaf-{keywords, normalize} cache."
   (setq leaf-keywords
         (leaf-insert-list-before leaf-keywords :when
           leaf-keywords-before-conditions))
+
+  ;; :doc :req :tag <this place> :file :url
+  (setq leaf-keywords
+        (leaf-insert-list-before leaf-keywords :file
+          leaf-keywords-documentation-keywords))
 
   ;; :when :unless :if :ensure <this place> :after
   (setq leaf-keywords

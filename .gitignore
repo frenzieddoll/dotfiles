@@ -29,6 +29,7 @@
 !/.config/mpv
 !/.config/termite
 !/.config/zathura
+!/.config/mimeapps.list
 !/.pkglist
 !/.xinitrc
 !/.zshrc
