@@ -1,15 +1,13 @@
-set adjust-open width
-
 map \< goto top
 map \> goto bottom
+map p navigate previous
 map b navigate previous
 map e follow
 map f navigate next
-map p goto top
+map n navigate next
 
 map <C-+> zoom in
 map <C--> zoom out
-map <C-=> zoom in
 map <C-)> adjust_window best-fit
 map <C-0> adjust_window width
 map <C-a> scroll full-left

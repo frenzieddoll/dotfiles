@@ -29,7 +29,10 @@
 !/.config/mpv
 !/.config/termite
 !/.config/zathura
+!/.config/mimeapps.list
 !/.pkglist
 !/.xinitrc
 !/.zshrc
 !/X11ForNotePC
+/.local/share/xorg/
+/.local/share/recently-used.xbel

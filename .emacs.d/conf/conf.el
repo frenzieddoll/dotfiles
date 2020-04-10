@@ -51,6 +51,7 @@
 	)
 
   (leaf exec-path-from-shell
+    :unless (eq system-type 'windows-nt)
     :ensure t
     :defun (exec-path-from-shell-initialize)
     :custom ((exec-path-from-shell-check-startup-files . nil)
@@ -133,6 +134,7 @@
               (show-paren-delay                      . 0.125)
               ;;
               (vc-follow-symlinks                    . t)
+              (temp-buffer-resize-mode               . 1)
 			  (display-time-mode                     . t)
 			  (display-time-string-forms             . '((format "%s/%s(%s)%s:%s"
     												             month day dayname
@@ -154,6 +156,7 @@
 	  :when (eq system-type 'darwin)
 	  :custom `((gc-cons-threshold . ,(* 32 1024 1024)))
 	  )
+    (run-with-idle-timer 60.0 t #'garbage-collect)
 
 	(leaf startup
 	  :doc "起動を静かに"
@@ -185,6 +188,18 @@
 
       (leaf *forMac
 		:when (eq system-type 'darwin)
+		:config
+		(set-face-attribute 'default nil
+							:family "HackGen"
+							:height 150)
+		(set-fontset-font (frame-parameter nil 'font)
+				  'japanese-jisx0208
+				  (font-spec :family "HackGen"
+							 :height 150))
+
+		)
+      (leaf *forMac
+		:when (eq system-type 'windows-nt)
 		:config
 		(set-face-attribute 'default nil
 							:family "HackGen"
@@ -376,7 +391,10 @@
 											("playlist" . "mpv --playlist")
 											("exe"      . "wine")
 											("pdf"      . "zathura")
-											("zip"      . "YACReader")
+											;; ("zip"      . "zathura")
+											;; ("rar"      . "zathura")
+											;; ("tar"      . "zathura")
+                                            ("zip"      . "YACReader")
 											("rar"      . "YACReader")
 											("tar"      . "YACReader")
 											("xls"      . "xdg-open")
@@ -449,11 +467,41 @@
               (list "dvdCopy" "dvdbackup -i /dev/sr0 -o ~/Downloads/iso/ -M")
 			  (list "pkglist" "yay -Qe | cut -f 1 -d " " > ~/.emacs.d/pkglist")
               ))))
-	(defun pcomplete/sudo ()
-      "Completion rules for the `sudo' command."
-      (let ((pcomplete-ignore-case t))
-		(pcomplete-here (funcall pcomplete-command-completion-function))
-		(while (pcomplete-here (pcomplete-entries)))))
+    (leaf *pcomplete
+      :preface
+	  (defun pcomplete/sudo ()
+        "Completion rules for the `sudo' command."
+        (let ((pcomplete-ignore-case t))
+		  (pcomplete-here (funcall pcomplete-command-completion-function))
+		  (while (pcomplete-here (pcomplete-entries)))))
+
+      ;;systemctlの補完
+      (defcustom pcomplete-systemctl-commands
+        '("disable" "enable" "status" "start" "restart" "stop" "reenable"
+          "list-units" "list-unit-files")
+        "p-completion candidates for `systemctl' main commands"
+        :type '(repeat (string :tag "systemctl command"))
+        :group 'pcomplete)
+      (defvar pcomplete-systemd-units
+        (split-string
+         (shell-command-to-string
+          "(systemctl list-units --all --full --no-legend;systemctl list-unit-files --full --no-legend)|while read -r a b; do echo \" $a\";done;"))
+        "p-completion candidates for all `systemd' units")
+
+      (defvar pcomplete-systemd-user-units
+        (split-string
+         (shell-command-to-string
+          "(systemctl list-units --user --all --full --no-legend;systemctl list-unit-files --user --full --no-legend)|while read -r a b;do echo \" $a\";done;"))
+        "p-completion candidates for all `systemd' user units")
+
+      (defun pcomplete/systemctl ()
+        "Completion rules for the `systemctl' command."
+        (pcomplete-here (append pcomplete-systemctl-commands '("--user")))
+        (cond ((pcomplete-test "--user")
+               (pcomplete-here pcomplete-systemctl-commands)
+               (pcomplete-here pcomplete-systemd-user-units))
+              (t (pcomplete-here pcomplete-systemd-units))))
+    )
 
 	:config
 	(leaf *unixCommandEmu
@@ -776,9 +824,14 @@
 	(leaf magit
 	  :when (version<= "25.1" emacs-version)
 	  :ensure t
-	  )
+      :config
+      (leaf *forWindows
+        :when (eq system-type 'windows-nt)
+        :custom ((magit-git-executable . "c:/Program Files/Git/bin/git.exe"))
+        )
+      )
 
-	(leaf gitignore-mode :ensure t)
+    (leaf gitignore-mode :ensure t)
   )
 
   )
@@ -794,7 +847,7 @@
     :ensure t
 	:hook (yatex-mode-hook . (lambda () (auto-fill-mode -1)))
 	:hook (yatex-mode-hook . reftex-mode)
-	:bind (("C-c C-z" . ebib))
+	;; :bind (("C-c C-z" . ebib))
     :mode (("\\.tex\\'" . yatex-mode)
 		   ("\\.ltx\\'"	. yatex-mode)
 		   ("\\.cls\\'"	. yatex-mode)
@@ -817,21 +870,6 @@
 			  (YaTeX-close-paren-always		.	nil))
 
     :config
-    (leaf align
-      :require t
-      :config
-	  (add-to-list 'align-rules-list
-				   '(yatex-table
-				     (regexp . "\\( *\\)&")
-				     (repeat . t)
-				     (modes . '(yatex-mode))))
-	  (add-to-list 'align-rules-list
-				   '(yatex-table
-				     (regexp . "\\( *\\)\\\\\\\\")
-				     (repeat . t)
-				     (modes . '(yatex-mode))))
-      )
-
 	(leaf *yatexForLinux
 	  :when (eq system-type 'gnu/linux)
 	  :custom ((dvi2-command		.	"zathura -x \"emacsclient --no-wait +%{line} %{input}\"")
@@ -1029,7 +1067,7 @@
 	)
 
   (leaf *mySaveFrame
-	:when (eq system-type 'darwin)
+	:when (or (eq system-type 'darwin) (eq system-type 'windows-nt))
     :hook ((emacs-startup-hook . my-load-frame-size)
 	  	   (kill-emacs-hook . my-save-frame-size))
 	:defun my-save-frame-size my-load-frame-size
@@ -1099,6 +1137,22 @@
            ("M-o" . ivy-switch-buffer))
     :custom ((global-hl-line-mode . t))
 	)
+  (leaf *ForWindows
+    :when (eq system-type 'windows-nt)
+    :bind (("M-n" . windmove-down)
+           ("M-f" . windmove-right)
+           ("M-b" . windmove-left)
+           ("M-p" . windmove-up)
+           ("M-a" . zoom-window-zoom)
+           ("M-q" . kill-current-buffer)
+           ("M-h" . delete-window)
+           ("C-M-i" . output_toggle)
+           ("C-M-m" . mute_toggle)
+           ("C-M-n" . lower_volume )
+           ("C-M-p" . upper_volume)
+           ("M-d" . counsel-linux-app)
+           ("M-o" . ivy-switch-buffer))
+	)
   )
 
 
@@ -1139,7 +1193,6 @@
 			("P"   . vim-P)
 			("D"   . vim-kill-line)
 			(":"   . save-buffer)
-			;; ("u" . ignore)
 			("u"   . vim-undo)
 			("r"   . vim-redo)
 			("d"   . vim-kill-whole-line)
@@ -1394,7 +1447,6 @@
 ;; マイナーモードの設定
 (leaf *minor-mode
   :config
-
   (leaf skk
     :ensure ddskk
 	;; :defun (skk-get)
@@ -1461,7 +1513,9 @@
               (company-idle-delay            . 0)
               (company-minimum-prefix-length . 3)
               (company-transformers          . '(company-sort-by-occurrence))
-              (global-company-mode           . t))
+              (global-company-mode           . t)
+              (company-dabbrev-downcase      . nil)
+              )
     :config
     (leaf company-math
 	  :ensure t
@@ -1590,7 +1644,7 @@
 			   (counsel-find-file-ignore-regexp . (regexp-opt '("./" "../")))
 			   (recentf-max-saved-items         . 2000)
 			   (recentf-auto-cleanup            . 'never)
-			   (recentf-exclude                 . '("/recentf" "COMMIT_EDITMSG" "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores" "/\\.emacs\\.d/\\.cask/"))
+			   (recentf-exclude                 . '("/recentf" "COMMIT_EDITMSG" "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores" "/\\.emacs\\.d/\\.cask/" "/Geheimnis"))
 			   (recentf-mode                    . 1)
 			   (counsel-yank-pop-separator      . "\n-------\n")
 			   )
@@ -1765,10 +1819,31 @@
   (leaf undo-tree
     :ensure t
     :custom ((global-undo-tree-mode . t))
-    :bind (("M-/" . undo-tree-redo))
     )
 
+  (leaf align
+      :require t
+      :config
+	  (add-to-list 'align-rules-list
+				   '(yatex-table
+				     (regexp . "\\( *\\)&")
+				     (repeat . t)
+				     (modes . '(yatex-mode))))
+	  (add-to-list 'align-rules-list
+				   '(yatex-table
+				     (regexp . "\\( *\\)\\\\\\\\")
+				     (repeat . t)
+				     (modes . '(yatex-mode))))
+      (add-to-list 'align-rules-list
+                   '(haskell-equal
+                     (regexp . "\\( *\\)=\\(\\s-*\\)")
+                     (repeat . t)
+                     (modes . '(haskell-mode))))
+      )
+
   )
+
+
 
 
 ;; 途中の設定
@@ -1994,11 +2069,41 @@
     (leaf lsp-treemacs
       :ensure t
       :commands lsp-treemacs-errors-list)
-
     (leaf lsp-haskell
       :ensure t
       :require t
       :hook (haskell-mode-hook . flycheck-mode)
+      )
+    (leaf haskell-mode
+      :ensure t
+      :after lsp-mode
+      :defvar haskell-process-args-ghcie
+	  :custom `(;; (flymake-proc-allowed-file-name-masks . ,(delete '("\\.l?hs\\'" haskell-flymake-init) flymake-proc-allowed-file-name-masks))
+	  			(haskell-process-type          . 'stack-ghci)
+	  			(haskell-process-path-ghci     . "stack")
+	  			(haskell-process-args-ghcie    . "ghci")
+                (haskell-indent-after-keywords . '(("where" 4 0) ("of" 4) ("do" 4) ("mdo" 4) ("rec" 4) ("in" 4 0) ("{" 4) "if" "then" "else" "let"))
+			    (haskell-indent-offset         . 4)
+			    (haskell-indendt-spaces        . 4)
+	  			)
+
+	  :bind ((haskell-mode-map
+              ("C-c C-z" . haskell-interactive-bring)
+              ("C-c C-l" . haskell-process-load-file)
+			  )
+             (haskell-interactive-mode-map
+              ("<up>" . haskell-interactive-mode-history-previous)
+              ("<down>" . haskell-interactive-mode-history-next)
+              ("C-c C-l" . haskell-interactive-switch-back)
+              )
+			 )
+	  :hook ((haskell-mode-hook . eglot-ensure)
+	  		 (haskell-mode-hook . interactive-haskell-mode)
+	  		 (haskell-mode-hook . haskell-decl-scan-mode)
+	  		 (haskell-mode-hook . haskell-doc-mode)
+	  		 (haskell-mode-hook . haskell-indentation-mode)
+	  		 )
+
       )
     )
   )

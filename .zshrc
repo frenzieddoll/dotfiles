@@ -46,7 +46,8 @@ bindkey "^[[3~" delete-char
 # pathを通す
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.emacs.d/script:$PATH"
-export PATH="/Library/Frameworks/Python.framework/Versions/3.7/bin/:$PATH"
+
+# export PATH="/Library/Frameworks/Python.framework/Versions/3.7/bin/:$PATH"
 
 # 言語を英語にする
 export LANG=en_US.utf-8
@@ -55,6 +56,7 @@ export LANG=en_US.utf-8
 alias la='ls -a'
 alias ll='ls -lh'
 alias rm='rm -i'
+alias cp='cp -p'
 # alias startx='startx -- -dpi 138'
 alias ghc="stack ghc"
 alias ghci="stack ghci"
