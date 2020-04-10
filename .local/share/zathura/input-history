@@ -1,0 +1,6 @@
+:offset
+:set first-page-collumn 2:3
+:set page-right-to-left True
+:set first-page-column 1:2
+:set page-right-to-left true
+:set first-page-column 1:1:3
