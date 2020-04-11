@@ -4,8 +4,6 @@
 /.emacs.d/*
 /.xkeysnail/*
 /.config/*
-/.config/fcitx/skk/user.dict
-/.config/fcitx/clipboard/history.dat
 
 # gitで管理する
 # emacs関係
@@ -24,7 +22,6 @@
 !/.bashrc
 !/.config/alacritty
 !/.config/brave-flags.conf
-!/.config/fcitx
 !/.config/libskk
 !/.config/mpv
 !/.config/termite
