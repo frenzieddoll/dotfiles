@@ -22,3 +22,5 @@ map <C-v> scroll full-down
 map <A-\<> goto top
 map <A-\>> goto bottom
 map <A-v> scroll full-up
+
+map j set page-right-to-left true
