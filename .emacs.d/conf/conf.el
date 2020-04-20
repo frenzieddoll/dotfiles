@@ -601,11 +601,6 @@
 	  (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char)
 	  )
 	)
-  (leaf *originalKeybingd
-	:disabled t
-	:config
-	(load "init-keybinding" t)
-	)
   )
 
 (leaf *visual
@@ -838,10 +833,6 @@
 
 (leaf *tex
   :config
-  (leaf *original
-	:disabled t
-	:config
-	(load "init-yatex" t))
   (leaf yatex
 	;; :disabled t
     :ensure t
@@ -2107,30 +2098,6 @@
       )
     )
   )
-
-(leaf *news
-  :disabled t
-  :custom `((newsticker-url-list . '(("GIGAZIN" "http://gigazine.net/news/rss_2.0/")
-                                     ("CNN" "http://feeds.cnn.co.jp/cnn/rss")
-                                     ("痛いニュース" "http://blog.livedoor.jp/dqnplus/index.rdf")
-                                     ("ねとらぼ" "https://rss.itmedia.co.jp/rss/2.0/netlab.xml")
-                                     ("カオスちゃんねる" "http://chaos2ch.com/index.rdf")
-                                     ("不思議.net" "http://world-fusigi.net/index.rdf")
-                                     ))
-			(newsticker-url-list-defaults . '(("オレ的ゲーム速報JIN" "http://jin115.com/index.rdf")))
-			(newsticker-retrieval-interval . 0)
-			(newsticker-html-renderer . 'shr-render-region)
-			)
-  :bind ((newsticker-treeview-mode-map
-		  ("b" . newsticker-treeview-prev-feed)
-		  )
-		 )
-  :config
-  ;; (setq-default newsticker-url-list-defaults
-  ;;             '(("オレ的ゲーム速報JIN" "http://jin115.com/index.rdf")))
-
-  )
-
 
 (leaf japanese-holidays
   :after calendar

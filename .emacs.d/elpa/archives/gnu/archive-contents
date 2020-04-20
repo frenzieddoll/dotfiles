@@ -581,7 +581,7 @@
 	       ("Leo Liu" . "sdl.web@gmail.com"))
 	      (:keywords "killing" "convenience"))])
  (ebdb .
-       [(0 6 14)
+       [(0 6 16)
 	((emacs
 	  (25 1))
 	 (cl-lib
@@ -610,7 +610,7 @@
 		 ((pyim
 		   (1 6 0))
 		  (ebdb
-		   (0 2)))
+		   (0 6 17)))
 		 "China-specific internationalization support for EBDB" single
 		 ((:url . "http://elpa.gnu.org/packages/ebdb-i18n-chn.html")
 		  (:authors
