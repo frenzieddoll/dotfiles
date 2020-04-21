@@ -581,6 +581,19 @@
        "mute_toggle"
        nil
        (format "~/.emacs.d/script/mute_toggle.sh")))
+    (defun upperLight ()
+      (interactive)
+      (start-process-shell-command
+       "upper light"
+       nil
+       (format "xbacklight -inc 10")))
+    (defun lowerLight ()
+      (interactive)
+      (start-process-shell-command
+       "lower light"
+       nil
+       (format "xbacklight -dec 10")))
+
 
 	:config
 	;; (leaf *minibufferBackward
@@ -692,6 +705,8 @@
 										(,(kbd "C-l")     . ,(kbd "C-^"))
                                         (,(kbd "s-j")     . lower_volume)
                                         (,(kbd "s-k")     . upper_volume)
+                                        (,(kbd "s-[")     . lowerLight)
+                                        (,(kbd "s-]")     . upperLight)
 										,@(mapcar (lambda (i)
 													`(,(kbd (format "s-%d" i)) .
 													  (lambda ()
