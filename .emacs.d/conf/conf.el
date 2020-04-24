@@ -700,6 +700,7 @@
 										(,(kbd "C-l")     . ,(kbd "C-^"))
                                         (,(kbd "s-j")     . lower_volume)
                                         (,(kbd "s-k")     . upper_volume)
+                                        (,(kbd "s-i")     . output_toggle)
                                         (,(kbd "s-[")     . lowerLight)
                                         (,(kbd "s-]")     . upperLight)
 										,@(mapcar (lambda (i)
