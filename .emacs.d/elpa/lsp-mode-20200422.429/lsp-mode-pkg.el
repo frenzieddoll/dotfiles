@@ -1,8 +1,4 @@
-<<<<<<< HEAD:.emacs.d/elpa/lsp-mode-20200423.1751/lsp-mode-pkg.el
-(define-package "lsp-mode" "20200423.1751" "LSP mode"
-=======
 (define-package "lsp-mode" "20200422.429" "LSP mode"
->>>>>>> cb2017e656653cd12b1d99a9927e04c4a160cc00:.emacs.d/elpa/lsp-mode-20200422.429/lsp-mode-pkg.el
   '((emacs "25.1")
     (dash "2.14.1")
     (dash-functional "2.14.1")

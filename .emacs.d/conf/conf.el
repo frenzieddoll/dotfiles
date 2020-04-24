@@ -13,8 +13,8 @@
 	;;   )
 	(custom-set-variables
 	 '(package-archives '(("org"   . "http://orgmode.org/elpa/")
-						  ("melpa" . "http://melpa.org/packages/")
-						  ("gnu"   . "http://elpa.gnu.org/packages/"))))
+			      ("melpa" . "http://melpa.org/packages/")
+			      ("gnu"   . "http://elpa.gnu.org/packages/"))))
 
     (package-initialize))
 
