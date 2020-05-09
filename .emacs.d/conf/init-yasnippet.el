@@ -25,7 +25,7 @@
 
 (require 'yasnippet)
 ;; (yas-global-mode 1)
-(yas-minor-mode)
+(yas-minor-mode 1)
 
 
 (define-key yas-minor-mode-map (kbd "C-c s i") 'yas-insert-snippet)

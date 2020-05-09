@@ -1,0 +1,102 @@
+# -*- mode: snippet -*-
+# name: atcoder
+# key: atcoder
+# --
+{-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE OverloadedStrings #-}
+import Control.Monad
+import Control.Monad.ST
+import Control.Monad.Primitive
+import Data.Maybe
+import Data.Char
+import Data.Array
+import Data.Array.ST
+import Data.STRef
+import Data.List
+import qualified Data.ByteString.Char8 as B
+import qualified Data.Vector as V
+import qualified Data.Vector.Mutable as VM
+import qualified Data.Vector.Unboxed as U
+import qualified Data.Vector.Unboxed.Mutable as UM
+
+buildGMatrix :: (Int,Int) -> [(Int,Int)] -> Array (Int, Int) Int
+buildGMatrix (i,j) es = accumArray (flip const) 0 ((i,i),(j,j)) (zip es (repeat 1))
+
+buildGList :: (Int, Int) -> [(Int, a)] -> Array Int [a]
+buildGList (i,j) es = accumArray (flip (:)) [] (i,j) es
+
+genMatrix n m = VM.replicate n =<< VM.new m
+accessMatrix vec n m = VM.read vec n >>= (\v -> VM.read v m)
+
+genGraph n abs = do
+  graph <- VM.replicate n []
+  forM_ abs $ \v -> do
+    let (a,b) = v
+    VM.read graph a >>= (\n -> VM.write graph a (b:n))
+    -- VM.read graph b >>= (\n -> VM.write graph a (a:n)) -- 無向グラフの場合
+  return graph
+
+dfs graph seen v = do
+  VM.write seen v True
+  gv <- VM.read graph v
+
+  forM_ gv $ \n -> do
+    b <- VM.read seen n
+    unless b $ do
+      dfs graph seen n
+
+
+dfs1 graph seen i = do
+  VM.write seen i True
+  forM_ (graph!i) $ \n -> do
+    b <- VM.read seen n
+    unless b $ do
+      dfs1 graph seen n
+
+main :: IO ()
+main = do
+  let n = 8
+      m = 12
+      abs = [(0,5),(1,3),(1,6),(2,5),(2,7),(3,0),(3,7),(4,1),(4,2),(4,6),(6,7),(7,0)]
+  (s,t) <- getHogeTuple readInt
+  -- (n,m) <- getHogeVab readInt
+  -- abs <- getHogeTuples readInt m
+  graph <- genGraph n abs
+  seen <- VM.replicate n False
+  dfs graph seen s -- 探索
+  V.mapM_ print =<< V.freeze graph
+  V.mapM_ print =<< V.freeze seen
+  tb <- VM.read seen t
+  if tb then putStrLn "Yes" else putStrLn "No"
+  putStrLn "dummy"
+
+----------------------------------------------------------------------
+
+tupleToBString (m,n) = B.concat [m,n]
+
+tuplify2 (x:y:_) = (x,y)
+tuplify2 _ = undefined
+
+readInt = B.readInt . B.dropWhile isSpace
+
+getIntV n = getHogeV readInt n
+getHogeV f n = V.unfoldrN n f <\$> B.getLine
+getHogeVab f = (\vec -> (vec V.! 0, vec V.! 1)) <\$> getHogeV f 2
+getHogeVabs f n = V.replicateM n $ getHogeVab f
+
+getHogeList f = unfoldr f <\$> B.getLine
+getHogeTuple f = tuplify2 <\$> getHogeList f
+getHogeTuples f n = replicateM n $ getHogeTuple f
+
+
+-- readInt = fst . fromJust . B.readInt
+-- readIntTuple = tuplify2 . map readInt . B.words
+-- readIntList = map readInt . B.words
+
+-- getInt = fmap readInt B.getLine
+-- getIntList = fmap readIntList B.getLine
+-- getIntNList n = fmap (map readIntList) $ replicateM (fromIntegral n) B.getLine
+-- getIntNtuple n = replicateM n $ tuplify2 . B.words <\$> B.getLine
+-- getIntVec n = V.unfoldrN n (B.readInt . B.dropWhile isSpace) <\$> B.getLine
+
+toDouble x = fromInteger x :: Double

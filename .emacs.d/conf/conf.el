@@ -2095,3 +2095,21 @@
   :custom ((online-judge-directories . '("~/Dropbox/atcoder/"))
            (online-judge-command-name . nil))
   )
+
+(leaf yasnippet
+  :require t
+  :ensure t
+  :custom ((yas-minor-mode . t))
+  :config
+  (leaf yas_hook
+    :require cl
+    :config
+    (defvar ivy-programing-hooks ()
+      '(emacs-lisp-mode
+        org-mode
+        yatex-mode
+        haskell-mode))
+    (loop for hook in ivy-programing-hooks
+          do (add-hook hook 'yas-minor-mode))
+    )
+  )
