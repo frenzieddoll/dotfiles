@@ -1,0 +1,71 @@
+# -*- mode: snippet -*-
+# name: functions
+# key: functions
+# --
+{-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE OverloadedStrings #-}
+import Control.Monad
+import Control.Monad.ST
+import Control.Monad.Primitive
+import Data.Maybe
+import Data.Char
+import Data.Array
+import Data.Array.ST
+import Data.STRef
+import Data.List
+import Data.STRef
+import qualified Data.ByteString.Char8 as B
+import qualified Data.Vector as V
+import qualified Data.Vector.Mutable as MV
+import qualified Data.Vector.Unboxed as U
+import qualified Data.Vector.Unboxed.Mutable as UM
+
+
+
+-- vector
+pushBack vec i = do
+  vec' <- MV.grow vec 1
+  let l = MV.length vec
+  MV.write vec' l i
+
+-- ミュータブルな変数の変わり
+variable x = MV.replicate 1 x
+variableRead x = MV.read x 0
+variableModify x y = variableRead x >>= (\n -> MV.write x 0 y)
+
+
+-- mutable matrix
+type Matrix m a = m (MV.MVector (PrimState m) (MV.MVector (PrimState m) a))
+genMatrix n m = MV.replicate n =<< MV.new m
+readMatrix matrix n m = MV.read matrix n >>= (\v -> MV.read v m)
+writeMatrix matrix n m i = MV.read matrix n >>= (\v -> MV.write v m i)
+
+-- imutable matrix
+type MatrixImutable a = V.Vector (V.Vector a)
+listToMatrixImutable :: [[a]] -> MatrixImutable a
+listToMatrixImutable [list] = V.fromList [V.fromList list]
+readMatrixImutable :: MatrixImutable a -> Int -> Int -> a
+readMatrixImutable matrixImutable n m = ((matrixImutable V.! n) V.! m)
+
+tupleToBString (m,n) = B.concat [m,n]
+
+tuplify2 (x:y:_) = (x,y)
+tuplify2 _ = undefined
+
+-- readInt = B.readInt . B.dropWhile isSpace
+readInt = readHoge B.readInt
+-- readByteString =
+readHoge f = f . B.dropWhile isSpace
+
+getIntV n = getHogeV readInt n
+getHogeV f n = V.unfoldrN n f <\$> B.getLine
+getHogeVab f = (\vec -> (vec V.! 0, vec V.! 1)) <\$> getHogeV f 2
+getHogeVabs f n = V.replicateM n $ getHogeVab f
+getHogeMatrix :: (B.ByteString -> Maybe (a, B.ByteString)) -> Int -> Int -> IO (MatrixImutable a)
+getHogeMatrix f n m = V.replicateM n $ getHogeV f m
+
+getHogeList f = unfoldr f <\$> B.getLine
+getHogeTuple f = tuplify2 <\$> getHogeList f
+getHogeTuples f n = replicateM n $ getHogeTuple f
+
+toDouble x = fromInteger x :: Double

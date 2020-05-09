@@ -1,0 +1,24 @@
+# -*- mode: snippet -*-
+# name: template
+# key: template
+# --
+{-# LANGUAGE BangPatterns #-}
+{-# LANGUAGE TypeFamilies #-}
+import           Data.Maybe
+import           Data.Int
+import           Data.List
+import           Data.Char
+-- import qualified Data.Vector.Unboxing as VU
+import qualified Data.Vector as V
+import qualified Data.Vector.Mutable as VM
+import qualified Data.Vector.Unboxed as VU
+import qualified Data.Vector.Unboxed.Mutable as VUM
+import qualified Data.ByteString.Char8 as BS
+import           Data.List (scanl')
+import           Data.IORef
+import           Control.Monad
+import           Control.Monad.ST
+import           Control.Monad.State.Strict
+import           Control.Applicative
+
+getVector = V.unfoldr (BS.readInt . BS.dropWhile isSpace) <\$> BS.getLine

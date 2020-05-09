@@ -1993,70 +1993,6 @@
 (leaf *lsp-tools
   :when (eq system-type 'gnu/linux)
   :config
-  (leaf eglot
-    :disabled t
-	:ensure t
-    :hook ((c-mode-hook c++-mode-hook haskell-mode-hook) . eglot-ensure)
-	:custom `((lsp-document-sync-method . 'full)
-			  )
-	:config
-	(fset #'eglot--snippet-expansion-fn #'ignore)
-
-    (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
-
-    (leaf projectile
-      :ensure t
-      :custom `((projectile-indexing-method . 'alien)
-                (projectile-enable-caching . t)
-                (projectile-global-mode . t))
-      :config
-      (defun my-projectile-project-find-function (dir)
-        (let ((root (projectile-project-root dir)))
-          (and root (cons 'transient root))))
-      (projectile-mode t)
-      (with-eval-after-load 'project
-        (add-to-list 'project-find-functions 'my-projectile-project-find-function))
-      )
-
-	(leaf haskell-mode
-	  :disabled t
-	  :after eglot
-	  :ensure t
-	  :defvar haskell-process-args-ghcie
-	  :custom `(;; (flymake-proc-allowed-file-name-masks . ,(delete '("\\.l?hs\\'" haskell-flymake-init) flymake-proc-allowed-file-name-masks))
-	  			(haskell-process-type          . 'stack-ghci)
-	  			(haskell-process-path-ghci     . "stack")
-	  			(haskell-process-args-ghcie    . "ghci")
-                (haskell-indent-after-keywords . '(("where" 4 0) ("of" 4) ("do" 4) ("mdo" 4) ("rec" 4) ("in" 4 0) ("{" 4) "if" "then" "else" "let"))
-			    (haskell-indent-offset         . 4)
-			    (haskell-indendt-spaces        . 4)
-	  			)
-
-	  :bind ((haskell-mode-map
-			  :package eglot
-			  ("C-c C-j" . eglot-help-at-point)
-			  ("C-c C-c" . eglot-rename)
-			  )
-			 )
-	  :hook ((haskell-mode-hook . eglot-ensure)
-	  		 (haskell-mode-hook . interactive-haskell-mode)
-	  		 (haskell-mode-hook . haskell-decl-scan-mode)
-	  		 (haskell-mode-hook . haskell-doc-mode)
-	  		 (haskell-mode-hook . haskell-indentation-mode)
-	  		 )
-	  :config
-
-	  (leaf *flaymakeFileAutoRemove
-		:after haskell-mode
-		:custom `((flymake-proc-allowed-file-name-masks . ,(delete '("\\.l?hs\\'" haskell-flymake-init) flymake-proc-allowed-file-name-masks))
-				  )
-		)
-
-	  (add-to-list 'company-backends 'company-ghci)
-
-	  )
-
-	)
   (leaf lsp-mode
     :ensure t
     :require t
@@ -2092,25 +2028,25 @@
                 (haskell-indent-after-keywords . '(("where" 4 0) ("of" 4) ("do" 4) ("mdo" 4) ("rec" 4) ("in" 4 0) ("{" 4) "if" "then" "else" "let"))
 			    (haskell-indent-offset         . 4)
 			    (haskell-indendt-spaces        . 4)
+                (haskell-compile-stack-build-command . t)
 	  			)
 
-	  :bind ((haskell-mode-map
+	  :bind `((haskell-mode-map
               ("C-c C-z" . haskell-interactive-bring)
               ("C-c C-l" . haskell-process-load-file)
-			  )
+              ("<f5>" . haskell-compile)
+              )
              (haskell-interactive-mode-map
               ("<up>" . haskell-interactive-mode-history-previous)
               ("<down>" . haskell-interactive-mode-history-next)
               ("C-c C-l" . haskell-interactive-switch-back)
               )
 			 )
-	  :hook ((haskell-mode-hook . eglot-ensure)
-	  		 (haskell-mode-hook . interactive-haskell-mode)
+	  :hook ((haskell-mode-hook . interactive-haskell-mode)
 	  		 (haskell-mode-hook . haskell-decl-scan-mode)
 	  		 (haskell-mode-hook . haskell-doc-mode)
 	  		 (haskell-mode-hook . haskell-indentation-mode)
 	  		 )
-
       )
     )
   )
@@ -2150,4 +2086,30 @@
                                   (setq calendar-holidays
                                         (append japanese-holidays local-holidays other-holidays))))
 
+  )
+
+(leaf online-judge
+  :when (executable-find "oj")
+  :el-get ROCKTAKEY/emacs-online-judge
+  :require t
+  :custom ((online-judge-directories . '("~/Dropbox/atcoder/"))
+           (online-judge-command-name . nil))
+  )
+
+(leaf yasnippet
+  :require t
+  :ensure t
+  :custom ((yas-minor-mode . t))
+  :config
+  (leaf yas_hook
+    :require cl
+    :config
+    (defvar ivy-programing-hooks ()
+      '(emacs-lisp-mode
+        org-mode
+        yatex-mode
+        haskell-mode))
+    (loop for hook in ivy-programing-hooks
+          do (add-hook hook 'yas-minor-mode))
+    )
   )
