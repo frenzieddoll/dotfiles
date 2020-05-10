@@ -2,6 +2,7 @@
 # name: template
 # key: template
 # --
+{-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE BangPatterns #-}
 {-# LANGUAGE TypeFamilies #-}
 import           Data.Maybe
@@ -21,4 +22,7 @@ import           Control.Monad.ST
 import           Control.Monad.State.Strict
 import           Control.Applicative
 
-getVector = V.unfoldr (BS.readInt . BS.dropWhile isSpace) <\$> BS.getLine
+readInt = BS.readInt . BS.dropWhile isSpace
+getVector f = VU.unfoldr f <\$> BS.getLine
+getIntVector = getVector readInt
+getBSVector = getVector BS.uncons
