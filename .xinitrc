@@ -50,7 +50,7 @@ fi
 
 [[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources
 
-xhost +SI:localuser:$USER
+# xhost +SI:localuser:$USER
 export _JAVA_AWT_WM_NONREPARENTING=1
 # xsetroot -cursor_name left_ptr
 
