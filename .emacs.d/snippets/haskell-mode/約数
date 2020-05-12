@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: 約数
+# key: 約数
+# --
+divisor n = loop 1
+  where
+    loop d
+      | n < d^2 = []
+      | n == d^2 = [d]
+      | otherwise = if r == 0 then d : q : loop (d+1) else loop (d+1)
+      where (q,r) = n `divMod` d
