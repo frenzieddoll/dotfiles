@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: 組み合わせ
+# key: 組み合わせ
+# --
+comb x y = (loop1 x y 1) `div` (loop2 y 1)
+  where
+    loop1 _ 0 n' = n'
+    loop1 n r n' = loop1 (n-1) (r-1) (n*n')
+    loop2 0 n' = n'
+    loop2 n n' = loop2 (n-1) (n*n')
