@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: 整数分解
+# key: 整数分解
+# --
+intDigit :: Int -> [Int]
+intDigit n = loop n []
+  where
+    loop 0 list = list
+    loop n list = loop (n `div` 10) (n `mod` 10 : list)

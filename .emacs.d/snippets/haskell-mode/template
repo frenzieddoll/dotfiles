@@ -21,6 +21,8 @@ import           Control.Monad
 import           Control.Monad.ST
 import           Control.Monad.State.Strict
 import           Control.Applicative
+import           Debug.Trace
+
 
 readInt = BS.readInt . BS.dropWhile isSpace
 getVector f = VU.unfoldr f <\$> BS.getLine

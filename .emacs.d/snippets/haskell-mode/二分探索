@@ -1,0 +1,23 @@
+# -*- mode: snippet -*-
+# name: 二分探索
+# key: 二分探索
+# --
+intDigit :: Int -> Int
+intDigit n = length $ show n
+
+solve a b x = if check' $ 10^9 then 10^9 else loop 0 $ 10^9
+  where
+    check' = check a b x
+    loop lower upper
+      | upper <= lower = 0
+      | otherwise = if check' middle
+                    then if not $ check' $ middle + 1
+                         then middle
+                         else loop middle upper
+                    else trace (show middle) $ loop lower middle
+      where
+        middle = (upper + lower) `div` 2
+
+check a b x n
+  | a*n + b*(intDigit n) <= x = True
+  | otherwise = False
