@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: dfsbfs
 # key: dfsbfs
+# expand-env: ((yas/indent-line 'fixed) (yas/wrap-around-region 'nil))
 # --
 -- あるノードから隣接ノードを探す
 next :: Node -> [Edge] -> [Node]
@@ -18,13 +19,13 @@ dfs gr p0 p1 = dfsAux gr p0 p1 []
   where
     dfsAux gr p0 p1 path
       | p0 == p1 = return (reverse (p1:path))
-      | otherwise = msum $ map (\p -> dfsAux gr p p1 (p0:path)) [x | x <- findNext p0 gr, not (x `elem` path)]
+      | otherwise = msum $ map (\p -> dfsAux gr p p1 (p0:path)) [x | x <- findNext p0 gr, not (x \'elem\' path)]
 
 bfs :: Graph -> Int -> Int -> [[Int]]
 bfs gr p0 p1 = bfsAux gr p1 [x : [p0] | x <- findNext p0 gr]
   where
     bfsAux _ _ [] = fail "no Path"
     bfsAux gr p1 (path:queue)
-      | p0 == p1 = (return (reverse path)) `mplus` (bfsAux gr p1 queue)
-      | otherwise = bfsAux gr p1 (queue ++ [ x : path | x <- findNext p0 gr, not (x `elem` path)])
+      | p0 == p1 = (return (reverse path)) \'mplus\' (bfsAux gr p1 queue)
+      | otherwise = bfsAux gr p1 (queue ++ [ x : path | x <- findNext p0 gr, not (x \'elem\' path)])
       where p0 = head path

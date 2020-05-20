@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# name: モジュラー計算
+# key: モジュラー計算
+# --
+modulus :: Int64
+modulus = 10^9+7
+
+addMod :: Int64 -> Int64 -> Int64
+addMod x y = (x + y) \`mod\` modules
+subMod :: Int64 -> Int64 -> Int64
+subMod x y = (x - y) \`mod\` modules
+mulMod :: Int64 -> Int64 -> Int64
+mulMod x y = (x * y) \`mod\` modules

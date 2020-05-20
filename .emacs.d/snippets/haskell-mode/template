@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: template
 # key: template
+# expand-env: ((yas/indent-line 'fixed) (yas/wrap-around-region 'nil))
 # --
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE BangPatterns #-}
@@ -22,9 +23,12 @@ import           Control.Monad.ST
 import           Control.Monad.State.Strict
 import           Control.Applicative
 import           Debug.Trace
+import           Text.Printf
 
 
 readInt = BS.readInt . BS.dropWhile isSpace
 getVector f = VU.unfoldr f <\$> BS.getLine
 getIntVector = getVector readInt
 getBSVector = getVector BS.uncons
+getInt = readLn :: IO Int
+getIntTuple = (\vec -> (vec VU.! 0, vec VU.! 1)) <\$> getIntVector
