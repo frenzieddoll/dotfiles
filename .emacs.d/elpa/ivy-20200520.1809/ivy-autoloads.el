@@ -151,6 +151,13 @@ Switch to another buffer in another window.
 
 ;;;***
 
+;;;### (autoloads nil "ivy-avy" "ivy-avy.el" (0 0 0 0))
+;;; Generated autoloads from ivy-avy.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ivy-avy" '("ivy-")))
+
+;;;***
+
 ;;;### (autoloads nil "ivy-overlay" "ivy-overlay.el" (0 0 0 0))
 ;;; Generated autoloads from ivy-overlay.el
 
@@ -158,7 +165,8 @@ Switch to another buffer in another window.
 
 ;;;***
 
-;;;### (autoloads nil nil ("elpa.el" "ivy-pkg.el") (0 0 0 0))
+;;;### (autoloads nil nil ("elpa.el" "ivy-faces.el" "ivy-pkg.el")
+;;;;;;  (0 0 0 0))
 
 ;;;***
 

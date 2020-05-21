@@ -31,4 +31,10 @@ getVector f = VU.unfoldr f <\$> BS.getLine
 getIntVector = getVector readInt
 getBSVector = getVector BS.uncons
 getInt = readLn :: IO Int
-getIntTuple = (\vec -> (vec VU.! 0, vec VU.! 1)) <\$> getIntVector
+getInt2Tuple = (\vec -> (vec VU.! 0, vec VU.! 1)) <\$> getIntVector
+getInt3Tuple = (\vec -> (vec VU.! 0, vec VU.! 1, vec VU.! 2)) <\$> getIntVector
+
+
+main = do
+  $0
+  print 1

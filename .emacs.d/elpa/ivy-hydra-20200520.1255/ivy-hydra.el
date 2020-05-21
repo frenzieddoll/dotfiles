@@ -4,7 +4,7 @@
 
 ;; Author: Oleh Krehel <ohwoeowho@gmail.com>
 ;; URL: https://github.com/abo-abo/swiper
-;; Package-Version: 20200421.1120
+;; Package-Version: 20200520.1255
 ;; Version: 0.13.0
 ;; Package-Requires: ((emacs "24.5") (ivy "0.13.0") (hydra "0.15.0"))
 ;; Keywords: convenience
@@ -42,8 +42,22 @@
         (cdr cell)
       "other")))
 
+(defun ivy-minibuffer-grow ()
+  "Grow the minibuffer window by 1 line."
+  (interactive)
+  (setq-local max-mini-window-height
+              (cl-incf ivy-height)))
+
+(defun ivy-minibuffer-shrink ()
+  "Shrink the minibuffer window by 1 line."
+  (interactive)
+  (when (> ivy-height 2)
+    (setq-local max-mini-window-height
+                (cl-decf ivy-height))
+    (window-resize nil -1)))
+
 (defhydra hydra-ivy (:hint nil
-                     :color pink)
+                           :color pink)
   "
 ^ ^ ^ ^ ^ ^ | ^Call^      ^ ^  | ^Cancel^ | ^Options^ | Action _w_/_s_/_a_: %-14s(ivy-action-name)
 ^-^-^-^-^-^-+-^-^---------^-^--+-^-^------+-^-^-------+-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^---------------------------
@@ -85,7 +99,7 @@ _h_ ^+^ _l_ | _d_one      ^ ^  | _o_ops   | _M_: matcher %-5s(ivy--matcher-desc)
   ("U" ivy-occur :exit t)
   ("D" (ivy-exit-with-action
         (lambda (_) (find-function 'hydra-ivy/body)))
-       :exit t))
+   :exit t))
 
 (defvar ivy-dispatching-done-columns 2
   "Number of columns to use if the hint does not fit on one line.")

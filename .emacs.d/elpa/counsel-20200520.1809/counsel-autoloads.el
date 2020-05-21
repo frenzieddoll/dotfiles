@@ -9,26 +9,6 @@
 ;;;### (autoloads nil "counsel" "counsel.el" (0 0 0 0))
 ;;; Generated autoloads from counsel.el
 
-(autoload 'counsel-el "counsel" "\
-Elisp completion at point.
-
-\(fn)" t nil)
-
-(autoload 'counsel-cl "counsel" "\
-Common Lisp completion at point.
-
-\(fn)" t nil)
-
-(autoload 'counsel-jedi "counsel" "\
-Python completion at point.
-
-\(fn)" t nil)
-
-(autoload 'counsel-clj "counsel" "\
-Clojure completion at point.
-
-\(fn)" t nil)
-
 (autoload 'counsel-company "counsel" "\
 Complete using `company-candidates'.
 
