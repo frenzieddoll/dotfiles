@@ -1,0 +1,107 @@
+# -*- mode: snippet -*-
+# key: 優先度付きキュー
+# name: 優先度付きキュー
+# expand-env: ((yas/indent-line (quote fixed)) (yas/wrap-around-region (quote nil)))
+# --
+compItemVec :: (Ord a, VU.Unbox a) => VUM.IOVector a -> Int -> Int -> IO Ordering
+compItemVec buff i j = liftM2 (compare) (VUM.read buff i) (VUM.read buff j)
+
+swapItemVec :: (Ord a, VU.Unbox a) => VUM.IOVector a -> Int -> Int -> IO ()
+swapItemVec buff i j = VUM.swap buff i j
+
+upHeapMaxVec :: (Ord a, VU.Unbox a) => VUM.IOVector a -> Int -> IO ()
+upHeapMaxVec buff n = upHeapVec buff n LT
+
+upHeapVec :: (Ord a, VU.Unbox a) => VUM.IOVector a -> Int -> Ordering -> IO ()
+upHeapVec buff n ordering = do
+  when (n > 0) $ do
+    let p = (n - 1) \`div\` 2
+    t <- compItemVec buff p n
+    when (t == ordering) $ do
+      swapItemVec buff p n
+      upHeapVec buff p ordering
+
+downMaxHeapVec :: (Ord a, VU.Unbox a) => VUM.IOVector a -> Int -> Int -> IO ()
+downMaxHeapVec buff n h = downHeapVec buff n h LT
+
+downHeapVec :: (Ord a, VU.Unbox a) => VUM.IOVector a -> Int -> Int -> Ordering -> IO ()
+downHeapVec buff n h ordering = iter n h
+  where
+    selectChild c1 h = do
+      let c2 = c1 + 1
+      if c2 > h
+        then return c1
+        else do
+        t <- compItemVec buff c1 c2
+        if t == ordering
+          then return c2
+          else return c1
+    iter n h = do
+      let c1 = 2*n + 1
+      when (c1 <= h) $ do
+        c <- selectChild c1 h
+        t <- compItemVec buff n c
+        when (t == ordering) $ do
+          swapItemVec buff n c
+          iter c h
+
+
+data Heap a = Heap Int (VUM.IOVector Int) (VUM.IOVector a)
+
+makeHeapVec :: (Ord a, VU.Unbox a) => Int -> IO (Heap a)
+makeHeapVec n = Heap <$> return n <*> newVar n <*> VUM.new n
+
+fromList :: (Ord a, VU.Unbox a) => [a] -> IO (Heap a)
+fromList xs = do
+  let n = length xs
+      m = n \`div\` 2 - 1
+  a <- VU.thaw $ VU.fromList xs
+  b <- VUM.replicate 1 n
+  mapM_ (\x -> downMaxHeapVec a x (n - 1)) [m,m-1..0]
+  return (Heap n b a)
+
+heapToVector :: Heap Int -> IO (VU.Vector Int)
+heapToVector (Heap _ _ vec) = VU.freeze vec
+
+insert :: (Ord a, VU.Unbox a) => Heap a -> a -> IO ()
+insert (Heap size cnt buff) x = do
+  c <- readVar cnt
+  if c >= size
+    then error "Full Heap"
+    else do
+    VUM.write buff c x
+    modifyVar cnt (+1)
+    upHeapMaxVec buff c
+
+
+deleteMin = undefined
+deleteMax :: (Ord a, VU.Unbox a) => Heap a -> IO a
+deleteMax (Heap _ cnt buff) = do
+  c <- VUM.read cnt 0
+  if c <= 0
+    then error "Empty Heap"
+    else do
+    x <- VUM.read buff 0
+    let c1 = c - 1
+    writeVar cnt c1
+    when (c1 > 0) $ do
+      swapItemVec buff 0 c1
+      downMaxHeapVec buff 0 (c1 - 1)
+    return x
+
+findTop :: (Ord a, VU.Unbox a) => Heap a -> IO a
+findTop (Heap _ cnt buff)  = do
+  c <- readVar cnt
+  if c <= 0
+    then error "Empty Heap"
+    else VUM.read buff 0
+
+isEmpty :: Heap a -> IO Bool
+isEmpty (Heap size cnt _) = do
+  c <- readVar cnt
+  return (c == 0)
+
+isFull :: Heap a -> IO Bool
+isFull (Heap size cnt _) = do
+  c <- readVar cnt
+  return (c == size)
