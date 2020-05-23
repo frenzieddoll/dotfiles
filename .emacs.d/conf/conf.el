@@ -2016,9 +2016,10 @@
       :ensure t
       :commands lsp-treemacs-errors-list)
     (leaf lsp-haskell
+      ;; :disabled t
       :ensure t
       :require t
-      :hook (haskell-mode-hook . flycheck-mode)
+      ;; :hook (haskell-mode-hook . flycheck-mode)
       )
     (leaf haskell-mode
       :ensure t
@@ -2100,9 +2101,12 @@
   )
 
 (leaf yasnippet
+  :diminish t
   :require t
   :ensure t
-  :custom ((yas-minor-mode . t))
+  :custom ((yas-global-mode . t))
+  :bind ((yas-minor-mode-map
+          ("C-." . ivy-yasnippet)))
   :config
   (leaf yas_hook
     :require cl
@@ -2115,4 +2119,20 @@
     (loop for hook in ivy-programing-hooks
           do (add-hook hook 'yas-minor-mode))
     )
+  )
+
+(leaf shackle
+  :require t
+  :ensure t
+  :custom `((shackle-rules . '((compilation-mode :align below :ratio 0.2)
+                               ("*Google Translate*" :align right :ratio 0.3)
+                               ("*Help*" :align right)
+                               ("*online-judge*" :align below :ratio 0.5)
+                               ("*haskell-compilation*" :align below :ratio 0.5)
+                               ))
+            (shackle-mode . 1)
+            (winner-mode . 1)
+            (shackle-lighter . "")
+            )
+  :bind (("C-z" . winner-undo))
   )

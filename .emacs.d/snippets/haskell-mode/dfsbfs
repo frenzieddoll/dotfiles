@@ -1,30 +1,37 @@
 # -*- mode: snippet -*-
-# name: dfsbfs
-# key: dfsbfs
+# name: グラフ
+# key: グラフ
+# expand-env: ((yas/indent-line 'fixed) (yas/wrap-around-region 'nil))
 # --
--- あるノードから隣接ノードを探す
-next :: Node -> [Edge] -> [Node]
-next n = (map snd) . (filter ((n ==) .fst))
+toDirectedGraph n input = V.create $ do
+  graph <- VM.replicate n []
+  V.forM_ input $ \\(a,b) -> do
+    VM.modify graph (b:) a
+  return graph
 
-gr0 :: Graph
-gr0 = ([1,2,3,4,5,6,7,8,9],
-       [(1,2),(1,3),(1,4),(2,5),(3,5),(3,6),(4,7),(5,1),(6,7),(6,8),(7,9),(8,4)])
+toUnDirectedGraph n input = V.create $ do
+  graph <- VM.replicate n []
+  V.forM_ input $ \\(a,b) -> do
+    VM.modify graph (b:) a
+    VM.modify graph (a:) b
+  return graph
 
-findNext :: Int -> Graph -> [Int]
-findNext k gr = map snd . filter ((==k) . fst) $ snd gr
-
-dfs :: Graph -> Int -> Int -> [[Int]]
-dfs gr p0 p1 = dfsAux gr p0 p1 []
+dfs graph start goal = dfs' start []
   where
-    dfsAux gr p0 p1 path
-      | p0 == p1 = return (reverse (p1:path))
-      | otherwise = msum $ map (\p -> dfsAux gr p p1 (p0:path)) [x | x <- findNext p0 gr, not (x `elem` path)]
+    next' = next graph
+    dfs' now path
+      | now == goal = return $ reverse $ now:path
+      | otherwise = concatMap (\\node -> dfs' node $ now:path) [x | x <- next' now, not (x \`elem\` path)]
 
-bfs :: Graph -> Int -> Int -> [[Int]]
-bfs gr p0 p1 = bfsAux gr p1 [x : [p0] | x <- findNext p0 gr]
+next :: V.Vector [Int] -> Int -> [Int]
+next graph node = graph V.! node
+
+bfs :: V.Vector [Int] -> Int -> Int -> Maybe [Int]
+bfs graph start goal = bfs' [x : [start] | x <- next' start]
   where
-    bfsAux _ _ [] = fail "no Path"
-    bfsAux gr p1 (path:queue)
-      | p0 == p1 = (return (reverse path)) `mplus` (bfsAux gr p1 queue)
-      | otherwise = bfsAux gr p1 (queue ++ [ x : path | x <- findNext p0 gr, not (x `elem` path)])
-      where p0 = head path
+    next' = next graph
+    bfs' [] = fail "no Path"
+    bfs' (path:queue)
+      | goal == now = (return $ reverse path) \`mplus\` (bfs' queue)
+      | otherwise = bfs' $ queue ++ [x : path | x <- next' now, not $ x \`elem\` path]
+      where now = head path

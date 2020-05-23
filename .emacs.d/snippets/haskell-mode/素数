@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: 素数
 # key: 素数
+# expand-env: ((yas/indent-line 'fixed) (yas/wrap-around-region 'nil))
 # --
 type PrimeTable = VU.Vector Bool
 
