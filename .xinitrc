@@ -60,7 +60,7 @@ export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
 fcitx-autostart  &
 
-/usr/bin/dropbox &
+dropbox &
 
 # if [ $(hostname) = "archlinuxhonda" ]; then
 #     # export GDK_SCALE=2
