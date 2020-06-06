@@ -2136,3 +2136,9 @@
             )
   :bind (("C-z" . winner-undo))
   )
+
+(leaf twittering-mode
+  :ensure t
+  :custom ((twittering-allow-insecure-server-cert . t)
+           (twittering-use-master-password . t))
+  )
