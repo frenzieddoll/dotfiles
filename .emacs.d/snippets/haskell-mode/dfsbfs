@@ -16,6 +16,8 @@ toUnDirectedGraph n input = V.create $ do
     VM.modify graph (a:) b
   return graph
 
+createGraph n input = V.accumulate (flip (:)) (V.replicate n []) input
+
 dfs graph start goal = dfs' start []
   where
     next' = next graph

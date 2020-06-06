@@ -21,10 +21,14 @@ import           Data.IORef
 import           Control.Monad
 import           Control.Monad.ST
 import           Control.Monad.State.Strict
+import           Control.Monad.Primitive
 import           Control.Applicative
 import           Debug.Trace
 import           Text.Printf
 
+main = do
+  $0
+  print 1
 
 readInt = BS.readInt . BS.dropWhile isSpace
 getVector f = VU.unfoldr f <\$> BS.getLine
@@ -33,8 +37,3 @@ getBSVector = getVector BS.uncons
 getInt = readLn :: IO Int
 getInt2Tuple = (\vec -> (vec VU.! 0, vec VU.! 1)) <\$> getIntVector
 getInt3Tuple = (\vec -> (vec VU.! 0, vec VU.! 1, vec VU.! 2)) <\$> getIntVector
-
-
-main = do
-  $0
-  print 1
