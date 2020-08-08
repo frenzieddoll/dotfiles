@@ -1184,6 +1184,8 @@
 			("n"   . next-line)
 			("p"   . previous-line)
 			("f"   . forward-char)
+            ("C-f" . scroll-down)
+            ("C-b" . scroll-up)
 			("C-;" . ignore)
 			("a"   . vim-forward-char-to-insert)
 			("A"   . vim-end-of-line-to-insert)

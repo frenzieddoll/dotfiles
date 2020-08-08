@@ -1,5 +1,5 @@
 [/mnt/sdb/Pictures/Shirayukihime to Kuro taitsu  ( - Mikageishi Zai.pdf]
-page=11
+page=0
 offset=0
 zoom=1.2778570088615473
 rotate=0
@@ -7,12 +7,12 @@ pages-per-row=1
 first-page-column=1:2
 page-right-to-left=false
 position-x=0.5
-position-y=0.075163398692810454
-time=1588064822
+position-y=0.0032679840956018513
+time=1592914678
 jumplist=
 
 [EwJbUCUIQWPEEGusjHHg12/YtluntDSu+e2ucy4f4qM=]
-page=11
+page=0
 offset=0
 zoom=1.2778570088615473
 rotate=0
@@ -20,8 +20,8 @@ pages-per-row=1
 first-page-column=1:2
 page-right-to-left=false
 position-x=0.5
-position-y=0.075163398692810454
-time=1588064822
+position-y=0.0032679840956018513
+time=1592914678
 
 [/mnt/sdb/Videos/Geheimnis/niji/manga/mOtoko_M男/6a5KaNqcZq.pdf]
 page=1
@@ -725,7 +725,7 @@ first-page-column=1:2
 page-right-to-left=false
 position-x=0.5
 position-y=0.9642857142857143
-time=1590216599
+time=1595731082
 jumplist=
 
 [/x1lkfWSLBhsO1WflZL7xihsJBKmNYqEyhvfyo5b64I=]
@@ -738,7 +738,7 @@ first-page-column=1:2
 page-right-to-left=false
 position-x=0.5
 position-y=0.9642857142857143
-time=1590216599
+time=1595731082
 
 [/mnt/sdb/Documents/grive_frenzieddoll/sony/grobis/1_Gaido.pdf]
 page=0
@@ -1164,3 +1164,53 @@ page-right-to-left=false
 position-x=0.5
 position-y=0.5
 time=1591162879
+
+[/mnt/sdb/Videos/Geheimnis/niji/manga/otokonoko_男の娘/5h2KtC2OG8.pdf]
+page=0
+offset=0
+zoom=1.0994213571804314
+rotate=0
+pages-per-row=1
+first-page-column=1:2
+page-right-to-left=false
+position-x=0.5
+position-y=0.0021645021645021645
+time=1591702300
+jumplist=
+
+[JI9ywSiq/LrkiTl9uC0zvDfpYvxgg33bSL6oxIDlU6U=]
+page=0
+offset=0
+zoom=1.0994213571804314
+rotate=0
+pages-per-row=1
+first-page-column=1:2
+page-right-to-left=false
+position-x=0.5
+position-y=0.0021645021645021645
+time=1591702300
+
+[/mnt/sdb/Videos/Geheimnis/niji/manga/sekaiKakumeiKurabu_世界革命倶楽部/34025.pdf]
+page=0
+offset=0
+zoom=0.61588426335990554
+rotate=0
+pages-per-row=1
+first-page-column=1:2
+page-right-to-left=false
+position-x=0.5
+position-y=0.026315789473684209
+time=1596639469
+jumplist=
+
+[xMiygU9WjWBrUKl/FFTKeO6EXMf7VAUvrNzN51XU0Gk=]
+page=0
+offset=0
+zoom=0.61588426335990554
+rotate=0
+pages-per-row=1
+first-page-column=1:2
+page-right-to-left=false
+position-x=0.5
+position-y=0.026315789473684209
+time=1596639469

@@ -1,2 +1,0 @@
-;;; -*- no-byte-compile: t -*-
-(define-package "leaf-keywords" "20200428.1803" "Additional leaf.el keywords for external packages" '((emacs "24.4") (leaf "3.5.0")) :commit "bdf225b2b2cc76b87f5bf55dfa09c3a020ac1e7d" :keywords '("lisp" "settings") :authors '(("Naoya Yamashita" . "conao3@gmail.com")) :maintainer '("Naoya Yamashita" . "conao3@gmail.com") :url "https://github.com/conao3/leaf-keywords.el")
