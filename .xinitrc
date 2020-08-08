@@ -71,6 +71,8 @@ dropbox &
 export LANG=ja_JP.UTF-8
 export EXWM=enable
 
+
+xhost +SI:localuser:$USER
 xset r rate 200 30
 exec emacs
 # exec dbus-launch --exit-with-session --sh-syntax emacs
