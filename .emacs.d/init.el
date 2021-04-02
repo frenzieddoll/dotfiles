@@ -710,7 +710,7 @@
   )
 
 ;; window maneger
-(leaf exwm
+(leaf *exwm-config
   ;; :disabled t
   :ensure t
   :when (string= "enable" (getenv "EXWM"))
@@ -719,9 +719,9 @@
   :init
   (server-start)
   :config
-  (leaf *exwm-config
+  (leaf exwm
+    :ensure t
 	:require exwm
-    :ensure exwm
 	:defun (exwm-workspace-rename-buffer exwm-workspace-toggle)
 	:hook (exwm-update-class-hook . (lambda ()
 									  (exwm-workspace-rename-buffer exwm-class-name)))
@@ -888,7 +888,7 @@
   (leaf *git-tool
 	:config
 	(leaf magit
-	  :when (version<= "25.1" emacs-version)
+      :req "emacs-25.1"
 	  :ensure t
       :config
       (leaf *forWindows
@@ -898,8 +898,41 @@
       )
 
     (leaf gitignore-mode :ensure t)
-  )
+    )
 
+  (leaf haskell-mode
+    :ensure t
+    :after lsp-mode
+    :defvar haskell-process-args-ghcie
+	:custom `(;; (flymake-proc-allowed-file-name-masks . ,(delete '("\\.l?hs\\'" haskell-flymake-init) flymake-proc-allowed-file-name-masks))
+	  		  (haskell-process-type          . 'stack-ghci)
+	  		  (haskell-process-path-ghci     . "stack")
+	  		  (haskell-process-args-ghcie    . "ghci")
+              (haskell-indent-after-keywords . '(("where" 4 0) ("of" 4) ("do" 4) ("mdo" 4) ("rec" 4) ("in" 4 0) ("{" 4) "if" "then" "else" "let"))
+			  (haskell-indent-offset         . 4)
+			  (haskell-indendt-spaces        . 4)
+              (haskell-compile-stack-build-command . t)
+              )
+
+	:bind `((haskell-mode-map
+             ("C-c C-z" . haskell-interactive-bring)
+             ("C-c C-l" . haskell-process-load-file)
+             ("C-c C-," . haskell-mode-format-imports)
+             ("<f5>" . haskell-compile)
+             ("<f8>" . haskell-navigate-imports)
+             )
+            (haskell-interactive-mode-map
+             ("<up>" . haskell-interactive-mode-history-previous)
+             ("<down>" . haskell-interactive-mode-history-next)
+             ("C-c C-l" . haskell-interactive-switch-back)
+             )
+            )
+	:hook ((haskell-mode-hook . interactive-haskell-mode)
+	  	   (haskell-mode-hook . haskell-decl-scan-mode)
+	  	   (haskell-mode-hook . haskell-doc-mode)
+	  	   (haskell-mode-hook . haskell-indentation-mode)
+           )
+    )
   )
 
 (leaf *tex
@@ -1724,6 +1757,7 @@
       :url "https://github.com/abo-abo/swiper"
       :emacs>= 24.5
       :ensure t
+      :ensure smex
 	  ;; :ensure t
 	  :defvar counsel-find-file-ignore-regexp
 	  :custom ((counsel-mode                    . 1)
@@ -2100,43 +2134,8 @@
       :ensure t
       :commands lsp-treemacs-errors-list)
     (leaf lsp-haskell
-      ;; :disabled t
       :ensure t
       :require t
-      ;; :hook (haskell-mode-hook . flycheck-mode)
-      )
-    (leaf haskell-mode
-      :ensure t
-      :after lsp-mode
-      :defvar haskell-process-args-ghcie
-	  :custom `(;; (flymake-proc-allowed-file-name-masks . ,(delete '("\\.l?hs\\'" haskell-flymake-init) flymake-proc-allowed-file-name-masks))
-	  			(haskell-process-type          . 'stack-ghci)
-	  			(haskell-process-path-ghci     . "stack")
-	  			(haskell-process-args-ghcie    . "ghci")
-                (haskell-indent-after-keywords . '(("where" 4 0) ("of" 4) ("do" 4) ("mdo" 4) ("rec" 4) ("in" 4 0) ("{" 4) "if" "then" "else" "let"))
-			    (haskell-indent-offset         . 4)
-			    (haskell-indendt-spaces        . 4)
-                (haskell-compile-stack-build-command . t)
-	  			)
-
-	  :bind `((haskell-mode-map
-              ("C-c C-z" . haskell-interactive-bring)
-              ("C-c C-l" . haskell-process-load-file)
-              ("C-c C-," . haskell-mode-format-imports)
-              ("<f5>" . haskell-compile)
-              ("<f8>" . haskell-navigate-imports)
-              )
-             (haskell-interactive-mode-map
-              ("<up>" . haskell-interactive-mode-history-previous)
-              ("<down>" . haskell-interactive-mode-history-next)
-              ("C-c C-l" . haskell-interactive-switch-back)
-              )
-			 )
-	  :hook ((haskell-mode-hook . interactive-haskell-mode)
-	  		 (haskell-mode-hook . haskell-decl-scan-mode)
-	  		 (haskell-mode-hook . haskell-doc-mode)
-	  		 (haskell-mode-hook . haskell-indentation-mode)
-	  		 )
       )
     )
   )
