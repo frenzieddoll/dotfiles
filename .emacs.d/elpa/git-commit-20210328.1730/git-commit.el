@@ -12,8 +12,17 @@
 ;; Maintainer: Jonas Bernoulli <jonas@bernoul.li>
 
 ;; Package-Requires: ((emacs "25.1") (dash "20200524") (transient "20200601") (with-editor "20200522"))
+<<<<<<< HEAD:.emacs.d/elpa/git-commit-20210328.1730/git-commit.el
 ;; Package-Version: 20210328.1730
 ;; Package-Commit: abb61935c65bc02815a6397c0e5d867aebcf5e54
+=======
+;; Package-Version: 20200828.1753
+<<<<<<< HEAD
+;; Package-Commit: 5a38e1bb0fffa0326a1b5073c0ce9b05386e5109
+=======
+;; Package-Commit: a2599c3b05bde9efbfd6beeab63a18d034b92d4f
+>>>>>>> 1693ca933ce3cc63b91d80c5b335f357a35cc0b0
+>>>>>>> origin/master:.emacs.d/elpa/git-commit-20200828.1753/git-commit.el
 ;; Keywords: git tools vc
 ;; Homepage: https://github.com/magit/magit
 
