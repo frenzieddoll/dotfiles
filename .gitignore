@@ -10,7 +10,7 @@
 !/.emacs.d/.yatexrc
 !/.emacs.d/conf
 !/.emacs.d/elisp
-!/.emacs.d/elpa
+# !/.emacs.d/elpa
 !/.emacs.d/init.el
 !/.emacs.d/public_repos
 !/.emacs.d/script

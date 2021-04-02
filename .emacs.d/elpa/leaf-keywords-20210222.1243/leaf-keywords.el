@@ -5,11 +5,7 @@
 ;; Author: Naoya Yamashita <conao3@gmail.com>
 ;; Maintainer: Naoya Yamashita <conao3@gmail.com>
 ;; Keywords: lisp settings
-<<<<<<< HEAD:.emacs.d/elpa/leaf-keywords-20210222.1243/leaf-keywords.el
 ;; Version: 2.0.5
-=======
-;; Version: 2.0.1
->>>>>>> origin/master:.emacs.d/elpa/leaf-keywords-20201225.1406/leaf-keywords.el
 ;; URL: https://github.com/conao3/leaf-keywords.el
 ;; Package-Requires: ((emacs "24.4") (leaf "3.5.0"))
 
@@ -72,12 +68,8 @@
    feather el-get system-packages
 
    ;; `leaf-keywords-before-require'
-<<<<<<< HEAD:.emacs.d/elpa/leaf-keywords-20210222.1243/leaf-keywords.el
    hydra major-mode-hydra pretty-hydra key-combo smartrep
    key-chord grugru
-=======
-   hydra key-combo smartrep key-chord grugru
->>>>>>> origin/master:.emacs.d/elpa/leaf-keywords-20201225.1406/leaf-keywords.el
 
    ;; `leaf-keywords-after-require'
    diminish delight)

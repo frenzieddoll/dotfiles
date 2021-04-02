@@ -131,25 +131,9 @@
 	   ("John Wiegley" . "jwiegley@gmail.com"))
 	  (:keywords "async"))])
  (auctex .
-<<<<<<< HEAD
 	 [(13 0 6)
 	  ((emacs
 	    (24 3)))
-=======
-<<<<<<< HEAD
-	 [(13 0 4)
-=======
-<<<<<<< HEAD
-	 [(13 0 4)
-=======
-	 [(12 3 1)
->>>>>>> 1693ca933ce3cc63b91d80c5b335f357a35cc0b0
->>>>>>> origin/master
-	  ((emacs
-	    (24 3))
-	   (cl-lib
-	    (1 0)))
->>>>>>> origin/master
 	  "Integrated environment for *TeX*" tar
 	  ((:url . "https://www.gnu.org/software/auctex/")
 	   (:maintainer nil . "auctex-devel@gnu.org")
@@ -414,11 +398,7 @@
 	    (ivy
 	     (0 13 4))
 	    (swiper
-<<<<<<< HEAD
 	     (0 13 4)))
-=======
-	     (0 13 1)))
->>>>>>> origin/master
 	   "Various completion functions using Ivy" tar
 	   ((:url . "https://github.com/abo-abo/swiper")
 	    (:maintainer "Oleh Krehel" . "ohwoeowho@gmail.com")
@@ -444,11 +424,7 @@
 	   ("Gary D. Foster" . "Gary.Foster@Corp.Sun.COM"))
 	  (:maintainer "Luke Lee" . "luke.yx.lee@gmail.com"))])
  (csv-mode .
-<<<<<<< HEAD
 	   [(1 15)
-=======
-	   [(1 14)
->>>>>>> origin/master
 	    ((emacs
 	      (24 1))
 	     (cl-lib
@@ -498,19 +474,7 @@
 		  ("Daiki Ueno" . "ueno@gnu.org"))
 		 (:maintainer nil . "emacs-devel@gnu.org"))])
  (debbugs .
-<<<<<<< HEAD
 	  [(0 27)
-=======
-<<<<<<< HEAD
-	  [(0 27)
-=======
-<<<<<<< HEAD
-	  [(0 27)
-=======
-	  [(0 26)
->>>>>>> 1693ca933ce3cc63b91d80c5b335f357a35cc0b0
->>>>>>> origin/master
->>>>>>> origin/master
 	   ((emacs
 	     (25 1))
 	    (soap-client
@@ -646,19 +610,7 @@
 	       ("Leo Liu" . "sdl.web@gmail.com"))
 	      (:keywords "killing" "convenience"))])
  (ebdb .
-<<<<<<< HEAD
        [(0 6 22)
-=======
-<<<<<<< HEAD
-       [(0 6 21)
-=======
-<<<<<<< HEAD
-       [(0 6 21)
-=======
-       [(0 6 20)
->>>>>>> 1693ca933ce3cc63b91d80c5b335f357a35cc0b0
->>>>>>> origin/master
->>>>>>> origin/master
 	((emacs
 	  (25 1))
 	 (cl-lib
@@ -683,19 +635,7 @@
 		("Eric Abrahamsen" . "eric@ericabrahamsen.net"))
 	       (:maintainer "Eric Abrahamsen" . "eric@ericabrahamsen.net"))])
  (ebdb-i18n-chn .
-<<<<<<< HEAD
 		[(1 3 2)
-=======
-<<<<<<< HEAD
-		[(1 3 2)
-=======
-<<<<<<< HEAD
-		[(1 3 2)
-=======
-		[(1 3 1)
->>>>>>> 1693ca933ce3cc63b91d80c5b335f357a35cc0b0
->>>>>>> origin/master
->>>>>>> origin/master
 		 ((pyim
 		   (1 6 0))
 		  (ebdb
@@ -714,19 +654,7 @@
 	      (:maintainer "Markus Triska" . "triska@metalevel.at")
 	      (:url . "https://www.metalevel.at/ediprolog/"))])
  (eev .
-<<<<<<< HEAD
       [(20210102)
-=======
-<<<<<<< HEAD
-      [(20210102)
-=======
-<<<<<<< HEAD
-      [(20210102)
-=======
-      [(20201013)
->>>>>>> 1693ca933ce3cc63b91d80c5b335f357a35cc0b0
->>>>>>> origin/master
->>>>>>> origin/master
        ((emacs
 	 (24 4)))
        "Support for e-scripts (eepitch blocks, elisp hyperlinks, etc)" tar
@@ -794,19 +722,7 @@
 		      ("William Xu" . "william.xwl@gmail.com"))
 		     (:maintainer "William Xu" . "william.xwl@gmail.com"))])
  (elisp-benchmarks .
-<<<<<<< HEAD
 		   [(1 11)
-=======
-<<<<<<< HEAD
-		   [(1 9)
-=======
-<<<<<<< HEAD
-		   [(1 9)
-=======
-		   [(1 8)
->>>>>>> 1693ca933ce3cc63b91d80c5b335f357a35cc0b0
->>>>>>> origin/master
->>>>>>> origin/master
 		    nil "elisp benchmarks collection" tar
 		    ((:maintainer "Andrea Corallo" . "akrl@sdf.org")
 		     (:authors
@@ -814,19 +730,7 @@
 		     (:keywords "languages" "lisp")
 		     (:url . "https://elpa.gnu.org/packages/elisp-benchmarks.html"))])
  (emms .
-<<<<<<< HEAD
        [(6 3)
-=======
-<<<<<<< HEAD
-       [(6 3)
-=======
-<<<<<<< HEAD
-       [(6 3)
-=======
-       [(6 2)
->>>>>>> 1693ca933ce3cc63b91d80c5b335f357a35cc0b0
->>>>>>> origin/master
->>>>>>> origin/master
 	((cl-lib
 	  (0 5))
 	 (seq
@@ -872,19 +776,7 @@
 		    ("Matthew L. Fidler" . "matthew.fidler@gmail.com"))
 		   (:keywords "convenience"))])
  (excorporate .
-<<<<<<< HEAD
 	      [(0 9 3)
-=======
-<<<<<<< HEAD
-	      [(0 9 2)
-=======
-<<<<<<< HEAD
-	      [(0 9 2)
-=======
-	      [(0 9 1)
->>>>>>> 1693ca933ce3cc63b91d80c5b335f357a35cc0b0
->>>>>>> origin/master
->>>>>>> origin/master
 	       ((emacs
 		 (24 1))
 		(fsm
@@ -1265,26 +1157,13 @@
 	       ("Oleh Krehel" . "ohwoeowho@gmail.com"))
 	      (:keywords "convenience"))])
  (ivy-posframe .
-<<<<<<< HEAD
 	       [(0 5 5)
-=======
-<<<<<<< HEAD
-	       [(0 5 5)
-=======
-<<<<<<< HEAD
-	       [(0 5 5)
-=======
-	       [(0 5 2)
->>>>>>> 1693ca933ce3cc63b91d80c5b335f357a35cc0b0
->>>>>>> origin/master
->>>>>>> origin/master
 		((emacs
 		  (26 0))
 		 (posframe
 		  (0 8 0))
 		 (ivy
 		  (0 13 0)))
-<<<<<<< HEAD
 		"Using posframe to show Ivy" tar
 		((:url . "https://github.com/tumashu/ivy-posframe")
 		 (:maintainer "Feng Shu" . "tumashu@163.com")
@@ -1292,35 +1171,6 @@
 		  ("Feng Shu" . "tumashu@163.com")
 		  ("Naoya Yamashita" . "conao3@gmail.com"))
 		 (:keywords "abbrev" "convenience" "matching" "ivy"))])
-=======
-<<<<<<< HEAD
-		"Using posframe to show Ivy" tar
-		((:url . "https://github.com/tumashu/ivy-posframe")
-		 (:maintainer "Feng Shu" . "tumashu@163.com")
-		 (:authors
-		  ("Feng Shu" . "tumashu@163.com")
-		  ("Naoya Yamashita" . "conao3@gmail.com"))
-		 (:keywords "abbrev" "convenience" "matching" "ivy"))])
-=======
-<<<<<<< HEAD
-		"Using posframe to show Ivy" tar
-		((:url . "https://github.com/tumashu/ivy-posframe")
-		 (:maintainer "Feng Shu" . "tumashu@163.com")
-		 (:authors
-		  ("Feng Shu" . "tumashu@163.com")
-		  ("Naoya Yamashita" . "conao3@gmail.com"))
-		 (:keywords "abbrev" "convenience" "matching" "ivy"))])
-=======
-		"Using posframe to show Ivy" single
-		((:keywords "abbrev" "convenience" "matching" "ivy")
-		 (:authors
-		  ("Feng Shu" . "tumashu@163.com")
-		  ("Naoya Yamashita" . "conao3@gmail.com"))
-		 (:maintainer "Feng Shu" . "tumashu@163.com")
-		 (:url . "https://github.com/tumashu/ivy-posframe"))])
->>>>>>> 1693ca933ce3cc63b91d80c5b335f357a35cc0b0
->>>>>>> origin/master
->>>>>>> origin/master
  (javaimp .
 	  [(0 7 1)
 	   nil "Add and reorder Java import statements in Maven/Gradle projects" tar
@@ -1381,11 +1231,7 @@
 	   ("Ivan Kanis" . "ivan@kanis.fr"))
 	  (:maintainer "Ivan Kanis" . "ivan@kanis.fr"))])
  (kiwix .
-<<<<<<< HEAD
 	[(1 0 3)
-=======
-	[(1 0 1)
->>>>>>> origin/master
 	 ((emacs
 	   (24 4))
 	  (request
@@ -1760,23 +1606,10 @@
 	      (:maintainer "Michael Heerdegen" . "michael_heerdegen@web.de")
 	      (:url . "https://github.com/michael-heerdegen/on-screen.el"))])
  (org .
-<<<<<<< HEAD
       [(9 4 5)
        ((emacs
 	 (24 3)))
        "Outline-based notes management and organizer" tar
-=======
-<<<<<<< HEAD
-      [(9 4 4)
-=======
-<<<<<<< HEAD
-      [(9 4 4)
-=======
-      [(9 4)
->>>>>>> 1693ca933ce3cc63b91d80c5b335f357a35cc0b0
->>>>>>> origin/master
-       nil "Outline-based notes management and organizer" tar
->>>>>>> origin/master
        ((:url . "https://orgmode.org")
 	(:maintainer "Bastien Guerry" . "bzg@gnu.org")
 	(:authors
@@ -1797,19 +1630,7 @@
 	      ("Ian Dunn" . "dunni@gnu.org"))
 	     (:keywords "convenience" "text" "org"))])
  (org-translate .
-<<<<<<< HEAD
 		[(0 1 3)
-=======
-<<<<<<< HEAD
-		[(0 1 3)
-=======
-<<<<<<< HEAD
-		[(0 1 3)
-=======
-		[(0 1 2)
->>>>>>> 1693ca933ce3cc63b91d80c5b335f357a35cc0b0
->>>>>>> origin/master
->>>>>>> origin/master
 		 ((emacs
 		   (25 1))
 		  (org
@@ -1930,19 +1751,7 @@
 	   ("Mario Lang" . "mlang@delysid.org"))
 	  (:maintainer "Mario Lang" . "mlang@delysid.org"))])
  (posframe .
-<<<<<<< HEAD
 	   [(0 9 0)
-=======
-<<<<<<< HEAD
-	   [(0 8 4)
-=======
-<<<<<<< HEAD
-	   [(0 8 4)
-=======
-	   [(0 8 2)
->>>>>>> 1693ca933ce3cc63b91d80c5b335f357a35cc0b0
->>>>>>> origin/master
->>>>>>> origin/master
 	    ((emacs
 	      (26)))
 	    "Pop a posframe (just a frame) at point" tar
@@ -1952,19 +1761,7 @@
 	      ("Feng Shu" . "tumashu@163.com"))
 	     (:keywords "convenience" "tooltip"))])
  (project .
-<<<<<<< HEAD
 	  [(0 5 4)
-=======
-<<<<<<< HEAD
-	  [(0 5 3)
-=======
-<<<<<<< HEAD
-	  [(0 5 3)
-=======
-	  [(0 5 2)
->>>>>>> 1693ca933ce3cc63b91d80c5b335f357a35cc0b0
->>>>>>> origin/master
->>>>>>> origin/master
 	   ((emacs
 	     (26 1))
 	    (xref
@@ -2012,19 +1809,7 @@
 		   ("Feng Shu" . "tumashu@163.com"))
 		  (:keywords "convenience" "chinese" "pinyin" "input-method" "complete"))])
  (python .
-<<<<<<< HEAD
 	 [(0 27 1)
-=======
-<<<<<<< HEAD
-	 [(0 27 1)
-=======
-<<<<<<< HEAD
-	 [(0 27 1)
-=======
-	 [(0 27)
->>>>>>> 1693ca933ce3cc63b91d80c5b335f357a35cc0b0
->>>>>>> origin/master
->>>>>>> origin/master
 	  ((emacs
 	    (24 2))
 	   (cl-lib
@@ -2218,11 +2003,7 @@
 	    ("Mattias Engdegård" . "mattiase@acm.org"))
 	   (:keywords "lisp" "regexps"))])
  (repology .
-<<<<<<< HEAD
 	   [(1 1 0)
-=======
-	   [(1 0 1)
->>>>>>> origin/master
 	    ((emacs
 	      (26 1)))
 	    "Repology API access via Elisp" tar
@@ -2250,19 +2031,7 @@
 	      ("Stefan Monnier" . "monnier@iro.umontreal.ca"))
 	     (:maintainer "Stefan Monnier" . "monnier@iro.umontreal.ca"))])
  (rt-liberation .
-<<<<<<< HEAD
 		[(2 3)
-=======
-<<<<<<< HEAD
-		[(2 1)
-=======
-<<<<<<< HEAD
-		[(2 1)
-=======
-		[(1 31)
->>>>>>> 1693ca933ce3cc63b91d80c5b335f357a35cc0b0
->>>>>>> origin/master
->>>>>>> origin/master
 		 nil "Emacs interface to RT" tar
 		 ((:url . "http://www.nongnu.org/rtliber/")
 		  (:maintainer "Yoni Rabkin" . "yrk@gnu.org")
@@ -2532,11 +2301,7 @@
 	  ((emacs
 	    (24 5))
 	   (ivy
-<<<<<<< HEAD
 	    (0 13 4)))
-=======
-	    (0 13 1)))
->>>>>>> origin/master
 	  "Isearch with an overview. Oh, man!" tar
 	  ((:url . "https://github.com/abo-abo/swiper")
 	   (:maintainer "Oleh Krehel" . "ohwoeowho@gmail.com")
@@ -2602,19 +2367,7 @@
 	  ("Oleh Krehel" . "ohwoeowho@gmail.com"))
 	 (:keywords "convenience"))])
  (tramp .
-<<<<<<< HEAD
 	[(2 5 0 3)
-=======
-<<<<<<< HEAD
-	[(2 5 0)
-=======
-<<<<<<< HEAD
-	[(2 5 0)
-=======
-	[(2 4 4 3)
->>>>>>> 1693ca933ce3cc63b91d80c5b335f357a35cc0b0
->>>>>>> origin/master
->>>>>>> origin/master
 	 ((emacs
 	   (25 1)))
 	 "Transparent Remote Access, Multiple Protocol" tar
@@ -2712,7 +2465,6 @@
 	      ("Artur Malabarba" . "emacs@endlessparentheses.com"))
 	     (:maintainer "Artur Malabarba" . "emacs@endlessparentheses.com"))])
  (valign .
-<<<<<<< HEAD
 	 [(3 1 1)
 	  ((emacs
 	    (26 0)))
@@ -2722,17 +2474,6 @@
 	   (:authors
 	    ("Yuan Fu" . "casouri@gmail.com"))
 	   (:keywords "convenience" "text" "table"))])
-=======
-	 [(3 0 0)
-	  ((emacs
-	    (26 0)))
-	  "Visually align tables" single
-	  ((:keywords "convenience" "text" "table")
-	   (:authors
-	    ("Yuan Fu" . "casouri@gmail.com"))
-	   (:maintainer "Yuan Fu" . "casouri@gmail.com")
-	   (:url . "https://github.com/casouri/valign"))])
->>>>>>> origin/master
  (vcard .
 	[(0 2 1)
 	 ((emacs
@@ -2833,19 +2574,7 @@
 		("Eric Schulte" . "schulte.eric@gmail.com"))
 	       (:keywords "http" "server" "network"))])
  (webfeeder .
-<<<<<<< HEAD
 	    [(1 1 1)
-=======
-<<<<<<< HEAD
-	    [(1 1 1)
-=======
-<<<<<<< HEAD
-	    [(1 1 1)
-=======
-	    [(1 1 0)
->>>>>>> 1693ca933ce3cc63b91d80c5b335f357a35cc0b0
->>>>>>> origin/master
->>>>>>> origin/master
 	     ((emacs
 	       (25 1)))
 	     "Build RSS and Atom webfeeds from HTML files" tar
@@ -2953,11 +2682,7 @@
 	 ("Thien-Thi Nguyen" . "ttn@gnu.org"))
 	(:keywords "multimedia" "xpm"))])
  (xr .
-<<<<<<< HEAD
      [(1 21)
-=======
-     [(1 20)
->>>>>>> origin/master
       ((emacs
 	(26 1)))
       "Convert string regexp to rx notation" tar
@@ -2967,19 +2692,7 @@
 	("Mattias Engdegård" . "mattiase@acm.org"))
        (:keywords "lisp" "regexps"))])
  (xref .
-<<<<<<< HEAD
        [(1 0 4)
-=======
-<<<<<<< HEAD
-       [(1 0 4)
-=======
-<<<<<<< HEAD
-       [(1 0 4)
-=======
-       [(1 0 3)
->>>>>>> 1693ca933ce3cc63b91d80c5b335f357a35cc0b0
->>>>>>> origin/master
->>>>>>> origin/master
 	((emacs
 	  (26 3)))
 	"Cross-referencing commands" single

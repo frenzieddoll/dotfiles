@@ -5,15 +5,9 @@
 ;; Author: Naoya Yamashita <conao3@gmail.com>
 ;; Maintainer: Naoya Yamashita <conao3@gmail.com>
 ;; Keywords: lisp settings
-<<<<<<< HEAD:.emacs.d/elpa/leaf-20210316.1822/leaf.el
 ;; Package-Version: 20210316.1822
 ;; Package-Commit: ab5cc26b56a6a53a3338ebfde17b746522c2c14c
 ;; Version: 4.4.4
-=======
-;; Package-Version: 20200817.1226
-;; Package-Commit: 7d2f13a103ff275f64086f4ad12308266d1fb48a
-;; Version: 4.3.1
->>>>>>> origin/master:.emacs.d/elpa/leaf-20200817.1226/leaf.el
 ;; URL: https://github.com/conao3/leaf.el
 ;; Package-Requires: ((emacs "24.1"))
 
