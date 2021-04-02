@@ -1,4 +1,4 @@
-<;;; init.el --- setting for emacs
+;;; init.el --- setting for emacs
 ;;; Commentary:
 
 ;; Added by Package.el.  This must come before configurations of
@@ -20,6 +20,34 @@
   (setq load-path (cons "~/Dropbox/private/elisp" load-path))
   )
 
+;; (prog1 "prepare leaf"
+;;   (prog1 "package"
+;; 	(custom-set-variables
+;; 	 '(package-archives '(("org"   . "http://orgmode.org/elpa/")
+;; 			              ("melpa" . "http://melpa.org/packages/")
+;; 			              ("gnu"   . "http://elpa.gnu.org/packages/"))))
+
+;;     (package-initialize))
+
+;;   (prog1 "leaf"
+;;     (unless (package-installed-p 'leaf)
+;;       (unless (assoc 'leaf package-archive-contents)
+;;         (package-refresh-contents))
+;;       (condition-case err
+;;           (package-install 'leaf)
+;;         (error
+;;          (package-refresh-contents)       ; renew local melpa cache if fail
+;;          (package-install 'leaf))))
+
+;;     (leaf leaf-keywords
+;;       :ensure t
+;;       :config (leaf-keywords-init)))
+
+;;   (prog1 "optional packages for leaf-keywords"
+;;     ;; optional packages if you want to use :hydra, :el-get,,,
+;;     (leaf hydra :ensure t)
+;;     (leaf el-get :ensure t
+;;       :custom ((el-get-git-shallow-clone  . t)))))
 
 ;; this enables this running method
 ;;   emacs -q -l ~/.debug.emacs.d/init.el
@@ -50,6 +78,12 @@
     :config
     ;; initialize leaf-keywords.el
     (leaf-keywords-init)))
+
+;; 必要なPackageのInstall
+(leaf *installPackege
+  :config
+  (leaf diminish :ensure t)
+  )
 
 
 ;; 初回起動の設定
@@ -687,6 +721,7 @@
   :config
   (leaf *exwm-config
 	:require exwm
+    :ensure exwm
 	:defun (exwm-workspace-rename-buffer exwm-workspace-toggle)
 	:hook (exwm-update-class-hook . (lambda ()
 									  (exwm-workspace-rename-buffer exwm-class-name)))
@@ -1010,6 +1045,7 @@
 (leaf google-translate
   :ensure t
   :require t
+  :disabled t
   :bind (("s-v" . google-translate-enja-or-jaen))
   :preface
   (defun google-translate-enja-or-jaen (&optional string)
@@ -1461,7 +1497,8 @@
              )
     :bind (("C-c a" . org-agenda))
     )
-  (leaf org-eldoc
+  (leaf org-plus-contrib
+    :ensure t
     :require org-eldoc
     :hook ((org-mode-hook . eldoc-mode))
     :config
@@ -1733,7 +1770,7 @@
 	  :ensure t
 	  :defvar swiper-include-line-number-in-search
 	  :bind (("C-s" . swiper)
-             ("C-c C-;" . swiper)
+             ("C-r" . swiper)
              (swiper-map
               ("C-j" . skk-hiragana-set)
               ("C-l" . skk-latin-mode))
@@ -1769,8 +1806,9 @@
 	:bind (("C-'" . hs-toggle-hiding))
 	)
 
-  (leaf highlight-indent-guides-mode
+  (leaf highlight-indent-guides
 	:when (eq system-type 'gnu/linux)
+    :ensure t
 	:hook ((prog-mode-hook . highlight-indent-guides-mode))
 	:custom '((highlight-indent-guides-method . 'column)
 			  ;; (highlight-indent-guides-auto-enable . t)
@@ -1801,7 +1839,7 @@
 	:ensure t
 	:require smartparens-config
 	:custom ((sp-highlight-pari-overly . nil)
-			 (sp-navigate-interactive-always-progress-point . t)
+		     (sp-navigate-interactive-always-progress-point . t)
 			 (smartparens-global-strict-mode . t))
 	:bind ((smartparens-mode-map
             ;;;;
@@ -2051,7 +2089,7 @@
       :commands lsp-ui-mode
       )
     (leaf company-lsp
-      :disabled
+      :disabled t
       :ensure t
       :hook (lsp-mode-hook . company-mode)
       :commands company-lsp)
@@ -2104,6 +2142,7 @@
   )
 
 (leaf japanese-holidays
+  :ensure t
   :after calendar
   :require japanese-holidays
   :hook ((calendar-today-visible-hook . japanese-holiday-mark-weekend)
@@ -2142,6 +2181,7 @@
   :ensure t
   :require t
   :config
+  (leaf japanese-holidays :ensure t)
   (leaf calfw-org
     :ensure t
     :require t
@@ -2215,3 +2255,7 @@
 
 ;; (put 'upcase-region 'disabled nil)
 (provide 'init)
+
+"Warning (leaf): Error in `google-translate' block at `/home/toshiaki/.emacs.d/init.el'.  Error msg: Cannot open load file: No such file or directory, popup
+Warning (leaf): Error in `org-eldoc' block at `/home/toshiaki/.emacs.d/init.el'.  Error msg: Cannot open load file: No such file or directory, org-eldoc
+"
