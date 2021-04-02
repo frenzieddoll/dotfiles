@@ -1,2 +1,0 @@
-;;; Generated package description from /home/toshiaki/.emacs.d/elpa/dired-recent-20201004.2201/dired-recent.el  -*- no-byte-compile: t -*-
-(define-package "dired-recent" "20201004.2201" "Dired visited paths history" '((emacs "24")) :commit "d62ace45cc72d49d77862ecf00f52d794ecc5677" :keywords '("files") :authors '(("Wojciech Siewierski <wojciech dot siewierski at onet dot pl>")) :maintainer '("Wojciech Siewierski <wojciech dot siewierski at onet dot pl>") :url "https://github.com/vifon/dired-recent.el")

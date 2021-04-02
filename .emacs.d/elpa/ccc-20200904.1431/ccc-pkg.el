@@ -1,2 +1,0 @@
-;;; Generated package description from /home/toshiaki/.emacs.d/elpa/ccc-20200904.1431/ccc.el  -*- no-byte-compile: t -*-
-(define-package "ccc" "20200904.1431" "buffer local cursor color control library" 'nil :commit "a66a7b16f13533afdd03e21eebcdd6309e469a13" :keywords '("cursor") :authors '(("Masatake YAMATO" . "masata-y@is.aist-nara.ac.jp")) :maintainer '("SKK Development Team") :url "https://github.com/skk-dev/ddskk")
