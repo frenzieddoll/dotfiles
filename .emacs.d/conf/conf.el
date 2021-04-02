@@ -1,4 +1,4 @@
-;; leaf 起動前の設定
+; leaf 起動前の設定
 (prog1 "prepare leaf"
   (prog1 "package"
 	;; (when (eq system-type 'darwin)
@@ -13,8 +13,8 @@
 	;;   )
 	(custom-set-variables
 	 '(package-archives '(("org"   . "http://orgmode.org/elpa/")
-			      ("melpa" . "http://melpa.org/packages/")
-			      ("gnu"   . "http://elpa.gnu.org/packages/"))))
+			              ("melpa" . "http://melpa.org/packages/")
+			              ("gnu"   . "http://elpa.gnu.org/packages/"))))
 
     (package-initialize))
 
@@ -1538,6 +1538,7 @@
               (company-transformers          . '(company-sort-by-occurrence))
               (global-company-mode           . t)
               (company-dabbrev-downcase      . nil)
+              (company-backends . '(company-capf))
               )
     :config
     (leaf company-math
@@ -2012,13 +2013,15 @@
   (leaf lsp-mode
     :ensure t
     :require t
-    :hook (haskell-mode-hook . lsp)
+    :hook ((haskell-mode-hook . lsp)
+           (haskell-literate-mode-hook . lsp))
     :config
     (leaf lsp-ui
       :ensure t
       :commands lsp-ui-mode
       )
     (leaf company-lsp
+      :disabled
       :ensure t
       :hook (lsp-mode-hook . company-mode)
       :commands company-lsp)
@@ -2051,7 +2054,9 @@
 	  :bind `((haskell-mode-map
               ("C-c C-z" . haskell-interactive-bring)
               ("C-c C-l" . haskell-process-load-file)
+              ("C-c C-," . haskell-mode-format-imports)
               ("<f5>" . haskell-compile)
+              ("<f8>" . haskell-navigate-imports)
               )
              (haskell-interactive-mode-map
               ("<up>" . haskell-interactive-mode-history-previous)
@@ -2070,7 +2075,7 @@
 
 (leaf japanese-holidays
   :after calendar
-  :require t
+  :require japanese-holidays
   :hook ((calendar-today-visible-hook . japanese-holiday-mark-weekend)
          (calendar-today-invisible-hook .  japanese-holiday-mark-weekend)
          (calendar-today-visible-hook . calendar-mark-today)
@@ -2081,8 +2086,27 @@
            (org-agenda-include-diary . t)
            )
   :config
+  (let ((array ["日" "月" "火" "水" "木" "金" "土"]))
+    (setq calendar-day-header-array array
+          calendar-day-name-array array))
+  ;; (with-eval-after-load "calendar"
+  ;;   (require 'japanese-holidays)
+  ;;   (setq calendar-holidays ; 他の国の祝日も表示させたい場合は適当に調整
+  ;;         (append japanese-holidays holiday-local-holidays holiday-other-holidays))
+  ;;   (setq calendar-mark-holidays-flag t)    ; 祝日をカレンダーに表示
+  ;;   ;; 土曜日・日曜日を祝日として表示する場合、以下の設定を追加します。
+  ;;   ;; 変数はデフォルトで設定済み
+  ;;   (setq japanese-holiday-weekend '(0 6)    ; 土日を祝日として表示
+  ;;         japanese-holiday-weekend-marker    ; 土曜日を水色で表示
+  ;;         '(holiday nil nil nil nil nil japanese-holiday-saturday))
+  ;;   (add-hook 'calendar-today-visible-hook 'japanese-holiday-mark-weekend)
+  ;;   (add-hook 'calendar-today-invisible-hook 'japanese-holiday-mark-weekend)
+  ;;   ;; “きょう”をマークするには以下の設定を追加します。
+  ;;   (add-hook 'calendar-today-visible-hook 'calendar-mark-today)
+  ;;   ;; org-agendaで祝日を表示する
+  ;;   (setq org-agenda-include-diary t))
 
-)
+  )
 
 (leaf calfw
   :ensure t
