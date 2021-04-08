@@ -46,6 +46,7 @@
 ;;   (prog1 "optional packages for leaf-keywords"
 ;;     ;; optional packages if you want to use :hydra, :el-get,,,
 ;;     (leaf hydra :ensure t)
+;;     (leaf blackout :ensure t)
 ;;     (leaf el-get :ensure t
 ;;       :custom ((el-get-git-shallow-clone  . t)))))
 
@@ -1269,8 +1270,8 @@
 			("n"   . next-line)
 			("p"   . previous-line)
 			("f"   . forward-char)
-            ("C-f" . scroll-down)
-            ("C-b" . scroll-up)
+            ("C-f" . forward-char)
+            ("C-b" . backward-char)
 			("C-;" . ignore)
 			("a"   . vim-forward-char-to-insert)
 			("A"   . vim-end-of-line-to-insert)
@@ -1435,6 +1436,7 @@
 	  )
 	)
   )
+
 (leaf eww
   ;; :disabled t
   :hook (eww-mode-hook . eww-mode-hook--disable-image)
@@ -1546,10 +1548,10 @@
 (leaf pdf-tools
   :when (file-exists-p "/usr/bin/epdfinfo")
   :ensure t
-  :require pdf-tools pdf-annot pdf-history pdf-info pdf-isearch pdf-links pdf-misc pdf-occur pdf-outline pdf-sync tablist-filter tablist
+  ;; :require pdf-tools pdf-annot pdf-history pdf-info pdf-isearch pdf-links pdf-misc pdf-occur pdf-outline pdf-sync tablist-filter tablist
   :hook ((pdf-view-mode-hook . pdf-misc-size-indication-minor-mode)
-		 (pdf-view-mode-hook . pdf-links-minor-mode)
-		 (pdf-view-mode-hook . pdf-isearch-minor-mode))
+    	 (pdf-view-mode-hook . pdf-links-minor-mode)
+    	 (pdf-view-mode-hook . pdf-isearch-minor-mode))
   )
 
 
@@ -1620,7 +1622,7 @@
             ("C-p" . company-select-previous)))
     :custom `((company-tooltip-limit         . 12)
               (company-idle-delay            . 0)
-              (company-minimum-prefix-length . 1)
+              (company-minimum-prefix-length . 3)
               (company-transformers          . '(company-sort-by-occurrence))
               (global-company-mode           . t)
               (company-dabbrev-downcase      . nil)
