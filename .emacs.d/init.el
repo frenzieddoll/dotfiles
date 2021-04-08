@@ -201,7 +201,7 @@
 	  )
     (leaf *gc-cons-threshold-arch-laptop
 	  :when (string-match "ArchLinuxonLaptopPC" (system-name))
-	  :custom `((gc-cons-threshold . ,(* 1024 1024 1024)))
+	  :custom `((gc-cons-threshold . ,(* 64 1024 1024)))
 	  )
 	(leaf *gc-cons-threshold-mac
 	  :when (eq system-type 'darwin)
@@ -712,7 +712,6 @@
 ;; window maneger
 (leaf *exwm-config
   ;; :disabled t
-  :ensure t
   :when (string= "enable" (getenv "EXWM"))
   :when (eq system-type 'gnu/linux)
   ;; :when (string= "archlinuxhonda" (system-name))
@@ -721,6 +720,7 @@
   :config
   (leaf exwm
     :ensure t
+    :ensure exwm-x
 	:require exwm
 	:defun (exwm-workspace-rename-buffer exwm-workspace-toggle)
 	:hook (exwm-update-class-hook . (lambda ()
@@ -830,7 +830,7 @@
 		(exwm-workspace-switch 0)))
 	:config
 	(exwmx-floating-smart-hide)
-    (exwmx-button-enable)
+    ;; (exwmx-button-enable)
 	)
 
   (leaf exwm-systemtray
@@ -902,7 +902,6 @@
 
   (leaf haskell-mode
     :ensure t
-    :after lsp-mode
     :defvar haskell-process-args-ghcie
 	:custom `(;; (flymake-proc-allowed-file-name-masks . ,(delete '("\\.l?hs\\'" haskell-flymake-init) flymake-proc-allowed-file-name-masks))
 	  		  (haskell-process-type          . 'stack-ghci)
@@ -921,11 +920,11 @@
              ("<f5>" . haskell-compile)
              ("<f8>" . haskell-navigate-imports)
              )
-            (haskell-interactive-mode-map
-             ("<up>" . haskell-interactive-mode-history-previous)
-             ("<down>" . haskell-interactive-mode-history-next)
-             ("C-c C-l" . haskell-interactive-switch-back)
-             )
+            ;; (haskell-interactive-mode-map
+            ;;  ("<up>" . haskell-interactive-mode-history-previous)
+            ;;  ("<down>" . haskell-interactive-mode-history-next)
+            ;;  ("C-c C-l" . haskell-interactive-switch-back)
+            ;;  )
             )
 	:hook ((haskell-mode-hook . interactive-haskell-mode)
 	  	   (haskell-mode-hook . haskell-decl-scan-mode)
@@ -1944,6 +1943,7 @@
 
   (leaf undo-tree
     :ensure t
+    :when (string-match "archlinuxhonda" (system-name))
     :custom ((global-undo-tree-mode . t))
     )
 
