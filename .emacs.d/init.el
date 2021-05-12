@@ -830,7 +830,7 @@
 		  (exwm-workspace-switch 2)
 		(exwm-workspace-switch 0)))
 	:config
-	(exwmx-floating-smart-hide)
+	;; (exwmx-floating-smart-hide)
     ;; (exwmx-button-enable)
 	)
 
