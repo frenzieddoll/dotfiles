@@ -1942,6 +1942,7 @@
 
   (leaf sudo-edit
     :ensure t
+    :require
     :custom ((sudo-edit-indicator-mode . t))
     )
 
@@ -2256,9 +2257,10 @@
 
 ;; (load "conf" t)
 
-;; (put 'upcase-region 'disabled nil)
 (provide 'init)
 
 "Warning (leaf): Error in `google-translate' block at `/home/toshiaki/.emacs.d/init.el'.  Error msg: Cannot open load file: No such file or directory, popup
 Warning (leaf): Error in `org-eldoc' block at `/home/toshiaki/.emacs.d/init.el'.  Error msg: Cannot open load file: No such file or directory, org-eldoc
 "
+(put 'downcase-region 'disabled nil)
+(put 'upcase-region 'disabled nil)
