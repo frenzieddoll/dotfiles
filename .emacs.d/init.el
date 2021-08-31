@@ -58,6 +58,9 @@
           (expand-file-name
            (file-name-directory (or load-file-name byte-compile-current-file))))))
 
+(when (string-match "raspberrypi" (system-name))
+  (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
+
 (eval-and-compile
   (customize-set-variable
    'package-archives '(("gnu"   . "https://elpa.gnu.org/packages/")
@@ -207,6 +210,10 @@
 	(leaf *gc-cons-threshold-mac
 	  :when (eq system-type 'darwin)
 	  :custom `((gc-cons-threshold . ,(* 32 1024 1024)))
+	  )
+    (leaf *gc-cons-threshold-pi
+	  :when (string-match "raspberrypi" (system-name))
+	  :custom `((gc-cons-threshold . ,(* 16 1024 1024)))
 	  )
     (run-with-idle-timer 60.0 t #'garbage-collect)
 
@@ -878,7 +885,9 @@
 	(leaf racer :ensure t)
 	)
 
-  (leaf csv-mode :ensure t)
+  (leaf csv-mode
+    ;; :unless (string-match "raspberrypi" (system-name))
+    :ensure t)
 
   (leaf vlf
 	:ensure t
@@ -886,7 +895,7 @@
 
   (leaf yaml-mode :ensure t)
 
-  (leaf neotree :ensure t)
+  ;; (leaf neotree :ensure t)
 
   (leaf *git-tool
 	:config
@@ -1154,6 +1163,18 @@
 
   (leaf *ForMac
     :when (eq system-type 'darwin)
+    :bind (("s-n" . windmove-down)
+           ("s-f" . windmove-right)
+           ("s-b" . windmove-left)
+           ("s-p" . windmove-up)
+           ("s-a" . zoom-window-zoom)
+           ("s-q" . kill-current-buffer)
+           ("s-h" . delete-window)
+           ("s-o" . ivy-switch-buffer))
+	)
+
+  (leaf *ForPI
+    :when (string-match "raspberrypi" (system-name))
     :bind (("s-n" . windmove-down)
            ("s-f" . windmove-right)
            ("s-b" . windmove-left)
@@ -1801,10 +1822,22 @@
             "/Applications/RIETAN_VENUS"
             "/Applications/Utilities")))
 		)
+      (leaf *pi
+        ;; :ensure t
+        :when (string-match "raspberrypi" (system-name))
+        :preface
+        (defun app-launch (command)
+          (interactive (list (read-shell-command "$ ")))
+          (start-process-shell-command command nil command))
+
+        :bind ("s-d" . app-launch)
+        )
+
 	  )
 
     (leaf swiper
 	  :ensure t
+      :when (string-match "archlinuxhonda" (system-name))
 	  :defvar swiper-include-line-number-in-search
 	  :bind (("C-s" . swiper)
              ("C-r" . swiper)
@@ -1839,12 +1872,14 @@
 
   (leaf *hs-minor-mode
 	:hook ((emacs-lisp-mode-hook . hs-minor-mode))
+    :when (string-match "archlinuxhonda" (system-name))
 	:custom ((hs-minor-mode . t))
 	:bind (("C-'" . hs-toggle-hiding))
 	)
 
   (leaf highlight-indent-guides
 	:when (eq system-type 'gnu/linux)
+    :when (string-match "archlinuxhonda" (system-name))
     :ensure t
 	:hook ((prog-mode-hook . highlight-indent-guides-mode))
 	:custom '((highlight-indent-guides-method . 'column)
@@ -2116,6 +2151,7 @@
 
 (leaf *lsp-tools
   :when (eq system-type 'gnu/linux)
+  ;; :when (string-match "archlinuxhonda" (system-name))
   :config
   (leaf lsp-mode
     :ensure t
@@ -2213,6 +2249,7 @@
 
 (leaf yasnippet
   :diminish t
+  :when (string-match "archlinuxhonda" (system-name))
   :require t
   :ensure t
   :custom ((yas-global-mode . t))
@@ -2234,6 +2271,7 @@
 
 (leaf shackle
   :require t
+  :when (string-match "archlinuxhonda" (system-name))
   :ensure t
   :custom `((shackle-rules . '((compilation-mode :align below :ratio 0.2)
                                ("*Google Translate*" :align right :ratio 0.3)
@@ -2256,11 +2294,3 @@
 
 
 ;; (load "conf" t)
-
-(provide 'init)
-
-"Warning (leaf): Error in `google-translate' block at `/home/toshiaki/.emacs.d/init.el'.  Error msg: Cannot open load file: No such file or directory, popup
-Warning (leaf): Error in `org-eldoc' block at `/home/toshiaki/.emacs.d/init.el'.  Error msg: Cannot open load file: No such file or directory, org-eldoc
-"
-(put 'downcase-region 'disabled nil)
-(put 'upcase-region 'disabled nil)
