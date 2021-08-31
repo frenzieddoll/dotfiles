@@ -871,6 +871,17 @@
 			  ;; (ediff-control-frame-parameters . (cons '(unsplittable . t) ediff-control-frame-parameters))
 			  )
 	)
+
+  (leaf *pi
+    ;; :ensure t
+    :when (string-match "raspberrypi" (system-name))
+    :preface
+    (defun app-launch (command)
+      (interactive (list (read-shell-command "$ ")))
+      (start-process-shell-command command nil command))
+
+    :bind ("s-d" . app-launch)
+    )
   )
 
 
