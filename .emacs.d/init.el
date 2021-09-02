@@ -758,7 +758,7 @@
 										(,(kbd "s-e")     . exwm-input-toggle-keyboard)
 										(,(kbd "s-o")     . ivy-switch-buffer)
 										(,(kbd "s-r")     . exwm-reset)
-										(,(kbd "s-d")     . counsel-linux-app)
+										(,(kbd "s-d")     . app-launch)
 										(,(kbd "C-j")     . ,(kbd "C-&"))
 										(,(kbd "C-l")     . ,(kbd "C-^"))
 										(,(kbd "s-i")     . output_toggle)
@@ -838,7 +838,21 @@
 	  (if (= exwm-workspace-current-index 0)
 		  (exwm-workspace-switch 2)
 		(exwm-workspace-switch 0)))
+    (defun app-launch (command)
+        (interactive (list (read-shell-command "$ ")))
+        (start-process-shell-command command nil command))
+
 	:config
+    (leaf *pi
+      :when (string-match "raspberrypi" (system-name))
+      :preface
+      (defun app-launch (command)
+        (interactive (list (read-shell-command "$ ")))
+        (start-process-shell-command command nil command))
+
+      :bind ("s-d" . app-launch)
+    )
+
 	;; (exwmx-floating-smart-hide)
     ;; (exwmx-button-enable)
 	)
@@ -872,16 +886,6 @@
 			  )
 	)
 
-  (leaf *pi
-    ;; :ensure t
-    :when (string-match "raspberrypi" (system-name))
-    :preface
-    (defun app-launch (command)
-      (interactive (list (read-shell-command "$ ")))
-      (start-process-shell-command command nil command))
-
-    :bind ("s-d" . app-launch)
-    )
   )
 
 
