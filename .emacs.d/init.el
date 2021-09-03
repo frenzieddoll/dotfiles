@@ -758,7 +758,7 @@
 										(,(kbd "s-e")     . exwm-input-toggle-keyboard)
 										(,(kbd "s-o")     . ivy-switch-buffer)
 										(,(kbd "s-r")     . exwm-reset)
-										(,(kbd "s-d")     . app-launch)
+										;; (,(kbd "s-d")     . app-launch)
 										(,(kbd "C-j")     . ,(kbd "C-&"))
 										(,(kbd "C-l")     . ,(kbd "C-^"))
 										(,(kbd "s-i")     . output_toggle)
