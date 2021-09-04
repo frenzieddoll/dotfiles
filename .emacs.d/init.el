@@ -257,7 +257,7 @@
 							 :height 150))
 
 		)
-      (leaf *forMac
+      (leaf *windows
 		:when (eq system-type 'windows-nt)
 		:config
 		(set-face-attribute 'default nil
@@ -267,7 +267,18 @@
 				  'japanese-jisx0208
 				  (font-spec :family "HackGen"
 							 :height 150))
+		)
 
+      (leaf *pi
+		:when (string-match (system-name) "RaspberryPi")
+		:config
+		(set-face-attribute 'default nil
+							:family "HackGen"
+							:height 120)
+		(set-fontset-font (frame-parameter nil 'font)
+				  'japanese-jisx0208
+				  (font-spec :family "HackGen"
+							 :height 120))
 		)
 	  )
 
