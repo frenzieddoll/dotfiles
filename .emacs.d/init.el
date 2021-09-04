@@ -829,7 +829,7 @@
                                               ([s-right]              . [C-tab])
                                               ;; ([s-up] . [C-tab])
                                               ;; ([s-down] . [C-tab])
-                                              (,(kbd "s-t")           . [C-t])
+                                              (,(kbd "s-t")           . [C-t ?\C-k])
                                               (,(kbd "s-T")           . [C-T])
                                               ;;
                                               ;;
