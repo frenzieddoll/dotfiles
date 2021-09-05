@@ -7,6 +7,8 @@
 ;; You may delete these explanatory comments.
 
 ;;; Code:
+
+;; leaf読み込み前の設定
 (defun add-to-load-path (&rest paths)
   (let (path)
     (dolist (path paths paths)
@@ -17,8 +19,7 @@
 ;; 引数のディレクトリとそのサブディレクトリをload-pathに追加
 (add-to-load-path "elisp" "conf" "public_repos")
 (when (file-directory-p "~/Dropbox/private/elisp")
-  (setq load-path (cons "~/Dropbox/private/elisp" load-path))
-  )
+  (setq load-path (cons "~/Dropbox/private/elisp" load-path)))
 
 ;; this enables this running method
 ;;   emacs -q -l ~/.debug.emacs.d/init.el
@@ -68,33 +69,29 @@
   :bind (("C-c j" . macrostep-expand)))
 
 
-;; 初回起動の設定
-(leaf cus-edit
+;; 起動初期設定
+(leaf *cus-edit
+  :doc "customファイルをinit.elに記入しない"
   :preface (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
   :custom `((custom-file . ,(expand-file-name "custom.el" user-emacs-directory)))
   :hook `(kill-emacs-hook . (lambda ()
                               (if (file-exists-p custom-file)
-                                  (delete-file custom-file))))
-  )
-
-;; (leaf cus-edit
-;;   :doc "tools for customizing Emacs and Lisp packages"
-;;   :tag "builtin" "faces" "help"
-;;   :custom `((custom-file . ,(locate-user-emacs-file "custom.el"))))
-
+                                  (delete-file custom-file)))))
 
 (leaf exec-path-from-shell
-  :doc "pathの引継ぎ"
-  :unless (eq system-type 'windows-nt)
+  :doc "Get environment variables such as $PATH from the shell"
+  :req "emacs-24.1" "cl-lib-0.6"
+  :tag "environment" "unix" "emacs>=24.1"
+  :url "https://github.com/purcell/exec-path-from-shell"
+  :added "2021-09-05"
+  :emacs>= 24.1
   :ensure t
+  :unless (eq system-type 'windows-nt)
   :defun (exec-path-from-shell-initialize)
   :custom ((exec-path-from-shell-check-startup-files . nil)
-           (exec-path-from-shell-variables           . '("SHELL" "PATH"))
-           ;; (exec-path-from-shell-initialize . t)
-           )
+           (exec-path-from-shell-variables           . '("SHELL" "PATH")))
   :config
-  (exec-path-from-shell-initialize)
-  )
+  (exec-path-from-shell-initialize))
 
 (leaf *cus-start
   :doc "define customization properties of builtins"
@@ -168,119 +165,106 @@
             (display-time-mode                     . t)
             (display-time-string-forms             . '((format "%s/%s(%s)%s:%s"
                                                                month day dayname
-                                                               24-hours minutes))))
+                                                               24-hours minutes)))
+            ;; 初めの画面を表示させない
+            (inhibit-splash-screen             . t)
+            (inhibit-startup-screen            . t)
+            (inhibit-startup-message           . t)
+            (inhibit-startup-echo-area-message . t)
+            (initial-buffer-choice             . t)
+            (initial-scratch-message           . nil)
+
+            ;; byte-compileのエラーを無視する
+            (debug-on-error . nil)
+            (byte-compile-no-warnings . t)
+
+            ;; キルリングの設定(scratchの設定に書いていた)
+            (kill-ring-max                . 100)
+            (kill-read-only-ok            . t)
+            (kill-whole-line              . t)
+            (eval-expression-print-length . nil)
+            (eval-expression-print-level  . nil)
+            (auto-revert-interval . 0.1)
+            (global-auto-revert-mode . t))
   :config
   (set-face-background 'region "#555")
+  (run-with-idle-timer 60.0 t #'garbage-collect)
   (defalias 'yes-or-no-p 'y-or-n-p)
   (leaf *gc-cons-threshold-arch
-    :when (string-match "archlinuxhonda" (system-name))
+    :when (string-match (system-name) "archlinuxhonda")
     :custom `((gc-cons-threshold . ,(* 1024 1024 1024))))
   (leaf *gc-cons-threshold-arch-laptop
-    :when (string-match "ArchLinuxonLaptopPC" (system-name))
+    :when (string-match (system-name) "ArchLinuxonLaptopPC")
     :custom `((gc-cons-threshold . ,(* 64 1024 1024))))
   (leaf *gc-cons-threshold-mac
-    :when (eq system-type 'darwin)
+    :when (string= system-type "darwin")
     :custom `((gc-cons-threshold . ,(* 32 1024 1024))))
   (leaf *gc-cons-threshold-pi
-    :when (string-match "raspberrypi" (system-name))
-    :custom `((gc-cons-threshold . ,(* 16 1024 1024))))
-  (run-with-idle-timer 60.0 t #'garbage-collect)
+    :when (string= (system-name) "RaspberryPi")
+    :custom `((gc-cons-threshold . ,(* 16 1024 1024)))))
 
-  (leaf startup
-    :doc "起動を静かに"
-    :custom ((inhibit-splash-screen             . t)
-             (inhibit-startup-screen            . t)
-             (inhibit-startup-message           . t)
-             (inhibit-startup-echo-area-message . t)
-             (initial-buffer-choice             . t)
-             (initial-scratch-message           . nil)
-             ))
-
-  (leaf *fontSetting
+(leaf *fontSetting
+  :config
+  (leaf *forArchlinux
+    :when (eq system-type 'gnu/linux)
+    :when (string-match (system-name) "archlinuxhonda")
     :config
-    (leaf *forArchlinux
-      :when (eq system-type 'gnu/linux)
-      :when (string-match (system-name) "archlinuxhonda")
-      :config
-      (set-face-attribute 'default nil
-                          :family "HackGen"
-                          :height 140))
-
-    (leaf *forLinux
-      :when (eq system-type 'gnu/linux)
-      :unless (string-match (system-name) "archlinuxhonda")
-      :config
-      (set-face-attribute 'default nil
-                          :family "HackGen"
-                          :height 140))
-
-    (leaf *forMac
-      :when (eq system-type 'darwin)
-      :config
-      (set-face-attribute 'default nil
-                          :family "HackGen"
-                          :height 150)
-      (set-fontset-font (frame-parameter nil 'font)
-                        'japanese-jisx0208
-                        (font-spec :family "HackGen"
-                                   :height 150)))
-
-    (leaf *windows
-      :when (eq system-type 'windows-nt)
-      :config
-      (set-face-attribute 'default nil
-                          :family "HackGen"
-                          :height 150)
-      (set-fontset-font (frame-parameter nil 'font)
-                        'japanese-jisx0208
-                        (font-spec :family "HackGen"
-                                   :height 150)))
-
-    ;; (leaf *pi
-    ;;   ;; :disabled t
-    ;;   :when (string-match (system-name) "RaspberryPi")
-    ;;   :when (string-match "enable" (getenv "EXWM"))
-    ;;   :config
-    ;;   (set-face-attribute 'default nil
-    ;;                       :family "HackGen"
-    ;;                       :height 120)
-    ;;   (set-fontset-font (frame-parameter nil 'font)
-    ;;                     'japanese-jisx0208
-    ;;                     (font-spec :family "HackGen"
-    ;;                                :height 120)))
-    )
-
-
-  (leaf *byte-compile
-    :custom
-    ((debug-on-error . nil)
-     (byte-compile-no-warnings . t)))
-
-
-  )
+    (set-face-attribute 'default nil
+                        :family "HackGen"
+                        :height 140))
+  (leaf *forLinux
+    :when (eq system-type 'gnu/linux)
+    :unless (string-match (system-name) "archlinuxhonda")
+    :config
+    (set-face-attribute 'default nil
+                        :family "HackGen"
+                        :height 140))
+  (leaf *forMac
+    :when (eq system-type 'darwin)
+    :config
+    (set-face-attribute 'default nil
+                        :family "HackGen"
+                        :height 150)
+    (set-fontset-font (frame-parameter nil 'font)
+                      'japanese-jisx0208
+                      (font-spec :family "HackGen"
+                                 :height 150)))
+  (leaf *windows
+    :when (eq system-type 'windows-nt)
+    :config
+    (set-face-attribute 'default nil
+                        :family "HackGen"
+                        :height 150)
+    (set-fontset-font (frame-parameter nil 'font)
+                      'japanese-jisx0208
+                      (font-spec :family "HackGen"
+                                 :height 150)))
+  (leaf *pi
+    ;; :disabled t
+    :when (string= (system-name) "RaspberryPi")
+    :when (string= (getenv "EXWM") "enable" )
+    :config
+    (set-face-attribute 'default nil
+                        :family "HackGen"
+                        :height 120)
+    (set-fontset-font (frame-parameter nil 'font)
+                      'japanese-jisx0208
+                      (font-spec :family "HackGen"
+                                 :height 120))))
 
 (leaf *hooks
   :hook  ((before-save-hook . delete-trailing-whitespace))
   )
 
 (leaf *scratch
-  :hook  ((kill-buffer-query-functions
-           . (lambda ()
-               (if (string= "*scratch*" (buffer-name))
-                   (progn (my:make-scratch 0) nil)
-                 t)))
-          (after-save-hook
-           . (lambda ()
-               (unless (member "*scratch*" (my:buffer-name-list))
-                 (my:make-scratch 1)))))
+  :hook  ((kill-buffer-query-functions . (lambda ()
+                                           (if (string= "*scratch*" (buffer-name))
+                                               (progn (my:make-scratch 0) nil)
+                                             t)))
+          (after-save-hook . (lambda ()
+                               (unless (member "*scratch*" (my:buffer-name-list))
+                                 (my:make-scratch 1)))))
 
-  :custom ((kill-ring-max                . 100)
-           (kill-read-only-ok            . t)
-           (kill-whole-line              . t)
-           (eval-expression-print-length . nil)
-           (eval-expression-print-level  . nil)
-           (auto-revert-interval . 0.1)
-           (global-auto-revert-mode . t))
   :preface
   (defun my:make-scratch (&optional arg)
     (interactive)
@@ -298,8 +282,7 @@
       (cond ((= arg 0) (message "*scratch* is cleared up."))
             ((= arg 1) (message "another *scratch* is created")))))
   (defun my:buffer-name-list ()
-    (mapcar (function buffer-name) (buffer-list)))
-  )
+    (mapcar (function buffer-name) (buffer-list))))
 
 (leaf rainbow-delimiters
   :doc "Highlight brackets according to their depth"
@@ -308,7 +291,6 @@
   :added "2021-09-05"
   :ensure t
   :hook (emacs-lisp-mode-hook . rainbow-delimiters-mode))
-
 
 (leaf *dired
   ;; :disabled t
@@ -457,9 +439,7 @@
   (defun dired-up-directory-other-window ()
     "In Dired, dired-up-directory on other-window"
     (interactive)
-    (dired-up-directory t))
-
-  )
+    (dired-up-directory t)))
 
 (leaf *eshell-tools
   :bind (("C-c e" . eshell))
@@ -542,8 +522,7 @@
       (cond ((pcomplete-test "--user")
              (pcomplete-here pcomplete-systemctl-commands)
              (pcomplete-here pcomplete-systemd-user-units))
-            (t (pcomplete-here pcomplete-systemd-units)))))
-  )
+            (t (pcomplete-here pcomplete-systemd-units))))))
 
 (leaf *globa-keybinding
   :hook (minibuffer-setup-hook . minibuffer-delete-backward-char)
@@ -571,9 +550,7 @@
          ("C-S-n"         . scroll-up_alt)
          ("C-S-p"         . scroll-down_alt)
          ("<kp-divide>"   . insertBackslash)
-         ("<kp-multiply>" . insertPipe)
-         (isearch-mode-map
-          ("C-h" . isearch-delete-char)))
+         ("<kp-multiply>" . insertPipe))
 
   :preface
   (defun scroll-up_alt ()
@@ -630,13 +607,12 @@
      (format "xbacklight -dec 10")))
   (defun minibuffer-delete-backward-char ()
     (local-set-key (kbd "C-h") 'delete-backward-char))
-  ;; :init
+  :init
   ;; (global-set-key (kbd "C-h") 'delete-backward-char)
   ;; (defun minibuffer-delete-backward-char ()
   ;;   (local-set-key (kbd "C-h") 'delete-backward-char))
   ;; (add-hook 'minibuffer-setup-hook 'minibuffer-delete-backward-char)
-  ;; (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char)
-  )
+  (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char))
 
 (leaf doom-themes
   :doc "an opinionated pack of modern color-themes"
@@ -666,215 +642,21 @@
               (doom-modeline-minor-modes            . nil)
               (line-number-mode                     . 0)
               (column-number-mode                   . 0)
-              (doom-modeline-mode                   . t)))
-  (leaf *afterSave
-    :hook (after-save-hook . flashAfterSave)
-    :preface
-    (defun flashAfterSave ()
-      (interactive)
-      (let ((orig-fg (face-background 'mode-line)))
-        (set-face-background 'mode-line "dark green")
-        (run-with-idle-timer 0.1 nil
-                             (lambda (fg) (set-face-background 'mode-line fg))
-                             orig-fg))))
+              (doom-modeline-mode                   . t))))
 
-  )
+(leaf *afterSave
+  :hook (after-save-hook . flashAfterSave)
+  :preface
+  (defun flashAfterSave ()
+    (interactive)
+    (let ((orig-fg (face-background 'mode-line)))
+      (set-face-background 'mode-line "dark green")
+      (run-with-idle-timer 0.1 nil
+                           (lambda (fg) (set-face-background 'mode-line fg))
+                           orig-fg))))
 
-;; (leaf *visual
-;;   :when window-system
-;;   :disabled t
-;;   :config
-;;   (leaf doom-themes
-;;     ;; :disabled t
-;;     :ensure t
-;;     :custom ((doom-themes-enable-italic . t)
-;;              (doom-themes-enable-bold   . t))
-;;     :custom-face ((doom-modeline-bar . '((t (:background "#6272a4")))))
-;;     :config
-;;     (load-theme 'doom-one t)
-;;     )
-
-;;   (leaf doom-modeline
-;;     ;; :disabled t
-;;     :require t
-;;     :ensure t
-;;     :custom `((doom-modeline-buffer-file-name-style . 'truncate-with-project)
-;;               (doom-modeline-icon                   . nil)
-;;               (doom-modeline-major-mode-icon        . nil)
-;;               (doom-modeline-minor-modes            . nil)
-;;               (line-number-mode                     . 0)
-;;               (column-number-mode                   . 0)
-;;               (doom-modeline-mode                   . t))
-;;     )
-
-;;   (leaf *afterSave
-;;     :hook (after-save-hook . flashAfterSave)
-;;     :preface
-;;     (defun flashAfterSave ()
-;;       (interactive)
-;;       (let ((orig-fg (face-background 'mode-line)))
-;;         (set-face-background 'mode-line "dark green")
-;;         (run-with-idle-timer 0.1 nil
-;;                              (lambda (fg) (set-face-background 'mode-line fg))
-;;                              orig-fg)))
-;;     )
-;;   )
 
-;; window maneger
-;; (leaf exwm
-;;   :disabled t
-;;   :doc "Emacs X Window Manager"
-;;   :req "xelb-0.18"
-;;   :tag "unix"
-;;   :url "https://github.com/ch11ng/exwm"
-;;   :added "2021-09-05"
-;;   :ensure t
-;;   :after xelb
-;;   :when (string= "enable" (getenv "EXWM"))
-;;   :when (eq system-type 'gnu/linux)
-;;   :preface (server-start)
-;;   :defun (exwm-workspace-rename-buffer exwm-workspace-toggle)
-;;   :hook (exwm-update-class-hook . (lambda ()
-;;                                     (exwm-workspace-rename-buffer exwm-class-name)))
-;;   :custom `((use-dialog-box . nil)
-;;             (window-divider-default-right-width . 1)
-;;             (exwm-workspace-show-all-buffers . t)
-;;             (exwm-layout-show-all-buffers . t)
-;;             (exwm-workspace-number . 3)
-;;             (exwm-input-global-keys .
-;;                                     '((,(kbd "s-r")     . exwm-reset)
-;;                                       (,(kbd "s-d")     . counsel-linux-app)
-;;                                       (,(kbd "s-n")     . windmove-down)
-;;                                       (,(kbd "s-f")     . windmove-right)
-;;                                       (,(kbd "s-b")     . windmove-left)
-;;                                       (,(kbd "s-p")     . windmove-up)
-;;                                       (,(kbd "s-<tab>") . exwm-workspace-toggle)
-;;                                       (,(kbd "s-a")     . zoom-window-zoom)
-;;                                       (,(kbd "C-s-i")   . output_toggle)
-;;                                       (,(kbd "C-s-m")   . mute_toggle)
-;;                                       (,(kbd "C-s-n")   . lower_volume)
-;;                                       (,(kbd "C-s-p")   . upper_volume)
-;;                                       (,(kbd "s-q")     . kill-current-buffer)
-;;                                       (,(kbd "s-h")     . delete-window)
-;;                                       (,(kbd "s-SPC")   . exwm-floating-toggle-floating)
-;;                                       (,(kbd "s-e")     . exwm-input-toggle-keyboard)
-;;                                       (,(kbd "s-o")     . ivy-switch-buffer)
-;;                                       (,(kbd "s-r")     . exwm-reset)
-;;                                       ;; (,(kbd "s-d")     . app-launch)
-;;                                       (,(kbd "C-j")     . ,(kbd "C-&"))
-;;                                       (,(kbd "C-l")     . ,(kbd "C-^"))
-;;                                       (,(kbd "s-i")     . output_toggle)
-;;                                       (,(kbd "s-j")     . lower_volume)
-;;                                       (,(kbd "s-k")     . upper_volume)
-;;                                       (,(kbd "s-m")     . mute_toggle)
-;;                                       (,(kbd "s-i")     . output_toggle)
-;;                                       (,(kbd "s-[")     . lowerLight)
-;;                                       (,(kbd "s-]")     . upperLight)
-;;                                       ,@(mapcar (lambda (i)
-;;                                                   `(,(kbd (format "s-%d" i)) .
-;;                                                     (lambda ()
-;;                                                       (interactive)
-;;                                                       (exwm-workspace-switch-create ,i))))
-;;                                                 (number-sequence 0 9))
-;;                                       )
-;;                                     )
-;;             (exwm-input-simulation-keys . '(
-;;                                             ;; new version
-;;                                             (,(kbd "C-b")           . [left])
-;;                                             (,(kbd "M-b")           . [C-left])
-;;                                             (,(kbd "C-f")           . [right])
-;;                                             (,(kbd "M-f")           . [C-right])
-;;                                             (,(kbd "C-p")           . [up])
-;;                                             (,(kbd "C-n")           . [down])
-;;                                             (,(kbd "C-a")           . [home])
-;;                                             (,(kbd "C-e")           . [end])
-;;                                             (,(kbd "M-v")           . [prior])
-;;                                             (,(kbd "C-v")           . [next])
-;;                                             (,(kbd "C-d")           . [delete])
-;;                                             (,(kbd "C-k")           . [S-end ?\C-x])
-;;                                             (,(kbd "M-<")           . [C-home])
-;;                                             (,(kbd "M->")           . [C-end])
-;;                                             (,(kbd "C-/")           . [C-z])
-;;                                             ;; C-h は特別扱い扱い
-;;                                             ([?\C-h]                . [backspace])
-;;                                             (,(kbd "C-m")           . [return])
-;;                                             (,(kbd "C-/")           . [C-z])
-;;                                             (,(kbd "C-S-f")         . [S-right])
-;;                                             (,(kbd "C-S-b")         . [S-left])
-;;                                             (,(kbd "C-S-p")         . [S-up])
-;;                                             (,(kbd "C-S-n")         . [S-down])
-;;                                             (,(kbd "C-w")           . ,(kbd "C-x"))
-;;                                             (,(kbd "M-w")           . ,(kbd "C-c"))
-;;                                             (,(kbd "C-y")           . ,(kbd "C-v"))
-;;                                             (,(kbd "s-v")           . ,(kbd "C-v"))
-;;                                             (,(kbd "C-x h")         . ,(kbd "C-a"))
-;;                                             (,(kbd "M-d")           . [C-S-right ?\C-x])
-;;                                             (,(kbd "M-<backspace>") . [C-S-left ?\C-x])
-;;                                             ;; search
-;;                                             (,(kbd "C-s")           . ,(kbd "C-f"))
-;;                                             ;; escape
-;;                                             (,(kbd "C-g")           . [escape])
-;;                                             ;; like mac
-;;                                             (,(kbd "s-w")           . [C-w])
-;;                                             ([s-left]               . [C-S-tab])
-;;                                             ([s-right]              . [C-tab])
-;;                                             ;; ([s-up] . [C-tab])
-;;                                             ;; ([s-down] . [C-tab])
-;;                                             (,(kbd "s-t")           . [C-t ?\C-k])
-;;                                             (,(kbd "s-T")           . [C-T])
-;;                                             ;;
-;;                                             ;;
-;;                                             ;;
-;;                                             (,(kbd "s-l")           . [C-k])
-;;                                             (,(kbd "s-k")           . [C-l])
-;;                                             ;;
-;;                                             (,(kbd "C-x C-s")       . [C-s])
-;;                                             (,(kbd "C-u C-/")       . [C-y])
-;;                                             )))
-;;   :bind (("C-&" . skk-hiragana-set)
-;;          ("C-^" . skk-latin-mode))
-;;   :preface
-;;   (server-start)
-;;   (defun exwm-workspace-toggle ()
-;;     (interactive)
-;;     (if (= exwm-workspace-current-index 0)
-;;         (exwm-workspace-switch 2)
-;;       (exwm-workspace-switch 0)))
-
-;;   :config
-;;   ;; (exwmx-floating-smart-hide)
-;;   ;; (exwmx-button-enable)
-;;   (leaf *pi
-;;     :disabled t
-;;     :when (string-match "raspberrypi" (system-name))
-;;     :preface
-;;     (defun app-launch (command)
-;;       (interactive (list (read-shell-command "$ ")))
-;;       (start-process-shell-command command nil command))
-;;     :bind ("s-d" . counsel-linux-app))
-
-
-;;   (leaf exwm-systemtray
-;;     :require t
-;;     :defun exwm-systemtray-enable
-;;     :config
-;;     (exwm-systemtray-enable))
-;;   (leaf exwm-randr
-;;     :require t
-;;     :when (eq "archlinuxhonda" (system-name))
-;;     :custom ((exwm-randr-workspace-monitor-plist . '(0 "DP-0" 1 "HDMI-0" 2 "DP-0" 3 "DP-0" 4 "DP-0" 5 "DP-0")))
-;;     :config
-;;     (exwm-randr-enable))
-;;   (leaf exwm-enable
-;;     :defun (exwm-enable)
-;;     :config
-;;     (exwm-enable))
-
-;;   (leaf fix_ediff
-;;     :after ediff-wind
-;;     :custom `((ediff-window-setup-function . 'ediff-setup-windows-plain)))
-;;   )
-
+;; window managr
 (leaf *exwm-config
   ;; :disabled t
   :when (string= "enable" (getenv "EXWM"))
@@ -1030,9 +812,7 @@
 
   (leaf *fix_ediff
     :after ediff-wind
-    :custom `((ediff-window-setup-function . 'ediff-setup-windows-plain)))
-
-  )
+    :custom `((ediff-window-setup-function . 'ediff-setup-windows-plain))))
 
 
 ;; メジャーモードの設定
@@ -1078,7 +858,6 @@
   :added "2021-09-05"
   ;; :require vlf-setup
   :ensure t)
-
 
 (leaf yaml
   :doc "YAML parser for Elisp"
@@ -1229,8 +1008,7 @@
 
     :bind ((YaTeX-mode-map
             (">" . YaTeX-comment-region)
-            ("<" . YaTeX-uncomment-region))))
-  )
+            ("<" . YaTeX-uncomment-region)))))
 
 (leaf ebib
   :doc "a BibTeX database manager"
@@ -1263,8 +1041,7 @@
     )
   (leaf *ebibForLinux
     :when (eq system-type 'gnu/linux)
-    :custom ((ebib-file-associations . '(("pdf" . "zathura") ("ps"  . "zathura")))))
-  )
+    :custom ((ebib-file-associations . '(("pdf" . "zathura") ("ps"  . "zathura"))))))
 
 (leaf google-translate
   :ensure t
@@ -1337,6 +1114,12 @@
 
   :config
   (leaf zoom-window
+    :doc "Zoom window like tmux"
+    :req "emacs-24.3"
+    :tag "emacs>=24.3"
+    :url "https://github.com/syohex/emacs-zoom-window"
+    :added "2021-09-05"
+    :emacs>= 24.3
     :ensure t
     :custom (zoom-window-mode-line-color . "DarkBlue"))
 
@@ -1351,17 +1134,38 @@
            ("s-h" . delete-window)
            ("s-o" . ivy-switch-buffer)))
 
-  (leaf *ForPi
-    :disabled t
-    :when (string-match "raspberrypi" (system-name))
-    :bind (("s-n" . windmove-down)
-           ("s-f" . windmove-right)
-           ("s-b" . windmove-left)
-           ("s-p" . windmove-up)
-           ("s-a" . zoom-window-zoom)
-           ("s-q" . kill-current-buffer)
-           ("s-h" . delete-window)
-           ("s-o" . ivy-switch-buffer)))
+  (leaf *ForWindows
+    :when (eq system-type 'windows-nt)
+    :bind (("M-n" . windmove-down)
+           ("M-f" . windmove-right)
+           ("M-b" . windmove-left)
+           ("M-p" . windmove-up)
+           ("M-a" . zoom-window-zoom)
+           ("M-q" . kill-current-buffer)
+           ("M-h" . delete-window)
+           ("C-M-i" . output_toggle)
+           ("C-M-m" . mute_toggle)
+           ("C-M-n" . lower_volume )
+           ("C-M-p" . upper_volume)
+           ("M-d" . counsel-linux-app)
+           ("M-o" . ivy-switch-buffer)))
+
+    (leaf *ForCUI
+    :unless window-system
+    :bind (("M-n" . windmove-down)
+           ("M-f" . windmove-right)
+           ("M-b" . windmove-left)
+           ("M-p" . windmove-up)
+           ("M-a" . zoom-window-zoom)
+           ("M-q" . kill-current-buffer)
+           ("M-h" . delete-window)
+           ("C-M-i" . output_toggle)
+           ("C-M-m" . mute_toggle)
+           ("C-M-n" . lower_volume )
+           ("C-M-p" . upper_volume)
+           ("M-d" . counsel-linux-app)
+           ("M-o" . ivy-switch-buffer))
+    :custom ((global-hl-line-mode . t)))
 
   (leaf *mySaveFrame
     :when (or (eq system-type 'darwin) (eq system-type 'windows-nt))
@@ -1385,8 +1189,7 @@
                                       (cdr (assoc 'top param))
                                     0))
              (buf nil)
-             (file my-save-frame-file)
-             )
+             (file my-save-frame-file))
         ;; ファイルと関連付けられてたバッファ作成
         (unless (setq buf (get-file-buffer (expand-file-name file)))
           (setq buf (find-file-noselect (expand-file-name file))))
@@ -1406,44 +1209,124 @@
         (when (file-exists-p file)
           (load-file file))))
     :config
-    (run-with-idle-timer 60 t 'my-save-frame-size))
+    (run-with-idle-timer 60 t 'my-save-frame-size)))
 
-  (leaf *ForCUI
-    :unless window-system
-    :bind (("M-n" . windmove-down)
-           ("M-f" . windmove-right)
-           ("M-b" . windmove-left)
-           ("M-p" . windmove-up)
-           ("M-a" . zoom-window-zoom)
-           ("M-q" . kill-current-buffer)
-           ("M-h" . delete-window)
-           ("C-M-i" . output_toggle)
-           ("C-M-m" . mute_toggle)
-           ("C-M-n" . lower_volume )
-           ("C-M-p" . upper_volume)
-           ("M-d" . counsel-linux-app)
-           ("M-o" . ivy-switch-buffer))
-    :custom ((global-hl-line-mode . t)))
+(leaf *eww
+  ;; :disabled t
+  :hook ((eww-mode-hook . eww-mode-hook-disable-image))
+  :defun eww-reload
+  :custom ((eww-search-prefix . "https://www.google.co.jp/search?btnl&q=")
+           (eww-browse-with-external-link . t)
+           (eww-disable-colorize . t))
+  :bind (("C-c m" . browse-url-with-eww)
+         (eww-mode-map
+          ("f"     . ace-link-eww)
+          ("s-l"   . eww-search-words)
+          ("M"     . eww-open-in-new-buffer)
+          ("s-w"   . eww-buffer-kill)
+          ("C-s-v" . eww-enable-images)
+          ("s-v"   . eww-disable-images)
+          ("s-e"   . eww-browse-with-external-browser)
+          ("r" . eww-reload)
 
-  (leaf *ForWindows
-    :when (eq system-type 'windows-nt)
-    :bind (("M-n" . windmove-down)
-           ("M-f" . windmove-right)
-           ("M-b" . windmove-left)
-           ("M-p" . windmove-up)
-           ("M-a" . zoom-window-zoom)
-           ("M-q" . kill-current-buffer)
-           ("M-h" . delete-window)
-           ("C-M-i" . output_toggle)
-           ("C-M-m" . mute_toggle)
-           ("C-M-n" . lower_volume )
-           ("C-M-p" . upper_volume)
-           ("M-d" . counsel-linux-app)
-           ("M-o" . ivy-switch-buffer)))
-  )
+          ;; vi風
+          ("h"     . backward-char)
+          ("j"     . next-line)
+          ("k"     . previous-line)
+          ("l"     . forward-char)
+          ("g" . eww-top)
+          ("/" . isearch-forward)
+          ("n" . isearch-next)
+          ("?" . isearch-backward)
+          ;; vimium風
+          ("J"     . View-scroll-line-forward)
+          ("K"     . View-scroll-line-backward)
+          ("H"     . eww-back-url)
+          ("L"     . eww-forward-url)
+          ("J"     . previous-buffer)
+          ("K"     . next-buffer)
+          ("d"     . scroll-up)
+          ("u"     . scroll-down)))
 
+  :preface
+  (defun eww-disable-images ()
+    "eww で画像表示させない"
+    (interactive)
+    (setq-local shr-put-image-function 'shr-put-image-alt)
+    (eww-reload))
+  (defun eww-enable-images ()
+    "eww で画像表示させる"
+    (interactive)
+    (setq-local shr-put-image-function 'shr-put-image)
+    (eww-reload))
+  (defun shr-put-image-alt (spec alt &optional flags)
+    (insert alt))
+  ;; はじめから非表示
+  (defun eww-mode-hook-disable-image ()
+    (setq-local shr-put-image-function 'shr-put-image-alt))
+  (defun browse-url-with-eww ()
+    (interactive)
+    (let ((url-region (bounds-of-thing-at-point 'url)))
+      ;; url
+      (if url-region
+          (eww-browse-url (buffer-substring-no-properties (car url-region)
+                                                          (cdr url-region))))
+      ;; org-link
+      (setq browse-url-browser-function 'eww-browse-url)))
+  (defun shr-colorize-region--disable (orig start end fg &optional bg &rest _)
+    (unless eww-disable-colorize
+      (funcall orig start end fg)))
+  (advice-add 'shr-colorize-region :around 'shr-colorize-region--disable)
+  (advice-add 'eww-colorize-region :around 'shr-colorize-region--disable)
+  (defun eww-disable-color ()
+    "eww で文字色を反映させない"
+    (interactive)
+    (setq-local eww-disable-colorize t)
+    (eww-reload))
+  (defun eww-enable-color ()
+    "eww で文字色を反映させる"
+    (interactive)
+    (setq-local eww-disable-colorize nil)
+    (eww-reload)))
 
+(leaf *org_tools
+  :config
+  (leaf org-mode
+    :custom ((org-agenda-files . '("~/Dropbox/org/todo.org"
+                                   "~/Dropbox/org/todo_SonyLSI.org")))
+    :bind (("C-c a" . org-agenda)))
+  (leaf org-plus-contrib
+    :doc "Outline-based notes management and organizer"
+    :added "2021-09-05"
+    :ensure t
+    :hook ((org-mode-hook . eldoc-mode))    :config
+    (defadvice org-eldoc-documentation-function (around add-field-info activate)
+      (or
+       (ignore-errors (and (not (org-at-table-hline-p)) (org-table-field-info nil)))
+       ad-do-it))
+    (eldoc-add-command-completions
+     "org-table-next-" "org-table-previous" "org-cycle")))
+
+(leaf pdf-tools
+  :doc "Support library for PDF documents"
+  :req "emacs-24.3" "tablist-1.0" "let-alist-1.0.4"
+  :tag "multimedia" "files" "emacs>=24.3"
+  :url "http://github.com/vedang/pdf-tools/"
+  :added "2021-09-05"
+  :emacs>= 24.3
+  :ensure t
+  :after tablist
+  :when (file-exists-p "/usr/bin/epdfinfo")
+  :hook ((pdf-view-mode-hook . pdf-misc-size-indication-minor-mode)
+         (pdf-view-mode-hook . pdf-links-minor-mode)
+         (pdf-view-mode-hook . pdf-isearch-minor-mode)))
+
+
+;; マイナーモードの設定
 (leaf view
+  :doc "peruse file or buffer without editing"
+  :tag "builtin"
+  :added "2021-09-05"
   :custom ((view-read-only . t))
   :bind (("C-;" . view-mode)
          (view-mode-map
@@ -1621,129 +1504,460 @@
       (view-mode 0)
       (kill-line 0)
       (view-mode 1)
-      (message "backward-kill-line")))
-  )
+      (message "backward-kill-line"))))
 
-(leaf eww
-  ;; :disabled t
-  :hook ((eww-mode-hook . eww-mode-hook-disable-image))
-  :defun eww-reload
-  :custom ((eww-search-prefix . "https://www.google.co.jp/search?btnl&q=")
-           (eww-browse-with-external-link . t)
-           (eww-disable-colorize . t))
-  :bind (("C-c m" . browse-url-with-eww)
-         (eww-mode-map
-          ("f"     . ace-link-eww)
-          ("s-l"   . eww-search-words)
-          ("M"     . eww-open-in-new-buffer)
-          ("s-w"   . eww-buffer-kill)
-          ("C-s-v" . eww-enable-images)
-          ("s-v"   . eww-disable-images)
-          ("s-e"   . eww-browse-with-external-browser)
-          ("r" . eww-reload)
-
-          ;; vi風
-          ("h"     . backward-char)
-          ("j"     . next-line)
-          ("k"     . previous-line)
-          ("l"     . forward-char)
-          ("g" . eww-top)
-          ("/" . isearch-forward)
-          ("n" . isearch-next)
-          ("?" . isearch-backward)
-          ;; vimium風
-          ("J"     . View-scroll-line-forward)
-          ("K"     . View-scroll-line-backward)
-          ("H"     . eww-back-url)
-          ("L"     . eww-forward-url)
-          ("J"     . previous-buffer)
-          ("K"     . next-buffer)
-          ("d"     . scroll-up)
-          ("u"     . scroll-down)))
-
-  :preface
-  (defun eww-disable-images ()
-    "eww で画像表示させない"
-    (interactive)
-    (setq-local shr-put-image-function 'shr-put-image-alt)
-    (eww-reload))
-  (defun eww-enable-images ()
-    "eww で画像表示させる"
-    (interactive)
-    (setq-local shr-put-image-function 'shr-put-image)
-    (eww-reload))
-  (defun shr-put-image-alt (spec alt &optional flags)
-    (insert alt))
-  ;; はじめから非表示
-  (defun eww-mode-hook-disable-image ()
-    (setq-local shr-put-image-function 'shr-put-image-alt))
-  (defun browse-url-with-eww ()
-    (interactive)
-    (let ((url-region (bounds-of-thing-at-point 'url)))
-      ;; url
-      (if url-region
-          (eww-browse-url (buffer-substring-no-properties (car url-region)
-                                                          (cdr url-region))))
-      ;; org-link
-      (setq browse-url-browser-function 'eww-browse-url)))
-  (defun shr-colorize-region--disable (orig start end fg &optional bg &rest _)
-    (unless eww-disable-colorize
-      (funcall orig start end fg)))
-  (advice-add 'shr-colorize-region :around 'shr-colorize-region--disable)
-  (advice-add 'eww-colorize-region :around 'shr-colorize-region--disable)
-  (defun eww-disable-color ()
-    "eww で文字色を反映させない"
-    (interactive)
-    (setq-local eww-disable-colorize t)
-    (eww-reload))
-  (defun eww-enable-color ()
-    "eww で文字色を反映させる"
-    (interactive)
-    (setq-local eww-disable-colorize nil)
-    (eww-reload))
-  )
-
-(leaf *org_tools
-  :config
-  (leaf org-mode
-    :custom ((org-agenda-files . '("~/Dropbox/org/todo.org"
-                                   "~/Dropbox/org/todo_SonyLSI.org")))
-    :bind (("C-c a" . org-agenda)))
-  (leaf org-plus-contrib
-    :doc "Outline-based notes management and organizer"
-    :added "2021-09-05"
-    :ensure t
-    :hook ((org-mode-hook . eldoc-mode))    :config
-    (defadvice org-eldoc-documentation-function (around add-field-info activate)
-      (or
-       (ignore-errors (and (not (org-at-table-hline-p)) (org-table-field-info nil)))
-       ad-do-it))
-    (eldoc-add-command-completions
-     "org-table-next-" "org-table-previous" "org-cycle"))
-  )
-
-(leaf pdf-tools
-  :doc "Support library for PDF documents"
-  :req "emacs-24.3" "tablist-1.0" "let-alist-1.0.4"
-  :tag "multimedia" "files" "emacs>=24.3"
-  :url "http://github.com/vedang/pdf-tools/"
-  :added "2021-09-05"
-  :emacs>= 24.3
-  :ensure t
-  :after tablist
-  :when (file-exists-p "/usr/bin/epdfinfo")
-  :hook ((pdf-view-mode-hook . pdf-misc-size-indication-minor-mode)
-         (pdf-view-mode-hook . pdf-links-minor-mode)
-         (pdf-view-mode-hook . pdf-isearch-minor-mode))
-)
-
-
-;; マイナーモードの設定
-(leaf cua
+(leaf *cua
   :bind (("C-x SPC" . cua-set-rectangle-mark))
   :custom ((cua-mode . t)
            (cua-enable-cua-keys . nil)))
 
+(leaf *hs-minor-mode
+  :hook ((emacs-lisp-mode-hook . hs-minor-mode-active))
+  :bind (("C-'" . hs-toggle-hiding))
+  :preface
+  (defun hs-minor-mode-active ()
+    (interactive)
+    (hs-minor-mode 1)))
+
+(leaf highlight-indent-guides
+  :doc "Minor mode to highlight indentation"
+  :req "emacs-24.1"
+  :tag "emacs>=24.1"
+  :url "https://github.com/DarthFennec/highlight-indent-guides"
+  :added "2021-09-05"
+  :emacs>= 24.1
+  :ensure t
+  :unless (string-match "RaspberryPi" (system-name))
+  :hook ((prog-mode-hook . highlight-indent-guides-mode))
+  :custom '((highlight-indent-guides-method . 'column)))
+
+(leaf visual-regexp-steroids
+  :doc "Extends visual-regexp to support other regexp engines"
+  :req "visual-regexp-1.1"
+  :tag "feedback" "visual" "python" "replace" "regexp" "foreign" "external"
+  :url "https://github.com/benma/visual-regexp-steroids.el/"
+  :added "2021-09-05"
+  :ensure t
+  :after visual-regexp
+  :bind (("M-%" . vr/query-replace)
+         ;; multiple-cursorsを使っているならこれで
+         ("C-c m" . vr/mc-mark)
+         ;; 普段の正規表現isearchにも使いたいならこれを
+         ("C-M-r" . vr/isearch-backward)
+         ("C-M-s" . vr/isearch-forward))
+  :custom `((vr/engine . 'python)))
+
+(leaf page-ext
+  :doc "extended page handling commands"
+  :tag "builtin"
+  :added "2021-09-05")
+
+(leaf smartparens
+  :doc "Automatic insertion, wrapping and paredit-like navigation with user defined pairs."
+  :req "dash-2.13.0" "cl-lib-0.3"
+  :tag "editing" "convenience" "abbrev"
+  :url "https://github.com/Fuco1/smartparens"
+  :added "2021-09-05"
+  :ensure t
+      :disabled t
+    :when window-system
+    :ensure t
+    :require smartparens-config
+    :custom ((sp-highlight-pari-overly . nil)
+             (sp-navigate-interactive-always-progress-point . t)
+             (smartparens-global-strict-mode . t))
+    :bind ((smartparens-mode-map
+            ;;;;
+            ;;;; navigation
+
+            ;; basic (fbnp-ae)
+            ("C-M-f" . sp-forward-sexp)
+            ("C-M-b" . sp-backward-sexp)
+            ("C-M-n" . sp-next-sexp)
+            ("C-M-p" . sp-previous-sexp)
+            ("C-M-a" . sp-beginning-of-sexp)
+            ("C-M-e" . sp-end-of-sexp)
+
+            ;; checkin/checkout
+            ("C-M-i" . sp-down-sexp)
+            ("C-M-o" . sp-backward-up-sexp)
+
+            ;; misc
+            ("C-M-k"   . sp-kill-sexp)
+            ("C-M-w"   . sp-copy-sexp)
+            ("C-M-t"   . sp-transpose-sexp)
+            ("C-M-SPC" . sp-mark-sexp)
+
+            ;;;;
+            ;;;; depth-changing commands
+
+            ;; basic
+            ("M-s"           . sp-splice-sexp)
+            ("M-r"           . sp-splice-sexp-killing-around)
+            ("M-<up>"        . nil)
+            ("M-<down>"      . nil)
+            ("C-M-u"         . sp-splice-sexp-killing-backward)
+            ("C-M-d"         . sp-splice-sexp-killing-forward)
+            ("M-("           . sp-wrap-round)
+            ("M-["           . sp-wrap-square)
+            ("M-{"           . sp-wrap-qurly)
+
+            ;; barf/slurp
+            ("C-)" . sp-forward-slurp-sexp)
+            ("C-}" . sp-forward-barf-sexp)
+            ("C-(" . sp-backward-slurp-sexp)
+            ("C-{" . sp-backward-barf-sexp)
+
+            ;; split/join
+            ("M-S-s" . sp-split-sexp)
+            ("M-j"   . sp-join-sexp)
+
+            ;;;;
+            ;;;; misc
+
+            ;; change constructure
+            ("M-?"     . sp-convolute-sexp)
+            ("C-c s a" . sp-absorb-sexp)
+            ("C-c s e" . sp-emit-sexp)
+            ("C-c s p" . sp-convolute-sexp)
+            ("C-c s t" . sp-transpose-hybrid-sexp)
+
+            ;; change elements
+            ("C-c s (" . sp-rewrap-sexp)
+            ("C-c s r" . sp-change-inner)
+            ("C-c s s" . sp-change-enclosing)))
+    )
+
+(leaf undo-tree
+  :doc "Treat undo history as a tree"
+  :tag "tree" "history" "redo" "undo" "files" "convenience"
+  :url "http://www.dr-qubit.org/emacs.php"
+  :added "2021-09-05"
+  :ensure t
+  :unless (string-match "RaspberryPi" (system-name))
+  :custom ((global-undo-tree-mode . t))
+)
+
+(leaf align
+  :doc "align text to a specific column, by regexp"
+  :tag "builtin"
+  :added "2021-09-05")
+
+(leaf ddskk
+  :doc "Simple Kana to Kanji conversion program."
+  :req "ccc-1.43" "cdb-20141201.754"
+  :added "2021-09-05"
+  :ensure t
+  :after ccc cdb
+  :require skk skk-study
+  :defvar skk-user-directory
+  :defun skk-toggle-kana skk-hiragana-set skk-katakana-set
+  :hook ((isearch-mode-hook . skk-isearch-mode-setup)
+         (isearch-mode-end-hook . skk-isearch-mode-cleanup))
+  :bind (("C-x j" . skk-mode)
+         ("C-j" . nil)
+         ("C-j" . skk-hiragana-set)
+         ("C-l" . skk-latin-mode)
+         (minibuffer-local-map
+          ("C-j" . skk-kakutei)
+          ("C-l" . skk-latin-mode)))
+  :custom `((skk-user-directory . "~/.emacs.d/ddskk")
+            (skk-initial-search-jisyo . "~/.emacs.d/ddskk/jisyo")
+            (skk-large-jisyo . "~/.emacs.d/skk-get-jisyo/SKK-JISYO.L")
+            (skk-egg-like-newline . t)
+            (skk-delete-implies-kakutei . t)
+            (skk-henkan-strict-okuri-precedence . t)
+            (skk-isearch-start-mode . 'latin)
+            (skk-search-katakana . t))
+  :preface
+  (defun skk-hiragana-set nil
+    (interactive)
+    (cond (skk-katakana
+           (skk-toggle-kana nil))
+          (t
+           (skk-kakutei))))
+  (defun skk-katakana-set nil
+    (interactive)
+    (cond (skk-katakana
+           (lambda))
+          (skk-j-mode
+           (skk-toggle-kana nil))
+          (skk-latin-mode
+           (dolist (skk-kakutei (skk-toggle-kana nil))))))
+)
+
+(leaf calfw
+  :doc "Calendar view framework on Emacs"
+  :tag "calendar"
+  :url "https://github.com/kiwanami/emacs-calfw"
+  :added "2021-09-05"
+  :ensure t
+  :config
+  (leaf japanese-holidays
+    :doc "Calendar functions for the Japanese calendar"
+    :req "emacs-24.1" "cl-lib-0.3"
+    :tag "calendar" "emacs>=24.1"
+    :url "https://github.com/emacs-jp/japanese-holidays"
+    :added "2021-09-05"
+    :emacs>= 24.1
+    :ensure t
+    :after calendar
+    :require japanese-holidays
+    :hook ((calendar-today-visible-hook . japanese-holiday-mark-weekend)
+           (calendar-today-invisible-hook .  japanese-holiday-mark-weekend)
+           (calendar-today-visible-hook . calendar-mark-today))
+    :custom ((calendar-mark-holidays-flag . t)
+             (japanese-holiday-weekend . '(0 6))
+             (japanese-holiday-weekend-marker . '(holiday nil nil nil nil nil japanese-holiday-saturday))
+             (org-agenda-include-diary . t))
+    :config
+    (let ((array ["日" "月" "火" "水" "木" "金" "土"]))
+      (setq calendar-day-header-array array
+            calendar-day-name-array array)))
+  (leaf calfw-org
+    :doc "calendar view for org-agenda"
+    :tag "org" "calendar"
+    :added "2021-09-05"
+    :ensure t
+    :require t)
+  (leaf calfw-ical
+    :doc "calendar view for ical format"
+    :tag "calendar"
+    :added "2021-09-05"
+    :ensure t
+    :require t
+    :config
+    (load "calfw_functions" t)
+    (add-hook 'calendar-load-hook (lambda ()
+                                    (require 'japanese-holidays)
+                                    (setq calendar-holidays
+                                          (append japanese-holidays local-holidays other-holidays)))))
+  )
+
+(leaf online-judge
+  :when (executable-find "oj")
+  :el-get ROCKTAKEY/emacs-online-judge
+  :require t
+  :custom ((online-judge-directories . '("~/Dropbox/atcoder/"))
+           (online-judge-command-name . nil))
+  )
+
+(leaf yasnippet
+  :doc "Yet another snippet extension for Emacs"
+  :req "cl-lib-0.5"
+  :tag "emulation" "convenience"
+  :url "http://github.com/joaotavora/yasnippet"
+  :added "2021-09-05"
+  :ensure t
+  :diminish t
+  :unless (string-match "Raspberrypi" (system-name))
+  :custom ((yas-global-mode . t))
+  :bind ((yas-minor-mode-map
+          ("C-." . ivy-yasnippet)))
+  :config
+  (leaf yas_hook
+    :require cl
+    :config
+    (defvar ivy-programing-hooks ()
+      '(emacs-lisp-mode
+        org-mode
+        yatex-mode
+        haskell-mode))
+    (loop for hook in ivy-programing-hooks
+          do (add-hook hook 'yas-minor-mode)))
+
+)
+
+(leaf shackle
+  :doc "Enforce rules for popups"
+  :req "emacs-24.3" "cl-lib-0.5"
+  :tag "convenience" "emacs>=24.3"
+  :url "https://depp.brause.cc/shackle"
+  :added "2021-09-05"
+  :emacs>= 24.3
+  :ensure t
+  :unless (string-match "RaspberryPi" (system-name))
+  :custom `((shackle-rules . '((compilation-mode :align below :ratio 0.2)
+                               ("*Google Translate*" :align right :ratio 0.3)
+                               ("*Help*" :align right)
+                               ("*online-judge*" :align below :ratio 0.5)
+                               ("*haskell-compilation*" :align below :ratio 0.5)
+                               ))
+            (shackle-mode . 1)
+            (winner-mode . 1)
+            (shackle-lighter . ""))
+  :bind (("C-z" . winner-undo))
+  )
+
+(leaf twittering-mode
+  :doc "Major mode for Twitter"
+  :tag "web" "twitter"
+  :url "http://twmode.sf.net/"
+  :added "2021-09-05"
+  :ensure t
+  :custom ((twittering-allow-insecure-server-cert . t)
+           (twittering-use-master-password . t))
+)
+
+
+;; lsp 設定
+(leaf lsp
+  :tag "out-of-MELPA"
+  :added "2021-09-05"
+  :el-get {{user}}/lsp
+  :require t
+  :unless (string-match "Raspberrypi" (system-name))
+  :hook ((haskell-mode-hook . lsp)
+         (haskell-literate-mode-hook . lsp))
+  :config
+  (leaf lsp-ui
+    :doc "UI modules for lsp-mode"
+    :req "emacs-26.1" "dash-2.18.0" "lsp-mode-6.0" "markdown-mode-2.3"
+    :tag "tools" "languages" "emacs>=26.1"
+    :url "https://github.com/emacs-lsp/lsp-ui"
+    :added "2021-09-05"
+    :emacs>= 26.1
+    :ensure t
+    :after lsp-mode markdown-mode
+    :commands lsp-ui-mode)
+  (leaf lsp-ivy
+    :doc "LSP ivy integration"
+    :req "emacs-25.1" "dash-2.14.1" "lsp-mode-6.2.1" "ivy-0.13.0"
+    :tag "debug" "languages" "emacs>=25.1"
+    :url "https://github.com/emacs-lsp/lsp-ivy"
+    :added "2021-09-05"
+    :emacs>= 25.1
+    :ensure t
+    :after lsp-mode ivy
+    :commands lsp-ivy-workspace-symbol)
+  (leaf lsp-treemacs
+    :doc "LSP treemacs"
+    :req "emacs-26.1" "dash-2.18.0" "f-0.20.0" "ht-2.0" "treemacs-2.5" "lsp-mode-6.0"
+    :tag "languages" "emacs>=26.1"
+    :url "https://github.com/emacs-lsp/lsp-treemacs"
+    :added "2021-09-05"
+    :emacs>= 26.1
+    :ensure t
+    :after treemacs lsp-mode
+    :commands lsp-treemacs-errors-list)
+  (leaf lsp-haskell
+    :doc "Haskell support for lsp-mode"
+    :req "emacs-24.3" "lsp-mode-3.0" "haskell-mode-1.0"
+    :tag "haskell" "emacs>=24.3"
+    :url "https://github.com/emacs-lsp/lsp-haskell"
+    :added "2021-09-05"
+    :emacs>= 24.3
+    :ensure t
+    :after lsp-mode haskell-mode)
+)
+
+
+;; ivy 補完設定
+(leaf ivy
+  :doc "Incremental Vertical completYon"
+  :req "emacs-24.5"
+  :tag "matching" "emacs>=24.5"
+  :url "https://github.com/abo-abo/swiper"
+  :added "2021-09-05"
+  :emacs>= 24.5
+  :ensure t
+  :leaf-defer nil
+  :custom `((ivy-re-builders-alist        . '((t . ivy--regex-plus)))
+            (ivy-use-selectable-prompt    . t)
+            (ivy-mode                     . t)
+            (counsel-mode                 . t)
+            (dired-recent-mode            . t)
+            (ivy-use-virtual-buffers      . t)
+            (ivy-truncate-lines           . nil)
+            (ivy-wrap                     . t)
+            (enable-recursive-minibuffers . t)
+            (ivy-height                   . 15)
+            (ivy-extra-directories        . nil)
+            (ivy-format-functions-alist   . '((t . ivy-format-function-arrow))))
+  :bind (("C-x b" . ivy-switch-buffer)
+         (ivy-minibuffer-map
+          ;; ESC連打でミニバッファを閉じる
+          ("<escape>" . minibuffer-keyboard-quit)
+          ("C-m"      . ivy-alt-done)
+          ("C-i"      . ivy-immediate-done)))
+  :config
+  (leaf swiper
+    :doc "Isearch with an overview. Oh, man!"
+    :req "emacs-24.5" "ivy-0.13.4"
+    :tag "matching" "emacs>=24.5"
+    :url "https://github.com/abo-abo/swiper"
+    :added "2021-09-05"
+    :emacs>= 24.5
+    :ensure t
+    :after ivy
+    :unless (string-match "RaspberryPi" (system-name))
+    :defvar swiper-include-line-number-in-search
+    :bind (("C-s" . swiper)
+           ("C-r" . swiper)
+           (swiper-map
+            ("C-j" . skk-hiragana-set)
+            ("C-l" . skk-latin-mode)))
+    :custom (swiper-include-line-number-in-search . t))
+  (leaf counsel
+    :doc "Various completion functions using Ivy"
+    :req "emacs-24.5" "ivy-0.13.4" "swiper-0.13.4"
+    :tag "tools" "matching" "convenience" "emacs>=24.5"
+    :url "https://github.com/abo-abo/swiper"
+    :added "2021-09-05"
+    :emacs>= 24.5
+    :ensure t
+    :after ivy swiper
+    :custom ((counsel-mode                    . 1)
+             (counsel-find-file-ignore-regexp . (regexp-opt '("./" "../")))
+             (recentf-max-saved-items         . 2000)
+             (recentf-auto-cleanup            . 'never)
+             (recentf-exclude                 . '("/recentf" "COMMIT_EDITMSG" "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores" "/\\.emacs\\.d/\\.cask/" "/Geheimnis"))
+             (recentf-mode                    . 1)
+             (counsel-yank-pop-separator      . "\n-------\n"))
+    :bind (("M-x"     . counsel-M-x)
+           ("C-x C-f" . counsel-find-file)
+           ("C-c h"   . counsel-recentf)
+           ("C-c i"   . counsel-imenu)
+           ("M-y"     . counsel-yank-pop)
+           ("C-x C-b" . counsel-ibuffer)))
+  (leaf counsel-osx-app
+    :doc "launch osx applications via ivy interface"
+    :req "ivy-0.8.0" "emacs-24.3"
+    :tag "emacs>=24.3"
+    :url "https://github.com/d12frosted/counsel-osx-app"
+    :added "2021-09-05"
+    :emacs>= 24.3
+    :ensure t
+    :after ivy
+    :when (eq system-type 'darwin)
+    :bind ("s-d" . counsel-osx-app)
+    :custom ((counsel-osx-app-location.
+              '("/Applications"
+                "/Applications/Downloads"
+                "/Applications/Flip4Mac"
+                "/Applications/GoogleJapaneseInput.localized"
+                ;; "/Applications/Igor Pro 6.1 Folder"
+                "/Applications/Igor Pro 6.3 Folder"
+                "/Applications/iWork '09"
+                "/Applications/Microsoft Office 2011"
+                "/Applications/Python 2.7"
+                "/Applications/RIETAN_VENUS"
+                "/Applications/Utilities"))))
+  (leaf ivy-hydra
+    :doc "Additional key bindings for Ivy"
+    :req "emacs-24.5" "ivy-0.13.4" "hydra-0.14.0"
+    :tag "convenience" "emacs>=24.5"
+    :url "https://github.com/abo-abo/swiper"
+    :added "2021-09-05"
+    :emacs>= 24.5
+    :ensure t
+    :after ivy hydra
+    :disabled t
+    :custom (ivy-read-action-function . #'ivy-hydra-read-action))
+  )
+
+
+;; company 補完設定
 (leaf company
   :doc "Modular text completion framework"
   :req "emacs-25.1"
@@ -1899,952 +2113,5 @@
               (Template      . ,(all-the-icons-material "format_align_center" :height 0.9 :v-adjust -0.2))))
       (setq company-box-icons-alist 'company-box-icons-all-the-icons)))
   )
-
-(leaf ivy
-  :doc "Incremental Vertical completYon"
-  :req "emacs-24.5"
-  :tag "matching" "emacs>=24.5"
-  :url "https://github.com/abo-abo/swiper"
-  :added "2021-09-05"
-  :emacs>= 24.5
-  :ensure t
-  :leaf-defer nil
-  :custom `((ivy-re-builders-alist        . '((t . ivy--regex-plus)))
-            (ivy-use-selectable-prompt    . t)
-            (ivy-mode                     . t)
-            (counsel-mode                 . t)
-            (dired-recent-mode            . t)
-            (ivy-use-virtual-buffers      . t)
-            (ivy-truncate-lines           . nil)
-            (ivy-wrap                     . t)
-            (enable-recursive-minibuffers . t)
-            (ivy-height                   . 15)
-            (ivy-extra-directories        . nil)
-            (ivy-format-functions-alist   . '((t . ivy-format-function-arrow))))
-  :bind (("C-x b" . ivy-switch-buffer)
-         (ivy-minibuffer-map
-          ;; ESC連打でミニバッファを閉じる
-          ("<escape>" . minibuffer-keyboard-quit)
-          ("C-m"      . ivy-alt-done)
-          ("C-i"      . ivy-immediate-done)))
-  :config
-  (leaf swiper
-    :doc "Isearch with an overview. Oh, man!"
-    :req "emacs-24.5" "ivy-0.13.4"
-    :tag "matching" "emacs>=24.5"
-    :url "https://github.com/abo-abo/swiper"
-    :added "2021-09-05"
-    :emacs>= 24.5
-    :ensure t
-    :after ivy
-    :unless (string-match "RaspberryPi" (system-name))
-    :defvar swiper-include-line-number-in-search
-    :bind (("C-s" . swiper)
-           ("C-r" . swiper)
-           (swiper-map
-            ("C-j" . skk-hiragana-set)
-            ("C-l" . skk-latin-mode)))
-    :custom (swiper-include-line-number-in-search . t))
-  (leaf counsel
-    :doc "Various completion functions using Ivy"
-    :req "emacs-24.5" "ivy-0.13.4" "swiper-0.13.4"
-    :tag "tools" "matching" "convenience" "emacs>=24.5"
-    :url "https://github.com/abo-abo/swiper"
-    :added "2021-09-05"
-    :emacs>= 24.5
-    :ensure t
-    :after ivy swiper
-    :custom ((counsel-mode                    . 1)
-             (counsel-find-file-ignore-regexp . (regexp-opt '("./" "../")))
-             (recentf-max-saved-items         . 2000)
-             (recentf-auto-cleanup            . 'never)
-             (recentf-exclude                 . '("/recentf" "COMMIT_EDITMSG" "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores" "/\\.emacs\\.d/\\.cask/" "/Geheimnis"))
-             (recentf-mode                    . 1)
-             (counsel-yank-pop-separator      . "\n-------\n"))
-    :bind (("M-x"     . counsel-M-x)
-           ("C-x C-f" . counsel-find-file)
-           ("C-c h"   . counsel-recentf)
-           ("C-c i"   . counsel-imenu)
-           ("M-y"     . counsel-yank-pop)
-           ("C-x C-b" . counsel-ibuffer)))
-  (leaf counsel-osx-app
-    :doc "launch osx applications via ivy interface"
-    :req "ivy-0.8.0" "emacs-24.3"
-    :tag "emacs>=24.3"
-    :url "https://github.com/d12frosted/counsel-osx-app"
-    :added "2021-09-05"
-    :emacs>= 24.3
-    :ensure t
-    :after ivy
-    :when (eq system-type 'darwin)
-    :bind ("s-d" . counsel-osx-app)
-    :custom ((counsel-osx-app-location.
-              '("/Applications"
-                "/Applications/Downloads"
-                "/Applications/Flip4Mac"
-                "/Applications/GoogleJapaneseInput.localized"
-                ;; "/Applications/Igor Pro 6.1 Folder"
-                "/Applications/Igor Pro 6.3 Folder"
-                "/Applications/iWork '09"
-                "/Applications/Microsoft Office 2011"
-                "/Applications/Python 2.7"
-                "/Applications/RIETAN_VENUS"
-                "/Applications/Utilities"))))
-  (leaf ivy-hydra
-    :doc "Additional key bindings for Ivy"
-    :req "emacs-24.5" "ivy-0.13.4" "hydra-0.14.0"
-    :tag "convenience" "emacs>=24.5"
-    :url "https://github.com/abo-abo/swiper"
-    :added "2021-09-05"
-    :emacs>= 24.5
-    :ensure t
-    :after ivy hydra
-    :disabled t
-    :custom (ivy-read-action-function . #'ivy-hydra-read-action))
-  )
-
-
-
-(leaf *hs-minor-mode
-  :hook ((emacs-lisp-mode-hook . hs-minor-mode-active))
-  :bind (("C-'" . hs-toggle-hiding))
-  :preface
-  (defun hs-minor-mode-active ()
-    (interactive)
-    (hs-minor-mode 1))
-  )
-
-(leaf highlight-indent-guides
-  :doc "Minor mode to highlight indentation"
-  :req "emacs-24.1"
-  :tag "emacs>=24.1"
-  :url "https://github.com/DarthFennec/highlight-indent-guides"
-  :added "2021-09-05"
-  :emacs>= 24.1
-  :ensure t
-  :unless (string-match "RaspberryPi" (system-name))
-  :hook ((prog-mode-hook . highlight-indent-guides-mode))
-  :custom '((highlight-indent-guides-method . 'column))
-)
-
-(leaf visual-regexp-steroids
-  :doc "Extends visual-regexp to support other regexp engines"
-  :req "visual-regexp-1.1"
-  :tag "feedback" "visual" "python" "replace" "regexp" "foreign" "external"
-  :url "https://github.com/benma/visual-regexp-steroids.el/"
-  :added "2021-09-05"
-  :ensure t
-  :after visual-regexp
-  :bind (("M-%" . vr/query-replace)
-         ;; multiple-cursorsを使っているならこれで
-         ("C-c m" . vr/mc-mark)
-         ;; 普段の正規表現isearchにも使いたいならこれを
-         ("C-M-r" . vr/isearch-backward)
-         ("C-M-s" . vr/isearch-forward))
-  :custom `((vr/engine . 'python)))
-
-(leaf page-ext
-  :doc "extended page handling commands"
-  :tag "builtin"
-  :added "2021-09-05"
-  )
-
-(leaf smartparens
-  :doc "Automatic insertion, wrapping and paredit-like navigation with user defined pairs."
-  :req "dash-2.13.0" "cl-lib-0.3"
-  :tag "editing" "convenience" "abbrev"
-  :url "https://github.com/Fuco1/smartparens"
-  :added "2021-09-05"
-  :ensure t
-      :disabled t
-    :when window-system
-    :ensure t
-    :require smartparens-config
-    :custom ((sp-highlight-pari-overly . nil)
-             (sp-navigate-interactive-always-progress-point . t)
-             (smartparens-global-strict-mode . t))
-    :bind ((smartparens-mode-map
-            ;;;;
-            ;;;; navigation
-
-            ;; basic (fbnp-ae)
-            ("C-M-f" . sp-forward-sexp)
-            ("C-M-b" . sp-backward-sexp)
-            ("C-M-n" . sp-next-sexp)
-            ("C-M-p" . sp-previous-sexp)
-            ("C-M-a" . sp-beginning-of-sexp)
-            ("C-M-e" . sp-end-of-sexp)
-
-            ;; checkin/checkout
-            ("C-M-i" . sp-down-sexp)
-            ("C-M-o" . sp-backward-up-sexp)
-
-            ;; misc
-            ("C-M-k"   . sp-kill-sexp)
-            ("C-M-w"   . sp-copy-sexp)
-            ("C-M-t"   . sp-transpose-sexp)
-            ("C-M-SPC" . sp-mark-sexp)
-
-            ;;;;
-            ;;;; depth-changing commands
-
-            ;; basic
-            ("M-s"           . sp-splice-sexp)
-            ("M-r"           . sp-splice-sexp-killing-around)
-            ("M-<up>"        . nil)
-            ("M-<down>"      . nil)
-            ("C-M-u"         . sp-splice-sexp-killing-backward)
-            ("C-M-d"         . sp-splice-sexp-killing-forward)
-            ("M-("           . sp-wrap-round)
-            ("M-["           . sp-wrap-square)
-            ("M-{"           . sp-wrap-qurly)
-
-            ;; barf/slurp
-            ("C-)" . sp-forward-slurp-sexp)
-            ("C-}" . sp-forward-barf-sexp)
-            ("C-(" . sp-backward-slurp-sexp)
-            ("C-{" . sp-backward-barf-sexp)
-
-            ;; split/join
-            ("M-S-s" . sp-split-sexp)
-            ("M-j"   . sp-join-sexp)
-
-            ;;;;
-            ;;;; misc
-
-            ;; change constructure
-            ("M-?"     . sp-convolute-sexp)
-            ("C-c s a" . sp-absorb-sexp)
-            ("C-c s e" . sp-emit-sexp)
-            ("C-c s p" . sp-convolute-sexp)
-            ("C-c s t" . sp-transpose-hybrid-sexp)
-
-            ;; change elements
-            ("C-c s (" . sp-rewrap-sexp)
-            ("C-c s r" . sp-change-inner)
-            ("C-c s s" . sp-change-enclosing)))
-    )
-
-(leaf undo-tree
-  :doc "Treat undo history as a tree"
-  :tag "tree" "history" "redo" "undo" "files" "convenience"
-  :url "http://www.dr-qubit.org/emacs.php"
-  :added "2021-09-05"
-  :ensure t
-  :unless (string-match "RaspberryPi" (system-name))
-  :custom ((global-undo-tree-mode . t))
-)
-
-(leaf align
-  :doc "align text to a specific column, by regexp"
-  :tag "builtin"
-  :added "2021-09-05")
-
-(leaf *minor-mode
-  :disabled t
-  :config
-  (leaf skk
-    :ensure ddskk
-    ;; :defun (skk-get)
-    :require t skk-study
-    :defvar skk-user-directory
-    :defun skk-toggle-kana skk-hiragana-set skk-katakana-set
-    :hook ((isearch-mode-hook . skk-isearch-mode-setup)
-           (isearch-mode-end-hook . skk-isearch-mode-cleanup))
-    :bind (("C-x j" . skk-mode)
-           ("C-j" . nil)
-           ("C-j" . skk-hiragana-set)
-           ("C-l" . skk-latin-mode)
-           (minibuffer-local-map
-            ("C-j" . skk-kakutei)
-            ("C-l" . skk-latin-mode)))
-    :custom `((skk-user-directory . "~/.emacs.d/ddskk")
-              (skk-initial-search-jisyo . "~/.emacs.d/ddskk/jisyo")
-              (skk-large-jisyo . "~/.emacs.d/skk-get-jisyo/SKK-JISYO.L")
-              (skk-egg-like-newline . t)
-              (skk-delete-implies-kakutei . t)
-              (skk-henkan-strict-okuri-precedence . t)
-              (skk-isearch-start-mode . 'latin)
-              (skk-search-katakana . t))
-    :preface
-    (defun skk-hiragana-set nil
-      (interactive)
-      (cond (skk-katakana
-             (skk-toggle-kana nil))
-            (t
-             (skk-kakutei))))
-    (defun skk-katakana-set nil
-      (interactive)
-      (cond (skk-katakana
-             (lambda))
-            (skk-j-mode
-             (skk-toggle-kana nil))
-            (skk-latin-mode
-             (dolist (skk-kakutei (skk-toggle-kana nil))))))
-    )
-
-  (leaf cua
-    :bind (("C-x SPC" . cua-set-rectangle-mark))
-    :custom ((cua-mode . t)
-             (cua-enable-cua-keys . nil)))
-
-  (leaf company
-    :ensure t
-    :leaf-defer nil
-    :diminish company-mode
-    :bind ((company-active-map
-            ("M-n" . nil)
-            ("M-p" . nil)
-            ("C-s" . company-filter-candidates)
-            ("C-n" . company-select-next)
-            ("C-p" . company-select-previous)
-            ("<tab>" . company-complete-selection)
-            ("C-h" . nil)
-            ("C-f" . company-complete-selection)
-            )
-           (company-search-map
-            ("C-n" . company-select-next)
-            ("C-p" . company-select-previous)))
-    :custom `((company-tooltip-limit         . 12)
-              (company-idle-delay            . 0)
-              (company-minimum-prefix-length . 3)
-              (company-transformers          . '(company-sort-by-occurrence))
-              (global-company-mode           . t)
-              (company-dabbrev-downcase      . nil)
-              (company-backends . '(company-capf))
-              )
-    :config
-    (leaf company-math
-      :ensure t
-      :disabled t
-      :unless (eq system-type 'dawin)
-      :defvar (company-backends)
-      :preface
-      (defun c/latex-mode-setup ()
-        (setq-local company-backends
-                    (append '((company-math-symbols-latex
-                               company-math-symbols-unicode
-                               company-latex-commands))
-                            company-backends)))
-      :hook ((org-mode-hook . c/latex-mode-setup)
-             (tex-mode-hook . c/latex-mode-setup)
-             (yatex-mode-hook . c/latex-mode-setup))
-      )
-
-    (leaf company-quickhelp
-      :disabled t
-      :when (display-graphic-p)
-      :ensure t
-      :custom ((company-quickhelp-delay . 0.8)
-               (company-quickhelp-mode  . t))
-      :bind (company-active-map
-             ("M-h" . company-quickhelp-manual-begin))
-      :hook ((company-mode-hook . company-quickhelp-mode))
-      )
-
-    (leaf *companyFor
-      :disabled t
-      :when (eq system-type 'gnu/linux)
-      :config
-      (leaf company-tabnine
-        :doc "M-x company-tabnine-install-binary to install binary"
-        :disabled t
-        :ensure t
-        :config
-        (add-to-list 'company-backends #'company-tabnine))
-
-      (leaf company-prescient
-        :ensure t
-        :custom ((company-prescient-mode . t)))
-
-      (leaf company-c-headers
-        :ensure t
-        :config (add-to-list 'company-backends 'company-c-headers))
-
-      (leaf company-box
-        :url "https://github.com/seagle0128/.emacs.d/blob/master/lisp/init-company.el"
-        :when (version<= "26.1" emacs-version)
-        ;; :disabled (eq window-system 'x)
-        :disabled t
-        :ensure t
-        :diminish company-box-mode
-        :defvar (company-box-icons-alist company-box-icons-all-the-icons)
-        :init (leaf all-the-icons :ensure t :require t)
-        :custom ((company-box-max-candidates . 50)
-                 (company-box-icons-alist    . 'company-box-icons-all-the-icons))
-        :hook ((company-mode-hook . company-box-mode))
-        :config
-        (when (memq window-system '(ns mac))
-          (declare-function all-the-icons-faicon 'all-the-icons)
-          (declare-function all-the-icons-material 'all-the-icons)
-          (declare-function all-the-icons-octicon 'all-the-icons)
-          (setq company-box-icons-all-the-icons
-                `((Unknown       . ,(all-the-icons-material "find_in_page" :height 0.9 :v-adjust -0.2))
-                  (Text          . ,(all-the-icons-faicon "text-width" :height 0.85 :v-adjust -0.05))
-                  (Method        . ,(all-the-icons-faicon "cube" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-purple))
-                  (Function      . ,(all-the-icons-faicon "cube" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-purple))
-                  (Constructor   . ,(all-the-icons-faicon "cube" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-purple))
-                  (Field         . ,(all-the-icons-octicon "tag" :height 0.85 :v-adjust 0 :face 'all-the-icons-lblue))
-                  (Variable      . ,(all-the-icons-octicon "tag" :height 0.85 :v-adjust 0 :face 'all-the-icons-lblue))
-                  (Class         . ,(all-the-icons-material "settings_input_component" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-orange))
-                  (Interface     . ,(all-the-icons-material "share" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-lblue))
-                  (Module        . ,(all-the-icons-material "view_module" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-lblue))
-                  (Property      . ,(all-the-icons-faicon "wrench" :height 0.85 :v-adjust -0.05))
-                  (Unit          . ,(all-the-icons-material "settings_system_daydream" :height 0.9 :v-adjust -0.2))
-                  (Value         . ,(all-the-icons-material "format_align_right" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-lblue))
-                  (Enum          . ,(all-the-icons-material "storage" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-orange))
-                  (Keyword       . ,(all-the-icons-material "filter_center_focus" :height 0.9 :v-adjust -0.2))
-                  (Snippet       . ,(all-the-icons-material "format_align_center" :height 0.9 :v-adjust -0.2))
-                  (Color         . ,(all-the-icons-material "palette" :height 0.9 :v-adjust -0.2))
-                  (File          . ,(all-the-icons-faicon "file-o" :height 0.9 :v-adjust -0.05))
-                  (Reference     . ,(all-the-icons-material "collections_bookmark" :height 0.9 :v-adjust -0.2))
-                  (Folder        . ,(all-the-icons-faicon "folder-open" :height 0.9 :v-adjust -0.05))
-                  (EnumMember    . ,(all-the-icons-material "format_align_right" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-lblue))
-                  (Constant      . ,(all-the-icons-faicon "square-o" :height 0.9 :v-adjust -0.05))
-                  (Struct        . ,(all-the-icons-material "settings_input_component" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-orange))
-                  (Event         . ,(all-the-icons-faicon "bolt" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-orange))
-                  (Operator      . ,(all-the-icons-material "control_point" :height 0.9 :v-adjust -0.2))
-                  (TypeParameter . ,(all-the-icons-faicon "arrows" :height 0.85 :v-adjust -0.05))
-                  (Template      . ,(all-the-icons-material "format_align_center" :height 0.9 :v-adjust -0.2))))
-          (setq company-box-icons-alist 'company-box-icons-all-the-icons)))
-      )
-    )
-
-  (leaf ivy
-    :req "emacs-24.5"
-    :ensure t
-    :leaf-defer nil
-    ;; :disabled t
-    :custom `((ivy-re-builders-alist        . '((t . ivy--regex-plus)))
-              (ivy-use-selectable-prompt    . t)
-              (ivy-mode                     . t)
-              (counsel-mode                 . t)
-              (dired-recent-mode            . t)
-              (ivy-use-virtual-buffers      . t)
-              (ivy-truncate-lines           . nil)
-              (ivy-wrap                     . t)
-              (enable-recursive-minibuffers . t)
-              (ivy-height                   . 15)
-              (ivy-extra-directories        . nil)
-              (ivy-format-functions-alist   . '((t . ivy-format-function-arrow)))
-              )
-
-    :bind (("C-x b" . ivy-switch-buffer)
-           (ivy-minibuffer-map
-            ;; ESC連打でミニバッファを閉じる
-            ("<escape>" . minibuffer-keyboard-quit)
-            ("C-m"      . ivy-alt-done)
-            ("C-i"      . ivy-immediate-done)))
-    :init
-    (leaf counsel
-      :doc "Various completion functions using Ivy"
-      :req "emacs-24.5" "swiper-0.13.0"
-      :tag "tools" "matching" "convenience" "emacs>=24.5"
-      :url "https://github.com/abo-abo/swiper"
-      :emacs>= 24.5
-      :ensure t
-      :ensure smex
-      ;; :ensure t
-      :defvar counsel-find-file-ignore-regexp
-      :custom ((counsel-mode                    . 1)
-               (counsel-find-file-ignore-regexp . (regexp-opt '("./" "../")))
-               (recentf-max-saved-items         . 2000)
-               (recentf-auto-cleanup            . 'never)
-               (recentf-exclude                 . '("/recentf" "COMMIT_EDITMSG" "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores" "/\\.emacs\\.d/\\.cask/" "/Geheimnis"))
-               (recentf-mode                    . 1)
-               (counsel-yank-pop-separator      . "\n-------\n")
-               )
-
-      :bind
-      (("M-x"     . counsel-M-x)
-       ("C-x C-f" . counsel-find-file)
-       ("C-c h"   . counsel-recentf)
-       ("C-c i"   . counsel-imenu)
-       ("M-y"     . counsel-yank-pop)
-       ("C-x C-b" . counsel-ibuffer)
-       ;; ("C-M-f" . counsel-ag)
-       )
-      :config
-
-      (leaf counsel-osx-app
-        ;; :ensure t
-        :when (eq system-type 'darwin)
-        :bind ("s-d" . counsel-osx-app)
-        :custom
-        ((counsel-osx-app-location.
-          '("/Applications"
-            "/Applications/Downloads"
-            "/Applications/Flip4Mac"
-            "/Applications/GoogleJapaneseInput.localized"
-            ;; "/Applications/Igor Pro 6.1 Folder"
-            "/Applications/Igor Pro 6.3 Folder"
-            "/Applications/iWork '09"
-            "/Applications/Microsoft Office 2011"
-            "/Applications/Python 2.7"
-            "/Applications/RIETAN_VENUS"
-            "/Applications/Utilities")))
-        )
-      (leaf *pi
-        ;; :ensure t
-        :disabled t
-        :when (string-match "raspberrypi" (system-name))
-        :preface
-        (defun app-launch (command)
-          (interactive (list (read-shell-command "$ ")))
-          (start-process-shell-command command nil command))
-
-        :bind ("s-d" . app-launch)
-        )
-
-      )
-
-    (leaf swiper
-      :ensure t
-      :when (string-match "archlinuxhonda" (system-name))
-      :defvar swiper-include-line-number-in-search
-      :bind (("C-s" . swiper)
-             ("C-r" . swiper)
-             (swiper-map
-              ("C-j" . skk-hiragana-set)
-              ("C-l" . skk-latin-mode))
-             )
-      :custom (swiper-include-line-number-in-search . t))
-
-    :config
-    (leaf ivy-hidra
-      :ensure t
-      :disabled t
-      :custom (ivy-read-action-function . #'ivy-hydra-read-action)
-      )
-
-    (leaf ivy-dired-history
-      ;; :disabled t
-      :require t
-      :ensure t
-      :defvar session-globals-include
-      :bind ((dired-mode-map
-              ("," . dired))
-             (ivy-dired-history-map
-              ("C-m" . ivy-alt-done)))
-      :config
-      (leaf *afterLoad
-        :after session
-        :config (add-to-list 'session-globals-include 'ivy-dired-history-variable))
-      )
-    )
-
-  (leaf *hs-minor-mode
-    :hook ((emacs-lisp-mode-hook . hs-minor-mode))
-    :when (string-match "archlinuxhonda" (system-name))
-    :custom ((hs-minor-mode . t))
-    :bind (("C-'" . hs-toggle-hiding))
-    )
-
-  (leaf highlight-indent-guides
-    :when (eq system-type 'gnu/linux)
-    :when (string-match "archlinuxhonda" (system-name))
-    :ensure t
-    :hook ((prog-mode-hook . highlight-indent-guides-mode))
-    :custom '((highlight-indent-guides-method . 'column)
-              ;; (highlight-indent-guides-auto-enable . t)
-              ;; (highlight-indent-guides-responsive . t)
-              ;; (highlight-indent-guides-mode . t)
-              )
-    )
-
-  (leaf visual-regexp-steroids
-    :ensure t
-    :require t
-    :bind (("M-%" . vr/query-replace)
-           ;; multiple-cursorsを使っているならこれで
-           ("C-c m" . vr/mc-mark)
-           ;; 普段の正規表現isearchにも使いたいならこれを
-           ("C-M-r" . vr/isearch-backward)
-           ("C-M-s" . vr/isearch-forward))
-    :custom `((vr/engine . 'python))
-    )
-
-  (leaf page-ext
-    ;; :disabled t
-    :require t)
-
-
-
-  (leaf smartparens
-    :disabled t
-    :when window-system
-    :ensure t
-    :require smartparens-config
-    :custom ((sp-highlight-pari-overly . nil)
-             (sp-navigate-interactive-always-progress-point . t)
-             (smartparens-global-strict-mode . t))
-    :bind ((smartparens-mode-map
-            ;;;;
-            ;;;; navigation
-
-            ;; basic (fbnp-ae)
-            ("C-M-f" . sp-forward-sexp)
-            ("C-M-b" . sp-backward-sexp)
-            ("C-M-n" . sp-next-sexp)
-            ("C-M-p" . sp-previous-sexp)
-            ("C-M-a" . sp-beginning-of-sexp)
-            ("C-M-e" . sp-end-of-sexp)
-
-            ;; checkin/checkout
-            ("C-M-i" . sp-down-sexp)
-            ("C-M-o" . sp-backward-up-sexp)
-
-            ;; misc
-            ("C-M-k"   . sp-kill-sexp)
-            ("C-M-w"   . sp-copy-sexp)
-            ("C-M-t"   . sp-transpose-sexp)
-            ("C-M-SPC" . sp-mark-sexp)
-
-            ;;;;
-            ;;;; depth-changing commands
-
-            ;; basic
-            ("M-s"           . sp-splice-sexp)
-            ("M-r"           . sp-splice-sexp-killing-around)
-            ("M-<up>"        . nil)
-            ("M-<down>"      . nil)
-            ("C-M-u"         . sp-splice-sexp-killing-backward)
-            ("C-M-d"         . sp-splice-sexp-killing-forward)
-            ("M-("           . sp-wrap-round)
-            ("M-["           . sp-wrap-square)
-            ("M-{"           . sp-wrap-qurly)
-
-            ;; barf/slurp
-            ("C-)" . sp-forward-slurp-sexp)
-            ("C-}" . sp-forward-barf-sexp)
-            ("C-(" . sp-backward-slurp-sexp)
-            ("C-{" . sp-backward-barf-sexp)
-
-            ;; split/join
-            ("M-S-s" . sp-split-sexp)
-            ("M-j"   . sp-join-sexp)
-
-            ;;;;
-            ;;;; misc
-
-            ;; change constructure
-            ("M-?"     . sp-convolute-sexp)
-            ("C-c s a" . sp-absorb-sexp)
-            ("C-c s e" . sp-emit-sexp)
-            ("C-c s p" . sp-convolute-sexp)
-            ("C-c s t" . sp-transpose-hybrid-sexp)
-
-            ;; change elements
-            ("C-c s (" . sp-rewrap-sexp)
-            ("C-c s r" . sp-change-inner)
-            ("C-c s s" . sp-change-enclosing)))
-    )
-
-  (leaf sudo-edit
-    :ensure t
-    :require
-    :custom ((sudo-edit-indicator-mode . t))
-    )
-
-  (leaf undo-tree
-    :ensure t
-    :when (string-match "archlinuxhonda" (system-name))
-    :custom ((global-undo-tree-mode . t))
-    )
-
-  (leaf align
-      :require t
-      :config
-      (add-to-list 'align-rules-list
-                   '(yatex-table
-                     (regexp . "\\( *\\)&")
-                     (repeat . t)
-                     (modes . '(yatex-mode))))
-      (add-to-list 'align-rules-list
-                   '(yatex-table
-                     (regexp . "\\( *\\)\\\\\\\\")
-                     (repeat . t)
-                     (modes . '(yatex-mode))))
-      (add-to-list 'align-rules-list
-                   '(haskell-equal
-                     (regexp . "\\( *\\)=\\(\\s-*\\)")
-                     (repeat . t)
-                     (modes . '(haskell-mode))))
-      )
-
-  )
-
-
-
-
-(leaf lsp
-  :tag "out-of-MELPA"
-  :added "2021-09-05"
-  :el-get {{user}}/lsp
-  :require t
-  :unless (string-match "Raspberrypi" (system-name))
-  :hook ((haskell-mode-hook . lsp)
-         (haskell-literate-mode-hook . lsp))
-  :config
-  (leaf lsp-ui
-    :doc "UI modules for lsp-mode"
-    :req "emacs-26.1" "dash-2.18.0" "lsp-mode-6.0" "markdown-mode-2.3"
-    :tag "tools" "languages" "emacs>=26.1"
-    :url "https://github.com/emacs-lsp/lsp-ui"
-    :added "2021-09-05"
-    :emacs>= 26.1
-    :ensure t
-    :after lsp-mode markdown-mode
-    :commands lsp-ui-mode)
-  (leaf lsp-ivy
-    :doc "LSP ivy integration"
-    :req "emacs-25.1" "dash-2.14.1" "lsp-mode-6.2.1" "ivy-0.13.0"
-    :tag "debug" "languages" "emacs>=25.1"
-    :url "https://github.com/emacs-lsp/lsp-ivy"
-    :added "2021-09-05"
-    :emacs>= 25.1
-    :ensure t
-    :after lsp-mode ivy
-    :commands lsp-ivy-workspace-symbol)
-  (leaf lsp-treemacs
-    :doc "LSP treemacs"
-    :req "emacs-26.1" "dash-2.18.0" "f-0.20.0" "ht-2.0" "treemacs-2.5" "lsp-mode-6.0"
-    :tag "languages" "emacs>=26.1"
-    :url "https://github.com/emacs-lsp/lsp-treemacs"
-    :added "2021-09-05"
-    :emacs>= 26.1
-    :ensure t
-    :after treemacs lsp-mode
-    :commands lsp-treemacs-errors-list)
-  (leaf lsp-haskell
-    :doc "Haskell support for lsp-mode"
-    :req "emacs-24.3" "lsp-mode-3.0" "haskell-mode-1.0"
-    :tag "haskell" "emacs>=24.3"
-    :url "https://github.com/emacs-lsp/lsp-haskell"
-    :added "2021-09-05"
-    :emacs>= 24.3
-    :ensure t
-    :after lsp-mode haskell-mode)
-)
-
-(leaf calfw
-  :doc "Calendar view framework on Emacs"
-  :tag "calendar"
-  :url "https://github.com/kiwanami/emacs-calfw"
-  :added "2021-09-05"
-  :ensure t
-  :config
-  (leaf japanese-holidays
-    :doc "Calendar functions for the Japanese calendar"
-    :req "emacs-24.1" "cl-lib-0.3"
-    :tag "calendar" "emacs>=24.1"
-    :url "https://github.com/emacs-jp/japanese-holidays"
-    :added "2021-09-05"
-    :emacs>= 24.1
-    :ensure t
-    :after calendar
-    :require japanese-holidays
-    :hook ((calendar-today-visible-hook . japanese-holiday-mark-weekend)
-           (calendar-today-invisible-hook .  japanese-holiday-mark-weekend)
-           (calendar-today-visible-hook . calendar-mark-today))
-    :custom ((calendar-mark-holidays-flag . t)
-             (japanese-holiday-weekend . '(0 6))
-             (japanese-holiday-weekend-marker . '(holiday nil nil nil nil nil japanese-holiday-saturday))
-             (org-agenda-include-diary . t))
-    :config
-    (let ((array ["日" "月" "火" "水" "木" "金" "土"]))
-      (setq calendar-day-header-array array
-            calendar-day-name-array array)))
-  (leaf calfw-org
-    :doc "calendar view for org-agenda"
-    :tag "org" "calendar"
-    :added "2021-09-05"
-    :ensure t
-    :require t)
-  (leaf calfw-ical
-    :doc "calendar view for ical format"
-    :tag "calendar"
-    :added "2021-09-05"
-    :ensure t
-    :require t
-    :config
-    (load "calfw_functions" t)
-    (add-hook 'calendar-load-hook (lambda ()
-                                    (require 'japanese-holidays)
-                                    (setq calendar-holidays
-                                          (append japanese-holidays local-holidays other-holidays)))))
-  )
-
-(leaf online-judge
-  :when (executable-find "oj")
-  :el-get ROCKTAKEY/emacs-online-judge
-  :require t
-  :custom ((online-judge-directories . '("~/Dropbox/atcoder/"))
-           (online-judge-command-name . nil))
-  )
-
-(leaf yasnippet
-  :doc "Yet another snippet extension for Emacs"
-  :req "cl-lib-0.5"
-  :tag "emulation" "convenience"
-  :url "http://github.com/joaotavora/yasnippet"
-  :added "2021-09-05"
-  :ensure t
-  :diminish t
-  :unless (string-match "Raspberrypi" (system-name))
-  :custom ((yas-global-mode . t))
-  :bind ((yas-minor-mode-map
-          ("C-." . ivy-yasnippet)))
-  :config
-  (leaf yas_hook
-    :require cl
-    :config
-    (defvar ivy-programing-hooks ()
-      '(emacs-lisp-mode
-        org-mode
-        yatex-mode
-        haskell-mode))
-    (loop for hook in ivy-programing-hooks
-          do (add-hook hook 'yas-minor-mode)))
-
-)
-
-(leaf shackle
-  :doc "Enforce rules for popups"
-  :req "emacs-24.3" "cl-lib-0.5"
-  :tag "convenience" "emacs>=24.3"
-  :url "https://depp.brause.cc/shackle"
-  :added "2021-09-05"
-  :emacs>= 24.3
-  :ensure t
-  :unless (string-match "RaspberryPi" (system-name))
-  :custom `((shackle-rules . '((compilation-mode :align below :ratio 0.2)
-                               ("*Google Translate*" :align right :ratio 0.3)
-                               ("*Help*" :align right)
-                               ("*online-judge*" :align below :ratio 0.5)
-                               ("*haskell-compilation*" :align below :ratio 0.5)
-                               ))
-            (shackle-mode . 1)
-            (winner-mode . 1)
-            (shackle-lighter . ""))
-  :bind (("C-z" . winner-undo))
-  )
-
-(leaf twittering-mode
-  :doc "Major mode for Twitter"
-  :tag "web" "twitter"
-  :url "http://twmode.sf.net/"
-  :added "2021-09-05"
-  :ensure t
-  :custom ((twittering-allow-insecure-server-cert . t)
-           (twittering-use-master-password . t))
-)
-
-(leaf lsp-mode
-  :disabled t
-  :ensure t
-  :when (eq system-type 'gnu/linux)
-  :require t
-  :hook ((haskell-mode-hook . lsp)
-         (haskell-literate-mode-hook . lsp))
-  :config
-  (leaf lsp-ui
-    :ensure t
-    :commands lsp-ui-mode
-    )
-  (leaf company-lsp
-    :disabled t
-    :ensure t
-    :hook (lsp-mode-hook . company-mode)
-    :commands company-lsp)
-  (leaf lsp-ivy
-    :ensure t
-    :commands lsp-ivy-workspace-symbol)
-  (leaf lsp-treemacs
-    :ensure t
-    :commands lsp-treemacs-errors-list)
-  (leaf lsp-haskell
-    :ensure t
-    :require t)
-  )
-
-(leaf japanese-holidays
-  :disabled t
-  :ensure t
-  :after calendar
-  :require japanese-holidays
-  :hook ((calendar-today-visible-hook . japanese-holiday-mark-weekend)
-         (calendar-today-invisible-hook .  japanese-holiday-mark-weekend)
-         (calendar-today-visible-hook . calendar-mark-today))
-  :custom ((calendar-mark-holidays-flag . t)
-           (japanese-holiday-weekend . '(0 6))
-           (japanese-holiday-weekend-marker . '(holiday nil nil nil nil nil japanese-holiday-saturday))
-           (org-agenda-include-diary . t))
-  :config
-  (let ((array ["日" "月" "火" "水" "木" "金" "土"]))
-    (setq calendar-day-header-array array
-          calendar-day-name-array array))
-  ;; (with-eval-after-load "calendar"
-  ;;   (require 'japanese-holidays)
-  ;;   (setq calendar-holidays ; 他の国の祝日も表示させたい場合は適当に調整
-  ;;         (append japanese-holidays holiday-local-holidays holiday-other-holidays))
-  ;;   (setq calendar-mark-holidays-flag t)    ; 祝日をカレンダーに表示
-  ;;   ;; 土曜日・日曜日を祝日として表示する場合、以下の設定を追加します。
-  ;;   ;; 変数はデフォルトで設定済み
-  ;;   (setq japanese-holiday-weekend '(0 6)    ; 土日を祝日として表示
-  ;;         japanese-holiday-weekend-marker    ; 土曜日を水色で表示
-  ;;         '(holiday nil nil nil nil nil japanese-holiday-saturday))
-  ;;   (add-hook 'calendar-today-visible-hook 'japanese-holiday-mark-weekend)
-  ;;   (add-hook 'calendar-today-invisible-hook 'japanese-holiday-mark-weekend)
-  ;;   ;; “きょう”をマークするには以下の設定を追加します。
-  ;;   (add-hook 'calendar-today-visible-hook 'calendar-mark-today)
-  ;;   ;; org-agendaで祝日を表示する
-  ;;   (setq org-agenda-include-diary t))
-
-  )
-
-(leaf calfw
-  :disabled t
-  :ensure t
-  :require t
-  :config
-  (leaf japanese-holidays :ensure t)
-  (leaf calfw-org
-    :ensure t
-    :require t)
-  (leaf calfw-ical
-    :ensure t
-    :require t
-    :config
-    (load "calfw_functions" t))
-  (add-hook 'calendar-load-hook (lambda ()
-                                  (require 'japanese-holidays)
-                                  (setq calendar-holidays
-                                        (append japanese-holidays local-holidays other-holidays))))
-
-  )
-
-(leaf yasnippet
-  :disabled t
-  :diminish t
-  :when (string-match "archlinuxhonda" (system-name))
-  :require t
-  :ensure t
-  :custom ((yas-global-mode . t))
-  :bind ((yas-minor-mode-map
-          ("C-." . ivy-yasnippet)))
-  :config
-  (leaf yas_hook
-    :require cl
-    :config
-    (defvar ivy-programing-hooks ()
-      '(emacs-lisp-mode
-        org-mode
-        yatex-mode
-        haskell-mode))
-    (loop for hook in ivy-programing-hooks
-          do (add-hook hook 'yas-minor-mode)))
-  )
-
 
 ;; (load "conf" t)
