@@ -755,165 +755,6 @@
     (run-with-idle-timer 60 t 'my-save-frame-size)))
 
 
-;; window managr
-(leaf *exwm-config
-  ;; :disabled t
-  :when (string= "enable" (getenv "EXWM"))
-  :when (eq system-type 'gnu/linux)
-  ;; :when (string= "archlinuxhonda" (system-name))
-  :init
-  (server-start)
-  :config
-  (leaf exwm
-    :ensure t
-    :ensure exwm-x
-    :require exwm
-    :defun (exwm-workspace-rename-buffer exwm-workspace-toggle)
-    :hook (exwm-update-class-hook . (lambda ()
-                                      (exwm-workspace-rename-buffer exwm-class-name)))
-
-    :custom `((use-dialog-box . nil)
-              (window-divider-default-right-width . 1)
-              (exwm-workspace-show-all-buffers . t)
-              (exwm-layout-show-all-buffers . t)
-              (exwm-workspace-number . 3)
-              (exwm-input-global-keys .
-                                      '((,(kbd "s-r")     . exwm-reset)
-                                        (,(kbd "s-d")     . counsel-linux-app)
-                                        (,(kbd "s-n")     . windmove-down)
-                                        (,(kbd "s-f")     . windmove-right)
-                                        (,(kbd "s-b")     . windmove-left)
-                                        (,(kbd "s-p")     . windmove-up)
-                                        (,(kbd "s-<tab>") . exwm-workspace-toggle)
-                                        (,(kbd "s-a")     . zoom-window-zoom)
-                                        (,(kbd "C-s-i")   . output_toggle)
-                                        (,(kbd "C-s-m")   . mute_toggle)
-                                        (,(kbd "C-s-n")   . lower_volume)
-                                        (,(kbd "C-s-p")   . upper_volume)
-                                        (,(kbd "s-q")     . kill-current-buffer)
-                                        (,(kbd "s-h")     . delete-window)
-                                        (,(kbd "s-SPC")   . exwm-floating-toggle-floating)
-                                        (,(kbd "s-e")     . exwm-input-toggle-keyboard)
-                                        (,(kbd "s-o")     . ivy-switch-buffer)
-                                        (,(kbd "s-r")     . exwm-reset)
-                                        ;; (,(kbd "s-d")     . app-launch)
-                                        (,(kbd "C-j")     . ,(kbd "C-&"))
-                                        (,(kbd "C-l")     . ,(kbd "C-^"))
-                                        (,(kbd "s-i")     . output_toggle)
-                                        (,(kbd "s-j")     . lower_volume)
-                                        (,(kbd "s-k")     . upper_volume)
-                                        (,(kbd "s-m")     . mute_toggle)
-                                        (,(kbd "s-i")     . output_toggle)
-                                        (,(kbd "s-[")     . lowerLight)
-                                        (,(kbd "s-]")     . upperLight)
-                                        ,@(mapcar (lambda (i)
-                                                    `(,(kbd (format "s-%d" i)) .
-                                                      (lambda ()
-                                                        (interactive)
-                                                        (exwm-workspace-switch-create ,i))))
-                                                  (number-sequence 0 9))
-                                        )
-                                      )
-              (exwm-input-simulation-keys . '(
-                                              ;; new version
-                                              (,(kbd "C-b")           . [left])
-                                              (,(kbd "M-b")           . [C-left])
-                                              (,(kbd "C-f")           . [right])
-                                              (,(kbd "M-f")           . [C-right])
-                                              (,(kbd "C-p")           . [up])
-                                              (,(kbd "C-n")           . [down])
-                                              (,(kbd "C-a")           . [home])
-                                              (,(kbd "C-e")           . [end])
-                                              (,(kbd "M-v")           . [prior])
-                                              (,(kbd "C-v")           . [next])
-                                              (,(kbd "C-d")           . [delete])
-                                              (,(kbd "C-k")           . [S-end ?\C-x])
-                                              (,(kbd "M-<")           . [C-home])
-                                              (,(kbd "M->")           . [C-end])
-                                              (,(kbd "C-/")           . [C-z])
-                                              ;; C-h は特別扱い扱い
-                                              ([?\C-h]                . [backspace])
-                                              (,(kbd "C-m")           . [return])
-                                              (,(kbd "C-/")           . [C-z])
-                                              (,(kbd "C-S-f")         . [S-right])
-                                              (,(kbd "C-S-b")         . [S-left])
-                                              (,(kbd "C-S-p")         . [S-up])
-                                              (,(kbd "C-S-n")         . [S-down])
-                                              (,(kbd "C-w")           . ,(kbd "C-x"))
-                                              (,(kbd "M-w")           . ,(kbd "C-c"))
-                                              (,(kbd "C-y")           . ,(kbd "C-v"))
-                                              (,(kbd "s-v")           . ,(kbd "C-v"))
-                                              (,(kbd "C-x h")         . ,(kbd "C-a"))
-                                              (,(kbd "M-d")           . [C-S-right ?\C-x])
-                                              (,(kbd "M-<backspace>") . [C-S-left ?\C-x])
-                                              ;; search
-                                              (,(kbd "C-s")           . ,(kbd "C-f"))
-                                              ;; escape
-                                              (,(kbd "C-g")           . [escape])
-                                              ;; like mac
-                                              (,(kbd "s-w")           . [C-w])
-                                              ([s-left]               . [C-S-tab])
-                                              ([s-right]              . [C-tab])
-                                              ;; ([s-up] . [C-tab])
-                                              ;; ([s-down] . [C-tab])
-                                              (,(kbd "s-t")           . [C-t ?\C-k])
-                                              (,(kbd "s-T")           . [C-T])
-                                              ;;
-                                              ;;
-                                              ;;
-                                              (,(kbd "s-l")           . [C-k])
-                                              (,(kbd "s-k")           . [C-l])
-                                              ;;
-                                              (,(kbd "C-x C-s")       . [C-s])
-                                              (,(kbd "C-u C-/")       . [C-y])
-                                              ))
-              )
-    :bind (("C-&" . skk-hiragana-set)
-           ("C-^" . skk-latin-mode))
-    :preface
-    (defun exwm-workspace-toggle ()
-      (interactive)
-      (if (= exwm-workspace-current-index 0)
-          (exwm-workspace-switch 2)
-        (exwm-workspace-switch 0)))
-
-    :config
-    (leaf *pi
-      :disabled t
-      :when (string-match "raspberrypi" (system-name))
-      :preface
-      (defun app-launch (command)
-        (interactive (list (read-shell-command "$ ")))
-        (start-process-shell-command command nil command))
-      :bind ("s-d" . counsel-linux-app))
-
-    ;; (exwmx-floating-smart-hide)
-    ;; (exwmx-button-enable)
-    )
-
-  (leaf exwm-systemtray
-    :require t
-    :defun exwm-systemtray-enable
-    :config
-    (exwm-systemtray-enable))
-
-  (leaf exwm-randr
-    :require t
-    :when (eq "archlinuxhonda" (system-name))
-    :custom ((exwm-randr-workspace-monitor-plist . '(0 "DP-0" 1 "HDMI-0" 2 "DP-0" 3 "DP-0" 4 "DP-0" 5 "DP-0")))
-    :config
-    (exwm-randr-enable))
-
-  (leaf exwm-enable
-    :defun (exwm-enable)
-    :config
-    (exwm-enable))
-
-  (leaf *fix_ediff
-    :after ediff-wind
-    :custom `((ediff-window-setup-function . 'ediff-setup-windows-plain))))
-
-
 ;; theme
 (leaf doom-themes
   :doc "an opinionated pack of modern color-themes"
@@ -1009,11 +850,14 @@
   :ensure t
   :after git-commit magit-section with-editor
   :config
-  (leaf gitignore-mode-pkg
-    :tag "out-of-MELPA"
+  (leaf gitignore-mode
+    :doc "Major mode for editing .gitignore files"
+    :req "emacs-24.3"
+    :tag "git" "vc" "convenience" "emacs>=24.3"
+    :url "https://github.com/magit/git-modes"
     :added "2021-09-05"
-    :el-get {{user}}/gitignore-mode-pkg
-    :require t))
+    :emacs>= 24.3
+    :ensure t))
 
 (leaf haskell-mode
   :doc "A Haskell editing mode"
@@ -1893,6 +1737,7 @@
 
 ;; ivy 補完設定
 (leaf ivy
+  :disabled t
   :doc "Incremental Vertical completYon"
   :req "emacs-24.5"
   :tag "matching" "emacs>=24.5"
@@ -2150,5 +1995,254 @@
               (TypeParameter . ,(all-the-icons-faicon "arrows" :height 0.85 :v-adjust -0.05))
               (Template      . ,(all-the-icons-material "format_align_center" :height 0.9 :v-adjust -0.2))))
       (setq company-box-icons-alist 'company-box-icons-all-the-icons))))
+
+
+;; Vertico お試し
+(leaf vertico
+  :doc "VERTical Interactive COmpletion"
+  :req "emacs-27.1"
+  :tag "emacs>=27.1"
+  :url "https://github.com/minad/vertico"
+  :added "2021-09-05"
+  :emacs>= 27.1
+  :ensure t
+  :after recentf
+  :bind (("M-g g" . consult-goto-line)
+         ("C-c i" . consult-imenu)
+         ("M-y" . consult-yank-pop)
+         ("C-s" . consult-line)
+         ("C-c h" . consult-recent-file)
+         (vertico-map
+          ("?" . minibuffer-complition-help)
+          ("M-RET" . minibuffer-force-complete-and-exit)
+          ("M-TAB" . minibuffer-complete)
+          ("C-," . up-to-dir))
+         (consult-narrow-map
+            ("?" . consult-narrow-key)))
+  :custom ((vertico-count . 20))
+  :preface
+  (defun up-to-dir ()
+    "Move to parent directory like \"cd ..\" in find-file."
+    (interactive)
+    (let ((sep (eval-when-compile (regexp-opt '("/" "\\")))))
+      (save-excursion
+        (left-char 1)
+        (when (looking-at-p sep)
+          (delete-char 1)))
+      (save-match-data
+        (when (search-backward-regexp sep nil t)
+          (right-char 1)
+          (filter-buffer-substring (point)
+                                   (save-excursion (end-of-line) (point))
+                                   #'delete)))))
+  :config
+  (vertico-mode)
+  (leaf marginalia
+    :doc "Enrich existing commands with completion annotations"
+    :req "emacs-26.1"
+    :tag "emacs>=26.1"
+    :url "https://github.com/minad/marginalia"
+    :added "2021-09-06"
+    :emacs>= 26.1
+    :ensure t
+    :config (marginalia-mode 1))
+  (leaf orderless
+    :doc "Completion style for matching regexps in any order"
+    :req "emacs-26.1"
+    :tag "extensions" "emacs>=26.1"
+    :url "https://github.com/oantolin/orderless"
+    :added "2021-09-05"
+    :emacs>= 26.1
+    :ensure t
+    :custom ((completion-styles . '(orderless))))
+  (leaf savehist
+    :doc "Save minibuffer history"
+    :tag "builtin"
+    :added "2021-09-05"
+    :config (savehist-mode))
+  (leaf consult
+    :doc "Consulting completing-read"
+    :req "emacs-26.1"
+    :tag "emacs>=26.1"
+    :url "https://github.com/minad/consult"
+    :added "2021-09-05"
+    :emacs>= 26.1
+    :ensure t
+    :after embark
+    :custom ((consult-buffer-sources . '(consult--source-hidden-buffer
+                                         consult--source-buffer
+                                         consult--source-file
+                                         consult--source-bookmark
+                                         consult--source-project-buffer
+                                         consult--source-project-file))))
+  (leaf app-launcher
+    :doc "Launch applications from Emacs"
+    :req "emacs-27.1"
+    :tag "out-of-MELPA" "emacs>=27.1"
+    :url "https://github.com/sebastienwae/app-launcher"
+    :added "2021-09-06"
+    :emacs>= 27.1
+    :el-get sebastienwae/app-launcher
+    :require t))
+
+
+;; window managr
+(leaf *exwm-config
+  ;; :disabled t
+  :when (string= "enable" (getenv "EXWM"))
+  :when (eq system-type 'gnu/linux)
+  ;; :when (string= "archlinuxhonda" (system-name))
+  :init
+  (server-start)
+  :config
+  (leaf exwm
+    :ensure t
+    :ensure exwm-x
+    :require exwm
+    :defun (exwm-workspace-rename-buffer exwm-workspace-toggle)
+    :hook (exwm-update-class-hook . (lambda ()
+                                      (exwm-workspace-rename-buffer exwm-class-name)))
+
+    :custom `((use-dialog-box . nil)
+              (window-divider-default-right-width . 1)
+              (exwm-workspace-show-all-buffers . t)
+              (exwm-layout-show-all-buffers . t)
+              (exwm-workspace-number . 3)
+              (exwm-input-global-keys .
+                                      '((,(kbd "s-r")     . exwm-reset)
+                                        (,(kbd "s-d")     . counsel-linux-app)
+                                        (,(kbd "s-n")     . windmove-down)
+                                        (,(kbd "s-f")     . windmove-right)
+                                        (,(kbd "s-b")     . windmove-left)
+                                        (,(kbd "s-p")     . windmove-up)
+                                        (,(kbd "s-<tab>") . exwm-workspace-toggle)
+                                        (,(kbd "s-a")     . zoom-window-zoom)
+                                        (,(kbd "C-s-i")   . output_toggle)
+                                        (,(kbd "C-s-m")   . mute_toggle)
+                                        (,(kbd "C-s-n")   . lower_volume)
+                                        (,(kbd "C-s-p")   . upper_volume)
+                                        (,(kbd "s-q")     . kill-current-buffer)
+                                        (,(kbd "s-h")     . delete-window)
+                                        (,(kbd "s-SPC")   . exwm-floating-toggle-floating)
+                                        (,(kbd "s-e")     . exwm-input-toggle-keyboard)
+                                        ;; (,(kbd "s-o")     . ivy-switch-buffer)
+                                        (,(kbd "s-o")     . switch-to-buffer)
+                                        (,(kbd "s-r")     . exwm-reset)
+                                        ;; (,(kbd "s-d")     . app-launch)
+                                        (,(kbd "C-j")     . ,(kbd "C-&"))
+                                        (,(kbd "C-l")     . ,(kbd "C-^"))
+                                        (,(kbd "s-i")     . output_toggle)
+                                        (,(kbd "s-j")     . lower_volume)
+                                        (,(kbd "s-k")     . upper_volume)
+                                        (,(kbd "s-m")     . mute_toggle)
+                                        (,(kbd "s-i")     . output_toggle)
+                                        (,(kbd "s-[")     . lowerLight)
+                                        (,(kbd "s-]")     . upperLight)
+                                        ,@(mapcar (lambda (i)
+                                                    `(,(kbd (format "s-%d" i)) .
+                                                      (lambda ()
+                                                        (interactive)
+                                                        (exwm-workspace-switch-create ,i))))
+                                                  (number-sequence 0 9))
+                                        )
+                                      )
+              (exwm-input-simulation-keys . '(
+                                              ;; new version
+                                              (,(kbd "C-b")           . [left])
+                                              (,(kbd "M-b")           . [C-left])
+                                              (,(kbd "C-f")           . [right])
+                                              (,(kbd "M-f")           . [C-right])
+                                              (,(kbd "C-p")           . [up])
+                                              (,(kbd "C-n")           . [down])
+                                              (,(kbd "C-a")           . [home])
+                                              (,(kbd "C-e")           . [end])
+                                              (,(kbd "M-v")           . [prior])
+                                              (,(kbd "C-v")           . [next])
+                                              (,(kbd "C-d")           . [delete])
+                                              (,(kbd "C-k")           . [S-end ?\C-x])
+                                              (,(kbd "M-<")           . [C-home])
+                                              (,(kbd "M->")           . [C-end])
+                                              (,(kbd "C-/")           . [C-z])
+                                              ;; C-h は特別扱い扱い
+                                              ([?\C-h]                . [backspace])
+                                              (,(kbd "C-m")           . [return])
+                                              (,(kbd "C-/")           . [C-z])
+                                              (,(kbd "C-S-f")         . [S-right])
+                                              (,(kbd "C-S-b")         . [S-left])
+                                              (,(kbd "C-S-p")         . [S-up])
+                                              (,(kbd "C-S-n")         . [S-down])
+                                              (,(kbd "C-w")           . ,(kbd "C-x"))
+                                              (,(kbd "M-w")           . ,(kbd "C-c"))
+                                              (,(kbd "C-y")           . ,(kbd "C-v"))
+                                              (,(kbd "s-v")           . ,(kbd "C-v"))
+                                              (,(kbd "C-x h")         . ,(kbd "C-a"))
+                                              (,(kbd "M-d")           . [C-S-right ?\C-x])
+                                              (,(kbd "M-<backspace>") . [C-S-left ?\C-x])
+                                              ;; search
+                                              (,(kbd "C-s")           . ,(kbd "C-f"))
+                                              ;; escape
+                                              (,(kbd "C-g")           . [escape])
+                                              ;; like mac
+                                              (,(kbd "s-w")           . [C-w])
+                                              ([s-left]               . [C-S-tab])
+                                              ([s-right]              . [C-tab])
+                                              ;; ([s-up] . [C-tab])
+                                              ;; ([s-down] . [C-tab])
+                                              (,(kbd "s-t")           . [C-t ?\C-k])
+                                              (,(kbd "s-T")           . [C-T])
+                                              ;;
+                                              ;;
+                                              ;;
+                                              (,(kbd "s-l")           . [C-k])
+                                              (,(kbd "s-k")           . [C-l])
+                                              ;;
+                                              (,(kbd "C-x C-s")       . [C-s])
+                                              (,(kbd "C-u C-/")       . [C-y])
+                                              ))
+              )
+    :bind (("C-&" . skk-hiragana-set)
+           ("C-^" . skk-latin-mode))
+    :preface
+    (defun exwm-workspace-toggle ()
+      (interactive)
+      (if (= exwm-workspace-current-index 0)
+          (exwm-workspace-switch 2)
+        (exwm-workspace-switch 0)))
+
+    :config
+    (leaf *pi
+      :disabled t
+      :when (string-match "raspberrypi" (system-name))
+      :preface
+      (defun app-launch (command)
+        (interactive (list (read-shell-command "$ ")))
+        (start-process-shell-command command nil command))
+      :bind ("s-d" . counsel-linux-app))
+
+    ;; (exwmx-floating-smart-hide)
+    ;; (exwmx-button-enable)
+    )
+
+  (leaf exwm-systemtray
+    :require t
+    :defun exwm-systemtray-enable
+    :config
+    (exwm-systemtray-enable))
+
+  (leaf exwm-randr
+    :require t
+    :when (eq "archlinuxhonda" (system-name))
+    :custom ((exwm-randr-workspace-monitor-plist . '(0 "DP-0" 1 "HDMI-0" 2 "DP-0" 3 "DP-0" 4 "DP-0" 5 "DP-0")))
+    :config
+    (exwm-randr-enable))
+
+  (leaf exwm-enable
+    :defun (exwm-enable)
+    :config
+    (exwm-enable))
+
+  (leaf *fix_ediff
+    :after ediff-wind
+    :custom `((ediff-window-setup-function . 'ediff-setup-windows-plain))))
 
 ;; (load "conf" t)
