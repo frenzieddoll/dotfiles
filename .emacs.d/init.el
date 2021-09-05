@@ -20,36 +20,6 @@
   (setq load-path (cons "~/Dropbox/private/elisp" load-path))
   )
 
-;; (prog1 "prepare leaf"
-;;   (prog1 "package"
-;;      (custom-set-variables
-;;       '(package-archives '(("org"   . "http://orgmode.org/elpa/")
-;;                            ("melpa" . "http://melpa.org/packages/")
-;;                            ("gnu"   . "http://elpa.gnu.org/packages/"))))
-
-;;     (package-initialize))
-
-;;   (prog1 "leaf"
-;;     (unless (package-installed-p 'leaf)
-;;       (unless (assoc 'leaf package-archive-contents)
-;;         (package-refresh-contents))
-;;       (condition-case err
-;;           (package-install 'leaf)
-;;         (error
-;;          (package-refresh-contents)       ; renew local melpa cache if fail
-;;          (package-install 'leaf))))
-
-;;     (leaf leaf-keywords
-;;       :ensure t
-;;       :config (leaf-keywords-init)))
-
-;;   (prog1 "optional packages for leaf-keywords"
-;;     ;; optional packages if you want to use :hydra, :el-get,,,
-;;     (leaf hydra :ensure t)
-;;     (leaf blackout :ensure t)
-;;     (leaf el-get :ensure t
-;;       :custom ((el-get-git-shallow-clone  . t)))))
-
 ;; this enables this running method
 ;;   emacs -q -l ~/.debug.emacs.d/init.el
 (eval-and-compile
@@ -84,10 +54,18 @@
     (leaf-keywords-init)))
 
 ;; 必要なPackageのInstall
-(leaf *installPackege
+(leaf leaf
   :config
-  (leaf diminish :ensure t)
-  )
+  (leaf leaf-convert :ensure t)
+  (leaf leaf-tree
+    :ensure t
+    :custom ((imenu-list-size . 30)
+             (imuenu-list-position . 'left)))
+  (leaf diminish :ensure t))
+
+(leaf macrostep
+  :ensure t
+  :bind (("C-c j" . macrostep-expand)))
 
 
 ;; 初回起動の設定
@@ -270,7 +248,9 @@
         )
 
       (leaf *pi
+        :disabled t
         :when (string-match (system-name) "RaspberryPi")
+        :when (string-match "enable" (getenv "EXWM"))
         :config
         (set-face-attribute 'default nil
                             :family "HackGen"
@@ -849,19 +829,17 @@
       (if (= exwm-workspace-current-index 0)
           (exwm-workspace-switch 2)
         (exwm-workspace-switch 0)))
-    (defun app-launch (command)
-        (interactive (list (read-shell-command "$ ")))
-        (start-process-shell-command command nil command))
 
     :config
     (leaf *pi
+      :disabled t
       :when (string-match "raspberrypi" (system-name))
       :preface
       (defun app-launch (command)
         (interactive (list (read-shell-command "$ ")))
         (start-process-shell-command command nil command))
 
-      :bind ("s-d" . app-launch)
+      :bind ("s-d" . counsel-linux-app)
     )
 
     ;; (exwmx-floating-smart-hide)
@@ -901,216 +879,196 @@
 
 
 ;; メジャーモードの設定
-(leaf *major_mode
+(leaf ein :ensure t)
+
+(leaf rust-mode
+  :ensure t
   :config
-  (leaf ein :ensure t)
-
-  (leaf rust-mode
-    :ensure t
-    :config
-    (leaf racer :ensure t)
-    )
-
-  (leaf csv-mode
-    ;; :unless (string-match "raspberrypi" (system-name))
-    :ensure t)
-
-  (leaf vlf
-    :ensure t
-    :require vlf-setup)
-
-  (leaf yaml-mode :ensure t)
-
-  ;; (leaf neotree :ensure t)
-
-  (leaf *git-tool
-    :config
-    (leaf magit
-      :req "emacs-25.1"
-      :ensure t
-      :config
-      (leaf *forWindows
-        :when (eq system-type 'windows-nt)
-        :custom ((magit-git-executable . "c:/Program Files/Git/bin/git.exe"))
-        )
-      )
-
-    (leaf gitignore-mode :ensure t)
-    )
-
-  (leaf haskell-mode
-    :ensure t
-    :defvar haskell-process-args-ghcie
-    :custom `(;; (flymake-proc-allowed-file-name-masks . ,(delete '("\\.l?hs\\'" haskell-flymake-init) flymake-proc-allowed-file-name-masks))
-              (haskell-process-type          . 'stack-ghci)
-              (haskell-process-path-ghci     . "stack")
-              (haskell-process-args-ghcie    . "ghci")
-              (haskell-indent-after-keywords . '(("where" 4 0) ("of" 4) ("do" 4) ("mdo" 4) ("rec" 4) ("in" 4 0) ("{" 4) "if" "then" "else" "let"))
-              (haskell-indent-offset         . 4)
-              (haskell-indendt-spaces        . 4)
-              (haskell-compile-stack-build-command . t)
-              )
-
-    :bind `((haskell-mode-map
-             ("C-c C-z" . haskell-interactive-bring)
-             ("C-c C-l" . haskell-process-load-file)
-             ("C-c C-," . haskell-mode-format-imports)
-             ("<f5>" . haskell-compile)
-             ("<f8>" . haskell-navigate-imports)
-             )
-            ;; (haskell-interactive-mode-map
-            ;;  ("<up>" . haskell-interactive-mode-history-previous)
-            ;;  ("<down>" . haskell-interactive-mode-history-next)
-            ;;  ("C-c C-l" . haskell-interactive-switch-back)
-            ;;  )
-            )
-    :hook ((haskell-mode-hook . interactive-haskell-mode)
-           (haskell-mode-hook . haskell-decl-scan-mode)
-           (haskell-mode-hook . haskell-doc-mode)
-           (haskell-mode-hook . haskell-indentation-mode)
-           )
-    )
+  (leaf racer :ensure t)
   )
 
-(leaf *tex
+(leaf csv-mode
+  ;; :unless (string-match "raspberrypi" (system-name))
+  :ensure t)
+
+(leaf vlf
+  :ensure t
+  :require vlf-setup)
+
+(leaf yaml-mode :ensure t)
+
+(leaf magit
+  :doc "A Git porcelain inside Emacs."
+  :req "emacs-25.1" "dash-20210330" "git-commit-20210806" "magit-section-20210806" "transient-20210701" "with-editor-20210524"
+  :tag "vc" "tools" "git" "emacs>=25.1"
+  :url "https://github.com/magit/magit"
+  :added "2021-09-05"
+  :emacs>= 25.1
+  :ensure t
+  :after git-commit magit-section with-editor
   :config
-  (leaf yatex
+  (leaf gitignore-mode-pkg
+    :tag "out-of-MELPA"
+    :added "2021-09-05"
+    :el-get {{user}}/gitignore-mode-pkg
+    :require t))
+
+(leaf haskell-mode
+  :doc "A Haskell editing mode"
+  :req "emacs-25.1"
+  :tag "haskell" "files" "faces" "emacs>=25.1"
+  :url "https://github.com/haskell/haskell-mode"
+  :added "2021-09-05"
+  :emacs>= 25.1
+  :ensure t
+  :defvar haskell-process-args-ghcie
+  :custom `(;; (flymake-proc-allowed-file-name-masks . ,(delete '("\\.l?hs\\'" haskell-flymake-init) flymake-proc-allowed-file-name-masks))
+            (haskell-process-type          . 'stack-ghci)
+            (haskell-process-path-ghci     . "stack")
+            (haskell-process-args-ghcie    . "ghci")
+            (haskell-indent-after-keywords . '(("where" 4 0) ("of" 4) ("do" 4) ("mdo" 4) ("rec" 4) ("in" 4 0) ("{" 4) "if" "then" "else" "let"))
+            (haskell-indent-offset         . 4)
+            (haskell-indendt-spaces        . 4)
+            (haskell-compile-stack-build-command . t))
+
+  :bind `((haskell-mode-map
+           ("C-c C-z" . haskell-interactive-bring)
+           ("C-c C-l" . haskell-process-load-file)
+           ("C-c C-," . haskell-mode-format-imports)
+           ("<f5>" . haskell-compile)
+           ("<f8>" . haskell-navigate-imports)
+           ))
+  :hook ((haskell-mode-hook . interactive-haskell-mode)
+         (haskell-mode-hook . haskell-decl-scan-mode)
+         (haskell-mode-hook . haskell-doc-mode)
+         (haskell-mode-hook . haskell-indentation-mode)))
+
+(leaf yatex
+  ;; :disabled t
+  :ensure t
+  :hook (yatex-mode-hook . (lambda () (auto-fill-mode -1)))
+  :hook (yatex-mode-hook . reftex-mode)
+  ;; :bind (("C-c C-z" . ebib))
+  :mode (("\\.tex\\'" . yatex-mode)
+         ("\\.ltx\\'"     . yatex-mode)
+         ("\\.cls\\'"     . yatex-mode)
+         ("\\.sty\\'"     . yatex-mode)
+         ("\\.clo\\'"     . yatex-mode)
+         ("\\.bbl\\'"     . yatex-mode))
+  :custom `((YaTeX-inhibit-prefix-letter  .   t)
+            (YaTeX-kanji-code                 .   4)
+            (YaTeX-latex-message-code         .   'utf-8)
+            (YaTeX-use-LaTeX2e            .   t)
+            (YaTeX-use-AMS-LaTeX          .   t)
+            (YaTeX-dvi2-command-ext-alist .   '(("TeXworks\\|texworks\\|texstudio\\|mupdf\\|SumatraPDF\\|Preview\\|Skim\\|TeXShop\\|evince\\|atril\\|xreader\\|okular\\|zathura\\|qpdfview\\|Firefox\\|firefox\\|chrome\\|chromium\\|MicrosoftEdge\\|microsoft-edge\\|Adobe\\|Acrobat\\|AcroRd32\\|acroread\\|pdfopen\\|xdg-open\\|open\\|start" . ".pdf")))
+            (tex-command                  .   "uplatex -synctex=1")
+            ;; (tex-command  . "ptex2pdf -u -l -ot '-synctex=1 -file-line-error'")
+            ;; (tex-command  . "ptex2pdf -l -ot '-synctex=1")
+            (bibtex-command               .   "upbibtex")
+            ;; (makeindex-command  . "mendex")
+            (dviprint-command-format      .   "open -a \"Adobe Acrobat Reader DC\" `echo %s | gsed -e \"s/\\.[^.]*$/\\.pdf/\"`")
+            (YaTeX-nervous                .   nil)
+            (YaTeX-close-paren-always         .   nil))
+
+  :config
+  (leaf *yatexForLinux
+    :when (eq system-type 'gnu/linux)
+    :custom ((dvi2-command        .   "zathura -x \"emacsclient --no-wait +%{line} %{input}\"")
+             (tex-pdfview-command .   "zathura -x \"emacsclient --no-wait +%{line} %{input}\"")))
+
+  (leaf *yatexforMac
     ;; :disabled t
-    :ensure t
-    :hook (yatex-mode-hook . (lambda () (auto-fill-mode -1)))
-    :hook (yatex-mode-hook . reftex-mode)
-    ;; :bind (("C-c C-z" . ebib))
-    :mode (("\\.tex\\'" . yatex-mode)
-           ("\\.ltx\\'"     . yatex-mode)
-           ("\\.cls\\'"     . yatex-mode)
-           ("\\.sty\\'"     . yatex-mode)
-           ("\\.clo\\'"     . yatex-mode)
-           ("\\.bbl\\'"     . yatex-mode))
-    :custom `((YaTeX-inhibit-prefix-letter  .   t)
-              (YaTeX-kanji-code                 .   4)
-              (YaTeX-latex-message-code         .   'utf-8)
-              (YaTeX-use-LaTeX2e            .   t)
-              (YaTeX-use-AMS-LaTeX          .   t)
-              (YaTeX-dvi2-command-ext-alist .   '(("TeXworks\\|texworks\\|texstudio\\|mupdf\\|SumatraPDF\\|Preview\\|Skim\\|TeXShop\\|evince\\|atril\\|xreader\\|okular\\|zathura\\|qpdfview\\|Firefox\\|firefox\\|chrome\\|chromium\\|MicrosoftEdge\\|microsoft-edge\\|Adobe\\|Acrobat\\|AcroRd32\\|acroread\\|pdfopen\\|xdg-open\\|open\\|start" . ".pdf")))
-              (tex-command                  .   "uplatex -synctex=1")
-              ;; (tex-command  . "ptex2pdf -u -l -ot '-synctex=1 -file-line-error'")
-              ;; (tex-command  . "ptex2pdf -l -ot '-synctex=1")
-              (bibtex-command               .   "upbibtex")
-              ;; (makeindex-command  . "mendex")
-              (dviprint-command-format      .   "open -a \"Adobe Acrobat Reader DC\" `echo %s | gsed -e \"s/\\.[^.]*$/\\.pdf/\"`")
-              (YaTeX-nervous                .   nil)
-              (YaTeX-close-paren-always         .   nil))
+    :when (eq system-type 'darwin)
+    :custom ((dvi2-command        .   "open -a Skim")
+             (tex-pdfview-command .   "open -a Skim")))
 
+  (leaf *yatex_after_load
+    :after yatexprc
+    :defvar YaTeX-parent-file YaTeX-cmd-displayline
+    :defun YaTeX-preview-default-previewer YaTeX-visit-main YaTeX-system
     :config
-    (leaf *yatexForLinux
-      :when (eq system-type 'gnu/linux)
-      :custom ((dvi2-command        .   "zathura -x \"emacsclient --no-wait +%{line} %{input}\"")
-               (tex-pdfview-command .   "zathura -x \"emacsclient --no-wait +%{line} %{input}\"")
-               )
-      )
-
-    (leaf *yatexforMac
-      ;; :disabled t
-      :when (eq system-type 'darwin)
-      :custom ((dvi2-command        .   "open -a Skim")
-               (tex-pdfview-command .   "open -a Skim")
-               )
-      )
-
-    (leaf *yatex_after_load
-      :after yatexprc
-      :defvar YaTeX-parent-file YaTeX-cmd-displayline
-      :defun YaTeX-preview-default-previewer YaTeX-visit-main YaTeX-system
-      :config
-      (defun YaTeX-preview-jump-line ()
-        "Call jump-line function of various previewer on current main file"
-        (interactive)
-        (save-excursion
-          (save-restriction
-            (widen)
-            (let*((pf (or YaTeX-parent-file
-                          (save-excursion (YaTeX-visit-main t) (buffer-file-name))))
-                  (pdir (file-name-directory pf))
-                  (bnr (substring pf 0 (string-match "\\....$" pf)))
+    (defun YaTeX-preview-jump-line ()
+      "Call jump-line function of various previewer on current main file"
+      (interactive)
+      (save-excursion
+        (save-restriction
+          (widen)
+          (let*((pf (or YaTeX-parent-file
+                        (save-excursion (YaTeX-visit-main t) (buffer-file-name))))
+                (pdir (file-name-directory pf))
+                (bnr (substring pf 0 (string-match "\\....$" pf)))
                                         ;(cf (file-relative-name (buffer-file-name) pdir))
-                  (cf (buffer-file-name)) ;2016-01-08
-                  (buffer (get-buffer-create " *preview-jump-line*"))
-                  (line (count-lines (point-min) (point-end-of-line)))
-                  (previewer (YaTeX-preview-default-previewer))
-                  (cmd (cond
-                        ((string-match "Skim" previewer)
-                         (format "%s %d '%s.pdf' '%s'"
-                                 YaTeX-cmd-displayline line bnr cf))
-                        ((string-match "evince" previewer)
-                         (format "%s '%s.pdf' %d '%s'"
-                                 "fwdevince" bnr line cf))
-                        ((string-match "sumatra" previewer)
-                         (format "%s \"%s.pdf\" -forward-search \"%s\" %d"
-                                 previewer bnr cf line))
-                        ((string-match "zathura" previewer)
-                         (format "%s --synctex-forward '%d:0:%s' '%s.pdf'"
-                                 previewer line cf bnr))
-                        ((string-match "qpdfview" previewer)
-                         (format "%s '%s.pdf#src:%s:%d:0'"
-                                 previewer bnr cf line))
-                        ((string-match "okular" previewer)
-                         (format "%s '%s.pdf#src:%d %s'"
-                                 previewer bnr line (expand-file-name cf)))
-                        )))
-              (YaTeX-system cmd "jump-line" 'noask pdir)))))
-      )
+                (cf (buffer-file-name)) ;2016-01-08
+                (buffer (get-buffer-create " *preview-jump-line*"))
+                (line (count-lines (point-min) (point-end-of-line)))
+                (previewer (YaTeX-preview-default-previewer))
+                (cmd (cond
+                      ((string-match "Skim" previewer)
+                       (format "%s %d '%s.pdf' '%s'"
+                               YaTeX-cmd-displayline line bnr cf))
+                      ((string-match "evince" previewer)
+                       (format "%s '%s.pdf' %d '%s'"
+                               "fwdevince" bnr line cf))
+                      ((string-match "sumatra" previewer)
+                       (format "%s \"%s.pdf\" -forward-search \"%s\" %d"
+                               previewer bnr cf line))
+                      ((string-match "zathura" previewer)
+                       (format "%s --synctex-forward '%d:0:%s' '%s.pdf'"
+                               previewer line cf bnr))
+                      ((string-match "qpdfview" previewer)
+                       (format "%s '%s.pdf#src:%s:%d:0'"
+                               previewer bnr cf line))
+                      ((string-match "okular" previewer)
+                       (format "%s '%s.pdf#src:%d %s'"
+                               previewer bnr line (expand-file-name cf)))
+                      )))
+            (YaTeX-system cmd "jump-line" 'noask pdir))))))
 
-    ;; (leaf *forMac
-    ;;   :when (eq system-type 'darwin)
-    ;;   :custom ((exec-path . (append '("/usr/local/bin" "/Library/TeX/texbin" "/Applications/Skim.app/Contents/SharedSupport") exec-path))
-    ;;            (dvi2-command . "open -a Skim")
-    ;;            (tex-pdfview-command . "open -a Skim"))
-    ;;   :config
-    ;;   (setenv "PATH" "/usr/local/bin:/Library/TeX/texbin/:/Applications/Skim.app/Contents/SharedSupport:$PATH" t))
+  ;; (leaf *forMac
+  ;;   :when (eq system-type 'darwin)
+  ;;   :custom ((exec-path . (append '("/usr/local/bin" "/Library/TeX/texbin" "/Applications/Skim.app/Contents/SharedSupport") exec-path))
+  ;;            (dvi2-command . "open -a Skim")
+  ;;            (tex-pdfview-command . "open -a Skim"))
+  ;;   :config
+  ;;   (setenv "PATH" "/usr/local/bin:/Library/TeX/texbin/:/Applications/Skim.app/Contents/SharedSupport:$PATH" t))
 
-    (leaf reftex
-      ;; :ensure t
-      :hook (yatex-mode . reftex-mode)
-      :custom ((reftex-mode . 1)
-               (reftex-label-alist . '((nil ?e nil "\\eqref{%s}" nil nil)))
-               (reftex-default-bibliography . '("~/tex/references.bib"))
-               (reftex-bibliography-commands . '("bibliography" "nobibliography" "addbibresorce")))
+  (leaf reftex
+    ;; :ensure t
+    :hook (yatex-mode . reftex-mode)
+    :custom ((reftex-mode . 1)
+             (reftex-label-alist . '((nil ?e nil "\\eqref{%s}" nil nil)))
+             (reftex-default-bibliography . '("~/tex/references.bib"))
+             (reftex-bibliography-commands . '("bibliography" "nobibliography" "addbibresorce")))
 
-      :bind ((YaTeX-mode-map
-              (">" . YaTeX-comment-region)
-              ("<" . YaTeX-uncomment-region))))
+    :bind ((YaTeX-mode-map
+            (">" . YaTeX-comment-region)
+            ("<" . YaTeX-uncomment-region)))))
 
-
+(leaf ebib
+  :ensure t
+  :custom ((ebib-preload-bib-files                . '("~/tex/references.bib"))
+           (bibtex-autokey-name-case-convert      . 'capitalize)
+           (bibtex-autokey-titleword-case-convert . 'capitalize)
+           (bibtex-autokey-titleword-separator    . "")
+           (bibtex-autokey-titleword-length       . nil)
+           (bibtex-autokey-titlewords             . 1)
+           (bibtex-autokey-year-length            . 4)
+           (bibtex-autokey-year-title-separator   . "_")
+           (bibtex-autokey-titleword-ignore       . '("A" "An" "On" "The" "a" "an"
+                                                      "on" "the" "Le" "La" "Les"
+                                                      "le" "la" "les" "Zur" "zur" "Des" "Dir" "Die"))
+           (ebib-keywords-use-only-file           . t)
+           (ebib-keywords-file                    . "~/tex/ebib-keywords.txt")
+           (ebib-keywords-file-save-on-exit       . 'always)
+           (ebib-file-search-dirs                 . '("~/tex/pdfs" "~/tex/papers" "~/tex/books")))
+  :config
+  (leaf *ebibForMac
+    :when (eq system-type 'darwin)
+    :custom ((ebib-file-associations . '(("pdf" . "open") ("ps"  . "open"))))
     )
-  (leaf ebib
-      :ensure t
-      :custom ((ebib-preload-bib-files                . '("~/tex/references.bib"))
-               (bibtex-autokey-name-case-convert      . 'capitalize)
-               (bibtex-autokey-titleword-case-convert . 'capitalize)
-               (bibtex-autokey-titleword-separator    . "")
-               (bibtex-autokey-titleword-length       . nil)
-               (bibtex-autokey-titlewords             . 1)
-               (bibtex-autokey-year-length            . 4)
-               (bibtex-autokey-year-title-separator   . "_")
-               (bibtex-autokey-titleword-ignore       . '("A" "An" "On" "The" "a" "an"
-                                                          "on" "the" "Le" "La" "Les"
-                                                          "le" "la" "les" "Zur" "zur" "Des" "Dir" "Die"))
-               (ebib-keywords-use-only-file           . t)
-               (ebib-keywords-file                    . "~/tex/ebib-keywords.txt")
-               (ebib-keywords-file-save-on-exit       . 'always)
-               (ebib-file-search-dirs                 . '("~/tex/pdfs" "~/tex/papers" "~/tex/books"))
-               )
-      :config
-      (leaf *ebibForMac
-        :when (eq system-type 'darwin)
-        :custom ((ebib-file-associations . '(("pdf" . "open") ("ps"  . "open"))))
-        )
-      (leaf *ebibForLinux
-        :when (eq system-type 'gnu/linux)
-        :custom ((ebib-file-associations . '(("pdf" . "zathura") ("ps"  . "zathura"))))
-      )
-    )
-  )
+  (leaf *ebibForLinux
+    :when (eq system-type 'gnu/linux)
+    :custom ((ebib-file-associations . '(("pdf" . "zathura") ("ps"  . "zathura"))))))
 
 (leaf google-translate
   :ensure t
@@ -1301,189 +1259,185 @@
   )
 
 
-(leaf *view_mode
-  :config
-  (leaf view
-    :custom ((view-read-only . t))
-    :bind (("C-;" . view-mode)
-           (view-mode-map
-            ("SPC" . ignore)
-            ("C-m" . ignore)
-            ("h"   . backward-char)
-            ("j"   . next-line)
-            ("k"   . previous-line)
-            ("l"   . forward-char)
-            ("J"   . View-scroll-line-forward)
-            ("K"   . View-scroll-line-backward)
-            ("b"   . backward-char)
-            ("n"   . next-line)
-            ("p"   . previous-line)
-            ("f"   . forward-char)
-            ("C-f" . forward-char)
-            ("C-b" . backward-char)
-            ("C-;" . ignore)
-            ("a"   . vim-forward-char-to-insert)
-            ("A"   . vim-end-of-line-to-insert)
-            ("I"   . vim-beginning-of-line-to-insert)
-            ("i"   . View-exit)
-            ("x"   . vim-del-char)
-            ("X"   . vim-backward-kill-line)
-            ("0"   . beginning-of-line)
-            ("$"   . move-end-of-line)
-            ("e"   . end-of-line)
-            ("o"   . vim-o)
-            ("O"   . vim-O)
-            ("y"   . copy-region-as-kill)
-            ("Y"   . vim-copy-line)
-            ("w"   . forward-word+1)
-            ("W"   . backward-word)
-            ("P"   . vim-P)
-            ("D"   . vim-kill-line)
-            (":"   . save-buffer)
-            ("u"   . vim-undo)
-            ("r"   . vim-redo)
-            ("d"   . vim-kill-whole-line)
-            ("c"   . vim-kill-whole-line-to-insert)
-            ("g"   . View-goto-line)
-            ("G"   . View-goto-percent)))
-    :preface
-    (leaf *keys-in-view-mode
-      :config
-      (defun vim-forward-char-to-insert ()
-        (interactive)
-        (view-mode 0)
-        (forward-char 1)
-        (message "edit-mode !"))
-      ;; like A
-      (defun vim-end-of-line-to-insert ()
-        (interactive)
-        (view-mode 0)
-        (end-of-line)
-        (message "edit-mode !"))
-      ;; like I
-      (defun vim-beginning-of-line-to-insert ()
-        (interactive)
-        (view-mode 0)
-        (beginning-of-line)
-        (message "edit-mode !"))
-      ;; like cc
-      (defun vim-kill-whole-line-to-insert ()
-        (interactive)
-        (view-mode 0)
-        (kill-whole-line)
-        (open-line 1)
-        (backward-line)
-        (beginning-of-line)
-        (message ":kill-whole-line and edit-mode !"))
-      ;; like dd
-      (defun vim-kill-whole-line ()
-        (interactive)
-        (view-mode 0)
-        (kill-whole-line)
-        (view-mode 1)
-        (message "kill-whole-line"))
-      ;; like D
-      (defun vim-kill-line ()
-        (interactive)
-        (view-mode 0)
-        (kill-line)
-        (view-mode 1)
-        (message "kill-line"))
-      ;; like C
-      (defun vim-kill-line-to-insert ()
-        (interactive)
-        (view-mode 0)
-        (kill-line)
-        (message "kill-line and edit-mode !"))
-      ;; like o
-      (defun vim-o ()
-        (interactive)
-        (view-mode 0)
-        (forward-line)
-        (open-line 1)
-        (beginning-of-line)
-        (message "edit-mode !"))
-      ;; like O
-      (defun vim-O ()
-        (interactive)
-        (view-mode 0)
-        (open-line 1)
-        (beginning-of-line)
-        (message "edit-mode !"))
-      ;; like x
-      (defun vim-del-char ()
-        (interactive)
-        (view-mode 0)
-        (delete-char 1)
-        (view-mode 1)
-        (message "delete-char"))
-      ;; like c
-      (defun vim-del-char-to-insert ()
-        (interactive)
-        (view-mode 0)
-        (delete-char 1)
-        (message "delete-char and edit mode !"))
-      ;; like u
-      (defun vim-undo ()
-        (interactive)
-        (view-mode 0)
-        (undo-tree-undo)
-        (view-mode 1)
-        (message "undo !"))
-      ;; like C-r
-      (defun vim-redo ()
-        (interactive)
-        (view-mode 0)
-        (undo-tree-redo)
-        (view-mode 1)
-        (message "redo !"))
-      ;; like Y
-      (defun vim-copy-line (arg)
-        (interactive "p")
-        (kill-ring-save (line-beginning-position)
-                        (line-beginning-position (+ 1 arg)))
-        (message "%d line%s copied" arg (if (= 1 arg) "" "s")))
-      ;; like P
-      (defun vim-P ()
-        (interactive)
-        (view-mode 0)
-        (beginning-of-line)
-        (yank)
-        (beginning-of-line)
-        (forward-line -1)
-        (view-mode 1)
-        (message "yank !"))
-      ;; like p
-      (defun vim-p ()
-        (interactive)
-        (view-mode 0)
-        (yank)
-        (view-mode 1)
-        (message "yank !"))
-      ;; like w
-      (defun forward-word+1 ()
-        (interactive)
-        (forward-word)
-        (forward-char))
-      ;; like %
-      (defun vim-jump-brace()
-        "Jump to correspondence parenthesis"
-        (interactive)
-        (let ((c (following-char))
-              (p (preceding-char)))
-          (if (eq (char-syntax c) 40) (forward-list)
-            (if (eq (char-syntax p) 41) (backward-list)
-              (backward-up-list)))))
-      ;; Delete from cursor position to beginning-of-line
-      (defun vim-backward-kill-line (arg)
-        "Kill chars backward until encountering the beginning of line."
-        (interactive "p")
-        (view-mode 0)
-        (kill-line 0)
-        (view-mode 1)
-        (message "backward-kill-line"))
-      )
-    )
+(leaf view
+  :custom ((view-read-only . t))
+  :bind (("C-;" . view-mode)
+         (view-mode-map
+          ("SPC" . ignore)
+          ("C-m" . ignore)
+          ("h"   . backward-char)
+          ("j"   . next-line)
+          ("k"   . previous-line)
+          ("l"   . forward-char)
+          ("J"   . View-scroll-line-forward)
+          ("K"   . View-scroll-line-backward)
+          ("b"   . backward-char)
+          ("n"   . next-line)
+          ("p"   . previous-line)
+          ("f"   . forward-char)
+          ("C-f" . forward-char)
+          ("C-b" . backward-char)
+          ("C-;" . ignore)
+          ("a"   . vim-forward-char-to-insert)
+          ("A"   . vim-end-of-line-to-insert)
+          ("I"   . vim-beginning-of-line-to-insert)
+          ("i"   . View-exit)
+          ("x"   . vim-del-char)
+          ("X"   . vim-backward-kill-line)
+          ("0"   . beginning-of-line)
+          ("$"   . move-end-of-line)
+          ("e"   . end-of-line)
+          ("o"   . vim-o)
+          ("O"   . vim-O)
+          ("y"   . copy-region-as-kill)
+          ("Y"   . vim-copy-line)
+          ("w"   . forward-word+1)
+          ("W"   . backward-word)
+          ("P"   . vim-P)
+          ("D"   . vim-kill-line)
+          (":"   . save-buffer)
+          ("u"   . vim-undo)
+          ("r"   . vim-redo)
+          ("d"   . vim-kill-whole-line)
+          ("c"   . vim-kill-whole-line-to-insert)
+          ("g"   . View-goto-line)
+          ("G"   . View-goto-percent)))
+  :preface
+  (leaf *keys-in-view-mode
+    :config
+    (defun vim-forward-char-to-insert ()
+      (interactive)
+      (view-mode 0)
+      (forward-char 1)
+      (message "edit-mode !"))
+    ;; like A
+    (defun vim-end-of-line-to-insert ()
+      (interactive)
+      (view-mode 0)
+      (end-of-line)
+      (message "edit-mode !"))
+    ;; like I
+    (defun vim-beginning-of-line-to-insert ()
+      (interactive)
+      (view-mode 0)
+      (beginning-of-line)
+      (message "edit-mode !"))
+    ;; like cc
+    (defun vim-kill-whole-line-to-insert ()
+      (interactive)
+      (view-mode 0)
+      (kill-whole-line)
+      (open-line 1)
+      (backward-line)
+      (beginning-of-line)
+      (message ":kill-whole-line and edit-mode !"))
+    ;; like dd
+    (defun vim-kill-whole-line ()
+      (interactive)
+      (view-mode 0)
+      (kill-whole-line)
+      (view-mode 1)
+      (message "kill-whole-line"))
+    ;; like D
+    (defun vim-kill-line ()
+      (interactive)
+      (view-mode 0)
+      (kill-line)
+      (view-mode 1)
+      (message "kill-line"))
+    ;; like C
+    (defun vim-kill-line-to-insert ()
+      (interactive)
+      (view-mode 0)
+      (kill-line)
+      (message "kill-line and edit-mode !"))
+    ;; like o
+    (defun vim-o ()
+      (interactive)
+      (view-mode 0)
+      (forward-line)
+      (open-line 1)
+      (beginning-of-line)
+      (message "edit-mode !"))
+    ;; like O
+    (defun vim-O ()
+      (interactive)
+      (view-mode 0)
+      (open-line 1)
+      (beginning-of-line)
+      (message "edit-mode !"))
+    ;; like x
+    (defun vim-del-char ()
+      (interactive)
+      (view-mode 0)
+      (delete-char 1)
+      (view-mode 1)
+      (message "delete-char"))
+    ;; like c
+    (defun vim-del-char-to-insert ()
+      (interactive)
+      (view-mode 0)
+      (delete-char 1)
+      (message "delete-char and edit mode !"))
+    ;; like u
+    (defun vim-undo ()
+      (interactive)
+      (view-mode 0)
+      (undo-tree-undo)
+      (view-mode 1)
+      (message "undo !"))
+    ;; like C-r
+    (defun vim-redo ()
+      (interactive)
+      (view-mode 0)
+      (undo-tree-redo)
+      (view-mode 1)
+      (message "redo !"))
+    ;; like Y
+    (defun vim-copy-line (arg)
+      (interactive "p")
+      (kill-ring-save (line-beginning-position)
+                      (line-beginning-position (+ 1 arg)))
+      (message "%d line%s copied" arg (if (= 1 arg) "" "s")))
+    ;; like P
+    (defun vim-P ()
+      (interactive)
+      (view-mode 0)
+      (beginning-of-line)
+      (yank)
+      (beginning-of-line)
+      (forward-line -1)
+      (view-mode 1)
+      (message "yank !"))
+    ;; like p
+    (defun vim-p ()
+      (interactive)
+      (view-mode 0)
+      (yank)
+      (view-mode 1)
+      (message "yank !"))
+    ;; like w
+    (defun forward-word+1 ()
+      (interactive)
+      (forward-word)
+      (forward-char))
+    ;; like %
+    (defun vim-jump-brace()
+      "Jump to correspondence parenthesis"
+      (interactive)
+      (let ((c (following-char))
+            (p (preceding-char)))
+        (if (eq (char-syntax c) 40) (forward-list)
+          (if (eq (char-syntax p) 41) (backward-list)
+            (backward-up-list)))))
+    ;; Delete from cursor position to beginning-of-line
+    (defun vim-backward-kill-line (arg)
+      "Kill chars backward until encountering the beginning of line."
+      (interactive "p")
+      (view-mode 0)
+      (kill-line 0)
+      (view-mode 1)
+      (message "backward-kill-line")))
   )
 
 (leaf eww
@@ -2175,36 +2129,31 @@
 
   )
 
-(leaf *lsp-tools
+(leaf lsp-mode
+  :ensure t
   :when (eq system-type 'gnu/linux)
-  ;; :when (string-match "archlinuxhonda" (system-name))
+  :require t
+  :hook ((haskell-mode-hook . lsp)
+         (haskell-literate-mode-hook . lsp))
   :config
-  (leaf lsp-mode
+  (leaf lsp-ui
     :ensure t
-    :require t
-    :hook ((haskell-mode-hook . lsp)
-           (haskell-literate-mode-hook . lsp))
-    :config
-    (leaf lsp-ui
-      :ensure t
-      :commands lsp-ui-mode
-      )
-    (leaf company-lsp
-      :disabled t
-      :ensure t
-      :hook (lsp-mode-hook . company-mode)
-      :commands company-lsp)
-    (leaf lsp-ivy
-      :ensure t
-      :commands lsp-ivy-workspace-symbol)
-    (leaf lsp-treemacs
-      :ensure t
-      :commands lsp-treemacs-errors-list)
-    (leaf lsp-haskell
-      :ensure t
-      :require t
-      )
+    :commands lsp-ui-mode
     )
+  (leaf company-lsp
+    :disabled t
+    :ensure t
+    :hook (lsp-mode-hook . company-mode)
+    :commands company-lsp)
+  (leaf lsp-ivy
+    :ensure t
+    :commands lsp-ivy-workspace-symbol)
+  (leaf lsp-treemacs
+    :ensure t
+    :commands lsp-treemacs-errors-list)
+  (leaf lsp-haskell
+    :ensure t
+    :require t)
   )
 
 (leaf japanese-holidays
@@ -2213,13 +2162,11 @@
   :require japanese-holidays
   :hook ((calendar-today-visible-hook . japanese-holiday-mark-weekend)
          (calendar-today-invisible-hook .  japanese-holiday-mark-weekend)
-         (calendar-today-visible-hook . calendar-mark-today)
-         )
+         (calendar-today-visible-hook . calendar-mark-today))
   :custom ((calendar-mark-holidays-flag . t)
            (japanese-holiday-weekend . '(0 6))
            (japanese-holiday-weekend-marker . '(holiday nil nil nil nil nil japanese-holiday-saturday))
-           (org-agenda-include-diary . t)
-           )
+           (org-agenda-include-diary . t))
   :config
   (let ((array ["日" "月" "火" "水" "木" "金" "土"]))
     (setq calendar-day-header-array array
@@ -2250,14 +2197,12 @@
   (leaf japanese-holidays :ensure t)
   (leaf calfw-org
     :ensure t
-    :require t
-    )
+    :require t)
   (leaf calfw-ical
     :ensure t
     :require t
     :config
-    (load "calfw_functions" t)
-    )
+    (load "calfw_functions" t))
   (add-hook 'calendar-load-hook (lambda ()
                                   (require 'japanese-holidays)
                                   (setq calendar-holidays
@@ -2291,8 +2236,7 @@
         yatex-mode
         haskell-mode))
     (loop for hook in ivy-programing-hooks
-          do (add-hook hook 'yas-minor-mode))
-    )
+          do (add-hook hook 'yas-minor-mode)))
   )
 
 (leaf shackle
@@ -2307,8 +2251,7 @@
                                ))
             (shackle-mode . 1)
             (winner-mode . 1)
-            (shackle-lighter . "")
-            )
+            (shackle-lighter . ""))
   :bind (("C-z" . winner-undo))
   )
 
