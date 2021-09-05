@@ -259,9 +259,12 @@
 
   )
 
-(leaf *lisp
-  :hook  ((before-save-hook . delete-trailing-whitespace)
-          (kill-buffer-query-functions
+(leaf *hooks
+  :hook  ((before-save-hook . delete-trailing-whitespace))
+  )
+
+(leaf *scratch
+  :hook  ((kill-buffer-query-functions
            . (lambda ()
                (if (string= "*scratch*" (buffer-name))
                    (progn (my:make-scratch 0) nil)
@@ -278,15 +281,6 @@
            (eval-expression-print-level  . nil)
            (auto-revert-interval . 0.1)
            (global-auto-revert-mode . t))
-  :config
-  (leaf rainbow-delimiters
-    :doc "Highlight brackets according to their depth"
-    :tag "tools" "lisp" "convenience" "faces"
-    :url "https://github.com/Fanael/rainbow-delimiters"
-    :added "2021-09-05"
-    :ensure t
-    :hook (emacs-lisp-mode-hook . rainbow-delimiters-mode))
-
   :preface
   (defun my:make-scratch (&optional arg)
     (interactive)
@@ -306,6 +300,15 @@
   (defun my:buffer-name-list ()
     (mapcar (function buffer-name) (buffer-list)))
   )
+
+(leaf rainbow-delimiters
+  :doc "Highlight brackets according to their depth"
+  :tag "tools" "lisp" "convenience" "faces"
+  :url "https://github.com/Fanael/rainbow-delimiters"
+  :added "2021-09-05"
+  :ensure t
+  :hook (emacs-lisp-mode-hook . rainbow-delimiters-mode))
+
 
 (leaf *dired
   ;; :disabled t
@@ -1682,10 +1685,7 @@
           (eww-browse-url (buffer-substring-no-properties (car url-region)
                                                           (cdr url-region))))
       ;; org-link
-      (setq browse-url-browser-function 'eww-browse-url)
-      ;; (org-open-at-point)
-      )
-    )
+      (setq browse-url-browser-function 'eww-browse-url)))
   (defun shr-colorize-region--disable (orig start end fg &optional bg &rest _)
     (unless eww-disable-colorize
       (funcall orig start end fg)))
@@ -1701,45 +1701,447 @@
     (interactive)
     (setq-local eww-disable-colorize nil)
     (eww-reload))
-  ;; (defun eww-mode-hook--rename-buffer ()
-  ;;   "Rename eww browser's buffer so sites open in new page."
-  ;;   (rename-buffer "eww" t))
   )
 
 (leaf *org_tools
   :config
   (leaf org-mode
     :custom ((org-agenda-files . '("~/Dropbox/org/todo.org"
-                                   "~/Dropbox/org/todo_SonyLSI.org"))
-             )
-    :bind (("C-c a" . org-agenda))
-    )
+                                   "~/Dropbox/org/todo_SonyLSI.org")))
+    :bind (("C-c a" . org-agenda)))
   (leaf org-plus-contrib
+    :doc "Outline-based notes management and organizer"
+    :added "2021-09-05"
     :ensure t
-    :require org-eldoc
-    :hook ((org-mode-hook . eldoc-mode))
-    :config
+    :hook ((org-mode-hook . eldoc-mode))    :config
     (defadvice org-eldoc-documentation-function (around add-field-info activate)
       (or
        (ignore-errors (and (not (org-at-table-hline-p)) (org-table-field-info nil)))
        ad-do-it))
     (eldoc-add-command-completions
-     "org-table-next-" "org-table-previous" "org-cycle")
-    )
+     "org-table-next-" "org-table-previous" "org-cycle"))
   )
 
 (leaf pdf-tools
-  :when (file-exists-p "/usr/bin/epdfinfo")
+  :doc "Support library for PDF documents"
+  :req "emacs-24.3" "tablist-1.0" "let-alist-1.0.4"
+  :tag "multimedia" "files" "emacs>=24.3"
+  :url "http://github.com/vedang/pdf-tools/"
+  :added "2021-09-05"
+  :emacs>= 24.3
   :ensure t
-  ;; :require pdf-tools pdf-annot pdf-history pdf-info pdf-isearch pdf-links pdf-misc pdf-occur pdf-outline pdf-sync tablist-filter tablist
+  :after tablist
+  :when (file-exists-p "/usr/bin/epdfinfo")
   :hook ((pdf-view-mode-hook . pdf-misc-size-indication-minor-mode)
          (pdf-view-mode-hook . pdf-links-minor-mode)
          (pdf-view-mode-hook . pdf-isearch-minor-mode))
-  )
+)
 
 
 ;; マイナーモードの設定
+(leaf cua
+  :bind (("C-x SPC" . cua-set-rectangle-mark))
+  :custom ((cua-mode . t)
+           (cua-enable-cua-keys . nil)))
+
+(leaf company
+  :doc "Modular text completion framework"
+  :req "emacs-25.1"
+  :tag "matching" "convenience" "abbrev" "emacs>=25.1"
+  :url "http://company-mode.github.io/"
+  :added "2021-09-05"
+  :emacs>= 25.1
+  :ensure t
+  :bind ((company-active-map
+          ("M-n" . nil)
+          ("M-p" . nil)
+          ("C-s" . company-filter-candidates)
+          ("C-n" . company-select-next)
+          ("C-p" . company-select-previous)
+          ("<tab>" . company-complete-selection)
+          ("C-h" . nil)
+          ("C-f" . company-complete-selection))
+         (company-search-map
+          ("C-n" . company-select-next)
+          ("C-p" . company-select-previous)))
+  :custom `((company-tooltip-limit         . 12)
+            (company-idle-delay            . 0)
+            (company-minimum-prefix-length . 3)
+            (company-transformers          . '(company-sort-by-occurrence))
+            (global-company-mode           . t)
+            (company-dabbrev-downcase      . nil)
+            (company-backends . '(company-capf)))
+  :config
+  (leaf company-math
+    :doc "Completion backends for unicode math symbols and latex tags"
+    :req "company-0.8.0" "math-symbol-lists-1.3"
+    :tag "completion" "symbols" "unicode"
+    :url "https://github.com/vspinu/company-math"
+    :added "2021-09-05"
+    :ensure t
+    :after company math-symbol-lists
+    :disabled t
+    :unless (eq system-type 'dawin)
+    :defvar (company-backends)
+    :preface
+    (defun c/latex-mode-setup ()
+      (setq-local company-backends
+                  (append '((company-math-symbols-latex
+                             company-math-symbols-unicode
+                             company-latex-commands))
+                          company-backends)))
+    :hook ((org-mode-hook . c/latex-mode-setup)
+           (tex-mode-hook . c/latex-mode-setup)
+           (yatex-mode-hook . c/latex-mode-setup)))
+  (leaf company-quickhelp
+    :doc "Popup documentation for completion candidates"
+    :req "emacs-24.3" "company-0.8.9" "pos-tip-0.4.6"
+    :tag "quickhelp" "documentation" "popup" "company" "emacs>=24.3"
+    :url "https://www.github.com/expez/company-quickhelp"
+    :added "2021-09-05"
+    :emacs>= 24.3
+    :ensure t
+    :after company pos-tip
+    :disabled t
+    :when (display-graphic-p)
+    :custom ((company-quickhelp-delay . 0.8)
+             (company-quickhelp-mode  . t))
+    :bind (company-active-map
+           ("M-h" . company-quickhelp-manual-begin))
+    :hook ((company-mode-hook . company-quickhelp-mode)))
+  (leaf company-tabnine
+    :doc "A company-mode backend for TabNine"
+    :req "emacs-25" "company-0.9.3" "cl-lib-0.5" "dash-2.16.0" "s-1.12.0" "unicode-escape-1.1"
+    :tag "convenience" "emacs>=25"
+    :url "https://github.com/TommyX12/company-tabnine/"
+    :added "2021-09-05"
+    :emacs>= 25
+    :ensure t
+    :after company unicode-escape
+    :disabled t
+    :config
+    (add-to-list 'company-backends #'company-tabnine))
+  (leaf company-prescient
+    :doc "prescient.el + Company"
+    :req "emacs-25.1" "prescient-5.1" "company-0.9.6"
+    :tag "extensions" "emacs>=25.1"
+    :url "https://github.com/raxod502/prescient.el"
+    :added "2021-09-05"
+    :emacs>= 25.1
+    :ensure t
+    :after prescient company
+    :disabled t)
+  (leaf company-c-headers
+    :doc "Company mode backend for C/C++ header files"
+    :req "emacs-24.1" "company-0.8"
+    :tag "company" "development" "emacs>=24.1"
+    :added "2021-09-05"
+    :emacs>= 24.1
+    :ensure t
+    :after company
+    :config (add-to-list 'company-backends 'company-c-headers))
+  (leaf company-box
+    :doc "Company front-end with icons"
+    :req "emacs-26.0.91" "dash-2.13" "dash-functional-1.2.0" "company-0.9.6" "frame-local-0.0.1"
+    :tag "convenience" "front-end" "completion" "company" "emacs>=26.0.91"
+    :url "https://github.com/sebastiencs/company-box"
+    :added "2021-09-05"
+    :emacs>= 26.0
+    :ensure t
+    :after company frame-local
+    :diminish company-box-mode
+    :defvar (company-box-icons-alist company-box-icons-all-the-icons)
+    :disabled t
+    :init
+    (leaf all-the-icons
+      :doc "A library for inserting Developer icons"
+      :req "emacs-24.3"
+      :tag "lisp" "convenient" "emacs>=24.3"
+      :url "https://github.com/domtronn/all-the-icons.el"
+      :added "2021-09-05"
+      :emacs>= 24.3
+      :ensure t)
+    :custom ((company-box-max-candidates . 50)
+             (company-box-icons-alist    . 'company-box-icons-all-the-icons))
+    :hook ((company-mode-hook . company-box-mode))
+    :config
+    (when (memq window-system '(ns mac))
+      (declare-function all-the-icons-faicon 'all-the-icons)
+      (declare-function all-the-icons-material 'all-the-icons)
+      (declare-function all-the-icons-octicon 'all-the-icons)
+      (setq company-box-icons-all-the-icons
+            `((Unknown       . ,(all-the-icons-material "find_in_page" :height 0.9 :v-adjust -0.2))
+              (Text          . ,(all-the-icons-faicon "text-width" :height 0.85 :v-adjust -0.05))
+              (Method        . ,(all-the-icons-faicon "cube" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-purple))
+              (Function      . ,(all-the-icons-faicon "cube" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-purple))
+              (Constructor   . ,(all-the-icons-faicon "cube" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-purple))
+              (Field         . ,(all-the-icons-octicon "tag" :height 0.85 :v-adjust 0 :face 'all-the-icons-lblue))
+              (Variable      . ,(all-the-icons-octicon "tag" :height 0.85 :v-adjust 0 :face 'all-the-icons-lblue))
+              (Class         . ,(all-the-icons-material "settings_input_component" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-orange))
+              (Interface     . ,(all-the-icons-material "share" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-lblue))
+              (Module        . ,(all-the-icons-material "view_module" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-lblue))
+              (Property      . ,(all-the-icons-faicon "wrench" :height 0.85 :v-adjust -0.05))
+              (Unit          . ,(all-the-icons-material "settings_system_daydream" :height 0.9 :v-adjust -0.2))
+              (Value         . ,(all-the-icons-material "format_align_right" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-lblue))
+              (Enum          . ,(all-the-icons-material "storage" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-orange))
+              (Keyword       . ,(all-the-icons-material "filter_center_focus" :height 0.9 :v-adjust -0.2))
+              (Snippet       . ,(all-the-icons-material "format_align_center" :height 0.9 :v-adjust -0.2))
+              (Color         . ,(all-the-icons-material "palette" :height 0.9 :v-adjust -0.2))
+              (File          . ,(all-the-icons-faicon "file-o" :height 0.9 :v-adjust -0.05))
+              (Reference     . ,(all-the-icons-material "collections_bookmark" :height 0.9 :v-adjust -0.2))
+              (Folder        . ,(all-the-icons-faicon "folder-open" :height 0.9 :v-adjust -0.05))
+              (EnumMember    . ,(all-the-icons-material "format_align_right" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-lblue))
+              (Constant      . ,(all-the-icons-faicon "square-o" :height 0.9 :v-adjust -0.05))
+              (Struct        . ,(all-the-icons-material "settings_input_component" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-orange))
+              (Event         . ,(all-the-icons-faicon "bolt" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-orange))
+              (Operator      . ,(all-the-icons-material "control_point" :height 0.9 :v-adjust -0.2))
+              (TypeParameter . ,(all-the-icons-faicon "arrows" :height 0.85 :v-adjust -0.05))
+              (Template      . ,(all-the-icons-material "format_align_center" :height 0.9 :v-adjust -0.2))))
+      (setq company-box-icons-alist 'company-box-icons-all-the-icons)))
+  )
+
+(leaf ivy
+  :doc "Incremental Vertical completYon"
+  :req "emacs-24.5"
+  :tag "matching" "emacs>=24.5"
+  :url "https://github.com/abo-abo/swiper"
+  :added "2021-09-05"
+  :emacs>= 24.5
+  :ensure t
+  :leaf-defer nil
+  :custom `((ivy-re-builders-alist        . '((t . ivy--regex-plus)))
+            (ivy-use-selectable-prompt    . t)
+            (ivy-mode                     . t)
+            (counsel-mode                 . t)
+            (dired-recent-mode            . t)
+            (ivy-use-virtual-buffers      . t)
+            (ivy-truncate-lines           . nil)
+            (ivy-wrap                     . t)
+            (enable-recursive-minibuffers . t)
+            (ivy-height                   . 15)
+            (ivy-extra-directories        . nil)
+            (ivy-format-functions-alist   . '((t . ivy-format-function-arrow))))
+  :bind (("C-x b" . ivy-switch-buffer)
+         (ivy-minibuffer-map
+          ;; ESC連打でミニバッファを閉じる
+          ("<escape>" . minibuffer-keyboard-quit)
+          ("C-m"      . ivy-alt-done)
+          ("C-i"      . ivy-immediate-done)))
+  :config
+  (leaf swiper
+    :doc "Isearch with an overview. Oh, man!"
+    :req "emacs-24.5" "ivy-0.13.4"
+    :tag "matching" "emacs>=24.5"
+    :url "https://github.com/abo-abo/swiper"
+    :added "2021-09-05"
+    :emacs>= 24.5
+    :ensure t
+    :after ivy
+    :unless (string-match "RaspberryPi" (system-name))
+    :defvar swiper-include-line-number-in-search
+    :bind (("C-s" . swiper)
+           ("C-r" . swiper)
+           (swiper-map
+            ("C-j" . skk-hiragana-set)
+            ("C-l" . skk-latin-mode)))
+    :custom (swiper-include-line-number-in-search . t))
+  (leaf counsel
+    :doc "Various completion functions using Ivy"
+    :req "emacs-24.5" "ivy-0.13.4" "swiper-0.13.4"
+    :tag "tools" "matching" "convenience" "emacs>=24.5"
+    :url "https://github.com/abo-abo/swiper"
+    :added "2021-09-05"
+    :emacs>= 24.5
+    :ensure t
+    :after ivy swiper
+    :custom ((counsel-mode                    . 1)
+             (counsel-find-file-ignore-regexp . (regexp-opt '("./" "../")))
+             (recentf-max-saved-items         . 2000)
+             (recentf-auto-cleanup            . 'never)
+             (recentf-exclude                 . '("/recentf" "COMMIT_EDITMSG" "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores" "/\\.emacs\\.d/\\.cask/" "/Geheimnis"))
+             (recentf-mode                    . 1)
+             (counsel-yank-pop-separator      . "\n-------\n"))
+    :bind (("M-x"     . counsel-M-x)
+           ("C-x C-f" . counsel-find-file)
+           ("C-c h"   . counsel-recentf)
+           ("C-c i"   . counsel-imenu)
+           ("M-y"     . counsel-yank-pop)
+           ("C-x C-b" . counsel-ibuffer)))
+  (leaf counsel-osx-app
+    :doc "launch osx applications via ivy interface"
+    :req "ivy-0.8.0" "emacs-24.3"
+    :tag "emacs>=24.3"
+    :url "https://github.com/d12frosted/counsel-osx-app"
+    :added "2021-09-05"
+    :emacs>= 24.3
+    :ensure t
+    :after ivy
+    :when (eq system-type 'darwin)
+    :bind ("s-d" . counsel-osx-app)
+    :custom ((counsel-osx-app-location.
+              '("/Applications"
+                "/Applications/Downloads"
+                "/Applications/Flip4Mac"
+                "/Applications/GoogleJapaneseInput.localized"
+                ;; "/Applications/Igor Pro 6.1 Folder"
+                "/Applications/Igor Pro 6.3 Folder"
+                "/Applications/iWork '09"
+                "/Applications/Microsoft Office 2011"
+                "/Applications/Python 2.7"
+                "/Applications/RIETAN_VENUS"
+                "/Applications/Utilities"))))
+  (leaf ivy-hydra
+    :doc "Additional key bindings for Ivy"
+    :req "emacs-24.5" "ivy-0.13.4" "hydra-0.14.0"
+    :tag "convenience" "emacs>=24.5"
+    :url "https://github.com/abo-abo/swiper"
+    :added "2021-09-05"
+    :emacs>= 24.5
+    :ensure t
+    :after ivy hydra
+    :disabled t
+    :custom (ivy-read-action-function . #'ivy-hydra-read-action))
+  )
+
+
+
+(leaf *hs-minor-mode
+  :hook ((emacs-lisp-mode-hook . hs-minor-mode-active))
+  :bind (("C-'" . hs-toggle-hiding))
+  :preface
+  (defun hs-minor-mode-active ()
+    (interactive)
+    (hs-minor-mode 1))
+  )
+
+(leaf highlight-indent-guides
+  :doc "Minor mode to highlight indentation"
+  :req "emacs-24.1"
+  :tag "emacs>=24.1"
+  :url "https://github.com/DarthFennec/highlight-indent-guides"
+  :added "2021-09-05"
+  :emacs>= 24.1
+  :ensure t
+  :unless (string-match "RaspberryPi" (system-name))
+  :hook ((prog-mode-hook . highlight-indent-guides-mode))
+  :custom '((highlight-indent-guides-method . 'column))
+)
+
+(leaf visual-regexp-steroids
+  :doc "Extends visual-regexp to support other regexp engines"
+  :req "visual-regexp-1.1"
+  :tag "feedback" "visual" "python" "replace" "regexp" "foreign" "external"
+  :url "https://github.com/benma/visual-regexp-steroids.el/"
+  :added "2021-09-05"
+  :ensure t
+  :after visual-regexp
+  :bind (("M-%" . vr/query-replace)
+         ;; multiple-cursorsを使っているならこれで
+         ("C-c m" . vr/mc-mark)
+         ;; 普段の正規表現isearchにも使いたいならこれを
+         ("C-M-r" . vr/isearch-backward)
+         ("C-M-s" . vr/isearch-forward))
+  :custom `((vr/engine . 'python)))
+
+(leaf page-ext
+  :doc "extended page handling commands"
+  :tag "builtin"
+  :added "2021-09-05"
+  )
+
+(leaf smartparens
+  :doc "Automatic insertion, wrapping and paredit-like navigation with user defined pairs."
+  :req "dash-2.13.0" "cl-lib-0.3"
+  :tag "editing" "convenience" "abbrev"
+  :url "https://github.com/Fuco1/smartparens"
+  :added "2021-09-05"
+  :ensure t
+      :disabled t
+    :when window-system
+    :ensure t
+    :require smartparens-config
+    :custom ((sp-highlight-pari-overly . nil)
+             (sp-navigate-interactive-always-progress-point . t)
+             (smartparens-global-strict-mode . t))
+    :bind ((smartparens-mode-map
+            ;;;;
+            ;;;; navigation
+
+            ;; basic (fbnp-ae)
+            ("C-M-f" . sp-forward-sexp)
+            ("C-M-b" . sp-backward-sexp)
+            ("C-M-n" . sp-next-sexp)
+            ("C-M-p" . sp-previous-sexp)
+            ("C-M-a" . sp-beginning-of-sexp)
+            ("C-M-e" . sp-end-of-sexp)
+
+            ;; checkin/checkout
+            ("C-M-i" . sp-down-sexp)
+            ("C-M-o" . sp-backward-up-sexp)
+
+            ;; misc
+            ("C-M-k"   . sp-kill-sexp)
+            ("C-M-w"   . sp-copy-sexp)
+            ("C-M-t"   . sp-transpose-sexp)
+            ("C-M-SPC" . sp-mark-sexp)
+
+            ;;;;
+            ;;;; depth-changing commands
+
+            ;; basic
+            ("M-s"           . sp-splice-sexp)
+            ("M-r"           . sp-splice-sexp-killing-around)
+            ("M-<up>"        . nil)
+            ("M-<down>"      . nil)
+            ("C-M-u"         . sp-splice-sexp-killing-backward)
+            ("C-M-d"         . sp-splice-sexp-killing-forward)
+            ("M-("           . sp-wrap-round)
+            ("M-["           . sp-wrap-square)
+            ("M-{"           . sp-wrap-qurly)
+
+            ;; barf/slurp
+            ("C-)" . sp-forward-slurp-sexp)
+            ("C-}" . sp-forward-barf-sexp)
+            ("C-(" . sp-backward-slurp-sexp)
+            ("C-{" . sp-backward-barf-sexp)
+
+            ;; split/join
+            ("M-S-s" . sp-split-sexp)
+            ("M-j"   . sp-join-sexp)
+
+            ;;;;
+            ;;;; misc
+
+            ;; change constructure
+            ("M-?"     . sp-convolute-sexp)
+            ("C-c s a" . sp-absorb-sexp)
+            ("C-c s e" . sp-emit-sexp)
+            ("C-c s p" . sp-convolute-sexp)
+            ("C-c s t" . sp-transpose-hybrid-sexp)
+
+            ;; change elements
+            ("C-c s (" . sp-rewrap-sexp)
+            ("C-c s r" . sp-change-inner)
+            ("C-c s s" . sp-change-enclosing)))
+    )
+
+(leaf undo-tree
+  :doc "Treat undo history as a tree"
+  :tag "tree" "history" "redo" "undo" "files" "convenience"
+  :url "http://www.dr-qubit.org/emacs.php"
+  :added "2021-09-05"
+  :ensure t
+  :unless (string-match "RaspberryPi" (system-name))
+  :custom ((global-undo-tree-mode . t))
+)
+
+(leaf align
+  :doc "align text to a specific column, by regexp"
+  :tag "builtin"
+  :added "2021-09-05")
+
 (leaf *minor-mode
+  :disabled t
   :config
   (leaf skk
     :ensure ddskk
@@ -1984,6 +2386,7 @@
         )
       (leaf *pi
         ;; :ensure t
+        :disabled t
         :when (string-match "raspberrypi" (system-name))
         :preface
         (defun app-launch (command)
@@ -2064,6 +2467,8 @@
   (leaf page-ext
     ;; :disabled t
     :require t)
+
+
 
   (leaf smartparens
     :disabled t
@@ -2172,144 +2577,171 @@
 
 
 
-;; 途中の設定
-(leaf mew
-    :disabled t
-    :when (file-exists-p '"/usr/bin/stunnel")
+(leaf lsp
+  :tag "out-of-MELPA"
+  :added "2021-09-05"
+  :el-get {{user}}/lsp
+  :require t
+  :unless (string-match "Raspberrypi" (system-name))
+  :hook ((haskell-mode-hook . lsp)
+         (haskell-literate-mode-hook . lsp))
+  :config
+  (leaf lsp-ui
+    :doc "UI modules for lsp-mode"
+    :req "emacs-26.1" "dash-2.18.0" "lsp-mode-6.0" "markdown-mode-2.3"
+    :tag "tools" "languages" "emacs>=26.1"
+    :url "https://github.com/emacs-lsp/lsp-ui"
+    :added "2021-09-05"
+    :emacs>= 26.1
+    :ensure t
+    :after lsp-mode markdown-mode
+    :commands lsp-ui-mode)
+  (leaf lsp-ivy
+    :doc "LSP ivy integration"
+    :req "emacs-25.1" "dash-2.14.1" "lsp-mode-6.2.1" "ivy-0.13.0"
+    :tag "debug" "languages" "emacs>=25.1"
+    :url "https://github.com/emacs-lsp/lsp-ivy"
+    :added "2021-09-05"
+    :emacs>= 25.1
+    :ensure t
+    :after lsp-mode ivy
+    :commands lsp-ivy-workspace-symbol)
+  (leaf lsp-treemacs
+    :doc "LSP treemacs"
+    :req "emacs-26.1" "dash-2.18.0" "f-0.20.0" "ht-2.0" "treemacs-2.5" "lsp-mode-6.0"
+    :tag "languages" "emacs>=26.1"
+    :url "https://github.com/emacs-lsp/lsp-treemacs"
+    :added "2021-09-05"
+    :emacs>= 26.1
+    :ensure t
+    :after treemacs lsp-mode
+    :commands lsp-treemacs-errors-list)
+  (leaf lsp-haskell
+    :doc "Haskell support for lsp-mode"
+    :req "emacs-24.3" "lsp-mode-3.0" "haskell-mode-1.0"
+    :tag "haskell" "emacs>=24.3"
+    :url "https://github.com/emacs-lsp/lsp-haskell"
+    :added "2021-09-05"
+    :emacs>= 24.3
+    :ensure t
+    :after lsp-mode haskell-mode)
+)
+
+(leaf calfw
+  :doc "Calendar view framework on Emacs"
+  :tag "calendar"
+  :url "https://github.com/kiwanami/emacs-calfw"
+  :added "2021-09-05"
+  :ensure t
+  :config
+  (leaf japanese-holidays
+    :doc "Calendar functions for the Japanese calendar"
+    :req "emacs-24.1" "cl-lib-0.3"
+    :tag "calendar" "emacs>=24.1"
+    :url "https://github.com/emacs-jp/japanese-holidays"
+    :added "2021-09-05"
+    :emacs>= 24.1
+    :ensure t
+    :after calendar
+    :require japanese-holidays
+    :hook ((calendar-today-visible-hook . japanese-holiday-mark-weekend)
+           (calendar-today-invisible-hook .  japanese-holiday-mark-weekend)
+           (calendar-today-visible-hook . calendar-mark-today))
+    :custom ((calendar-mark-holidays-flag . t)
+             (japanese-holiday-weekend . '(0 6))
+             (japanese-holiday-weekend-marker . '(holiday nil nil nil nil nil japanese-holiday-saturday))
+             (org-agenda-include-diary . t))
+    :config
+    (let ((array ["日" "月" "火" "水" "木" "金" "土"]))
+      (setq calendar-day-header-array array
+            calendar-day-name-array array)))
+  (leaf calfw-org
+    :doc "calendar view for org-agenda"
+    :tag "org" "calendar"
+    :added "2021-09-05"
+    :ensure t
+    :require t)
+  (leaf calfw-ical
+    :doc "calendar view for ical format"
+    :tag "calendar"
+    :added "2021-09-05"
     :ensure t
     :require t
-    :commands mew mew-send
-    :defvar mew-fcc mew-smtp-server mew-smtp-auth
-    :custom ((mew-fcc . "+outbox")
-             (exec-path . '(cons "/usr/bin" exec-path))
-             (user-mail-address . "frenzieddoll@gmail.com")
-             (user-full-name . "frenzieddoll")
-             (mew-smtp-server . "smtp.gmail.com")
-             (mail-user-agent . 'mew-user-agent)
-             (mew-prog-ssl . "/usr/bin/stunnel")
-             (mew-proto . "%")
-             (mew-imap-server . "imap.gmail.com")
-             (mew-imap-user . "frenzieddoll@gmail.com")
-             (mew-imap-auth .  t)
-             (mew-imap-ssl . t)
-             (mew-imap-ssl-port . "993")
-             (mew-smtp-auth . t)
-             (mew-smtp-ssl . t)
-             (mew-smtp-ssl-port . "465")
-             (mew-smtp-user . "frenzieddoll@gmail.com")
-             (mew-smtp-server . "smtp.gmail.com")
-             (mew-fcc . "%Sent")
-             (mew-imap-trash-folder . "%[Gmail]/Trash")
-             (mew-use-cached-passwd . t)
-             (mew-ssl-verify-level . 0)
-             (mew-use-cached-passwd . t)
-             (mew-use-master-passwd . t)
-             (mew-use-text/html . t)
-             (browse-url-browser-function . 'eww-browse-url)
-             (mew-use-unread-mark . t)
-             (mew-thread-indent-strings . ["+" "+" "|" " "])
-
-             )
-    :init
-    (define-mail-user-agent
-      'mew-user-agent
-      'mew-user-agent-compose
-      'mew-draft-send-message
-      'mew-draft-kill
-      'mew-send-hook)
     :config
-    ;; ファイルサーチをビルドイン関数で行なう
-    (load "mew-search-with-buildin.el" t)
-    (load "multipart-decode.el" t)
-    ;; (require 'mew-builtin-search)
-    (setq mew-search-method 'buildin)
-
-    ;; (setq mew-thread-indent-strings  ["+" "+" "|" " "])
-    (leaf *addSettings
-      :when (fboundp 'shr-render-region)
-      :when (fboundp 'libxml-parse-html-region)
-      :custom ((mew-prog-text/html . 'shr-render-region))
-      )
-    )
-
-(leaf *mewOriginal
-  ;; :disabled t
-  :when (file-exists-p "/bin/stunnel")
-  :config
-  ;; (load "init-mew" t)
-  (autoload 'mew "mew" nil t)
-  (autoload 'mew-send "mew" nil t)
-  (defvar mew-fcc "+outbox")
-  (setq exec-path (cons "/usr/bin" exec-path))
-
-  (setq user-mail-address "frenzieddoll@gmail.com")
-  (setq user-full-name "frenzieddoll")
-  (defvar mew-smtp-server "smtp.gmail.com")
-  (require 'mew)
-  (setq mail-user-agent 'mew-user-agent)
-  (define-mail-user-agent
-    'mew-user-agent
-    'mew-user-agent-compose
-    'mew-draft-send-message
-    'mew-draft-kill
-    'mew-send-hook)
-
-                                        ; Stunnel
-  (setq mew-prog-ssl "/usr/bin/stunnel")
-                                        ; IMAP for Gmail
-  (setq mew-proto "%")
-  (setq mew-imap-server "imap.gmail.com")
-  (setq mew-imap-user "frenzieddoll@gmail.com")
-  (setq mew-imap-auth  t)
-  (setq mew-imap-ssl t)
-  (setq mew-imap-ssl-port "993")
-  (defvar mew-smtp-auth t)
-  (setq mew-smtp-ssl t)
-  (setq mew-smtp-ssl-port "465")
-  (setq mew-smtp-user "frenzieddoll@gmail.com")
-  (setq mew-smtp-server "smtp.gmail.com")
-  (setq mew-fcc "%Sent")
-  (setq mew-imap-trash-folder "%[Gmail]/Trash")
-  (setq mew-use-cached-passwd t)
-  (setq mew-ssl-verify-level 0)
-
-  (setq mew-use-cached-passwd t)
-  (setq mew-use-master-passwd t)
-
-  ;; http://suzuki.tdiary.net/20140813.html#c04
-  (when (and (fboundp 'shr-render-region)
-             ;; \\[shr-render-region] requires Emacs to be compiled with libxml2.
-             (fboundp 'libxml-parse-html-region))
-    (defvar mew-prog-text/html 'shr-render-region)) ;; 'mew-mime-text/html-w3m
-
-  (setq mew-use-text/html t)
-  (setq browse-url-browser-function 'eww-browse-url)
-  ;; (condition-case nil
-  ;;     (require 'eww)
-  ;;   (file-error nil))
-
-  ;; ファイルサーチをビルドイン関数で行なう
-
-  (load "google-contacts-mew.el" t)
-  (load "google-contacts.el" t)
-  (require 'google-contacts-mew)
-  (setq google-contacts-email "frenzieddoll@gmail.com")
-
-  ;; ファイルサーチをビルドイン関数で行なう
-  (load "mew-search-with-buildin.el" t)
-  (load "multipart-decode.el" t)
-  ;; (require 'mew-builtin-search)
-  (setq mew-search-method 'buildin)
-
-  ;; 未読メールにUマークを付ける
-  (setq mew-use-unread-mark t)
-
-  (setq mew-thread-indent-strings ["+" "+" "|" " "])
-
-
+    (load "calfw_functions" t)
+    (add-hook 'calendar-load-hook (lambda ()
+                                    (require 'japanese-holidays)
+                                    (setq calendar-holidays
+                                          (append japanese-holidays local-holidays other-holidays)))))
   )
 
+(leaf online-judge
+  :when (executable-find "oj")
+  :el-get ROCKTAKEY/emacs-online-judge
+  :require t
+  :custom ((online-judge-directories . '("~/Dropbox/atcoder/"))
+           (online-judge-command-name . nil))
+  )
+
+(leaf yasnippet
+  :doc "Yet another snippet extension for Emacs"
+  :req "cl-lib-0.5"
+  :tag "emulation" "convenience"
+  :url "http://github.com/joaotavora/yasnippet"
+  :added "2021-09-05"
+  :ensure t
+  :diminish t
+  :unless (string-match "Raspberrypi" (system-name))
+  :custom ((yas-global-mode . t))
+  :bind ((yas-minor-mode-map
+          ("C-." . ivy-yasnippet)))
+  :config
+  (leaf yas_hook
+    :require cl
+    :config
+    (defvar ivy-programing-hooks ()
+      '(emacs-lisp-mode
+        org-mode
+        yatex-mode
+        haskell-mode))
+    (loop for hook in ivy-programing-hooks
+          do (add-hook hook 'yas-minor-mode)))
+
+)
+
+(leaf shackle
+  :doc "Enforce rules for popups"
+  :req "emacs-24.3" "cl-lib-0.5"
+  :tag "convenience" "emacs>=24.3"
+  :url "https://depp.brause.cc/shackle"
+  :added "2021-09-05"
+  :emacs>= 24.3
+  :ensure t
+  :unless (string-match "RaspberryPi" (system-name))
+  :custom `((shackle-rules . '((compilation-mode :align below :ratio 0.2)
+                               ("*Google Translate*" :align right :ratio 0.3)
+                               ("*Help*" :align right)
+                               ("*online-judge*" :align below :ratio 0.5)
+                               ("*haskell-compilation*" :align below :ratio 0.5)
+                               ))
+            (shackle-mode . 1)
+            (winner-mode . 1)
+            (shackle-lighter . ""))
+  :bind (("C-z" . winner-undo))
+  )
+
+(leaf twittering-mode
+  :doc "Major mode for Twitter"
+  :tag "web" "twitter"
+  :url "http://twmode.sf.net/"
+  :added "2021-09-05"
+  :ensure t
+  :custom ((twittering-allow-insecure-server-cert . t)
+           (twittering-use-master-password . t))
+)
+
 (leaf lsp-mode
+  :disabled t
   :ensure t
   :when (eq system-type 'gnu/linux)
   :require t
@@ -2337,6 +2769,7 @@
   )
 
 (leaf japanese-holidays
+  :disabled t
   :ensure t
   :after calendar
   :require japanese-holidays
@@ -2371,6 +2804,7 @@
   )
 
 (leaf calfw
+  :disabled t
   :ensure t
   :require t
   :config
@@ -2390,15 +2824,8 @@
 
   )
 
-(leaf online-judge
-  :when (executable-find "oj")
-  :el-get ROCKTAKEY/emacs-online-judge
-  :require t
-  :custom ((online-judge-directories . '("~/Dropbox/atcoder/"))
-           (online-judge-command-name . nil))
-  )
-
 (leaf yasnippet
+  :disabled t
   :diminish t
   :when (string-match "archlinuxhonda" (system-name))
   :require t
@@ -2417,28 +2844,6 @@
         haskell-mode))
     (loop for hook in ivy-programing-hooks
           do (add-hook hook 'yas-minor-mode)))
-  )
-
-(leaf shackle
-  :require t
-  :when (string-match "archlinuxhonda" (system-name))
-  :ensure t
-  :custom `((shackle-rules . '((compilation-mode :align below :ratio 0.2)
-                               ("*Google Translate*" :align right :ratio 0.3)
-                               ("*Help*" :align right)
-                               ("*online-judge*" :align below :ratio 0.5)
-                               ("*haskell-compilation*" :align below :ratio 0.5)
-                               ))
-            (shackle-mode . 1)
-            (winner-mode . 1)
-            (shackle-lighter . ""))
-  :bind (("C-z" . winner-undo))
-  )
-
-(leaf twittering-mode
-  :ensure t
-  :custom ((twittering-allow-insecure-server-cert . t)
-           (twittering-use-master-password . t))
   )
 
 
