@@ -96,605 +96,574 @@
   (exec-path-from-shell-initialize)
   )
 
+(leaf *cus-start
+  :doc "define customization properties of builtins"
+  :url "http://handlename.hatenablog.jp/entry/2011/12/11/214923" ; align sumple
+  :defvar show-paren-deley
+  :custom `(;; GC
+            (garbage-collection-messages           . t)
+            ;; 表示
+            (tool-bar-mode                         . nil)
+            (scroll-bar-mode                       . nil)
+            (menu-bar-mode                         . nil)
+            (blink-cursor-mode                     . nil)
+            (column-number-mode                    . nil)
+            (ring-bell-function                    . 'ignore)
+            ;; 編集
+            (tab-width                             . 4)
+            (indent-tabs-mode                      . nil)
+            (fill-column                           . 72)   ;; RFC2822 風味
+            (truncate-lines                        . t)  ;; 折り返し無し
+            (truncate-partial-width-windows        . nil)
+            (paragraph-start                       . '"^\\([ 　・○<\t\n\f]\\|(?[0-9a-zA-Z]+)\\)")
+            (auto-fill-mode                        . nil)
+            (next-line-add-newlines                . nil)  ;; バッファ終端で newline を入れない
+            (read-file-name-completion-ignore-case . t)  ; 大文字小文字区別無し
+            ;; undo/redo - 数字に根拠無し
+            (undo-limit                            . 200000)
+            (undo-strong-limit                     . 260000)
+            (history-length                        . t)  ;; 無制限(の筈)
+            (create-lockfiles                      . nil)
+            (use-dialog-box                        . nil)
+            (use-file-dialog                       . nil)
+            (frame-resize-pixelwise                . t)
+            (enable-recursive-minibuffers          . t)
+            (history-length                        . 1000)
+            (history-delete-duplicates             . t)
+            (mouse-wheel-scroll-amount             . '(1 ((control) . 5)))
+            (text-quoting-style                    . 'straight)
 
-(leaf *init_system
+
+            ;; システムの時計をCにする
+            (system-time-locale                    . "C")
+            ;; 改行コードを表示する
+            (eol-mnemonic-dos                      . "(CRLF)")
+            (eol-mnemonic-mac                      . "(CR)")
+            (eol-mnemonic-unix                     . "(LF)")
+            ;; 右から左に読む言語に対応させないことで描画高速化
+            (bidi-display-reordering               . nil)
+            ;; 同じ内容を履歴に記録しない
+            (history-delete-duplicates             . t)
+            ;; バックアップファイ及び、自動セーブの無効
+            (make-backup-files                     . nil)
+            (delete-auto-save-files                . t)
+            (auto-save-default                     . nil)
+            ;; バッファの最後でnewlineで新規行を追加するのを禁止する
+            (next-line-add-newlines                . nil)
+            ;; auto-fill-modeを切る
+            (auto-fill-mode                        . nil)
+            ;; 補完で大文字小文字無視
+            (read-file-name-completion-ignore-case . t)
+            ;; ミニバッファの履歴を保存する
+            (savehist-mode                         . 1)
+            (history-length                        . 30000)
+            ;;
+            (history-delete-duplicates             . t)
+            ;;
+            (show-paren-mode                       . 1)
+            (show-paren-delay                      . 0.125)
+            ;;
+            (vc-follow-symlinks                    . t)
+            (temp-buffer-resize-mode               . 1)
+            (display-time-mode                     . t)
+            (display-time-string-forms             . '((format "%s/%s(%s)%s:%s"
+                                                               month day dayname
+                                                               24-hours minutes))))
   :config
-  (leaf cus-start
-    :doc "define customization properties of builtins"
-    :url "http://handlename.hatenablog.jp/entry/2011/12/11/214923" ; align sumple
-    :defvar show-paren-deley
-    :custom `(;; GC
-              (garbage-collection-messages           . t)
-              ;; 表示
-              (tool-bar-mode                         . nil)
-              (scroll-bar-mode                       . nil)
-              (menu-bar-mode                         . nil)
-              (blink-cursor-mode                     . nil)
-              (column-number-mode                    . nil)
-              (ring-bell-function                    . 'ignore)
-              ;; 編集
-              (tab-width                             . 4)
-              (indent-tabs-mode                      . nil)
-              (fill-column                           . 72)   ;; RFC2822 風味
-              (truncate-lines                        . t)  ;; 折り返し無し
-              (truncate-partial-width-windows        . nil)
-              (paragraph-start                       . '"^\\([ 　・○<\t\n\f]\\|(?[0-9a-zA-Z]+)\\)")
-              (auto-fill-mode                        . nil)
-              (next-line-add-newlines                . nil)  ;; バッファ終端で newline を入れない
-              (read-file-name-completion-ignore-case . t)  ; 大文字小文字区別無し
-              ;; undo/redo - 数字に根拠無し
-              (undo-limit                            . 200000)
-              (undo-strong-limit                     . 260000)
-              (history-length                        . t)  ;; 無制限(の筈)
-              (create-lockfiles                      . nil)
-              (use-dialog-box                        . nil)
-              (use-file-dialog                       . nil)
-              (frame-resize-pixelwise                . t)
-              (enable-recursive-minibuffers          . t)
-              (history-length                        . 1000)
-              (history-delete-duplicates             . t)
-              (mouse-wheel-scroll-amount             . '(1 ((control) . 5)))
-              (text-quoting-style                    . 'straight)
+  (set-face-background 'region "#555")
+  (defalias 'yes-or-no-p 'y-or-n-p)
+  (leaf *gc-cons-threshold-arch
+    :when (string-match "archlinuxhonda" (system-name))
+    :custom `((gc-cons-threshold . ,(* 1024 1024 1024))))
+  (leaf *gc-cons-threshold-arch-laptop
+    :when (string-match "ArchLinuxonLaptopPC" (system-name))
+    :custom `((gc-cons-threshold . ,(* 64 1024 1024))))
+  (leaf *gc-cons-threshold-mac
+    :when (eq system-type 'darwin)
+    :custom `((gc-cons-threshold . ,(* 32 1024 1024))))
+  (leaf *gc-cons-threshold-pi
+    :when (string-match "raspberrypi" (system-name))
+    :custom `((gc-cons-threshold . ,(* 16 1024 1024))))
+  (run-with-idle-timer 60.0 t #'garbage-collect)
 
+  (leaf startup
+    :doc "起動を静かに"
+    :custom ((inhibit-splash-screen             . t)
+             (inhibit-startup-screen            . t)
+             (inhibit-startup-message           . t)
+             (inhibit-startup-echo-area-message . t)
+             (initial-buffer-choice             . t)
+             (initial-scratch-message           . nil)
+             ))
 
-              ;; システムの時計をCにする
-              (system-time-locale                    . "C")
-              ;; 改行コードを表示する
-              (eol-mnemonic-dos                      . "(CRLF)")
-              (eol-mnemonic-mac                      . "(CR)")
-              (eol-mnemonic-unix                     . "(LF)")
-              ;; 右から左に読む言語に対応させないことで描画高速化
-              (bidi-display-reordering               . nil)
-              ;; 同じ内容を履歴に記録しない
-              (history-delete-duplicates             . t)
-              ;; バックアップファイ及び、自動セーブの無効
-              (make-backup-files                     . nil)
-              (delete-auto-save-files                . t)
-              (auto-save-default                     . nil)
-              ;; バッファの最後でnewlineで新規行を追加するのを禁止する
-              (next-line-add-newlines                . nil)
-              ;; auto-fill-modeを切る
-              (auto-fill-mode                        . nil)
-              ;; 補完で大文字小文字無視
-              (read-file-name-completion-ignore-case . t)
-              ;; ミニバッファの履歴を保存する
-              (savehist-mode                         . 1)
-              (history-length                        . 30000)
-              ;;
-              (history-delete-duplicates             . t)
-              ;;
-              (show-paren-mode                       . 1)
-              (show-paren-delay                      . 0.125)
-              ;;
-              (vc-follow-symlinks                    . t)
-              (temp-buffer-resize-mode               . 1)
-              (display-time-mode                     . t)
-              (display-time-string-forms             . '((format "%s/%s(%s)%s:%s"
-                                                                 month day dayname
-                                                                 24-hours minutes
-                                                                 )))
-              )
+  (leaf *fontSetting
     :config
-    (set-face-background 'region "#555")
-    (defalias 'yes-or-no-p 'y-or-n-p)
-    (leaf *gc-cons-threshold-arch
-      :when (string-match "archlinuxhonda" (system-name))
-      :custom `((gc-cons-threshold . ,(* 1024 1024 1024)))
-      )
-    (leaf *gc-cons-threshold-arch-laptop
-      :when (string-match "ArchLinuxonLaptopPC" (system-name))
-      :custom `((gc-cons-threshold . ,(* 64 1024 1024)))
-      )
-    (leaf *gc-cons-threshold-mac
+    (leaf *forArchlinux
+      :when (eq system-type 'gnu/linux)
+      :when (string-match (system-name) "archlinuxhonda")
+      :config
+      (set-face-attribute 'default nil
+                          :family "HackGen"
+                          :height 140))
+
+    (leaf *forLinux
+      :when (eq system-type 'gnu/linux)
+      :unless (string-match (system-name) "archlinuxhonda")
+      :config
+      (set-face-attribute 'default nil
+                          :family "HackGen"
+                          :height 140))
+
+    (leaf *forMac
       :when (eq system-type 'darwin)
-      :custom `((gc-cons-threshold . ,(* 32 1024 1024)))
-      )
-    (leaf *gc-cons-threshold-pi
-      :when (string-match "raspberrypi" (system-name))
-      :custom `((gc-cons-threshold . ,(* 16 1024 1024)))
-      )
-    (run-with-idle-timer 60.0 t #'garbage-collect)
-
-    (leaf startup
-      :doc "起動を静かに"
-      :custom ((inhibit-splash-screen             . t)
-               (inhibit-startup-screen            . t)
-               (inhibit-startup-message           . t)
-               (inhibit-startup-echo-area-message . t)
-               (initial-buffer-choice             . t)
-               (initial-scratch-message           . nil)
-               )
-      )
-
-    (leaf *fontSetting
       :config
-      (leaf *forArchlinux
-        :when (eq system-type 'gnu/linux)
-        :when (string-match (system-name) "archlinuxhonda")
-        :config
-        (set-face-attribute 'default nil
-                            :family "HackGen"
-                            :height 140))
-      (leaf *forLinux
-        :when (eq system-type 'gnu/linux)
-        :unless (string-match (system-name) "archlinuxhonda")
-        :config
-        (set-face-attribute 'default nil
-                            :family "HackGen"
-                            :height 140))
+      (set-face-attribute 'default nil
+                          :family "HackGen"
+                          :height 150)
+      (set-fontset-font (frame-parameter nil 'font)
+                        'japanese-jisx0208
+                        (font-spec :family "HackGen"
+                                   :height 150)))
 
-      (leaf *forMac
-        :when (eq system-type 'darwin)
-        :config
-        (set-face-attribute 'default nil
-                            :family "HackGen"
-                            :height 150)
-        (set-fontset-font (frame-parameter nil 'font)
-                  'japanese-jisx0208
-                  (font-spec :family "HackGen"
-                             :height 150))
-
-        )
-      (leaf *windows
-        :when (eq system-type 'windows-nt)
-        :config
-        (set-face-attribute 'default nil
-                            :family "HackGen"
-                            :height 150)
-        (set-fontset-font (frame-parameter nil 'font)
-                  'japanese-jisx0208
-                  (font-spec :family "HackGen"
-                             :height 150))
-        )
-
-      (leaf *pi
-        :disabled t
-        :when (string-match (system-name) "RaspberryPi")
-        :when (string-match "enable" (getenv "EXWM"))
-        :config
-        (set-face-attribute 'default nil
-                            :family "HackGen"
-                            :height 120)
-        (set-fontset-font (frame-parameter nil 'font)
-                  'japanese-jisx0208
-                  (font-spec :family "HackGen"
-                             :height 120))
-        )
-      )
-
-    (leaf *byte-compile
-      :init
-      (leaf development
-        :custom
-        ((debug-on-error . nil)
-         (byte-compile-no-warnings . t))
-        )
-      )
-
-    ;; :preface
-    ;; (defun reopen-with-sudo ()
-    ;;   "Reopen current buffer-file with sudo using tramp."
-    ;;   (interactive)
-    ;;   (let ((file-name (buffer-file-name)))
-    ;;      (if file-name
-    ;;          (find-alternate-file (concat "/sudo::" file-name))
-    ;;       (error "Cannot get a file name"))))
-
-    (leaf *lisp
+    (leaf *windows
+      :when (eq system-type 'windows-nt)
       :config
-      (leaf simple
-        :custom ((kill-ring-max                . 100)
-                 (kill-read-only-ok            . t)
-                 (kill-whole-line              . t)
-                 (eval-expression-print-length . nil)
-                 (eval-expression-print-level  . nil))
-        ;; :hook ((before-save-hook . delete-trailing-whitespace))
-        )
+      (set-face-attribute 'default nil
+                          :family "HackGen"
+                          :height 150)
+      (set-fontset-font (frame-parameter nil 'font)
+                        'japanese-jisx0208
+                        (font-spec :family "HackGen"
+                                   :height 150)))
 
-
-      (leaf autorevert
-        :custom ((auto-revert-interval . 0.1)
-                 (global-auto-revert-mode . t)))
-
-      (leaf delete-trailing-whitespace
-        :hook (before-save-hook . delete-trailing-whitespace))
-
-      (leaf rainbow-delimiters
-        :ensure t
-        :hook (emacs-lisp-mode-hook . rainbow-delimiters-mode))
-
-      (leaf *keepscratchbuffer
-        :doc "不死鳥と化したscratch buffer"
-        :preface
-        (defun my:make-scratch (&optional arg)
-          (interactive)
-          (progn
-            ;; "*scratch*" を作成して buffer-list に放り込む
-            (set-buffer (get-buffer-create "*scratch*"))
-            (funcall initial-major-mode)
-            (erase-buffer)
-            (when (and initial-scratch-message (not inhibit-startup-message))
-              (insert initial-scratch-message))
-            (or arg
-                (progn
-                  (setq arg 0)
-                  (switch-to-buffer "*scratch*")))
-            (cond ((= arg 0) (message "*scratch* is cleared up."))
-                  ((= arg 1) (message "another *scratch* is created")))))
-        ;;
-        (defun my:buffer-name-list ()
-          (mapcar (function buffer-name) (buffer-list)))
-        :hook  ((kill-buffer-query-functions
-                 . (lambda ()
-                     (if (string= "*scratch*" (buffer-name))
-                         (progn (my:make-scratch 0) nil)
-                       t)))
-                (after-save-hook
-                 . (lambda ()
-                     (unless (member "*scratch*" (my:buffer-name-list))
-                       (my:make-scratch 1)))))
-        )
-
-
-      (leaf dired
-        ;; :disabled t
-        :after dired
-        :bind ((dired-mode-map
-                :package dired
-                ("j" . dired-next-line)
-                ("k" . dired-previous-line)
-                ("h" . kill-current-buffer-and-dired-up-directory)
-                ("l" . kill-current-buffer-and/or-dired-open-file)
-                ("f" . kill-current-buffer-and/or-dired-open-file)
-                ("b" . kill-current-buffer-and-dired-up-directory)
-                ("q" . kill-current-buffer-and-dired-up-directory)))
-        :custom `((dired-recursive-copies     . 'always)
-                  (dired-recursive-deletes    . 'always)
-                  (dired-copy-preserve-time   . t)
-                  (dired-auto-revert-buffer   . t)
-                  (dired-dwim-target          . t)
-                  ;; (delete-by-moving-to-trash . t)
-                  ;; (dired-listing-switches    . "-Alhv --group-directories-first")
-                  ;; 追加
-                  (dired-launch-mailcap-frend . '("env" "xdg-open"))
-                  (dired-launch-enable        . t)
-                  (dired-isearch-filenames    . t)
-                  (dired-listing-switches     . ,(purecopy "-alht"))
-                  )
-        :preface
-        (defun kill-current-buffer-and/or-dired-open-file ()
-          "In Dired, dired-open-file for a file. For a directory, dired-find-file and kill previously selected buffer."
-          (interactive)
-          (if (file-directory-p (dired-get-file-for-visit))
-              (dired-find-alternate-file)
-            (dired-view-file)))
-        (defun kill-current-buffer-and-dired-up-directory (&optional other-window)
-          "In Dired, dired-up-directory and kill previously selected buffer."
-          (interactive "P")
-          (let ((b (current-buffer)))
-            (dired-up-directory other-window)
-            (kill-buffer b)))
-        (defun dired-open-file-other-window ()
-          "In Dired, open file on other-window and select previously selected buffer."
-          (interactive)
-          (let ((cur-buf (current-buffer)) (tgt-buf (dired-open-file)))
-            (switch-to-buffer cur-buf)
-            (when tgt-buf
-              (with-selected-window (next-window)
-                (switch-to-buffer tgt-buf)))))
-        (defun dired-up-directory-other-window ()
-          "In Dired, dired-up-directory on other-window"
-          (interactive)
-          (dired-up-directory t))
-
-        :config
-        (leaf dired-x :require t)
-        (leaf wdired
-          :custom ((wdired-allow-to-change-permissions . t))
-          :bind ((dired-mode-map
-                  :package dired
-                  ("e" . wdired-change-to-wdired-mode)))
-          )
-        (leaf dired-filter
-          :ensure t
-          :require t
-          ;; :hook ((dired-mode-hook . dired-filter-mode))
-          :bind ((dired-mode-map
-                  :package dired
-                  ("/" . dired-filer-map)))
-          )
-        (leaf peep-dired
-          ;; :disabled t
-          :ensure t
-          :bind ((dired-mode-map
-                  :package dired
-                  ("P" . peep-dired)))
-          )
-        (leaf async
-          :ensure t
-          :custom ((dired-async-mode . 1)
-                   (async-bytecomp-package-mode . 1)
-                   (async-bytecomp-allowed-packages . '(all)))
-          )
-        (leaf dired-open
-          :ensure t
-          :require t
-          :when (eq system-type 'gnu/linux)
-          :custom ((dired-open-extensions .
-                                          '(("mkv"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-                                            ("mp4"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-                                            ("avi"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-                                            ("wmv"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-                                            ("webm"     . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-                                            ("mpg"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-                                            ("flv"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-                                            ("m4v"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-                                            ("mp3"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-                                            ("wav"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-                                            ("m4a"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-                                            ("3gp"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-                                            ("rm"       . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-                                            ("rmvb"     . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-                                            ("mpeg"     . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-                                            ("VOB"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-                                            ("iso"      . "mpv dvd:// -dvd-device")
-                                            ("playlist" . "mpv --playlist")
-                                            ("exe"      . "wine")
-                                            ("pdf"      . "zathura")
-                                            ;; ("zip"      . "zathura")
-                                            ;; ("rar"      . "zathura")
-                                            ;; ("tar"      . "zathura")
-                                            ("zip"      . "YACReader")
-                                            ("rar"      . "YACReader")
-                                            ("tar"      . "YACReader")
-                                            ;; ("zip"      . "mcomix")
-                                            ;; ("rar"       . "mcomix")
-                                            ;; ("tar"       . "mcomix")
-                                            ("xls"      . "xdg-open")
-                                            ("xlsx"     . "xdg-open")
-                                            ("jpg"      . "sxiv-rifle")
-                                            ("png"      . "sxiv-rifle")
-                                            ("jpeg"     . "sxiv-rifle")
-                                            ("gif"      . "sxiv-rifle")
-                                            ("png"      . "sxiv-rifle"))))
-          )
-        (leaf dired-open
-          :ensure t
-          :require t
-          :when (eq system-type 'darwin)
-          :custom ((dired-open-extensions .
-                                          '(("key"  . "open")
-                                            ("docx" . "open")
-                                            ("pdf"  . "open")
-                                            ("cmdf" . "open")
-                                            ("xlsx" . "open")
-                                            ("pxp"  . "open")
-                                            ("bmp"  . "open")
-                                            ))))
-
-        )
-      )
+    ;; (leaf *pi
+    ;;   ;; :disabled t
+    ;;   :when (string-match (system-name) "RaspberryPi")
+    ;;   :when (string-match "enable" (getenv "EXWM"))
+    ;;   :config
+    ;;   (set-face-attribute 'default nil
+    ;;                       :family "HackGen"
+    ;;                       :height 120)
+    ;;   (set-fontset-font (frame-parameter nil 'font)
+    ;;                     'japanese-jisx0208
+    ;;                     (font-spec :family "HackGen"
+    ;;                                :height 120)))
     )
 
-  (leaf *eshell-tools
-    :bind (("C-c e" . eshell))
-    :hook (eshell-mode-hook . eshell-alias)
-    :defvar eshell-command-aliases-list
-    ;; :custom `((eshell-command-aliase-list . '(list '(list "ll" "ls -ltrh")
-    ;;                                                 '(list "la" "ls -a")
-    ;;                                                 '(list "o" "xdg-open")
-    ;;                                                 '(list "emacs" "find-file $1")
-    ;;                                                 '(list "m" "find-file $1")
-    ;;                                                 '(list "mc" "find-file $1")
-    ;;                                                 '(list "d" "dired .")
-    ;;                                                 '(list "l" "eshell/less $1")
-    ;;                                                 '(list "translate" "~/python/translate.py")
-    ;;                                                 '(list "pacmandate" "expac --timefmt='%Y-%m-%d %T' '%l\t%n' | sort | tail -n $1")
-    ;;                                                 '(list "manga" "wine ~/Documents/Software/picture/MangaMeeya_73/MangaMeeya.exe")
-    ;;                                                 '(list "backup" "~/.emacs.d/script/backup.sh $1")
-    ;;                                                 '(list "nvidiafix" "nvidia-settings --assign CurrentMetaMode='nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }'")
-    ;;                                                 '(list "usbmount" "sudo mount -t vfat $1 $2 -o rw,umask=000")
-    ;;                                                 '(list "dvd" "mpv dvd:// -dvd-device $1")
-    ;;                                                 '(list "dvdCopy" "dvdbackup -i /dev/sr0 -o ~/Downloads/iso/ -M"))))
 
-    :preface
-    (defun eshell-alias ()
-      (interactive)
-      "eshell alias set"
-      (setq eshell-command-aliases-list
-            (append
-             (list
-              (list "ll" "ls -ltrh")
-              (list "la" "ls -a")
-              (list "o" "xdg-open")
-              (list "emacs" "find-file $1")
-              (list "m" "find-file $1")
-              (list "mc" "find-file $1")
-              (list "d" "dired .")
-              (list "l" "eshell/less $1")
-              (list "translate" "~/python/translate.py")
-              (list "pacmandate" "expac --timefmt='%Y-%m-%d %T' '%l\t%n' | sort | tail -n $1")
-              (list "nvidiafix" "nvidia-settings --assign CurrentMetaMode='nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }'")
-              (list "usbmount" "sudo mount -t vfat $1 $2 -o rw,umask=000")
-              (list "dvd" "mpv dvd:// -dvd-device $1")
-              (list "dvdCopy" "dvdbackup -i /dev/sr0 -o ~/Downloads/iso/ -M")
-              (list "pkglist" "yay -Qe | cut -f 1 -d " " > ~/.emacs.d/pkglist")
-              ))))
-    (leaf *pcomplete
-      :preface
-      (defun pcomplete/sudo ()
-        "Completion rules for the `sudo' command."
-        (let ((pcomplete-ignore-case t))
-          (pcomplete-here (funcall pcomplete-command-completion-function))
-          (while (pcomplete-here (pcomplete-entries)))))
-
-      ;;systemctlの補完
-      (defcustom pcomplete-systemctl-commands
-        '("disable" "enable" "status" "start" "restart" "stop" "reenable"
-          "list-units" "list-unit-files")
-        "p-completion candidates for `systemctl' main commands"
-        :type '(repeat (string :tag "systemctl command"))
-        :group 'pcomplete)
-      (defvar pcomplete-systemd-units
-        (split-string
-         (shell-command-to-string
-          "(systemctl list-units --all --full --no-legend;systemctl list-unit-files --full --no-legend)|while read -r a b; do echo \" $a\";done;"))
-        "p-completion candidates for all `systemd' units")
-
-      (defvar pcomplete-systemd-user-units
-        (split-string
-         (shell-command-to-string
-          "(systemctl list-units --user --all --full --no-legend;systemctl list-unit-files --user --full --no-legend)|while read -r a b;do echo \" $a\";done;"))
-        "p-completion candidates for all `systemd' user units")
-
-      (defun pcomplete/systemctl ()
-        "Completion rules for the `systemctl' command."
-        (pcomplete-here (append pcomplete-systemctl-commands '("--user")))
-        (cond ((pcomplete-test "--user")
-               (pcomplete-here pcomplete-systemctl-commands)
-               (pcomplete-here pcomplete-systemd-user-units))
-              (t (pcomplete-here pcomplete-systemd-units))))
-    )
-
-    :config
-    (leaf *unixCommandEmu
-      :unless (eq system-type 'windows)
-      :config (eval-after-load "esh-module"
-                '(defvar eshell-modules-list (delq 'eshell-ls (delq 'eshell-unix eshell-modules-list)))))
-    )
-
-  (leaf *keybinding
-    :bind (;; C-m : 改行プラスインデント
-           ("C-m"           . newline-and-indent)
-           ;; ;; exwm用
-           ;; ("C-h" . delete-backward-char)
-           ;; C-x ? : help
-           ("C-c ?"         . help-command)
-           ;;折り返しトグルコマンド
-           ("C-c l"         . toggle-truncate-lines)
-           ;; ウィンドウサイズの変更のキーバインド
-           ("C-c r"         . window-resizer)
-           ;; 行番号を表示
-           ("C-c t"         . display-line-numbers-mode)
-           ;;スペース、改行、タブを表示する
-           ("C-c w"         . whitespace-mode)
-           ;; 検索結果のリストアップ
-           ("C-c o"         . occur)
-           ;; S式の評価
-           ("C-c C-j"       . eval-print-last-sexp)
-           ;; async shell command
-           ("s-s"           . async-shell-command)
-           ("C-x g"         . magit-status)
-           ("C-S-n"         . scroll-up_alt)
-           ("C-S-p"         . scroll-down_alt)
-           ("<kp-divide>"   . insertBackslash)
-           ("<kp-multiply>" . insertPipe)
-           ;;
-           ;;
-           )
-
-    :preface
-    (defun scroll-up_alt ()
-      (interactive)
-      (scroll-up 1))
-    (defun scroll-down_alt ()
-      (interactive)
-      (scroll-down 1))
-    (defun insertBackslash ()
-      (interactive)
-      (insert "\\"))
-    (defun insertPipe ()
-      (interactive)
-      (insert "|"))
-    (defun output_toggle ()
-      "Exchange output source."
-      (interactive)
-      (start-process-shell-command
-       "output-toggle"
-       nil
-       (format "~/.emacs.d/script/output_toggle.sh")))
-    (defun upper_volume ()
-      "Volume up."
-      (interactive)
-      (start-process-shell-command
-       "upper_volume"
-       nil
-       (format "~/.emacs.d/script/upper_volume.sh")))
-    (defun lower_volume ()
-      "Volume down."
-      (interactive)
-      (start-process-shell-command
-       "lower_volume"
-       nil
-       (format "~/.emacs.d/script/lower_volume.sh")))
-    (defun mute_toggle ()
-      "Volume mute."
-      (interactive)
-      (start-process-shell-command
-       "mute_toggle"
-       nil
-       (format "~/.emacs.d/script/mute_toggle.sh")))
-    (defun upperLight ()
-      (interactive)
-      (start-process-shell-command
-       "upper light"
-       nil
-       (format "xbacklight -inc 10")))
-    (defun lowerLight ()
-      (interactive)
-      (start-process-shell-command
-       "lower light"
-       nil
-       (format "xbacklight -dec 10")))
+  (leaf *byte-compile
+    :custom
+    ((debug-on-error . nil)
+     (byte-compile-no-warnings . t)))
 
 
-    :config
-    ;; (leaf *minibufferBackward
-    ;;   :hook (minibuffer-setup-hook . minibuffer-delete-backward-char)
-    ;;   :preface
-    ;;   (defun minibuffer-delete-backward-char ()
-    ;;      (local-set-key (kbd "C-h") 'delete-backward-char))
-    ;;   :bind ((isearch-mode-map
-    ;;            ("C-h" . isearch-delete-char)))
-    ;;   )
-    :init
-    (leaf *c-hSetting
-      :config
-      (global-set-key (kbd "C-h") 'delete-backward-char)
-      (defun minibuffer-delete-backward-char ()
-        (local-set-key (kbd "C-h") 'delete-backward-char))
-      (add-hook 'minibuffer-setup-hook 'minibuffer-delete-backward-char)
-      (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char)
-      )
-    )
   )
 
-(leaf *visual
-  :when window-system
-  :config
-  (leaf doom-themes
-    ;; :disabled t
-    :ensure t
-    :custom ((doom-themes-enable-italic . t)
-             (doom-themes-enable-bold   . t))
-    :custom-face ((doom-modeline-bar . '((t (:background "#6272a4")))))
-    :config
-    (load-theme 'doom-one t)
-    )
+(leaf *lisp
+  :hook  ((before-save-hook . delete-trailing-whitespace)
+          (kill-buffer-query-functions
+           . (lambda ()
+               (if (string= "*scratch*" (buffer-name))
+                   (progn (my:make-scratch 0) nil)
+                 t)))
+          (after-save-hook
+           . (lambda ()
+               (unless (member "*scratch*" (my:buffer-name-list))
+                 (my:make-scratch 1)))))
 
-  (leaf doom-modeline
-    ;; :disabled t
-    :require t
+  :custom ((kill-ring-max                . 100)
+           (kill-read-only-ok            . t)
+           (kill-whole-line              . t)
+           (eval-expression-print-length . nil)
+           (eval-expression-print-level  . nil)
+           (auto-revert-interval . 0.1)
+           (global-auto-revert-mode . t))
+  :config
+  (leaf rainbow-delimiters
+    :doc "Highlight brackets according to their depth"
+    :tag "tools" "lisp" "convenience" "faces"
+    :url "https://github.com/Fanael/rainbow-delimiters"
+    :added "2021-09-05"
     :ensure t
+    :hook (emacs-lisp-mode-hook . rainbow-delimiters-mode))
+
+  :preface
+  (defun my:make-scratch (&optional arg)
+    (interactive)
+    (progn
+      ;; "*scratch*" を作成して buffer-list に放り込む
+      (set-buffer (get-buffer-create "*scratch*"))
+      (funcall initial-major-mode)
+      (erase-buffer)
+      (when (and initial-scratch-message (not inhibit-startup-message))
+        (insert initial-scratch-message))
+      (or arg
+          (progn
+            (setq arg 0)
+            (switch-to-buffer "*scratch*")))
+      (cond ((= arg 0) (message "*scratch* is cleared up."))
+            ((= arg 1) (message "another *scratch* is created")))))
+  (defun my:buffer-name-list ()
+    (mapcar (function buffer-name) (buffer-list)))
+  )
+
+(leaf *dired
+  ;; :disabled t
+  :after dired
+  :bind ((dired-mode-map
+          :package dired
+          ("j" . dired-next-line)
+          ("k" . dired-previous-line)
+          ("h" . kill-current-buffer-and-dired-up-directory)
+          ("l" . kill-current-buffer-and/or-dired-open-file)
+          ("f" . kill-current-buffer-and/or-dired-open-file)
+          ("b" . kill-current-buffer-and-dired-up-directory)
+          ("q" . kill-current-buffer-and-dired-up-directory)))
+  :custom `((dired-recursive-copies     . 'always)
+            (dired-recursive-deletes    . 'always)
+            (dired-copy-preserve-time   . t)
+            (dired-auto-revert-buffer   . t)
+            (dired-dwim-target          . t)
+            ;; (delete-by-moving-to-trash . t)
+            ;; (dired-listing-switches    . "-Alhv --group-directories-first")
+            ;; 追加
+            (dired-launch-mailcap-frend . '("env" "xdg-open"))
+            (dired-launch-enable        . t)
+            (dired-isearch-filenames    . t)
+            (dired-listing-switches     . ,(purecopy "-alht")))
+  :config
+  (leaf dired-x :require t)
+  (leaf wdired
+    :custom ((wdired-allow-to-change-permissions . t))
+    :bind ((dired-mode-map
+            :package dired
+            ("e" . wdired-change-to-wdired-mode))))
+  (leaf dired-filter
+    :doc "Ibuffer-like filtering for dired"
+    :req "dash-2.10.0" "dired-hacks-utils-0.0.1" "f-0.17.0" "cl-lib-0.3"
+    :tag "files"
+    :added "2021-09-05"
+    :ensure t
+    :after dired-hacks-utils
+    :bind ((dired-mode-map
+            :package dired
+            ("/" . dired-filer-map))))
+  (leaf peep-dired
+    :doc "Peep at files in another window from dired buffers"
+    :tag "convenience" "files"
+    :added "2021-09-05"
+    :ensure t
+    :bind ((dired-mode-map
+            :package dired
+            ("P" . peep-dired))))
+  (leaf async
+    :doc "Asynchronous processing in Emacs"
+    :req "emacs-24.4"
+    :tag "async" "emacs>=24.4"
+    :url "https://github.com/jwiegley/emacs-async"
+    :added "2021-09-05"
+    :emacs>= 24.4
+    :ensure t
+    :custom ((dired-async-mode . 1)
+             (async-bytecomp-package-mode . 1)
+             (async-bytecomp-allowed-packages . '(all))))
+  (leaf dired-open
+    :doc "Open files from dired using using custom actions"
+    :req "dash-2.5.0" "dired-hacks-utils-0.0.1"
+    :tag "files"
+    :added "2021-09-05"
+    :ensure t
+    :after dired-hacks-utils
+    :when (eq system-type 'gnu/linux)
+    :custom ((dired-open-extensions .
+                                    '(("mkv"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+                                      ("mp4"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+                                      ("avi"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+                                      ("wmv"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+                                      ("webm"     . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+                                      ("mpg"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+                                      ("flv"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+                                      ("m4v"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+                                      ("mp3"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+                                      ("wav"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+                                      ("m4a"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+                                      ("3gp"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+                                      ("rm"       . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+                                      ("rmvb"     . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+                                      ("mpeg"     . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+                                      ("VOB"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+                                      ("iso"      . "mpv dvd:// -dvd-device")
+                                      ("playlist" . "mpv --playlist")
+                                      ("exe"      . "wine")
+                                      ("pdf"      . "zathura")
+                                      ;; ("zip"      . "zathura")
+                                      ;; ("rar"      . "zathura")
+                                      ;; ("tar"      . "zathura")
+                                      ("zip"      . "YACReader")
+                                      ("rar"      . "YACReader")
+                                      ("tar"      . "YACReader")
+                                      ;; ("zip"      . "mcomix")
+                                      ;; ("rar"       . "mcomix")
+                                      ;; ("tar"       . "mcomix")
+                                      ("xls"      . "xdg-open")
+                                      ("xlsx"     . "xdg-open")
+                                      ("jpg"      . "sxiv-rifle")
+                                      ("png"      . "sxiv-rifle")
+                                      ("jpeg"     . "sxiv-rifle")
+                                      ("gif"      . "sxiv-rifle")
+                                      ("png"      . "sxiv-rifle")))))
+  (leaf dired-open
+    :doc "Open files from dired using using custom actions"
+    :req "dash-2.5.0" "dired-hacks-utils-0.0.1"
+    :tag "files"
+    :added "2021-09-05"
+    :ensure t
+    :after dired-hacks-utils
+    :when (eq system-type 'darwin)
+    :custom ((dired-open-extensions .
+                                    '(("key"  . "open")
+                                      ("docx" . "open")
+                                      ("pdf"  . "open")
+                                      ("cmdf" . "open")
+                                      ("xlsx" . "open")
+                                      ("pxp"  . "open")
+                                      ("bmp"  . "open")
+                                      ))))
+
+  :preface
+  (defun kill-current-buffer-and/or-dired-open-file ()
+    "In Dired, dired-open-file for a file. For a directory, dired-find-file and kill previously selected buffer."
+    (interactive)
+    (if (file-directory-p (dired-get-file-for-visit))
+        (dired-find-alternate-file)
+      (dired-view-file)))
+  (defun kill-current-buffer-and-dired-up-directory (&optional other-window)
+    "In Dired, dired-up-directory and kill previously selected buffer."
+    (interactive "P")
+    (let ((b (current-buffer)))
+      (dired-up-directory other-window)
+      (kill-buffer b)))
+  (defun dired-open-file-other-window ()
+    "In Dired, open file on other-window and select previously selected buffer."
+    (interactive)
+    (let ((cur-buf (current-buffer)) (tgt-buf (dired-open-file)))
+      (switch-to-buffer cur-buf)
+      (when tgt-buf
+        (with-selected-window (next-window)
+          (switch-to-buffer tgt-buf)))))
+  (defun dired-up-directory-other-window ()
+    "In Dired, dired-up-directory on other-window"
+    (interactive)
+    (dired-up-directory t))
+
+  )
+
+(leaf *eshell-tools
+  :bind (("C-c e" . eshell))
+  :hook (eshell-mode-hook . eshell-alias)
+  :defvar eshell-command-aliases-list
+  ;; :custom `((eshell-command-aliase-list . '(list '(list "ll" "ls -ltrh")
+  ;;                                                 '(list "la" "ls -a")
+  ;;                                                 '(list "o" "xdg-open")
+  ;;                                                 '(list "emacs" "find-file $1")
+  ;;                                                 '(list "m" "find-file $1")
+  ;;                                                 '(list "mc" "find-file $1")
+  ;;                                                 '(list "d" "dired .")
+  ;;                                                 '(list "l" "eshell/less $1")
+  ;;                                                 '(list "translate" "~/python/translate.py")
+  ;;                                                 '(list "pacmandate" "expac --timefmt='%Y-%m-%d %T' '%l\t%n' | sort | tail -n $1")
+  ;;                                                 '(list "manga" "wine ~/Documents/Software/picture/MangaMeeya_73/MangaMeeya.exe")
+  ;;                                                 '(list "backup" "~/.emacs.d/script/backup.sh $1")
+  ;;                                                 '(list "nvidiafix" "nvidia-settings --assign CurrentMetaMode='nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }'")
+  ;;                                                 '(list "usbmount" "sudo mount -t vfat $1 $2 -o rw,umask=000")
+  ;;                                                 '(list "dvd" "mpv dvd:// -dvd-device $1")
+  ;;                                                 '(list "dvdCopy" "dvdbackup -i /dev/sr0 -o ~/Downloads/iso/ -M"))))
+  :config
+  (leaf *unixCommandEmu
+    :unless (eq system-type 'windows)
+    :config (eval-after-load "esh-module"
+              '(defvar eshell-modules-list (delq 'eshell-ls (delq 'eshell-unix eshell-modules-list)))))
+
+  :preface
+  (defun eshell-alias ()
+    (interactive)
+    "eshell alias set"
+    (setq eshell-command-aliases-list
+          (append
+           (list
+            (list "ll" "ls -ltrh")
+            (list "la" "ls -a")
+            (list "o" "xdg-open")
+            (list "emacs" "find-file $1")
+            (list "m" "find-file $1")
+            (list "mc" "find-file $1")
+            (list "d" "dired .")
+            (list "l" "eshell/less $1")
+            (list "translate" "~/python/translate.py")
+            (list "pacmandate" "expac --timefmt='%Y-%m-%d %T' '%l\t%n' | sort | tail -n $1")
+            (list "nvidiafix" "nvidia-settings --assign CurrentMetaMode='nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }'")
+            (list "usbmount" "sudo mount -t vfat $1 $2 -o rw,umask=000")
+            (list "dvd" "mpv dvd:// -dvd-device $1")
+            (list "dvdCopy" "dvdbackup -i /dev/sr0 -o ~/Downloads/iso/ -M")
+            (list "pkglist" "yay -Qe | cut -f 1 -d " " > ~/.emacs.d/pkglist")))))
+  (leaf *pcomplete-func
+    :preface
+    (defun pcomplete/sudo ()
+      "Completion rules for the `sudo' command."
+      (let ((pcomplete-ignore-case t))
+        (pcomplete-here (funcall pcomplete-command-completion-function))
+        (while (pcomplete-here (pcomplete-entries)))))
+
+    ;;systemctlの補完
+    (defcustom pcomplete-systemctl-commands
+      '("disable" "enable" "status" "start" "restart" "stop" "reenable"
+        "list-units" "list-unit-files")
+      "p-completion candidates for `systemctl' main commands"
+      :type '(repeat (string :tag "systemctl command"))
+      :group 'pcomplete)
+    (defvar pcomplete-systemd-units
+      (split-string
+       (shell-command-to-string
+        "(systemctl list-units --all --full --no-legend;systemctl list-unit-files --full --no-legend)|while read -r a b; do echo \" $a\";done;"))
+      "p-completion candidates for all `systemd' units")
+
+    (defvar pcomplete-systemd-user-units
+      (split-string
+       (shell-command-to-string
+        "(systemctl list-units --user --all --full --no-legend;systemctl list-unit-files --user --full --no-legend)|while read -r a b;do echo \" $a\";done;"))
+      "p-completion candidates for all `systemd' user units")
+
+    (defun pcomplete/systemctl ()
+      "Completion rules for the `systemctl' command."
+      (pcomplete-here (append pcomplete-systemctl-commands '("--user")))
+      (cond ((pcomplete-test "--user")
+             (pcomplete-here pcomplete-systemctl-commands)
+             (pcomplete-here pcomplete-systemd-user-units))
+            (t (pcomplete-here pcomplete-systemd-units)))))
+  )
+
+(leaf *globa-keybinding
+  :hook (minibuffer-setup-hook . minibuffer-delete-backward-char)
+  :bind (;; C-m : 改行プラスインデント
+         ("C-m"           . newline-and-indent)
+         ;; ;; exwm用
+         ("C-h" . delete-backward-char)
+         ;; C-x ? : help
+         ("C-c ?"         . help-command)
+         ;;折り返しトグルコマンド
+         ("C-c l"         . toggle-truncate-lines)
+         ;; ウィンドウサイズの変更のキーバインド
+         ("C-c r"         . window-resizer)
+         ;; 行番号を表示
+         ("C-c t"         . display-line-numbers-mode)
+         ;;スペース、改行、タブを表示する
+         ("C-c w"         . whitespace-mode)
+         ;; 検索結果のリストアップ
+         ("C-c o"         . occur)
+         ;; S式の評価
+         ("C-c C-j"       . eval-print-last-sexp)
+         ;; async shell command
+         ("s-s"           . async-shell-command)
+         ("C-x g"         . magit-status)
+         ("C-S-n"         . scroll-up_alt)
+         ("C-S-p"         . scroll-down_alt)
+         ("<kp-divide>"   . insertBackslash)
+         ("<kp-multiply>" . insertPipe)
+         (isearch-mode-map
+          ("C-h" . isearch-delete-char)))
+
+  :preface
+  (defun scroll-up_alt ()
+    (interactive)
+    (scroll-up 1))
+  (defun scroll-down_alt ()
+    (interactive)
+    (scroll-down 1))
+  (defun insertBackslash ()
+    (interactive)
+    (insert "\\"))
+  (defun insertPipe ()
+    (interactive)
+    (insert "|"))
+  (defun output_toggle ()
+    "Exchange output source."
+    (interactive)
+    (start-process-shell-command
+     "output-toggle"
+     nil
+     (format "~/.emacs.d/script/output_toggle.sh")))
+  (defun upper_volume ()
+    "Volume up."
+    (interactive)
+    (start-process-shell-command
+     "upper_volume"
+     nil
+     (format "~/.emacs.d/script/upper_volume.sh")))
+  (defun lower_volume ()
+    "Volume down."
+    (interactive)
+    (start-process-shell-command
+     "lower_volume"
+     nil
+     (format "~/.emacs.d/script/lower_volume.sh")))
+  (defun mute_toggle ()
+    "Volume mute."
+    (interactive)
+    (start-process-shell-command
+     "mute_toggle"
+     nil
+     (format "~/.emacs.d/script/mute_toggle.sh")))
+  (defun upperLight ()
+    (interactive)
+    (start-process-shell-command
+     "upper light"
+     nil
+     (format "xbacklight -inc 10")))
+  (defun lowerLight ()
+    (interactive)
+    (start-process-shell-command
+     "lower light"
+     nil
+     (format "xbacklight -dec 10")))
+  (defun minibuffer-delete-backward-char ()
+    (local-set-key (kbd "C-h") 'delete-backward-char))
+  ;; :init
+  ;; (global-set-key (kbd "C-h") 'delete-backward-char)
+  ;; (defun minibuffer-delete-backward-char ()
+  ;;   (local-set-key (kbd "C-h") 'delete-backward-char))
+  ;; (add-hook 'minibuffer-setup-hook 'minibuffer-delete-backward-char)
+  ;; (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char)
+  )
+
+(leaf doom-themes
+  :doc "an opinionated pack of modern color-themes"
+  :req "emacs-25.1" "cl-lib-0.5"
+  :tag "faces" "custom themes" "emacs>=25.1"
+  :url "https://github.com/hlissner/emacs-doom-themes"
+  :added "2021-09-05"
+  :emacs>= 25.1
+  :ensure t
+  :custom ((doom-themes-enable-italic . t)
+           (doom-themes-enable-bold   . t))
+  :custom-face ((doom-modeline-bar . '((t (:background "#6272a4")))))
+  :config
+  (load-theme 'doom-one t)
+  (leaf doom-modeline
+    :doc "A minimal and modern mode-line"
+    :req "emacs-25.1" "all-the-icons-2.2.0" "shrink-path-0.2.0" "dash-2.11.0"
+    :tag "mode-line" "faces" "emacs>=25.1"
+    :url "https://github.com/seagle0128/doom-modeline"
+    :added "2021-09-05"
+    :emacs>= 25.1
+    :ensure t
+    :after all-the-icons shrink-path
     :custom `((doom-modeline-buffer-file-name-style . 'truncate-with-project)
               (doom-modeline-icon                   . nil)
               (doom-modeline-major-mode-icon        . nil)
               (doom-modeline-minor-modes            . nil)
               (line-number-mode                     . 0)
               (column-number-mode                   . 0)
-              (doom-modeline-mode                   . t))
-    )
-
+              (doom-modeline-mode                   . t)))
   (leaf *afterSave
     :hook (after-save-hook . flashAfterSave)
     :preface
@@ -704,11 +673,205 @@
         (set-face-background 'mode-line "dark green")
         (run-with-idle-timer 0.1 nil
                              (lambda (fg) (set-face-background 'mode-line fg))
-                             orig-fg)))
-    )
+                             orig-fg))))
+
   )
+
+;; (leaf *visual
+;;   :when window-system
+;;   :disabled t
+;;   :config
+;;   (leaf doom-themes
+;;     ;; :disabled t
+;;     :ensure t
+;;     :custom ((doom-themes-enable-italic . t)
+;;              (doom-themes-enable-bold   . t))
+;;     :custom-face ((doom-modeline-bar . '((t (:background "#6272a4")))))
+;;     :config
+;;     (load-theme 'doom-one t)
+;;     )
+
+;;   (leaf doom-modeline
+;;     ;; :disabled t
+;;     :require t
+;;     :ensure t
+;;     :custom `((doom-modeline-buffer-file-name-style . 'truncate-with-project)
+;;               (doom-modeline-icon                   . nil)
+;;               (doom-modeline-major-mode-icon        . nil)
+;;               (doom-modeline-minor-modes            . nil)
+;;               (line-number-mode                     . 0)
+;;               (column-number-mode                   . 0)
+;;               (doom-modeline-mode                   . t))
+;;     )
+
+;;   (leaf *afterSave
+;;     :hook (after-save-hook . flashAfterSave)
+;;     :preface
+;;     (defun flashAfterSave ()
+;;       (interactive)
+;;       (let ((orig-fg (face-background 'mode-line)))
+;;         (set-face-background 'mode-line "dark green")
+;;         (run-with-idle-timer 0.1 nil
+;;                              (lambda (fg) (set-face-background 'mode-line fg))
+;;                              orig-fg)))
+;;     )
+;;   )
 
 ;; window maneger
+;; (leaf exwm
+;;   :disabled t
+;;   :doc "Emacs X Window Manager"
+;;   :req "xelb-0.18"
+;;   :tag "unix"
+;;   :url "https://github.com/ch11ng/exwm"
+;;   :added "2021-09-05"
+;;   :ensure t
+;;   :after xelb
+;;   :when (string= "enable" (getenv "EXWM"))
+;;   :when (eq system-type 'gnu/linux)
+;;   :preface (server-start)
+;;   :defun (exwm-workspace-rename-buffer exwm-workspace-toggle)
+;;   :hook (exwm-update-class-hook . (lambda ()
+;;                                     (exwm-workspace-rename-buffer exwm-class-name)))
+;;   :custom `((use-dialog-box . nil)
+;;             (window-divider-default-right-width . 1)
+;;             (exwm-workspace-show-all-buffers . t)
+;;             (exwm-layout-show-all-buffers . t)
+;;             (exwm-workspace-number . 3)
+;;             (exwm-input-global-keys .
+;;                                     '((,(kbd "s-r")     . exwm-reset)
+;;                                       (,(kbd "s-d")     . counsel-linux-app)
+;;                                       (,(kbd "s-n")     . windmove-down)
+;;                                       (,(kbd "s-f")     . windmove-right)
+;;                                       (,(kbd "s-b")     . windmove-left)
+;;                                       (,(kbd "s-p")     . windmove-up)
+;;                                       (,(kbd "s-<tab>") . exwm-workspace-toggle)
+;;                                       (,(kbd "s-a")     . zoom-window-zoom)
+;;                                       (,(kbd "C-s-i")   . output_toggle)
+;;                                       (,(kbd "C-s-m")   . mute_toggle)
+;;                                       (,(kbd "C-s-n")   . lower_volume)
+;;                                       (,(kbd "C-s-p")   . upper_volume)
+;;                                       (,(kbd "s-q")     . kill-current-buffer)
+;;                                       (,(kbd "s-h")     . delete-window)
+;;                                       (,(kbd "s-SPC")   . exwm-floating-toggle-floating)
+;;                                       (,(kbd "s-e")     . exwm-input-toggle-keyboard)
+;;                                       (,(kbd "s-o")     . ivy-switch-buffer)
+;;                                       (,(kbd "s-r")     . exwm-reset)
+;;                                       ;; (,(kbd "s-d")     . app-launch)
+;;                                       (,(kbd "C-j")     . ,(kbd "C-&"))
+;;                                       (,(kbd "C-l")     . ,(kbd "C-^"))
+;;                                       (,(kbd "s-i")     . output_toggle)
+;;                                       (,(kbd "s-j")     . lower_volume)
+;;                                       (,(kbd "s-k")     . upper_volume)
+;;                                       (,(kbd "s-m")     . mute_toggle)
+;;                                       (,(kbd "s-i")     . output_toggle)
+;;                                       (,(kbd "s-[")     . lowerLight)
+;;                                       (,(kbd "s-]")     . upperLight)
+;;                                       ,@(mapcar (lambda (i)
+;;                                                   `(,(kbd (format "s-%d" i)) .
+;;                                                     (lambda ()
+;;                                                       (interactive)
+;;                                                       (exwm-workspace-switch-create ,i))))
+;;                                                 (number-sequence 0 9))
+;;                                       )
+;;                                     )
+;;             (exwm-input-simulation-keys . '(
+;;                                             ;; new version
+;;                                             (,(kbd "C-b")           . [left])
+;;                                             (,(kbd "M-b")           . [C-left])
+;;                                             (,(kbd "C-f")           . [right])
+;;                                             (,(kbd "M-f")           . [C-right])
+;;                                             (,(kbd "C-p")           . [up])
+;;                                             (,(kbd "C-n")           . [down])
+;;                                             (,(kbd "C-a")           . [home])
+;;                                             (,(kbd "C-e")           . [end])
+;;                                             (,(kbd "M-v")           . [prior])
+;;                                             (,(kbd "C-v")           . [next])
+;;                                             (,(kbd "C-d")           . [delete])
+;;                                             (,(kbd "C-k")           . [S-end ?\C-x])
+;;                                             (,(kbd "M-<")           . [C-home])
+;;                                             (,(kbd "M->")           . [C-end])
+;;                                             (,(kbd "C-/")           . [C-z])
+;;                                             ;; C-h は特別扱い扱い
+;;                                             ([?\C-h]                . [backspace])
+;;                                             (,(kbd "C-m")           . [return])
+;;                                             (,(kbd "C-/")           . [C-z])
+;;                                             (,(kbd "C-S-f")         . [S-right])
+;;                                             (,(kbd "C-S-b")         . [S-left])
+;;                                             (,(kbd "C-S-p")         . [S-up])
+;;                                             (,(kbd "C-S-n")         . [S-down])
+;;                                             (,(kbd "C-w")           . ,(kbd "C-x"))
+;;                                             (,(kbd "M-w")           . ,(kbd "C-c"))
+;;                                             (,(kbd "C-y")           . ,(kbd "C-v"))
+;;                                             (,(kbd "s-v")           . ,(kbd "C-v"))
+;;                                             (,(kbd "C-x h")         . ,(kbd "C-a"))
+;;                                             (,(kbd "M-d")           . [C-S-right ?\C-x])
+;;                                             (,(kbd "M-<backspace>") . [C-S-left ?\C-x])
+;;                                             ;; search
+;;                                             (,(kbd "C-s")           . ,(kbd "C-f"))
+;;                                             ;; escape
+;;                                             (,(kbd "C-g")           . [escape])
+;;                                             ;; like mac
+;;                                             (,(kbd "s-w")           . [C-w])
+;;                                             ([s-left]               . [C-S-tab])
+;;                                             ([s-right]              . [C-tab])
+;;                                             ;; ([s-up] . [C-tab])
+;;                                             ;; ([s-down] . [C-tab])
+;;                                             (,(kbd "s-t")           . [C-t ?\C-k])
+;;                                             (,(kbd "s-T")           . [C-T])
+;;                                             ;;
+;;                                             ;;
+;;                                             ;;
+;;                                             (,(kbd "s-l")           . [C-k])
+;;                                             (,(kbd "s-k")           . [C-l])
+;;                                             ;;
+;;                                             (,(kbd "C-x C-s")       . [C-s])
+;;                                             (,(kbd "C-u C-/")       . [C-y])
+;;                                             )))
+;;   :bind (("C-&" . skk-hiragana-set)
+;;          ("C-^" . skk-latin-mode))
+;;   :preface
+;;   (server-start)
+;;   (defun exwm-workspace-toggle ()
+;;     (interactive)
+;;     (if (= exwm-workspace-current-index 0)
+;;         (exwm-workspace-switch 2)
+;;       (exwm-workspace-switch 0)))
+
+;;   :config
+;;   ;; (exwmx-floating-smart-hide)
+;;   ;; (exwmx-button-enable)
+;;   (leaf *pi
+;;     :disabled t
+;;     :when (string-match "raspberrypi" (system-name))
+;;     :preface
+;;     (defun app-launch (command)
+;;       (interactive (list (read-shell-command "$ ")))
+;;       (start-process-shell-command command nil command))
+;;     :bind ("s-d" . counsel-linux-app))
+
+
+;;   (leaf exwm-systemtray
+;;     :require t
+;;     :defun exwm-systemtray-enable
+;;     :config
+;;     (exwm-systemtray-enable))
+;;   (leaf exwm-randr
+;;     :require t
+;;     :when (eq "archlinuxhonda" (system-name))
+;;     :custom ((exwm-randr-workspace-monitor-plist . '(0 "DP-0" 1 "HDMI-0" 2 "DP-0" 3 "DP-0" 4 "DP-0" 5 "DP-0")))
+;;     :config
+;;     (exwm-randr-enable))
+;;   (leaf exwm-enable
+;;     :defun (exwm-enable)
+;;     :config
+;;     (exwm-enable))
+
+;;   (leaf fix_ediff
+;;     :after ediff-wind
+;;     :custom `((ediff-window-setup-function . 'ediff-setup-windows-plain)))
+;;   )
+
 (leaf *exwm-config
   ;; :disabled t
   :when (string= "enable" (getenv "EXWM"))
@@ -838,9 +1001,7 @@
       (defun app-launch (command)
         (interactive (list (read-shell-command "$ ")))
         (start-process-shell-command command nil command))
-
-      :bind ("s-d" . counsel-linux-app)
-    )
+      :bind ("s-d" . counsel-linux-app))
 
     ;; (exwmx-floating-smart-hide)
     ;; (exwmx-button-enable)
@@ -850,52 +1011,80 @@
     :require t
     :defun exwm-systemtray-enable
     :config
-    (exwm-systemtray-enable)
-    )
+    (exwm-systemtray-enable))
 
   (leaf exwm-randr
     :require t
     :when (eq "archlinuxhonda" (system-name))
-    :custom ((exwm-randr-workspace-monitor-plist . '(0 "DP-0" 1 "HDMI-0" 2 "DP-0" 3 "DP-0" 4 "DP-0" 5 "DP-0"))
-             )
+    :custom ((exwm-randr-workspace-monitor-plist . '(0 "DP-0" 1 "HDMI-0" 2 "DP-0" 3 "DP-0" 4 "DP-0" 5 "DP-0")))
     :config
-    (exwm-randr-enable)
-    )
+    (exwm-randr-enable))
 
   (leaf exwm-enable
     :defun (exwm-enable)
     :config
-    (exwm-enable)
-    )
+    (exwm-enable))
 
   (leaf *fix_ediff
     :after ediff-wind
-    :custom `((ediff-window-setup-function . 'ediff-setup-windows-plain)
-              ;; (ediff-control-frame-parameters . (cons '(unsplittable . t) ediff-control-frame-parameters))
-              )
-    )
+    :custom `((ediff-window-setup-function . 'ediff-setup-windows-plain)))
 
   )
 
 
 ;; メジャーモードの設定
-(leaf ein :ensure t)
+(leaf ein
+  :doc "Emacs IPython Notebook"
+  :req "emacs-25" "websocket-1.12" "anaphora-1.0.4" "request-0.3.3" "deferred-0.5" "polymode-0.2.2" "dash-2.13.0" "with-editor-0.-1"
+  :tag "reproducible research" "literate programming" "jupyter" "emacs>=25"
+  :url "https://github.com/dickmao/emacs-ipython-notebook"
+  :added "2021-09-05"
+  :emacs>= 25
+  :ensure t
+  :after websocket anaphora deferred polymode with-editor)
 
 (leaf rust-mode
+  :doc "A major-mode for editing Rust source code"
+  :req "emacs-25.1"
+  :tag "languages" "emacs>=25.1"
+  :url "https://github.com/rust-lang/rust-mode"
+  :added "2021-09-05"
+  :emacs>= 25.1
   :ensure t
   :config
-  (leaf racer :ensure t)
-  )
+  (leaf racer
+    :doc "code completion, goto-definition and docs browsing for Rust via racer"
+    :req "emacs-25.1" "rust-mode-0.2.0" "dash-2.13.0" "s-1.10.0" "f-0.18.2" "pos-tip-0.4.6"
+    :tag "tools" "rust" "matching" "convenience" "abbrev" "emacs>=25.1"
+    :url "https://github.com/racer-rust/emacs-racer"
+    :added "2021-09-05"
+    :emacs>= 25.1
+    :ensure t
+    :after rust-mode pos-tip))
 
-(leaf csv-mode
-  ;; :unless (string-match "raspberrypi" (system-name))
+(leaf csv
+  :doc "Functions for reading and parsing CSV files."
+  :tag "csv" "data" "extensions"
+  :added "2021-09-05"
   :ensure t)
 
 (leaf vlf
-  :ensure t
-  :require vlf-setup)
+  :doc "View Large Files"
+  :tag "utilities" "large files"
+  :url "https://github.com/m00natic/vlfi"
+  :added "2021-09-05"
+  ;; :require vlf-setup
+  :ensure t)
 
-(leaf yaml-mode :ensure t)
+
+(leaf yaml
+  :doc "YAML parser for Elisp"
+  :req "emacs-25.1"
+  :tag "tools" "emacs>=25.1"
+  :url "https://github.com/zkry/yaml.el"
+  :added "2021-09-05"
+  :emacs>= 25.1
+  :ensure t)
 
 (leaf magit
   :doc "A Git porcelain inside Emacs."
@@ -944,10 +1133,11 @@
          (haskell-mode-hook . haskell-indentation-mode)))
 
 (leaf yatex
-  ;; :disabled t
+  :doc "Yet Another tex-mode for emacs //野鳥//"
+  :added "2021-09-05"
   :ensure t
-  :hook (yatex-mode-hook . (lambda () (auto-fill-mode -1)))
-  :hook (yatex-mode-hook . reftex-mode)
+  :hook ((yatex-mode-hook . (lambda () (auto-fill-mode -1)))
+         (yatex-mode-hook . reftex-mode))
   ;; :bind (("C-c C-z" . ebib))
   :mode (("\\.tex\\'" . yatex-mode)
          ("\\.ltx\\'"     . yatex-mode)
@@ -969,7 +1159,6 @@
             (dviprint-command-format      .   "open -a \"Adobe Acrobat Reader DC\" `echo %s | gsed -e \"s/\\.[^.]*$/\\.pdf/\"`")
             (YaTeX-nervous                .   nil)
             (YaTeX-close-paren-always         .   nil))
-
   :config
   (leaf *yatexForLinux
     :when (eq system-type 'gnu/linux)
@@ -1022,18 +1211,13 @@
                        (format "%s '%s.pdf#src:%d %s'"
                                previewer bnr line (expand-file-name cf)))
                       )))
-            (YaTeX-system cmd "jump-line" 'noask pdir))))))
-
-  ;; (leaf *forMac
-  ;;   :when (eq system-type 'darwin)
-  ;;   :custom ((exec-path . (append '("/usr/local/bin" "/Library/TeX/texbin" "/Applications/Skim.app/Contents/SharedSupport") exec-path))
-  ;;            (dvi2-command . "open -a Skim")
-  ;;            (tex-pdfview-command . "open -a Skim"))
-  ;;   :config
-  ;;   (setenv "PATH" "/usr/local/bin:/Library/TeX/texbin/:/Applications/Skim.app/Contents/SharedSupport:$PATH" t))
+            (YaTeX-system cmd "jump-line" 'noask pdir)))))
+    )
 
   (leaf reftex
-    ;; :ensure t
+    :doc "minor mode for doing \\label, \\ref, \\cite, \\index in LaTeX"
+    :tag "builtin"
+    :added "2021-09-05"
     :hook (yatex-mode . reftex-mode)
     :custom ((reftex-mode . 1)
              (reftex-label-alist . '((nil ?e nil "\\eqref{%s}" nil nil)))
@@ -1042,10 +1226,18 @@
 
     :bind ((YaTeX-mode-map
             (">" . YaTeX-comment-region)
-            ("<" . YaTeX-uncomment-region)))))
+            ("<" . YaTeX-uncomment-region))))
+  )
 
 (leaf ebib
+  :doc "a BibTeX database manager"
+  :req "parsebib-2.3" "emacs-25.1"
+  :tag "bibtex" "text" "emacs>=25.1"
+  :url "http://joostkremers.github.io/ebib/"
+  :added "2021-09-05"
+  :emacs>= 25.1
   :ensure t
+  :after parsebib
   :custom ((ebib-preload-bib-files                . '("~/tex/references.bib"))
            (bibtex-autokey-name-case-convert      . 'capitalize)
            (bibtex-autokey-titleword-case-convert . 'capitalize)
@@ -1068,7 +1260,8 @@
     )
   (leaf *ebibForLinux
     :when (eq system-type 'gnu/linux)
-    :custom ((ebib-file-associations . '(("pdf" . "zathura") ("ps"  . "zathura"))))))
+    :custom ((ebib-file-associations . '(("pdf" . "zathura") ("ps"  . "zathura")))))
+  )
 
 (leaf google-translate
   :ensure t
@@ -1107,8 +1300,7 @@
            (next-screen-context-lines       . 10)
            ;; 1画面スクロール時にカーソルの画面上の位置をなるべく変えない
            (scroll-preserve-screen-position . t)
-           (windmove-wrap-around            . t)
-           )
+           (windmove-wrap-around            . t))
   :preface
   ;; ウィンドウのサイズ変更
   (defun window-resizer ()
@@ -1154,10 +1346,10 @@
            ("s-a" . zoom-window-zoom)
            ("s-q" . kill-current-buffer)
            ("s-h" . delete-window)
-           ("s-o" . ivy-switch-buffer))
-    )
+           ("s-o" . ivy-switch-buffer)))
 
-  (leaf *ForPI
+  (leaf *ForPi
+    :disabled t
     :when (string-match "raspberrypi" (system-name))
     :bind (("s-n" . windmove-down)
            ("s-f" . windmove-right)
@@ -1166,8 +1358,7 @@
            ("s-a" . zoom-window-zoom)
            ("s-q" . kill-current-buffer)
            ("s-h" . delete-window)
-           ("s-o" . ivy-switch-buffer))
-    )
+           ("s-o" . ivy-switch-buffer)))
 
   (leaf *mySaveFrame
     :when (or (eq system-type 'darwin) (eq system-type 'windows-nt))
@@ -1177,10 +1368,6 @@
     :defvar my-save-frame-file
     :custom ((my-save-frame-file . "~/.emacs.d/.framesize"))
     :preface
-    ;; (defconst my-save-frame-file
-    ;;   "~/.emacs.d/.framesize"
-    ;;   "フレームの位置、大きさを保存するファイルのパス")
-
     (defun my-save-frame-size ()
       "現在のフレームの位置、大きさを'my-save-frame-file'に保存します"
       (interactive)
@@ -1209,19 +1396,14 @@
           "(set-frame-position (selected-frame) "(int-to-string current-left-margin)" "(int-to-string current-top-margin)")\n"
           ))
         (save-buffer)))
-
     (defun my-load-frame-size ()
       "'my-save-fram-file'に保存されたフレームの位置、大きさを復元します"
       (interactive)
       (let ((file my-save-frame-file))
         (when (file-exists-p file)
           (load-file file))))
-    ;; (add-hook 'emacs-startup-hook 'my-load-frame-size)
-    ;; (add-hook 'kill-emacs-hook 'my-save-frame-size)
     :config
-    (run-with-idle-timer 60 t 'my-save-frame-size)
-
-    )
+    (run-with-idle-timer 60 t 'my-save-frame-size))
 
   (leaf *ForCUI
     :unless window-system
@@ -1238,8 +1420,8 @@
            ("C-M-p" . upper_volume)
            ("M-d" . counsel-linux-app)
            ("M-o" . ivy-switch-buffer))
-    :custom ((global-hl-line-mode . t))
-    )
+    :custom ((global-hl-line-mode . t)))
+
   (leaf *ForWindows
     :when (eq system-type 'windows-nt)
     :bind (("M-n" . windmove-down)
@@ -1254,8 +1436,7 @@
            ("C-M-n" . lower_volume )
            ("C-M-p" . upper_volume)
            ("M-d" . counsel-linux-app)
-           ("M-o" . ivy-switch-buffer))
-    )
+           ("M-o" . ivy-switch-buffer)))
   )
 
 
@@ -1442,8 +1623,7 @@
 
 (leaf eww
   ;; :disabled t
-  :hook (eww-mode-hook . eww-mode-hook--disable-image)
-;  :defvar eww-disable-colorize shr-put-image-function
+  :hook ((eww-mode-hook . eww-mode-hook-disable-image))
   :defun eww-reload
   :custom ((eww-search-prefix . "https://www.google.co.jp/search?btnl&q=")
            (eww-browse-with-external-link . t)
@@ -1492,7 +1672,7 @@
   (defun shr-put-image-alt (spec alt &optional flags)
     (insert alt))
   ;; はじめから非表示
-  (defun eww-mode-hook--disable-image ()
+  (defun eww-mode-hook-disable-image ()
     (setq-local shr-put-image-function 'shr-put-image-alt))
   (defun browse-url-with-eww ()
     (interactive)
