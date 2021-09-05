@@ -9,17 +9,9 @@
 ;;; Code:
 
 ;; leaf読み込み前の設定
-(defun add-to-load-path (&rest paths)
-  (let (path)
-    (dolist (path paths paths)
-     (let ((default-directory (expand-file-name (concat user-emacs-directory path))))
-        (add-to-list 'load-path default-directory)
-         (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
-             (normal-top-level-add-subdirs-to-load-path))))))
-;; 引数のディレクトリとそのサブディレクトリをload-pathに追加
-(add-to-load-path "elisp" "conf" "public_repos")
-(when (file-directory-p "~/Dropbox/private/elisp")
-  (setq load-path (cons "~/Dropbox/private/elisp" load-path)))
+;; ラズパイでpackageをインストールができなかったときよう
+;; (when (string= (system-name) "RaspberryPi")
+;;   (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
 
 ;; this enables this running method
 ;;   emacs -q -l ~/.debug.emacs.d/init.el
@@ -28,9 +20,6 @@
     (setq user-emacs-directory
           (expand-file-name
            (file-name-directory (or load-file-name byte-compile-current-file))))))
-
-(when (string-match "raspberrypi" (system-name))
-  (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
 
 (eval-and-compile
   (customize-set-variable
@@ -61,8 +50,7 @@
   (leaf leaf-tree
     :ensure t
     :custom ((imenu-list-size . 30)
-             (imuenu-list-position . 'left)))
-  (leaf diminish :ensure t))
+             (imuenu-list-position . 'left))))
 
 (leaf macrostep
   :ensure t
@@ -70,6 +58,15 @@
 
 
 ;; 起動初期設定
+(leaf *add-to-load-path
+  :load-path `(,(mapcar (lambda (elm)
+                          (concat user-emacs-directory elm))
+                        '("elisp" "conf" "public_repos")))
+  :config
+  (leaf private-path
+    :when (file-directory-p "~/Doropbox/private/elisp")
+    :load-path "~/Doropbox/private/elisp"))
+
 (leaf *cus-edit
   :doc "customファイルをinit.elに記入しない"
   :preface (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
@@ -283,14 +280,6 @@
             ((= arg 1) (message "another *scratch* is created")))))
   (defun my:buffer-name-list ()
     (mapcar (function buffer-name) (buffer-list))))
-
-(leaf rainbow-delimiters
-  :doc "Highlight brackets according to their depth"
-  :tag "tools" "lisp" "convenience" "faces"
-  :url "https://github.com/Fanael/rainbow-delimiters"
-  :added "2021-09-05"
-  :ensure t
-  :hook (emacs-lisp-mode-hook . rainbow-delimiters-mode))
 
 (leaf *dired
   ;; :disabled t
@@ -614,36 +603,6 @@
   ;; (add-hook 'minibuffer-setup-hook 'minibuffer-delete-backward-char)
   (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char))
 
-(leaf doom-themes
-  :doc "an opinionated pack of modern color-themes"
-  :req "emacs-25.1" "cl-lib-0.5"
-  :tag "faces" "custom themes" "emacs>=25.1"
-  :url "https://github.com/hlissner/emacs-doom-themes"
-  :added "2021-09-05"
-  :emacs>= 25.1
-  :ensure t
-  :custom ((doom-themes-enable-italic . t)
-           (doom-themes-enable-bold   . t))
-  :custom-face ((doom-modeline-bar . '((t (:background "#6272a4")))))
-  :config
-  (load-theme 'doom-one t)
-  (leaf doom-modeline
-    :doc "A minimal and modern mode-line"
-    :req "emacs-25.1" "all-the-icons-2.2.0" "shrink-path-0.2.0" "dash-2.11.0"
-    :tag "mode-line" "faces" "emacs>=25.1"
-    :url "https://github.com/seagle0128/doom-modeline"
-    :added "2021-09-05"
-    :emacs>= 25.1
-    :ensure t
-    :after all-the-icons shrink-path
-    :custom `((doom-modeline-buffer-file-name-style . 'truncate-with-project)
-              (doom-modeline-icon                   . nil)
-              (doom-modeline-major-mode-icon        . nil)
-              (doom-modeline-minor-modes            . nil)
-              (line-number-mode                     . 0)
-              (column-number-mode                   . 0)
-              (doom-modeline-mode                   . t))))
-
 (leaf *afterSave
   :hook (after-save-hook . flashAfterSave)
   :preface
@@ -654,6 +613,146 @@
       (run-with-idle-timer 0.1 nil
                            (lambda (fg) (set-face-background 'mode-line fg))
                            orig-fg))))
+
+(leaf *window-tools
+  :custom ((scroll-preserve-screen-position . t)
+           ;; スクロール開始のマージン
+           (scroll-margin                   . 5)
+           (scroll-conservatively           . 100)
+           ;; 1画面スクロール時に重複させる行数
+           (next-screen-context-lines       . 10)
+           ;; 1画面スクロール時にカーソルの画面上の位置をなるべく変えない
+           (scroll-preserve-screen-position . t)
+           (windmove-wrap-around            . t))
+  :preface
+  ;; ウィンドウのサイズ変更
+  (defun window-resizer ()
+    "Control window size and position."
+    (interactive)
+    (let ((window-obj (selected-window))
+          (current-width (window-width))
+          (current-height (window-height))
+          (dx (if (= (nth 0 (window-edges)) 0) 1
+                -1))
+          (dy (if (= (nth 1 (window-edges)) 0) 1
+                -1))
+          c)
+      (catch 'end-flag
+        (while t
+          (message "size[%dx%d]"
+                   (window-width) (window-height))
+          (setq c (read-char))
+          (cond ((= c ?f)
+                 (enlarge-window-horizontally dx))
+                ((= c ?b)
+                 (shrink-window-horizontally dx))
+                ((= c ?n)
+                 (enlarge-window dy))
+                ((= c ?p)
+                 (shrink-window dy))
+                ;; otherwise
+                (t
+                 (message "Quit")
+                 (throw 'end-flag t)))))))
+
+  :config
+  (leaf zoom-window
+    :doc "Zoom window like tmux"
+    :req "emacs-24.3"
+    :tag "emacs>=24.3"
+    :url "https://github.com/syohex/emacs-zoom-window"
+    :added "2021-09-05"
+    :emacs>= 24.3
+    :ensure t
+    :custom (zoom-window-mode-line-color . "DarkBlue"))
+
+  (leaf *ForMac
+    :when (eq system-type 'darwin)
+    :bind (("s-n" . windmove-down)
+           ("s-f" . windmove-right)
+           ("s-b" . windmove-left)
+           ("s-p" . windmove-up)
+           ("s-a" . zoom-window-zoom)
+           ("s-q" . kill-current-buffer)
+           ("s-h" . delete-window)
+           ("s-o" . ivy-switch-buffer)))
+
+  (leaf *ForWindows
+    :when (eq system-type 'windows-nt)
+    :bind (("M-n" . windmove-down)
+           ("M-f" . windmove-right)
+           ("M-b" . windmove-left)
+           ("M-p" . windmove-up)
+           ("M-a" . zoom-window-zoom)
+           ("M-q" . kill-current-buffer)
+           ("M-h" . delete-window)
+           ("C-M-i" . output_toggle)
+           ("C-M-m" . mute_toggle)
+           ("C-M-n" . lower_volume )
+           ("C-M-p" . upper_volume)
+           ("M-d" . counsel-linux-app)
+           ("M-o" . ivy-switch-buffer)))
+
+    (leaf *ForCUI
+    :unless window-system
+    :bind (("M-n" . windmove-down)
+           ("M-f" . windmove-right)
+           ("M-b" . windmove-left)
+           ("M-p" . windmove-up)
+           ("M-a" . zoom-window-zoom)
+           ("M-q" . kill-current-buffer)
+           ("M-h" . delete-window)
+           ("C-M-i" . output_toggle)
+           ("C-M-m" . mute_toggle)
+           ("C-M-n" . lower_volume )
+           ("C-M-p" . upper_volume)
+           ("M-d" . counsel-linux-app)
+           ("M-o" . ivy-switch-buffer))
+    :custom ((global-hl-line-mode . t)))
+
+  (leaf *mySaveFrame
+    :when (or (eq system-type 'darwin) (eq system-type 'windows-nt))
+    :hook ((emacs-startup-hook . my-load-frame-size)
+           (kill-emacs-hook . my-save-frame-size))
+    :defun my-save-frame-size my-load-frame-size
+    :defvar my-save-frame-file
+    :custom ((my-save-frame-file . "~/.emacs.d/.framesize"))
+    :preface
+    (defun my-save-frame-size ()
+      "現在のフレームの位置、大きさを'my-save-frame-file'に保存します"
+      (interactive)
+      (let* ((param (frame-parameters (selected-frame)))
+             (current-height (frame-height))
+             (current-width (frame-width))
+             (current-top-margin (if (integerp (cdr (assoc 'top param)))
+                                     (cdr (assoc 'top param))
+                                   0))
+
+             (current-left-margin (if (integerp (cdr (assoc 'top param)))
+                                      (cdr (assoc 'top param))
+                                    0))
+             (buf nil)
+             (file my-save-frame-file))
+        ;; ファイルと関連付けられてたバッファ作成
+        (unless (setq buf (get-file-buffer (expand-file-name file)))
+          (setq buf (find-file-noselect (expand-file-name file))))
+        (set-buffer buf)
+        (erase-buffer)
+        ;; ファイル読み込み時に直接評価させる内容を記述
+        (insert
+         (concat
+          "(set-frame-size (selected-frame) "(int-to-string current-width)" "(int-to-string current-height)")\n"
+          "(set-frame-position (selected-frame) "(int-to-string current-left-margin)" "(int-to-string current-top-margin)")\n"
+          ))
+        (save-buffer)))
+    (defun my-load-frame-size ()
+      "'my-save-fram-file'に保存されたフレームの位置、大きさを復元します"
+      (interactive)
+      (let ((file my-save-frame-file))
+        (when (file-exists-p file)
+          (load-file file))))
+    :config
+    (run-with-idle-timer 60 t 'my-save-frame-size)))
 
 
 ;; window managr
@@ -813,6 +912,38 @@
   (leaf *fix_ediff
     :after ediff-wind
     :custom `((ediff-window-setup-function . 'ediff-setup-windows-plain))))
+
+
+;; theme
+(leaf doom-themes
+  :doc "an opinionated pack of modern color-themes"
+  :req "emacs-25.1" "cl-lib-0.5"
+  :tag "faces" "custom themes" "emacs>=25.1"
+  :url "https://github.com/hlissner/emacs-doom-themes"
+  :added "2021-09-05"
+  :emacs>= 25.1
+  :ensure t
+  :custom ((doom-themes-enable-italic . t)
+           (doom-themes-enable-bold   . t))
+  :custom-face ((doom-modeline-bar . '((t (:background "#6272a4")))))
+  :config
+  (load-theme 'doom-one t)
+  (leaf doom-modeline
+    :doc "A minimal and modern mode-line"
+    :req "emacs-25.1" "all-the-icons-2.2.0" "shrink-path-0.2.0" "dash-2.11.0"
+    :tag "mode-line" "faces" "emacs>=25.1"
+    :url "https://github.com/seagle0128/doom-modeline"
+    :added "2021-09-05"
+    :emacs>= 25.1
+    :ensure t
+    :after all-the-icons shrink-path
+    :custom `((doom-modeline-buffer-file-name-style . 'truncate-with-project)
+              (doom-modeline-icon                   . nil)
+              (doom-modeline-major-mode-icon        . nil)
+              (doom-modeline-minor-modes            . nil)
+              (line-number-mode                     . 0)
+              (column-number-mode                   . 0)
+              (doom-modeline-mode                   . t))))
 
 
 ;; メジャーモードの設定
@@ -1071,147 +1202,10 @@
   (defun google-translate--get-b-d1 ()
     (list 427110 1469889687)))
 
-(leaf *window-tools
-  :custom ((scroll-preserve-screen-position . t)
-           ;; スクロール開始のマージン
-           (scroll-margin                   . 5)
-           (scroll-conservatively           . 100)
-           ;; 1画面スクロール時に重複させる行数
-           (next-screen-context-lines       . 10)
-           ;; 1画面スクロール時にカーソルの画面上の位置をなるべく変えない
-           (scroll-preserve-screen-position . t)
-           (windmove-wrap-around            . t))
-  :preface
-  ;; ウィンドウのサイズ変更
-  (defun window-resizer ()
-    "Control window size and position."
-    (interactive)
-    (let ((window-obj (selected-window))
-          (current-width (window-width))
-          (current-height (window-height))
-          (dx (if (= (nth 0 (window-edges)) 0) 1
-                -1))
-          (dy (if (= (nth 1 (window-edges)) 0) 1
-                -1))
-          c)
-      (catch 'end-flag
-        (while t
-          (message "size[%dx%d]"
-                   (window-width) (window-height))
-          (setq c (read-char))
-          (cond ((= c ?f)
-                 (enlarge-window-horizontally dx))
-                ((= c ?b)
-                 (shrink-window-horizontally dx))
-                ((= c ?n)
-                 (enlarge-window dy))
-                ((= c ?p)
-                 (shrink-window dy))
-                ;; otherwise
-                (t
-                 (message "Quit")
-                 (throw 'end-flag t)))))))
-
-  :config
-  (leaf zoom-window
-    :doc "Zoom window like tmux"
-    :req "emacs-24.3"
-    :tag "emacs>=24.3"
-    :url "https://github.com/syohex/emacs-zoom-window"
-    :added "2021-09-05"
-    :emacs>= 24.3
-    :ensure t
-    :custom (zoom-window-mode-line-color . "DarkBlue"))
-
-  (leaf *ForMac
-    :when (eq system-type 'darwin)
-    :bind (("s-n" . windmove-down)
-           ("s-f" . windmove-right)
-           ("s-b" . windmove-left)
-           ("s-p" . windmove-up)
-           ("s-a" . zoom-window-zoom)
-           ("s-q" . kill-current-buffer)
-           ("s-h" . delete-window)
-           ("s-o" . ivy-switch-buffer)))
-
-  (leaf *ForWindows
-    :when (eq system-type 'windows-nt)
-    :bind (("M-n" . windmove-down)
-           ("M-f" . windmove-right)
-           ("M-b" . windmove-left)
-           ("M-p" . windmove-up)
-           ("M-a" . zoom-window-zoom)
-           ("M-q" . kill-current-buffer)
-           ("M-h" . delete-window)
-           ("C-M-i" . output_toggle)
-           ("C-M-m" . mute_toggle)
-           ("C-M-n" . lower_volume )
-           ("C-M-p" . upper_volume)
-           ("M-d" . counsel-linux-app)
-           ("M-o" . ivy-switch-buffer)))
-
-    (leaf *ForCUI
-    :unless window-system
-    :bind (("M-n" . windmove-down)
-           ("M-f" . windmove-right)
-           ("M-b" . windmove-left)
-           ("M-p" . windmove-up)
-           ("M-a" . zoom-window-zoom)
-           ("M-q" . kill-current-buffer)
-           ("M-h" . delete-window)
-           ("C-M-i" . output_toggle)
-           ("C-M-m" . mute_toggle)
-           ("C-M-n" . lower_volume )
-           ("C-M-p" . upper_volume)
-           ("M-d" . counsel-linux-app)
-           ("M-o" . ivy-switch-buffer))
-    :custom ((global-hl-line-mode . t)))
-
-  (leaf *mySaveFrame
-    :when (or (eq system-type 'darwin) (eq system-type 'windows-nt))
-    :hook ((emacs-startup-hook . my-load-frame-size)
-           (kill-emacs-hook . my-save-frame-size))
-    :defun my-save-frame-size my-load-frame-size
-    :defvar my-save-frame-file
-    :custom ((my-save-frame-file . "~/.emacs.d/.framesize"))
-    :preface
-    (defun my-save-frame-size ()
-      "現在のフレームの位置、大きさを'my-save-frame-file'に保存します"
-      (interactive)
-      (let* ((param (frame-parameters (selected-frame)))
-             (current-height (frame-height))
-             (current-width (frame-width))
-             (current-top-margin (if (integerp (cdr (assoc 'top param)))
-                                     (cdr (assoc 'top param))
-                                   0))
-
-             (current-left-margin (if (integerp (cdr (assoc 'top param)))
-                                      (cdr (assoc 'top param))
-                                    0))
-             (buf nil)
-             (file my-save-frame-file))
-        ;; ファイルと関連付けられてたバッファ作成
-        (unless (setq buf (get-file-buffer (expand-file-name file)))
-          (setq buf (find-file-noselect (expand-file-name file))))
-        (set-buffer buf)
-        (erase-buffer)
-        ;; ファイル読み込み時に直接評価させる内容を記述
-        (insert
-         (concat
-          "(set-frame-size (selected-frame) "(int-to-string current-width)" "(int-to-string current-height)")\n"
-          "(set-frame-position (selected-frame) "(int-to-string current-left-margin)" "(int-to-string current-top-margin)")\n"
-          ))
-        (save-buffer)))
-    (defun my-load-frame-size ()
-      "'my-save-fram-file'に保存されたフレームの位置、大きさを復元します"
-      (interactive)
-      (let ((file my-save-frame-file))
-        (when (file-exists-p file)
-          (load-file file))))
-    :config
-    (run-with-idle-timer 60 t 'my-save-frame-size)))
-
-(leaf *eww
+(leaf eww
+  :doc "Emacs Web Wowser"
+  :tag "builtin"
+  :added "2021-09-05"
   ;; :disabled t
   :hook ((eww-mode-hook . eww-mode-hook-disable-image))
   :defun eww-reload
@@ -1289,12 +1283,14 @@
     (setq-local eww-disable-colorize nil)
     (eww-reload)))
 
-(leaf *org_tools
+(leaf org
+  :doc "Export Framework for Org Mode"
+  :tag "builtin"
+  :added "2021-09-05"
+  :custom ((org-agenda-files . '("~/Dropbox/org/todo.org"
+                                 "~/Dropbox/org/todo_SonyLSI.org")))
+  :bind (("C-c a" . org-agenda))
   :config
-  (leaf org-mode
-    :custom ((org-agenda-files . '("~/Dropbox/org/todo.org"
-                                   "~/Dropbox/org/todo_SonyLSI.org")))
-    :bind (("C-c a" . org-agenda)))
   (leaf org-plus-contrib
     :doc "Outline-based notes management and organizer"
     :added "2021-09-05"
@@ -1320,6 +1316,35 @@
   :hook ((pdf-view-mode-hook . pdf-misc-size-indication-minor-mode)
          (pdf-view-mode-hook . pdf-links-minor-mode)
          (pdf-view-mode-hook . pdf-isearch-minor-mode)))
+
+(leaf twittering-mode
+  :doc "Major mode for Twitter"
+  :tag "web" "twitter"
+  :url "http://twmode.sf.net/"
+  :added "2021-09-05"
+  :ensure t
+  :custom ((twittering-allow-insecure-server-cert . t)
+           (twittering-use-master-password . t)))
+
+(leaf shackle
+  :doc "Enforce rules for popups"
+  :req "emacs-24.3" "cl-lib-0.5"
+  :tag "convenience" "emacs>=24.3"
+  :url "https://depp.brause.cc/shackle"
+  :added "2021-09-05"
+  :emacs>= 24.3
+  :ensure t
+  :unless (string-match "RaspberryPi" (system-name))
+  :custom `((shackle-rules . '((compilation-mode :align below :ratio 0.2)
+                               ("*Google Translate*" :align right :ratio 0.3)
+                               ("*Help*" :align right)
+                               ("*online-judge*" :align below :ratio 0.5)
+                               ("*haskell-compilation*" :align below :ratio 0.5)
+                               ))
+            (shackle-mode . 1)
+            (winner-mode . 1)
+            (shackle-lighter . ""))
+  :bind (("C-z" . winner-undo)))
 
 
 ;; マイナーモードの設定
@@ -1550,7 +1575,8 @@
 (leaf page-ext
   :doc "extended page handling commands"
   :tag "builtin"
-  :added "2021-09-05")
+  :added "2021-09-05"
+  :require t)
 
 (leaf smartparens
   :doc "Automatic insertion, wrapping and paredit-like navigation with user defined pairs."
@@ -1683,8 +1709,49 @@
           (skk-j-mode
            (skk-toggle-kana nil))
           (skk-latin-mode
-           (dolist (skk-kakutei (skk-toggle-kana nil))))))
-)
+           (dolist (skk-kakutei (skk-toggle-kana nil)))))))
+
+;; (leaf *minor-mode
+;;   :disabled t
+;;   :config
+;;   (leaf skk
+;;     :ensure ddskk
+;;     ;; :defun (skk-get)
+;;     :require t skk-study
+;;     :defvar skk-user-directory
+;;     :defun skk-toggle-kana skk-hiragana-set skk-katakana-set
+;;     :hook ((isearch-mode-hook . skk-isearch-mode-setup)
+;;            (isearch-mode-end-hook . skk-isearch-mode-cleanup))
+;;     :bind (("C-x j" . skk-mode)
+;;            ("C-j" . nil)
+;;            ("C-j" . skk-hiragana-set)
+;;            ("C-l" . skk-latin-mode)
+;;            (minibuffer-local-map
+;;             ("C-j" . skk-kakutei)
+;;             ("C-l" . skk-latin-mode)))
+;;     :custom `((skk-user-directory . "~/.emacs.d/ddskk")
+;;               (skk-initial-search-jisyo . "~/.emacs.d/ddskk/jisyo")
+;;               (skk-large-jisyo . "~/.emacs.d/skk-get-jisyo/SKK-JISYO.L")
+;;               (skk-egg-like-newline . t)
+;;               (skk-delete-implies-kakutei . t)
+;;               (skk-henkan-strict-okuri-precedence . t)
+;;               (skk-isearch-start-mode . 'latin)
+;;               (skk-search-katakana . t))
+;;     :preface
+;;     (defun skk-hiragana-set nil
+;;       (interactive)
+;;       (cond (skk-katakana
+;;              (skk-toggle-kana nil))
+;;             (t
+;;              (skk-kakutei))))
+;;     (defun skk-katakana-set nil
+;;       (interactive)
+;;       (cond (skk-katakana
+;;              (lambda))
+;;             (skk-j-mode
+;;              (skk-toggle-kana nil))
+;;             (skk-latin-mode
+;;              (dolist (skk-kakutei (skk-toggle-kana nil))))))))
 
 (leaf calfw
   :doc "Calendar view framework on Emacs"
@@ -1731,16 +1798,14 @@
     (add-hook 'calendar-load-hook (lambda ()
                                     (require 'japanese-holidays)
                                     (setq calendar-holidays
-                                          (append japanese-holidays local-holidays other-holidays)))))
-  )
+                                          (append japanese-holidays local-holidays other-holidays))))))
 
 (leaf online-judge
   :when (executable-find "oj")
   :el-get ROCKTAKEY/emacs-online-judge
   :require t
   :custom ((online-judge-directories . '("~/Dropbox/atcoder/"))
-           (online-judge-command-name . nil))
-  )
+           (online-judge-command-name . nil)))
 
 (leaf yasnippet
   :doc "Yet another snippet extension for Emacs"
@@ -1764,40 +1829,15 @@
         yatex-mode
         haskell-mode))
     (loop for hook in ivy-programing-hooks
-          do (add-hook hook 'yas-minor-mode)))
+          do (add-hook hook 'yas-minor-mode))))
 
-)
-
-(leaf shackle
-  :doc "Enforce rules for popups"
-  :req "emacs-24.3" "cl-lib-0.5"
-  :tag "convenience" "emacs>=24.3"
-  :url "https://depp.brause.cc/shackle"
-  :added "2021-09-05"
-  :emacs>= 24.3
-  :ensure t
-  :unless (string-match "RaspberryPi" (system-name))
-  :custom `((shackle-rules . '((compilation-mode :align below :ratio 0.2)
-                               ("*Google Translate*" :align right :ratio 0.3)
-                               ("*Help*" :align right)
-                               ("*online-judge*" :align below :ratio 0.5)
-                               ("*haskell-compilation*" :align below :ratio 0.5)
-                               ))
-            (shackle-mode . 1)
-            (winner-mode . 1)
-            (shackle-lighter . ""))
-  :bind (("C-z" . winner-undo))
-  )
-
-(leaf twittering-mode
-  :doc "Major mode for Twitter"
-  :tag "web" "twitter"
-  :url "http://twmode.sf.net/"
+(leaf rainbow-delimiters
+  :doc "Highlight brackets according to their depth"
+  :tag "tools" "lisp" "convenience" "faces"
+  :url "https://github.com/Fanael/rainbow-delimiters"
   :added "2021-09-05"
   :ensure t
-  :custom ((twittering-allow-insecure-server-cert . t)
-           (twittering-use-master-password . t))
-)
+  :hook (emacs-lisp-mode-hook . rainbow-delimiters-mode))
 
 
 ;; lsp 設定
@@ -1848,8 +1888,7 @@
     :added "2021-09-05"
     :emacs>= 24.3
     :ensure t
-    :after lsp-mode haskell-mode)
-)
+    :after lsp-mode haskell-mode))
 
 
 ;; ivy 補完設定
@@ -1890,7 +1929,7 @@
     :emacs>= 24.5
     :ensure t
     :after ivy
-    :unless (string-match "RaspberryPi" (system-name))
+    ;; :unless (string= (system-name) "RaspberryPi")
     :defvar swiper-include-line-number-in-search
     :bind (("C-s" . swiper)
            ("C-r" . swiper)
@@ -1953,8 +1992,7 @@
     :ensure t
     :after ivy hydra
     :disabled t
-    :custom (ivy-read-action-function . #'ivy-hydra-read-action))
-  )
+    :custom (ivy-read-action-function . #'ivy-hydra-read-action)))
 
 
 ;; company 補完設定
@@ -2111,7 +2149,6 @@
               (Operator      . ,(all-the-icons-material "control_point" :height 0.9 :v-adjust -0.2))
               (TypeParameter . ,(all-the-icons-faicon "arrows" :height 0.85 :v-adjust -0.05))
               (Template      . ,(all-the-icons-material "format_align_center" :height 0.9 :v-adjust -0.2))))
-      (setq company-box-icons-alist 'company-box-icons-all-the-icons)))
-  )
+      (setq company-box-icons-alist 'company-box-icons-all-the-icons))))
 
 ;; (load "conf" t)
