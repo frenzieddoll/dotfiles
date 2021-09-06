@@ -539,7 +539,8 @@
          ("C-S-n"         . scroll-up_alt)
          ("C-S-p"         . scroll-down_alt)
          ("<kp-divide>"   . insertBackslash)
-         ("<kp-multiply>" . insertPipe))
+         ("<kp-multiply>" . insertPipe)
+         ("M-h" . backward-kill-word))
 
   :preface
   (defun scroll-up_alt ()
@@ -597,10 +598,6 @@
   (defun minibuffer-delete-backward-char ()
     (local-set-key (kbd "C-h") 'delete-backward-char))
   :init
-  ;; (global-set-key (kbd "C-h") 'delete-backward-char)
-  ;; (defun minibuffer-delete-backward-char ()
-  ;;   (local-set-key (kbd "C-h") 'delete-backward-char))
-  ;; (add-hook 'minibuffer-setup-hook 'minibuffer-delete-backward-char)
   (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char))
 
 (leaf *afterSave
@@ -708,7 +705,7 @@
            ("C-M-p" . upper_volume)
            ("M-d" . counsel-linux-app)
            ("M-o" . ivy-switch-buffer))
-    :custom ((global-hl-line-mode . t)))
+    :config (global-hl-line-mode . t))
 
   (leaf *mySaveFrame
     :when (or (eq system-type 'darwin) (eq system-type 'windows-nt))
@@ -1683,6 +1680,55 @@
   :ensure t
   :hook (emacs-lisp-mode-hook . rainbow-delimiters-mode))
 
+(leaf hydra
+  :doc "Make bindings that stick around."
+  :req "cl-lib-0.5" "lv-0"
+  :tag "bindings"
+  :url "https://github.com/abo-abo/hydra"
+  :added "2021-09-06"
+  :ensure t
+  :after lv
+  :hydra
+  (hydra-pinky
+   (global-map "C-;")
+   "pinky"
+   ("n" next-line)
+   ("p" previous-line)
+   ("f" forward-char)
+   ("b" backward-char)
+   ("a" beginning-of-line)
+   ("e" move-end-of-line)
+   ("v" scroll-up-command)
+   ("V" scroll-down-command)
+   ("g" keyboard-quit)
+   ("j" next-line)
+   ("k" previous-line)
+   ("l" forward-char)
+   ("h" backward-char)
+   ("o" other-window)
+   ("r" avy-goto-word-1)
+   ("s" consult-line)
+   ("S" window-swap-states)
+   ("q" kill-buffer)
+   ("w" clipboard-kill-ring-save)
+   ("<" beginning-of-buffer)
+   (">" end-of-buffer)
+   ("SPC" set-mark-command)
+   ("\C-m" dired-find-file)
+   ("1" delete-other-windows)
+   ("2" split-window-below)
+   ("3" split-window-right)
+   ("0" delete-window)
+   ("x" delete-window)
+   (";" consult-buffer)
+   ("M-n" next-buffer)
+   ("M-p" previous-buffer))
+  (hydra-zoom
+   (global-map "<f2>")
+   "zoom"
+   ("g" text-scale-increase "in")
+   ("l" text-scale-decrease "out")))
+
 
 ;; lsp 設定
 (leaf lsp
@@ -1732,7 +1778,16 @@
     :added "2021-09-05"
     :emacs>= 24.3
     :ensure t
-    :after lsp-mode haskell-mode))
+    :after lsp-mode haskell-mode)
+  (leaf consult-lsp
+    :doc "LSP-mode Consult integration"
+    :req "emacs-27.1" "lsp-mode-5.0" "consult-0.9" "f-0.20.0"
+    :tag "lsp" "completion" "tools" "emacs>=27.1"
+    :url "https://github.com/gagbo/consult-lsp"
+    :added "2021-09-06"
+    :emacs>= 27.1
+    :ensure t
+    :after lsp-mode consult))
 
 
 ;; ivy 補完設定
@@ -1815,18 +1870,17 @@
     :after ivy
     :when (eq system-type 'darwin)
     :bind ("s-d" . counsel-osx-app)
-    :custom ((counsel-osx-app-location.
-              '("/Applications"
-                "/Applications/Downloads"
-                "/Applications/Flip4Mac"
-                "/Applications/GoogleJapaneseInput.localized"
-                ;; "/Applications/Igor Pro 6.1 Folder"
-                "/Applications/Igor Pro 6.3 Folder"
-                "/Applications/iWork '09"
-                "/Applications/Microsoft Office 2011"
-                "/Applications/Python 2.7"
-                "/Applications/RIETAN_VENUS"
-                "/Applications/Utilities"))))
+    :custom ((counsel-osx-app-location . '("/Applications"
+                                           "/Applications/Downloads"
+                                           "/Applications/Flip4Mac"
+                                           "/Applications/GoogleJapaneseInput.localized"
+                                           ;; "/Applications/Igor Pro 6.1 Folder"
+                                           "/Applications/Igor Pro 6.3 Folder"
+                                           "/Applications/iWork '09"
+                                           "/Applications/Microsoft Office 2011"
+                                           "/Applications/Python 2.7"
+                                           "/Applications/RIETAN_VENUS"
+                                           "/Applications/Utilities"))))
   (leaf ivy-hydra
     :doc "Additional key bindings for Ivy"
     :req "emacs-24.5" "ivy-0.13.4" "hydra-0.14.0"
@@ -2006,7 +2060,7 @@
   :added "2021-09-05"
   :emacs>= 27.1
   :ensure t
-  :after recentf
+  :require t
   :bind (("M-g g" . consult-goto-line)
          ("C-c i" . consult-imenu)
          ("M-y" . consult-yank-pop)
@@ -2016,10 +2070,9 @@
           ("?" . minibuffer-complition-help)
           ("M-RET" . minibuffer-force-complete-and-exit)
           ("M-TAB" . minibuffer-complete)
-          ("C-," . up-to-dir))
-         (consult-narrow-map
-            ("?" . consult-narrow-key)))
-  :custom ((vertico-count . 20))
+          ("C-," . up-to-dir)))
+  :custom `((vertico-count . 20)
+            (consult-preview-key . ,(kbd "C-.")))
   :preface
   (defun up-to-dir ()
     "Move to parent directory like \"cd ..\" in find-file."
@@ -2037,6 +2090,21 @@
                                    #'delete)))))
   :config
   (vertico-mode)
+  (leaf consult
+    :doc "Consulting completing-read"
+    :req "emacs-26.1"
+    :tag "emacs>=26.1"
+    :url "https://github.com/minad/consult"
+    :added "2021-09-05"
+    :emacs>= 26.1
+    :ensure t
+    :custom ((consult-buffer-sources . '(consult--source-hidden-buffer
+                                         consult--source-buffer
+                                         consult--source-file
+                                         consult--source-bookmark
+                                         consult--source-project-buffer
+                                         consult--source-project-file)))
+    :config (recentf-mode))
   (leaf marginalia
     :doc "Enrich existing commands with completion annotations"
     :req "emacs-26.1"
@@ -2060,21 +2128,6 @@
     :tag "builtin"
     :added "2021-09-05"
     :config (savehist-mode))
-  (leaf consult
-    :doc "Consulting completing-read"
-    :req "emacs-26.1"
-    :tag "emacs>=26.1"
-    :url "https://github.com/minad/consult"
-    :added "2021-09-05"
-    :emacs>= 26.1
-    :ensure t
-    :after embark
-    :custom ((consult-buffer-sources . '(consult--source-hidden-buffer
-                                         consult--source-buffer
-                                         consult--source-file
-                                         consult--source-bookmark
-                                         consult--source-project-buffer
-                                         consult--source-project-file))))
   (leaf app-launcher
     :doc "Launch applications from Emacs"
     :req "emacs-27.1"
@@ -2089,7 +2142,7 @@
 ;; window managr
 (leaf *exwm-config
   ;; :disabled t
-  :when (string= "enable" (getenv "EXWM"))
+  :when (string= (getenv "EXWM") "enable")
   :when (eq system-type 'gnu/linux)
   ;; :when (string= "archlinuxhonda" (system-name))
   :init
@@ -2108,44 +2161,43 @@
               (exwm-workspace-show-all-buffers . t)
               (exwm-layout-show-all-buffers . t)
               (exwm-workspace-number . 3)
-              (exwm-input-global-keys .
-                                      '((,(kbd "s-r")     . exwm-reset)
-                                        (,(kbd "s-d")     . counsel-linux-app)
-                                        (,(kbd "s-n")     . windmove-down)
-                                        (,(kbd "s-f")     . windmove-right)
-                                        (,(kbd "s-b")     . windmove-left)
-                                        (,(kbd "s-p")     . windmove-up)
-                                        (,(kbd "s-<tab>") . exwm-workspace-toggle)
-                                        (,(kbd "s-a")     . zoom-window-zoom)
-                                        (,(kbd "C-s-i")   . output_toggle)
-                                        (,(kbd "C-s-m")   . mute_toggle)
-                                        (,(kbd "C-s-n")   . lower_volume)
-                                        (,(kbd "C-s-p")   . upper_volume)
-                                        (,(kbd "s-q")     . kill-current-buffer)
-                                        (,(kbd "s-h")     . delete-window)
-                                        (,(kbd "s-SPC")   . exwm-floating-toggle-floating)
-                                        (,(kbd "s-e")     . exwm-input-toggle-keyboard)
-                                        ;; (,(kbd "s-o")     . ivy-switch-buffer)
-                                        (,(kbd "s-o")     . switch-to-buffer)
-                                        (,(kbd "s-r")     . exwm-reset)
-                                        ;; (,(kbd "s-d")     . app-launch)
-                                        (,(kbd "C-j")     . ,(kbd "C-&"))
-                                        (,(kbd "C-l")     . ,(kbd "C-^"))
-                                        (,(kbd "s-i")     . output_toggle)
-                                        (,(kbd "s-j")     . lower_volume)
-                                        (,(kbd "s-k")     . upper_volume)
-                                        (,(kbd "s-m")     . mute_toggle)
-                                        (,(kbd "s-i")     . output_toggle)
-                                        (,(kbd "s-[")     . lowerLight)
-                                        (,(kbd "s-]")     . upperLight)
-                                        ,@(mapcar (lambda (i)
-                                                    `(,(kbd (format "s-%d" i)) .
-                                                      (lambda ()
-                                                        (interactive)
-                                                        (exwm-workspace-switch-create ,i))))
-                                                  (number-sequence 0 9))
-                                        )
-                                      )
+              (exwm-input-global-keys . '(;; 自前の関数
+                                          (,(kbd "s-r")     . exwm-reset)
+                                          (,(kbd "s-<tab>") . exwm-workspace-toggle)
+                                          (,(kbd "s-q")     . kill-current-buffer)
+                                          (,(kbd "s-h")     . delete-window)
+                                          (,(kbd "s-SPC")   . exwm-floating-toggle-floating)
+                                          (,(kbd "s-e")     . exwm-input-toggle-keyboard)
+                                          (,(kbd "s-r")     . exwm-reset)
+                                          (,(kbd "C-j")     . ,(kbd "C-&"))
+                                          (,(kbd "C-l")     . ,(kbd "C-^"))
+                                          ,@(mapcar (lambda (i)
+                                                      `(,(kbd (format "s-%d" i)) .
+                                                        (lambda ()
+                                                          (interactive)
+                                                          (exwm-workspace-switch-create ,i))))
+                                                    (number-sequence 0 9))
+                                          ;; 他のアプリの関数
+                                          (,(kbd "s-n")     . windmove-down)
+                                          (,(kbd "s-f")     . windmove-right)
+                                          (,(kbd "s-b")     . windmove-left)
+                                          (,(kbd "s-p")     . windmove-up)
+                                          (,(kbd "s-i")     . output_toggle)
+                                          (,(kbd "s-j")     . lower_volume)
+                                          (,(kbd "s-k")     . upper_volume)
+                                          (,(kbd "s-m")     . mute_toggle)
+                                          (,(kbd "s-i")     . output_toggle)
+                                          (,(kbd "C-s-i")   . output_toggle)
+                                          (,(kbd "C-s-m")   . mute_toggle)
+                                          (,(kbd "C-s-n")   . lower_volume)
+                                          (,(kbd "C-s-p")   . upper_volume)
+                                          (,(kbd "s-[")     . lowerLight)
+                                          (,(kbd "s-]")     . upperLight)
+                                          ;; (,(kbd "s-d")     . counsel-linux-app)
+                                          (,(kbd "s-d")     . app-launcher-run-app)
+                                          ;; (,(kbd "s-o")     . ivy-switch-buffer)
+                                          (,(kbd "s-a")     . zoom-window-zoom)
+                                          (,(kbd "s-o")     . consult-buffer)))
               (exwm-input-simulation-keys . '(
                                               ;; new version
                                               (,(kbd "C-b")           . [left])
@@ -2197,9 +2249,7 @@
                                               (,(kbd "s-k")           . [C-l])
                                               ;;
                                               (,(kbd "C-x C-s")       . [C-s])
-                                              (,(kbd "C-u C-/")       . [C-y])
-                                              ))
-              )
+                                              (,(kbd "C-u C-/")       . [C-y]))))
     :bind (("C-&" . skk-hiragana-set)
            ("C-^" . skk-latin-mode))
     :preface
@@ -2210,39 +2260,33 @@
         (exwm-workspace-switch 0)))
 
     :config
-    (leaf *pi
-      :disabled t
-      :when (string-match "raspberrypi" (system-name))
-      :preface
-      (defun app-launch (command)
-        (interactive (list (read-shell-command "$ ")))
-        (start-process-shell-command command nil command))
-      :bind ("s-d" . counsel-linux-app))
-
     ;; (exwmx-floating-smart-hide)
     ;; (exwmx-button-enable)
-    )
-
-  (leaf exwm-systemtray
-    :require t
-    :defun exwm-systemtray-enable
-    :config
-    (exwm-systemtray-enable))
-
-  (leaf exwm-randr
-    :require t
-    :when (eq "archlinuxhonda" (system-name))
-    :custom ((exwm-randr-workspace-monitor-plist . '(0 "DP-0" 1 "HDMI-0" 2 "DP-0" 3 "DP-0" 4 "DP-0" 5 "DP-0")))
-    :config
-    (exwm-randr-enable))
-
-  (leaf exwm-enable
-    :defun (exwm-enable)
-    :config
-    (exwm-enable))
-
-  (leaf *fix_ediff
-    :after ediff-wind
-    :custom `((ediff-window-setup-function . 'ediff-setup-windows-plain))))
+    (leaf *pi
+      :disabled t
+      :when (string= (system-name) "RaspberryPi")
+      :preface
+      (defun exwm-app-launch (command)
+        (interactive (list (read-shell-command "$ ")))
+        (start-process-shell-command command nil command))
+      :custom '((exwm-input-global-keys . '((exwm-app-launch)))))
+    (leaf exwm-systemtray
+      :require t
+      :defun exwm-systemtray-enable
+      :config
+      (exwm-systemtray-enable))
+    (leaf exwm-randr
+      :require t
+      :when (string= (system-name) "archlinuxhonda")
+      :custom ((exwm-randr-workspace-monitor-plist . '(0 "DP-0" 1 "HDMI-0" 2 "DP-0" 3 "DP-0" 4 "DP-0" 5 "DP-0")))
+      :config
+      (exwm-randr-enable))
+    (leaf exwm-enable
+      :defun (exwm-enable)
+      :config
+      (exwm-enable))
+    (leaf *fix_ediff
+      :after ediff-wind
+      :custom `((ediff-window-setup-function . 'ediff-setup-windows-plain)))))
 
 ;; (load "conf" t)
