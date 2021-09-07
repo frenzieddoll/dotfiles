@@ -1189,6 +1189,7 @@
 
 
 ;; マイナーモードの設定
+
 (leaf view
   :doc "peruse file or buffer without editing"
   :tag "builtin"
@@ -1690,7 +1691,7 @@
   :after lv
   :hydra
   (hydra-pinky
-   (global-map "C-;")
+   (global-map "C-]")
    "pinky"
    ("n" next-line)
    ("p" previous-line)
@@ -1714,7 +1715,6 @@
    ("<" beginning-of-buffer)
    (">" end-of-buffer)
    ("SPC" set-mark-command)
-   ("\C-m" dired-find-file)
    ("1" delete-other-windows)
    ("2" split-window-below)
    ("3" split-window-right)
@@ -1915,13 +1915,14 @@
          (company-search-map
           ("C-n" . company-select-next)
           ("C-p" . company-select-previous)))
-  :custom `((company-tooltip-limit         . 12)
-            (company-idle-delay            . 0)
+  :custom `((company-idle-delay            . 0)
             (company-minimum-prefix-length . 3)
             (company-transformers          . '(company-sort-by-occurrence))
+            (company-tooltip-limit         . 12)
             (global-company-mode           . t)
             (company-dabbrev-downcase      . nil)
             (company-backends . '(company-capf)))
+;;  :global-minor-mode global-company-mode
   :config
   (leaf company-math
     :doc "Completion backends for unicode math symbols and latex tags"
