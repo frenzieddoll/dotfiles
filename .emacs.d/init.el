@@ -1734,7 +1734,7 @@
 (leaf lsp
   :tag "out-of-MELPA"
   :added "2021-09-05"
-  :el-get {{user}}/lsp
+  :el-get emacs-lsp/lsp-mode
   :require t
   :unless (string-match "Raspberrypi" (system-name))
   :hook ((haskell-mode-hook . lsp)
