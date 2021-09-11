@@ -187,6 +187,13 @@
   (set-face-background 'region "#555")
   (run-with-idle-timer 60.0 t #'garbage-collect)
   (defalias 'yes-or-no-p 'y-or-n-p)
+  (leaf *GC
+    :config
+    (defconst my:default-gc-cons-threthold gc-cons-threshold)
+    (setq gc-cons-threshold most-positive-fixnum)
+    (add-hook 'emacs-startup-hook
+              (lambda ()
+                (setq gc-cons-threshold my:default-gc-cons-threthold))))
   (leaf *gc-cons-threshold-arch
     :when (string-match (system-name) "archlinuxhonda")
     :custom `((gc-cons-threshold . ,(* 1024 1024 1024))))
@@ -885,6 +892,14 @@
          (haskell-mode-hook . haskell-decl-scan-mode)
          (haskell-mode-hook . haskell-doc-mode)
          (haskell-mode-hook . haskell-indentation-mode)))
+
+(leaf python-mode
+  :doc "Python major mode"
+  :tag "oop" "python" "processes" "languages"
+  :url "https://gitlab.com/groups/python-mode-devs"
+  :added "2021-09-11"
+  :ensure t
+  :hook lsp)
 
 (leaf yatex
   :doc "Yet Another tex-mode for emacs //野鳥//"
@@ -1743,12 +1758,13 @@
 (leaf lsp
   :tag "out-of-MELPA"
   :added "2021-09-05"
-  ;; :el-get emacs-lsp/lsp-mode
+  :el-get emacs-lsp/lsp-mode
   :require t
-  :unless (string-match "Raspberrypi" (system-name))
+  ;; :unless (string-match "Raspberrypi" (system-name))
   :hook ((haskell-mode-hook . lsp)
          (haskell-literate-mode-hook . lsp))
-  :config
+  :commands lsp
+  :init
   (leaf lsp-ui
     :doc "UI modules for lsp-mode"
     :req "emacs-26.1" "dash-2.18.0" "lsp-mode-6.0" "markdown-mode-2.3"
@@ -1758,7 +1774,21 @@
     :emacs>= 26.1
     :ensure t
     :after lsp-mode markdown-mode
-    :commands lsp-ui-mode)
+    :commands lsp-ui-mode
+    :custom
+    ((lsp-ui-doc-header            . t)
+     (lsp-ui-doc-include-signature . t)
+     (lsp-ui-doc-position          . 'at-point)
+     (lsp-ui-doc-max-width         . 150)
+     (lsp-ui-doc-max-height        . 30)
+     (lsp-ui-doc-use-childframe    . nil)
+     (lsp-ui-doc-use-webkit        . nil)
+     (lsp-ui-flycheck-enable       . t)
+     (lsp-ui-peek-enable           . t)
+     (lsp-ui-peek-peek-height      . 20)
+     (lsp-ui-peek-list-width       . 50)
+     (lsp-ui-peek-fontify          . 'on-demand))
+    :hook ((lsp-mode-hook . lsp-ui-mode)))
   (leaf lsp-ivy
     :doc "LSP ivy integration"
     :req "emacs-25.1" "dash-2.14.1" "lsp-mode-6.2.1" "ivy-0.13.0"
@@ -2290,14 +2320,6 @@
     :config
     ;; (exwmx-floating-smart-hide)
     ;; (exwmx-button-enable)
-    (leaf *pi
-      :disabled t
-      :when (string= (system-name) "RaspberryPi")
-      :preface
-      (defun exwm-app-launch (command)
-        (interactive (list (read-shell-command "$ ")))
-        (start-process-shell-command command nil command))
-      :custom '((exwm-input-global-keys . '((exwm-app-launch)))))
     (leaf exwm-systemtray
       :require t
       :defun exwm-systemtray-enable
