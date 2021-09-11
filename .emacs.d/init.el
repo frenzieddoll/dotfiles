@@ -2115,24 +2115,14 @@
   :bind (("M-g g" . consult-goto-line)
          ("C-c i" . consult-outline)
          ("M-y" . consult-yank-pop)
-<<<<<<< HEAD
-         ("C-c s" . consult-line)
-=======
          ("C-o" . consult-line)
->>>>>>> origin/master
          ("C-c h" . consult-recent-file)
-         ("C-s" . consult-isearch)
+         (vertico-map
           ("?" . minibuffer-complition-help)
           ("M-RET" . minibuffer-force-complete-and-exit)
           ("M-TAB" . minibuffer-complete)
-<<<<<<< HEAD
-          ("C-," . up-to-dir))
-  :custom `((vertico-count . 20)
-            (consult-preview-key . ,(kbd "C-.")))
-=======
           ("C-," . up-to-dir)))
   :custom ((vertico-count . 20))
->>>>>>> origin/master
   :preface
   (defun up-to-dir ()
     "Move to parent directory like \"cd ..\" in find-file."
