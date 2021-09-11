@@ -187,13 +187,6 @@
   (set-face-background 'region "#555")
   (run-with-idle-timer 60.0 t #'garbage-collect)
   (defalias 'yes-or-no-p 'y-or-n-p)
-  (leaf *GC
-    :config
-    (defconst my:default-gc-cons-threthold gc-cons-threshold)
-    (setq gc-cons-threshold most-positive-fixnum)
-    (add-hook 'emacs-startup-hook
-              (lambda ()
-                (setq gc-cons-threshold my:default-gc-cons-threthold))))
   (leaf *gc-cons-threshold-arch
     :when (string-match (system-name) "archlinuxhonda")
     :custom `((gc-cons-threshold . ,(* 1024 1024 1024))))
@@ -1758,11 +1751,14 @@
 (leaf lsp
   :tag "out-of-MELPA"
   :added "2021-09-05"
-  :el-get emacs-lsp/lsp-mode
+  ;; :el-get emacs-lsp/lsp-mode
   :require t
   ;; :unless (string-match "Raspberrypi" (system-name))
   :hook ((haskell-mode-hook . lsp)
-         (haskell-literate-mode-hook . lsp))
+         (haskell-literate-mode-hook . lsp)
+         (lsp-mode-hook . (lambda ()
+                            (company-mode t)
+                            (corfu-mode nil))))
   :commands lsp
   :init
   (leaf lsp-ui
@@ -1935,7 +1931,7 @@
 
 ;; company 補完設定
 (leaf company
-  :disabled t
+  ;; :disabled t
   :doc "Modular text completion framework"
   :req "emacs-25.1"
   :tag "matching" "convenience" "abbrev" "emacs>=25.1"
@@ -1959,7 +1955,7 @@
             (company-minimum-prefix-length . 3)
             (company-transformers          . '(company-sort-by-occurrence))
             (company-tooltip-limit         . 12)
-            (global-company-mode           . t)
+            (global-company-mode           . nil)
             (company-dabbrev-downcase      . nil)
             (company-backends . '(company-capf)))
 ;;  :global-minor-mode global-company-mode
@@ -2105,13 +2101,13 @@
   :bind (("M-g g" . consult-goto-line)
          ("C-c i" . consult-imenu)
          ("M-y" . consult-yank-pop)
-         ("C-s" . consult-line)
+         ("C-c s" . consult-line)
          ("C-c h" . consult-recent-file)
-         (vertico-map
+         ("C-s" . consult-isearch)
           ("?" . minibuffer-complition-help)
           ("M-RET" . minibuffer-force-complete-and-exit)
           ("M-TAB" . minibuffer-complete)
-          ("C-," . up-to-dir)))
+          ("C-," . up-to-dir))
   :custom `((vertico-count . 20)
             (consult-preview-key . ,(kbd "C-.")))
   :preface
