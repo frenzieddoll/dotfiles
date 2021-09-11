@@ -1729,6 +1729,15 @@
    ("g" text-scale-increase "in")
    ("l" text-scale-decrease "out")))
 
+(leaf sudo-edit
+  :doc "Open files as another user"
+  :req "emacs-24" "cl-lib-0.5"
+  :tag "convenience" "emacs>=24"
+  :url "https://github.com/nflath/sudo-edit"
+  :added "2021-09-10"
+  :emacs>= 24
+  :ensure t)
+
 
 ;; lsp 設定
 (leaf lsp
