@@ -308,6 +308,8 @@
   :init
   (leaf dired-x :require t)
   (leaf wdired
+    :require t
+    :hook (dired-hook . wired)
     :custom ((wdired-allow-to-change-permissions . t))
     :bind ((dired-mode-map
             :package dired
