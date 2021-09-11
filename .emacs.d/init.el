@@ -1743,7 +1743,7 @@
 (leaf lsp
   :tag "out-of-MELPA"
   :added "2021-09-05"
-  :el-get emacs-lsp/lsp-mode
+  ;; :el-get emacs-lsp/lsp-mode
   :require t
   :unless (string-match "Raspberrypi" (system-name))
   :hook ((haskell-mode-hook . lsp)
@@ -1905,6 +1905,7 @@
 
 ;; company 補完設定
 (leaf company
+  :disabled t
   :doc "Modular text completion framework"
   :req "emacs-25.1"
   :tag "matching" "convenience" "abbrev" "emacs>=25.1"
@@ -2132,7 +2133,9 @@
     :added "2021-09-05"
     :emacs>= 26.1
     :ensure t
-    :custom ((completion-styles . '(orderless))))
+    :custom ((completion-styles . '(orderless))
+             (completion-category-defaults . nil)
+             (completion-category-overrides . '((file (style . (partial-completion)))))))
   (leaf savehist
     :doc "Save minibuffer history"
     :tag "builtin"
@@ -2146,7 +2149,22 @@
     :added "2021-09-06"
     :emacs>= 27.1
     :el-get sebastienwae/app-launcher
-    :require t))
+    :require t)
+  (leaf corfu
+    :doc "Completion Overlay Region FUnction"
+    :req "emacs-27.1"
+    :tag "emacs>=27.1"
+    :url "https://github.com/minad/corfu"
+    :added "2021-09-11"
+    :emacs>= 27.1
+    :ensure t
+    :require t
+    :custom
+    (corfu-cycle . t)
+    (corfu-auto . t)
+    (completion-cycle-threshold . 3)
+    :config
+    (corfu-global-mode)))
 
 
 ;; window managr
@@ -2298,5 +2316,3 @@
     (leaf *fix_ediff
       :after ediff-wind
       :custom `((ediff-window-setup-function . 'ediff-setup-windows-plain)))))
-
-;; (load "conf" t)
