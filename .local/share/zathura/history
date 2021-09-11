@@ -359,16 +359,16 @@ time=1589274595
 jumplist=
 
 [G4pEBIp7pEancwLgWlpALGf6EcZ4FbyA2j26b6vtioQ=]
-page=7
+page=35
 offset=0
 zoom=1.0131246940796588
 rotate=0
 pages-per-row=2
 first-page-column=1:2
 page-right-to-left=false
-position-x=0.5
-position-y=0.018663595191221263
-time=1589274595
+position-x=0.25
+position-y=0.073999999999999996
+time=1631369558
 
 [/mnt/sdb/Downloads/atmarkit_ebook53_linux.pdf]
 page=0
@@ -3113,3 +3113,16 @@ page-right-to-left=false
 position-x=0.5
 position-y=0.21875
 time=1622987608
+
+[/mnt/HDDforData/Downloads/category-theory-for-programmers.pdf]
+page=35
+offset=0
+zoom=1.0131246940796588
+rotate=0
+pages-per-row=2
+first-page-column=1:2
+page-right-to-left=false
+position-x=0.25
+position-y=0.073999999999999996
+time=1631369558
+jumplist=

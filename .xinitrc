@@ -73,6 +73,6 @@ export EXWM=enable
 
 
 xhost +SI:localuser:$USER
-xset r rate 200 30
+xset r rate 250 40
 exec emacs
 # exec dbus-launch --exit-with-session --sh-syntax emacs

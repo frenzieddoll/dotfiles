@@ -312,7 +312,7 @@
             (dired-launch-enable        . t)
             (dired-isearch-filenames    . t)
             (dired-listing-switches     . ,(purecopy "-alht")))
-  :config
+  :init
   (leaf dired-x :require t)
   (leaf wdired
     :custom ((wdired-allow-to-change-permissions . t))
@@ -325,7 +325,7 @@
     :tag "files"
     :added "2021-09-05"
     :ensure t
-    :after dired-hacks-utils
+    ;; :after dired-hacks-utils
     :bind ((dired-mode-map
             :package dired
             ("/" . dired-filer-map))))
@@ -354,8 +354,7 @@
     :tag "files"
     :added "2021-09-05"
     :ensure t
-    ;; :after dired-hacks-utils
-    :after dired
+    :require t
     :when (eq system-type 'gnu/linux)
     :custom ((dired-open-extensions .
                                     '(("mkv"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
@@ -400,7 +399,7 @@
     :tag "files"
     :added "2021-09-05"
     :ensure t
-    :after dired-hacks-utils
+    ;; :after dired-hacks-utils
     :when (eq system-type 'darwin)
     :custom ((dired-open-extensions .
                                     '(("key"  . "open")
@@ -782,9 +781,10 @@
     :added "2021-09-05"
     :emacs>= 25.1
     :ensure t
-    :after all-the-icons shrink-path
+    ;; :after all-the-icons shrink-path
+    :hook (after-init . doom-modeline-mode)
     :custom `((doom-modeline-buffer-file-name-style . 'truncate-with-project)
-              (doom-modeline-icon                   . nil)
+              (doom-modeline-icon                   . t)
               (doom-modeline-major-mode-icon        . nil)
               (doom-modeline-minor-modes            . nil)
               (line-number-mode                     . 0)
@@ -1745,6 +1745,15 @@
    ("g" text-scale-increase "in")
    ("l" text-scale-decrease "out")))
 
+(leaf which-key
+  :doc "Display available keybindings in popup"
+  :req "emacs-24.4"
+  :tag "emacs>=24.4"
+  :url "https://github.com/justbur/emacs-which-key"
+  :added "2021-09-12"
+  :emacs>= 24.4
+  :ensure t)
+
 (leaf sudo-edit
   :doc "Open files as another user"
   :req "emacs-24" "cl-lib-0.5"
@@ -1759,11 +1768,12 @@
 (leaf lsp
   :tag "out-of-MELPA"
   :added "2021-09-05"
-  :el-get emacs-lsp/lsp-mode
+  ;; :el-get emacs-lsp/lsp-mode
   :require t
   ;; :unless (string-match "Raspberrypi" (system-name))
   :hook ((haskell-mode-hook . lsp)
-         (haskell-literate-mode-hook . lsp))
+         (haskell-literate-mode-hook . lsp)
+         (python-mode-hook . lsp))
   :commands lsp
   :init
   (leaf lsp-ui
@@ -2104,17 +2114,16 @@
   :ensure t
   :require t
   :bind (("M-g g" . consult-goto-line)
-         ("C-c i" . consult-imenu)
+         ("C-c i" . consult-outline)
          ("M-y" . consult-yank-pop)
-         ("C-s" . consult-line)
+         ("C-o" . consult-line)
          ("C-c h" . consult-recent-file)
          (vertico-map
           ("?" . minibuffer-complition-help)
           ("M-RET" . minibuffer-force-complete-and-exit)
           ("M-TAB" . minibuffer-complete)
           ("C-," . up-to-dir)))
-  :custom `((vertico-count . 20)
-            (consult-preview-key . ,(kbd "C-.")))
+  :custom ((vertico-count . 20))
   :preface
   (defun up-to-dir ()
     "Move to parent directory like \"cd ..\" in find-file."
@@ -2140,12 +2149,13 @@
     :added "2021-09-05"
     :emacs>= 26.1
     :ensure t
-    :custom ((consult-buffer-sources . '(consult--source-hidden-buffer
-                                         consult--source-buffer
-                                         consult--source-file
-                                         consult--source-bookmark
-                                         consult--source-project-buffer
-                                         consult--source-project-file)))
+    :custom `((consult-buffer-sources . '(consult--source-hidden-buffer
+                                          consult--source-buffer
+                                          consult--source-file
+                                          consult--source-bookmark
+                                          consult--source-project-buffer
+                                          consult--source-project-file))
+              (consult-preview-key . ,(kbd "C-.")))
     :config (recentf-mode))
   (leaf marginalia
     :doc "Enrich existing commands with completion annotations"
@@ -2155,6 +2165,7 @@
     :added "2021-09-06"
     :emacs>= 26.1
     :ensure t
+    :unless (string= (system-name) "RaspberryPi")
     :config (marginalia-mode 1))
   (leaf orderless
     :doc "Completion style for matching regexps in any order"
