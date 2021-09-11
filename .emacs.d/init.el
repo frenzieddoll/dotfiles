@@ -354,7 +354,8 @@
     :tag "files"
     :added "2021-09-05"
     :ensure t
-    :after dired-hacks-utils
+    ;; :after dired-hacks-utils
+    :after dired
     :when (eq system-type 'gnu/linux)
     :custom ((dired-open-extensions .
                                     '(("mkv"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
