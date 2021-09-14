@@ -1548,6 +1548,7 @@
             (skk-henkan-strict-okuri-precedence . t)
             (skk-isearch-start-mode . 'latin)
             (skk-search-katakana . t))
+  :init (setq skk-user-directory "~/.emacs.d/ddskk")
   :preface
   (defun skk-hiragana-set nil
     (interactive)
@@ -1562,7 +1563,8 @@
           (skk-j-mode
            (skk-toggle-kana nil))
           (skk-latin-mode
-           (dolist (skk-kakutei (skk-toggle-kana nil)))))))
+           (dolist (skk-kakutei (skk-toggle-kana nil))))))
+  )
 
 ;; (leaf *minor-mode
 ;;   :disabled t
@@ -1768,13 +1770,9 @@
   ;; :unless (string-match "Raspberrypi" (system-name))
   :hook ((haskell-mode-hook . lsp)
          (haskell-literate-mode-hook . lsp)
-<<<<<<< HEAD
          (lsp-mode-hook . (lambda ()
                             (company-mode t)
                             (corfu-mode nil))))
-=======
-         (python-mode-hook . lsp))
->>>>>>> origin/master
   :commands lsp
   :init
   (leaf lsp-ui
