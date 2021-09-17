@@ -674,7 +674,7 @@
            ("s-a" . zoom-window-zoom)
            ("s-q" . kill-current-buffer)
            ("s-h" . delete-window)
-           ("s-o" . ivy-switch-buffer)))
+           ("s-o" . consult-buffer)))
 
   (leaf *ForWindows
     :when (eq system-type 'windows-nt)
@@ -689,11 +689,11 @@
            ("C-M-m" . mute_toggle)
            ("C-M-n" . lower_volume )
            ("C-M-p" . upper_volume)
-           ("M-d" . counsel-linux-app)
-           ("M-o" . ivy-switch-buffer)))
+           ("M-d" . app-launcher-run-app)
+           ("M-o" . consult-buffer)))
 
-    (leaf *ForCUI
-    :unless (eq (window-system) 'x)
+  (leaf *ForCUI
+    :unless (eq window-system 'x)
     :bind (("M-n" . windmove-down)
            ("M-f" . windmove-right)
            ("M-b" . windmove-left)
@@ -705,9 +705,9 @@
            ("C-M-m" . mute_toggle)
            ("C-M-n" . lower_volume )
            ("C-M-p" . upper_volume)
-           ("M-d" . counsel-linux-app)
-           ("M-o" . ivy-switch-buffer))
-    :config (global-hl-line-mode . t))
+           ("M-d" . app-launcher-run-app)
+           ("M-o" . consult-buffer))
+    :custom (global-hl-line-mode . t))
 
   (leaf *mySaveFrame
     :when (or (eq system-type 'darwin) (eq system-type 'windows-nt))
@@ -763,6 +763,7 @@
   :added "2021-09-05"
   :emacs>= 25.1
   :ensure t
+  :when (eq (window-system) 'x)
   :custom ((doom-themes-enable-italic . t)
            (doom-themes-enable-bold   . t))
   :custom-face ((doom-modeline-bar . '((t (:background "#6272a4")))))
@@ -829,7 +830,8 @@
   :url "https://github.com/m00natic/vlfi"
   :added "2021-09-05"
   ;; :require vlf-setup
-  :ensure t)
+  :ensure t
+  :disabled t)
 
 (leaf yaml
   :doc "YAML parser for Elisp"
@@ -1512,8 +1514,7 @@
   :added "2021-09-05"
   :ensure t
   :unless (string-match "RaspberryPi" (system-name))
-  :custom ((global-undo-tree-mode . t))
-)
+  :global-minor-mode t)
 
 (leaf align
   :doc "align text to a specific column, by regexp"
@@ -1585,48 +1586,6 @@
           (skk-latin-mode
            (dolist (skk-kakutei (skk-toggle-kana nil))))))
   )
-
-;; (leaf *minor-mode
-;;   :disabled t
-;;   :config
-;;   (leaf skk
-;;     :ensure ddskk
-;;     ;; :defun (skk-get)
-;;     :require t skk-study
-;;     :defvar skk-user-directory
-;;     :defun skk-toggle-kana skk-hiragana-set skk-katakana-set
-;;     :hook ((isearch-mode-hook . skk-isearch-mode-setup)
-;;            (isearch-mode-end-hook . skk-isearch-mode-cleanup))
-;;     :bind (("C-x j" . skk-mode)
-;;            ("C-j" . nil)
-;;            ("C-j" . skk-hiragana-set)
-;;            ("C-l" . skk-latin-mode)
-;;            (minibuffer-local-map
-;;             ("C-j" . skk-kakutei)
-;;             ("C-l" . skk-latin-mode)))
-;;     :custom `((skk-user-directory . "~/.emacs.d/ddskk")
-;;               (skk-initial-search-jisyo . "~/.emacs.d/ddskk/jisyo")
-;;               (skk-large-jisyo . "~/.emacs.d/skk-get-jisyo/SKK-JISYO.L")
-;;               (skk-egg-like-newline . t)
-;;               (skk-delete-implies-kakutei . t)
-;;               (skk-henkan-strict-okuri-precedence . t)
-;;               (skk-isearch-start-mode . 'latin)
-;;               (skk-search-katakana . t))
-;;     :preface
-;;     (defun skk-hiragana-set nil
-;;       (interactive)
-;;       (cond (skk-katakana
-;;              (skk-toggle-kana nil))
-;;             (t
-;;              (skk-kakutei))))
-;;     (defun skk-katakana-set nil
-;;       (interactive)
-;;       (cond (skk-katakana
-;;              (lambda))
-;;             (skk-j-mode
-;;              (skk-toggle-kana nil))
-;;             (skk-latin-mode
-;;              (dolist (skk-kakutei (skk-toggle-kana nil))))))))
 
 (leaf calfw
   :doc "Calendar view framework on Emacs"
@@ -2144,6 +2103,7 @@
           ("M-TAB" . minibuffer-complete)
           ("C-," . up-to-dir)))
   :custom ((vertico-count . 20))
+  :global-minor-mode t
   :preface
   (defun up-to-dir ()
     "Move to parent directory like \"cd ..\" in find-file."
@@ -2160,7 +2120,7 @@
                                    (save-excursion (end-of-line) (point))
                                    #'delete)))))
   :config
-  (vertico-mode)
+  ;; (vertico-mode)
   (leaf consult
     :doc "Consulting completing-read"
     :req "emacs-26.1"
@@ -2212,7 +2172,7 @@
     :doc "Save minibuffer history"
     :tag "builtin"
     :added "2021-09-05"
-    :config (savehist-mode))
+    :global-minor-mode t)
   (leaf app-launcher
     :doc "Launch applications from Emacs"
     :req "emacs-27.1"
@@ -2258,8 +2218,7 @@
     ;;       #'command-completion-default-include-p)
 
     ;; Enable recursive minibuffers
-    (setq enable-recursive-minibuffers t))
-  )
+    (setq enable-recursive-minibuffers t)))
 
 
 
@@ -2322,8 +2281,7 @@
                                           ;; (,(kbd "s-o")     . ivy-switch-buffer)
                                           (,(kbd "s-a")     . zoom-window-zoom)
                                           (,(kbd "s-o")     . consult-buffer)))
-              (exwm-input-simulation-keys . '(
-                                              ;; new version
+              (exwm-input-simulation-keys . '(;; new version
                                               (,(kbd "C-b")           . [left])
                                               (,(kbd "M-b")           . [C-left])
                                               (,(kbd "C-f")           . [right])
