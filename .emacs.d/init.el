@@ -693,7 +693,7 @@
            ("M-o" . ivy-switch-buffer)))
 
     (leaf *ForCUI
-    :unless window-system
+    :unless (eq (window-system) 'x)
     :bind (("M-n" . windmove-down)
            ("M-f" . windmove-right)
            ("M-b" . windmove-left)
@@ -1438,74 +1438,72 @@
   :url "https://github.com/Fuco1/smartparens"
   :added "2021-09-05"
   :ensure t
-      :disabled t
-    :when window-system
-    :ensure t
-    :require smartparens-config
-    :custom ((sp-highlight-pari-overly . nil)
-             (sp-navigate-interactive-always-progress-point . t)
-             (smartparens-global-strict-mode . t))
-    :bind ((smartparens-mode-map
+  :disabled t
+  :when window-system
+  :require smartparens-config
+  :custom ((sp-highlight-pari-overly . nil)
+           (sp-navigate-interactive-always-progress-point . t)
+           (smartparens-global-strict-mode . t))
+  :bind ((smartparens-mode-map
             ;;;;
             ;;;; navigation
 
-            ;; basic (fbnp-ae)
-            ("C-M-f" . sp-forward-sexp)
-            ("C-M-b" . sp-backward-sexp)
-            ("C-M-n" . sp-next-sexp)
-            ("C-M-p" . sp-previous-sexp)
-            ("C-M-a" . sp-beginning-of-sexp)
-            ("C-M-e" . sp-end-of-sexp)
+          ;; basic (fbnp-ae)
+          ("C-M-f" . sp-forward-sexp)
+          ("C-M-b" . sp-backward-sexp)
+          ("C-M-n" . sp-next-sexp)
+          ("C-M-p" . sp-previous-sexp)
+          ("C-M-a" . sp-beginning-of-sexp)
+          ("C-M-e" . sp-end-of-sexp)
 
-            ;; checkin/checkout
-            ("C-M-i" . sp-down-sexp)
-            ("C-M-o" . sp-backward-up-sexp)
+          ;; checkin/checkout
+          ("C-M-i" . sp-down-sexp)
+          ("C-M-o" . sp-backward-up-sexp)
 
-            ;; misc
-            ("C-M-k"   . sp-kill-sexp)
-            ("C-M-w"   . sp-copy-sexp)
-            ("C-M-t"   . sp-transpose-sexp)
-            ("C-M-SPC" . sp-mark-sexp)
+          ;; misc
+          ("C-M-k"   . sp-kill-sexp)
+          ("C-M-w"   . sp-copy-sexp)
+          ("C-M-t"   . sp-transpose-sexp)
+          ("C-M-SPC" . sp-mark-sexp)
 
             ;;;;
             ;;;; depth-changing commands
 
-            ;; basic
-            ("M-s"           . sp-splice-sexp)
-            ("M-r"           . sp-splice-sexp-killing-around)
-            ("M-<up>"        . nil)
-            ("M-<down>"      . nil)
-            ("C-M-u"         . sp-splice-sexp-killing-backward)
-            ("C-M-d"         . sp-splice-sexp-killing-forward)
-            ("M-("           . sp-wrap-round)
-            ("M-["           . sp-wrap-square)
-            ("M-{"           . sp-wrap-qurly)
+          ;; basic
+          ("M-s"           . sp-splice-sexp)
+          ("M-r"           . sp-splice-sexp-killing-around)
+          ("M-<up>"        . nil)
+          ("M-<down>"      . nil)
+          ("C-M-u"         . sp-splice-sexp-killing-backward)
+          ("C-M-d"         . sp-splice-sexp-killing-forward)
+          ("M-("           . sp-wrap-round)
+          ("M-["           . sp-wrap-square)
+          ("M-{"           . sp-wrap-qurly)
 
-            ;; barf/slurp
-            ("C-)" . sp-forward-slurp-sexp)
-            ("C-}" . sp-forward-barf-sexp)
-            ("C-(" . sp-backward-slurp-sexp)
-            ("C-{" . sp-backward-barf-sexp)
+          ;; barf/slurp
+          ("C-)" . sp-forward-slurp-sexp)
+          ("C-}" . sp-forward-barf-sexp)
+          ("C-(" . sp-backward-slurp-sexp)
+          ("C-{" . sp-backward-barf-sexp)
 
-            ;; split/join
-            ("M-S-s" . sp-split-sexp)
-            ("M-j"   . sp-join-sexp)
+          ;; split/join
+          ("M-S-s" . sp-split-sexp)
+          ("M-j"   . sp-join-sexp)
 
             ;;;;
             ;;;; misc
 
-            ;; change constructure
-            ("M-?"     . sp-convolute-sexp)
-            ("C-c s a" . sp-absorb-sexp)
-            ("C-c s e" . sp-emit-sexp)
-            ("C-c s p" . sp-convolute-sexp)
-            ("C-c s t" . sp-transpose-hybrid-sexp)
+          ;; change constructure
+          ("M-?"     . sp-convolute-sexp)
+          ("C-c s a" . sp-absorb-sexp)
+          ("C-c s e" . sp-emit-sexp)
+          ("C-c s p" . sp-convolute-sexp)
+          ("C-c s t" . sp-transpose-hybrid-sexp)
 
-            ;; change elements
-            ("C-c s (" . sp-rewrap-sexp)
-            ("C-c s r" . sp-change-inner)
-            ("C-c s s" . sp-change-enclosing)))
-    )
+          ;; change elements
+          ("C-c s (" . sp-rewrap-sexp)
+          ("C-c s r" . sp-change-inner)
+          ("C-c s s" . sp-change-enclosing))))
 
 (leaf undo-tree
   :doc "Treat undo history as a tree"
@@ -1527,7 +1525,7 @@
   :req "ccc-1.43" "cdb-20141201.754"
   :added "2021-09-05"
   :ensure t
-  :after ccc cdb
+  ;; :after ccc cdb
   :require skk skk-study
   :defvar skk-user-directory
   :defun skk-toggle-kana skk-hiragana-set skk-katakana-set
@@ -1549,6 +1547,28 @@
             (skk-isearch-start-mode . 'latin)
             (skk-search-katakana . t))
   :init (setq skk-user-directory "~/.emacs.d/ddskk")
+  :config
+  (setq skk-rom-kana-rule-list
+        (append skk-rom-kana-rule-list
+                '(("ll" nil "っ")
+                  ("xn" nil "ん")
+                  ("xx" nil "っ")
+                  ("z," nil ",")
+                  ("z." nil ".")
+                  ("z[" nil "[")
+                  ("z]" nil "]")
+                  ("z-" nil "-")
+                  ("!" nil "!")
+                  ("." nil "。")
+                  ("," nil "、")
+                  (":" nil ":")
+                  (";" nil ";")
+                  ("?" nil "?")
+                  ("la" nil "ぁ" )
+                  ("li" nil "ぃ" )
+                  ("lu" nil "ぅ" )
+                  ("le" nil "ぇ" )
+                  ("lo" nil "ぉ" ))))
   :preface
   (defun skk-hiragana-set nil
     (interactive)
@@ -1669,6 +1689,7 @@
   :url "http://github.com/joaotavora/yasnippet"
   :added "2021-09-05"
   :ensure t
+  :disabled t
   :diminish t
   :unless (string-match "Raspberrypi" (system-name))
   :custom ((yas-global-mode . t))
@@ -2113,7 +2134,7 @@
   :ensure t
   :require t
   :bind (("M-g g" . consult-goto-line)
-         ("C-c i" . consult-outline)
+         ("C-c i" . consult-imenu)
          ("M-y" . consult-yank-pop)
          ("C-o" . consult-line)
          ("C-c h" . consult-recent-file)
@@ -2155,7 +2176,7 @@
                                           consult--source-project-buffer
                                           consult--source-project-file))
               (consult-preview-key . ,(kbd "C-.")))
-    :config (recentf-mode))
+    :global-minor-mode (recentf-mode))
   (leaf marginalia
     :doc "Enrich existing commands with completion annotations"
     :req "emacs-26.1"
@@ -2177,6 +2198,16 @@
     :custom ((completion-styles . '(orderless))
              (completion-category-defaults . nil)
              (completion-category-overrides . '((file (style . (partial-completion)))))))
+  (leaf embark
+    :doc "Conveniently act on minibuffer completions"
+    :req "emacs-26.1"
+    :tag "convenience" "emacs>=26.1"
+    :url "https://github.com/oantolin/embark"
+    :added "2021-09-17"
+    :emacs>= 26.1
+    :ensure t
+    :bind (("s-g" . embark-act))
+    :custom ((prefix-help-command . #'embark-prefix-help-command)))
   (leaf savehist
     :doc "Save minibuffer history"
     :tag "builtin"
@@ -2203,9 +2234,33 @@
     :custom
     (corfu-cycle . t)
     (corfu-auto . t)
+    (corfu-quit-at-boundary . t)
+    (corfu-quit-no-match . t)
+    (corfu-echo-documentation . nil)
     (completion-cycle-threshold . 3)
-    :config
-    (corfu-global-mode)))
+    :global-minor-mode corfu-global-mode)
+  (leaf *emacs
+    :preface
+    ;; Add prompt indicator to `completing-read-multiple'.
+    ;; Alternatively try `consult-completing-read-multiple'.
+    (defun crm-indicator (args)
+      (cons (concat "[CRM] " (car args)) (cdr args)))
+    (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
+
+    ;; Do not allow the cursor in the minibuffer prompt
+    (setq minibuffer-prompt-properties
+          '(read-only t cursor-intangible t face minibuffer-prompt))
+    (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
+
+    ;; Emacs 28: Hide commands in M-x which do not work in the current mode.
+    ;; Vertico commands are hidden in normal buffers.
+    ;; (setq read-extended-command-predicate
+    ;;       #'command-completion-default-include-p)
+
+    ;; Enable recursive minibuffers
+    (setq enable-recursive-minibuffers t))
+  )
+
 
 
 ;; window managr
