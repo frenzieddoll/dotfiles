@@ -799,25 +799,6 @@
   :ensure t
   :after websocket anaphora deferred polymode with-editor)
 
-(leaf rust-mode
-  :doc "A major-mode for editing Rust source code"
-  :req "emacs-25.1"
-  :tag "languages" "emacs>=25.1"
-  :url "https://github.com/rust-lang/rust-mode"
-  :added "2021-09-05"
-  :emacs>= 25.1
-  :ensure t
-  :config
-  (leaf racer
-    :doc "code completion, goto-definition and docs browsing for Rust via racer"
-    :req "emacs-25.1" "rust-mode-0.2.0" "dash-2.13.0" "s-1.10.0" "f-0.18.2" "pos-tip-0.4.6"
-    :tag "tools" "rust" "matching" "convenience" "abbrev" "emacs>=25.1"
-    :url "https://github.com/racer-rust/emacs-racer"
-    :added "2021-09-05"
-    :emacs>= 25.1
-    :ensure t
-    :after rust-mode pos-tip))
-
 (leaf csv
   :doc "Functions for reading and parsing CSV files."
   :tag "csv" "data" "extensions"
@@ -860,44 +841,6 @@
     :added "2021-09-05"
     :emacs>= 24.3
     :ensure t))
-
-(leaf haskell-mode
-  :doc "A Haskell editing mode"
-  :req "emacs-25.1"
-  :tag "haskell" "files" "faces" "emacs>=25.1"
-  :url "https://github.com/haskell/haskell-mode"
-  :added "2021-09-05"
-  :emacs>= 25.1
-  :ensure t
-  :defvar haskell-process-args-ghcie
-  :custom `(;; (flymake-proc-allowed-file-name-masks . ,(delete '("\\.l?hs\\'" haskell-flymake-init) flymake-proc-allowed-file-name-masks))
-            (haskell-process-type          . 'stack-ghci)
-            (haskell-process-path-ghci     . "stack")
-            (haskell-process-args-ghcie    . "ghci")
-            (haskell-indent-after-keywords . '(("where" 4 0) ("of" 4) ("do" 4) ("mdo" 4) ("rec" 4) ("in" 4 0) ("{" 4) "if" "then" "else" "let"))
-            (haskell-indent-offset         . 4)
-            (haskell-indendt-spaces        . 4)
-            (haskell-compile-stack-build-command . t))
-
-  :bind `((haskell-mode-map
-           ("C-c C-z" . haskell-interactive-bring)
-           ("C-c C-l" . haskell-process-load-file)
-           ("C-c C-," . haskell-mode-format-imports)
-           ("<f5>" . haskell-compile)
-           ("<f8>" . haskell-navigate-imports)
-           ))
-  :hook ((haskell-mode-hook . interactive-haskell-mode)
-         (haskell-mode-hook . haskell-decl-scan-mode)
-         (haskell-mode-hook . haskell-doc-mode)
-         (haskell-mode-hook . haskell-indentation-mode)))
-
-(leaf python-mode
-  :doc "Python major mode"
-  :tag "oop" "python" "processes" "languages"
-  :url "https://gitlab.com/groups/python-mode-devs"
-  :added "2021-09-11"
-  :ensure t
-  :hook lsp)
 
 (leaf yatex
   :doc "Yet Another tex-mode for emacs //野鳥//"
@@ -1758,66 +1701,15 @@
   ;; :el-get emacs-lsp/lsp-mode
   :require t
   ;; :unless (string-match "Raspberrypi" (system-name))
-  :hook ((haskell-mode-hook . lsp)
+  :custom ((lsp-idle-delay . 0.500)
+           (lsp-log-io . nil)
+           (lsp-keymap-prefix . "M-l"))
+  :hook ((lsp-mode-hook . lsp-enable-which-key-integration)
+         (haskell-mode-hook . lsp)
          (haskell-literate-mode-hook . lsp)
          (lsp-mode-hook . (lambda ()
-                            (company-mode t)
-                            (corfu-mode nil))))
-  :commands lsp
-  :init
-  (leaf lsp-ui
-    :doc "UI modules for lsp-mode"
-    :req "emacs-26.1" "dash-2.18.0" "lsp-mode-6.0" "markdown-mode-2.3"
-    :tag "tools" "languages" "emacs>=26.1"
-    :url "https://github.com/emacs-lsp/lsp-ui"
-    :added "2021-09-05"
-    :emacs>= 26.1
-    :ensure t
-    :after lsp-mode markdown-mode
-    :commands lsp-ui-mode
-    :custom
-    ((lsp-ui-doc-header            . t)
-     (lsp-ui-doc-include-signature . t)
-     (lsp-ui-doc-position          . 'at-point)
-     (lsp-ui-doc-max-width         . 150)
-     (lsp-ui-doc-max-height        . 30)
-     (lsp-ui-doc-use-childframe    . nil)
-     (lsp-ui-doc-use-webkit        . nil)
-     (lsp-ui-flycheck-enable       . t)
-     (lsp-ui-peek-enable           . t)
-     (lsp-ui-peek-peek-height      . 20)
-     (lsp-ui-peek-list-width       . 50)
-     (lsp-ui-peek-fontify          . 'on-demand))
-    :hook ((lsp-mode-hook . lsp-ui-mode)))
-  (leaf lsp-ivy
-    :doc "LSP ivy integration"
-    :req "emacs-25.1" "dash-2.14.1" "lsp-mode-6.2.1" "ivy-0.13.0"
-    :tag "debug" "languages" "emacs>=25.1"
-    :url "https://github.com/emacs-lsp/lsp-ivy"
-    :added "2021-09-05"
-    :emacs>= 25.1
-    :ensure t
-    :after lsp-mode ivy
-    :commands lsp-ivy-workspace-symbol)
-  (leaf lsp-treemacs
-    :doc "LSP treemacs"
-    :req "emacs-26.1" "dash-2.18.0" "f-0.20.0" "ht-2.0" "treemacs-2.5" "lsp-mode-6.0"
-    :tag "languages" "emacs>=26.1"
-    :url "https://github.com/emacs-lsp/lsp-treemacs"
-    :added "2021-09-05"
-    :emacs>= 26.1
-    :ensure t
-    :after treemacs lsp-mode
-    :commands lsp-treemacs-errors-list)
-  (leaf lsp-haskell
-    :doc "Haskell support for lsp-mode"
-    :req "emacs-24.3" "lsp-mode-3.0" "haskell-mode-1.0"
-    :tag "haskell" "emacs>=24.3"
-    :url "https://github.com/emacs-lsp/lsp-haskell"
-    :added "2021-09-05"
-    :emacs>= 24.3
-    :ensure t
-    :after lsp-mode haskell-mode)
+                            (company-mode nil))))
+  :config
   (leaf consult-lsp
     :doc "LSP-mode Consult integration"
     :req "emacs-27.1" "lsp-mode-5.0" "consult-0.9" "f-0.20.0"
@@ -1827,6 +1719,132 @@
     :emacs>= 27.1
     :ensure t
     :after lsp-mode consult))
+  ;; :init
+  ;; (leaf lsp-ui
+  ;;   :doc "UI modules for lsp-mode"
+  ;;   :req "emacs-26.1" "dash-2.18.0" "lsp-mode-6.0" "markdown-mode-2.3"
+  ;;   :tag "tools" "languages" "emacs>=26.1"
+  ;;   :url "https://github.com/emacs-lsp/lsp-ui"
+  ;;   :added "2021-09-05"
+  ;;   :emacs>= 26.1
+  ;;   :ensure t
+  ;;   :after lsp-mode markdown-mode
+  ;;   :commands lsp-ui-mode
+  ;;   :disabled t
+  ;;   :custom
+  ;;   ((lsp-ui-doc-header            . t)
+  ;;    (lsp-ui-doc-include-signature . t)
+  ;;    (lsp-ui-doc-position          . 'at-point)
+  ;;    (lsp-ui-doc-max-width         . 150)
+  ;;    (lsp-ui-doc-max-height        . 30)
+  ;;    (lsp-ui-doc-use-childframe    . nil)
+  ;;    (lsp-ui-doc-use-webkit        . nil)
+  ;;    (lsp-ui-flycheck-enable       . t)
+  ;;    (lsp-ui-peek-enable           . t)
+  ;;    (lsp-ui-peek-peek-height      . 20)
+  ;;    (lsp-ui-peek-list-width       . 50)
+  ;;    (lsp-ui-peek-fontify          . 'on-demand))
+  ;;   :hook ((lsp-mode-hook . lsp-ui-mode)))
+  ;; (leaf lsp-ivy
+  ;;   :doc "LSP ivy integration"
+  ;;   :req "emacs-25.1" "dash-2.14.1" "lsp-mode-6.2.1" "ivy-0.13.0"
+  ;;   :tag "debug" "languages" "emacs>=25.1"
+  ;;   :url "https://github.com/emacs-lsp/lsp-ivy"
+  ;;   :added "2021-09-05"
+  ;;   :emacs>= 25.1
+  ;;   :ensure t
+  ;;   :after lsp-mode ivy
+  ;;   :disabled t
+  ;;   :commands lsp-ivy-workspace-symbol)
+  ;; (leaf lsp-treemacs
+  ;;   :doc "LSP treemacs"
+  ;;   :req "emacs-26.1" "dash-2.18.0" "f-0.20.0" "ht-2.0" "treemacs-2.5" "lsp-mode-6.0"
+  ;;   :tag "languages" "emacs>=26.1"
+  ;;   :url "https://github.com/emacs-lsp/lsp-treemacs"
+  ;;   :added "2021-09-05"
+  ;;   :emacs>= 26.1
+  ;;   :ensure t
+  ;;   :disabled t
+  ;;   :after treemacs lsp-mode
+  ;;   :commands lsp-treemacs-errors-list))
+
+(leaf rust-mode
+  :doc "A major-mode for editing Rust source code"
+  :req "emacs-25.1"
+  :tag "languages" "emacs>=25.1"
+  :url "https://github.com/rust-lang/rust-mode"
+  :added "2021-09-05"
+  :emacs>= 25.1
+  :ensure t
+  :config
+  (leaf racer
+    :doc "code completion, goto-definition and docs browsing for Rust via racer"
+    :req "emacs-25.1" "rust-mode-0.2.0" "dash-2.13.0" "s-1.10.0" "f-0.18.2" "pos-tip-0.4.6"
+    :tag "tools" "rust" "matching" "convenience" "abbrev" "emacs>=25.1"
+    :url "https://github.com/racer-rust/emacs-racer"
+    :added "2021-09-05"
+    :emacs>= 25.1
+    :ensure t
+    :after rust-mode pos-tip))
+
+(leaf haskell-mode
+  :doc "A Haskell editing mode"
+  :req "emacs-25.1"
+  :tag "haskell" "files" "faces" "emacs>=25.1"
+  :url "https://github.com/haskell/haskell-mode"
+  :added "2021-09-05"
+  :emacs>= 25.1
+  :ensure t
+  :defvar haskell-process-args-ghcie
+  :custom `(;; (flymake-proc-allowed-file-name-masks . ,(delete '("\\.l?hs\\'" haskell-flymake-init) flymake-proc-allowed-file-name-masks))
+            (haskell-process-type          . 'stack-ghci)
+            (haskell-process-path-ghci     . "stack")
+            (haskell-process-args-ghcie    . "ghci")
+            (haskell-indent-after-keywords . '(("where" 4 0) ("of" 4) ("do" 4) ("mdo" 4) ("rec" 4) ("in" 4 0) ("{" 4) "if" "then" "else" "let"))
+            (haskell-indent-offset         . 4)
+            (haskell-indendt-spaces        . 4)
+            (haskell-compile-stack-build-command . t))
+  :bind `((haskell-mode-map
+           ("C-c C-z" . haskell-interactive-bring)
+           ("C-c C-l" . haskell-process-load-file)
+           ("C-c C-," . haskell-mode-format-imports)
+           ("<f5>" . haskell-compile)
+           ("<f8>" . haskell-navigate-imports)))
+  :hook ((haskell-mode-hook . interactive-haskell-mode)
+         (haskell-mode-hook . haskell-decl-scan-mode)
+         (haskell-mode-hook . haskell-doc-mode)
+         (haskell-mode-hook . haskell-indentation-mode))
+  :config
+  (leaf lsp-haskell
+    :doc "Haskell support for lsp-mode"
+    :req "emacs-24.3" "lsp-mode-3.0" "haskell-mode-1.0"
+    :tag "haskell" "emacs>=24.3"
+    :url "https://github.com/emacs-lsp/lsp-haskell"
+    :added "2021-09-05"
+    :emacs>= 24.3
+    :ensure t
+    :hook (haskell-mode-hook . (lambda ()
+                                 (require 'lsp-haskell)
+                                 (lsp)))))
+
+(leaf python-mode
+  :doc "Python major mode"
+  :tag "oop" "python" "processes" "languages"
+  :url "https://gitlab.com/groups/python-mode-devs"
+  :added "2021-09-11"
+  :ensure t
+  :config
+  (leaf lsp-jedi
+    :doc "Lsp client plugin for Python Jedi Language Server"
+    :req "emacs-25.1" "lsp-mode-6.0"
+    :tag "ide" "jedi" "python" "tools" "language-server" "emacs>=25.1"
+    :url "http://github.com/fredcamps/lsp-jedi"
+    :added "2021-09-18"
+    :emacs>= 25.1
+    :ensure t
+    :hook (python-mode-hook . (lambda ()
+                                (require 'lsp-jedi)
+                                (lsp)))))
 
 
 ;; ivy 補完設定
@@ -1934,162 +1952,162 @@
 
 
 ;; company 補完設定
-(leaf company
-  ;; :disabled t
-  :doc "Modular text completion framework"
-  :req "emacs-25.1"
-  :tag "matching" "convenience" "abbrev" "emacs>=25.1"
-  :url "http://company-mode.github.io/"
-  :added "2021-09-05"
-  :emacs>= 25.1
-  :ensure t
-  :bind ((company-active-map
-          ("M-n" . nil)
-          ("M-p" . nil)
-          ("C-s" . company-filter-candidates)
-          ("C-n" . company-select-next)
-          ("C-p" . company-select-previous)
-          ("<tab>" . company-complete-selection)
-          ("C-h" . nil)
-          ("C-f" . company-complete-selection))
-         (company-search-map
-          ("C-n" . company-select-next)
-          ("C-p" . company-select-previous)))
-  :custom `((company-idle-delay            . 0)
-            (company-minimum-prefix-length . 3)
-            (company-transformers          . '(company-sort-by-occurrence))
-            (company-tooltip-limit         . 12)
-            (global-company-mode           . nil)
-            (company-dabbrev-downcase      . nil)
-            (company-backends . '(company-capf)))
-;;  :global-minor-mode global-company-mode
-  :config
-  (leaf company-math
-    :doc "Completion backends for unicode math symbols and latex tags"
-    :req "company-0.8.0" "math-symbol-lists-1.3"
-    :tag "completion" "symbols" "unicode"
-    :url "https://github.com/vspinu/company-math"
-    :added "2021-09-05"
-    :ensure t
-    :after company math-symbol-lists
-    :disabled t
-    :unless (eq system-type 'dawin)
-    :defvar (company-backends)
-    :preface
-    (defun c/latex-mode-setup ()
-      (setq-local company-backends
-                  (append '((company-math-symbols-latex
-                             company-math-symbols-unicode
-                             company-latex-commands))
-                          company-backends)))
-    :hook ((org-mode-hook . c/latex-mode-setup)
-           (tex-mode-hook . c/latex-mode-setup)
-           (yatex-mode-hook . c/latex-mode-setup)))
-  (leaf company-quickhelp
-    :doc "Popup documentation for completion candidates"
-    :req "emacs-24.3" "company-0.8.9" "pos-tip-0.4.6"
-    :tag "quickhelp" "documentation" "popup" "company" "emacs>=24.3"
-    :url "https://www.github.com/expez/company-quickhelp"
-    :added "2021-09-05"
-    :emacs>= 24.3
-    :ensure t
-    :after company pos-tip
-    :disabled t
-    :when (display-graphic-p)
-    :custom ((company-quickhelp-delay . 0.8)
-             (company-quickhelp-mode  . t))
-    :bind (company-active-map
-           ("M-h" . company-quickhelp-manual-begin))
-    :hook ((company-mode-hook . company-quickhelp-mode)))
-  (leaf company-tabnine
-    :doc "A company-mode backend for TabNine"
-    :req "emacs-25" "company-0.9.3" "cl-lib-0.5" "dash-2.16.0" "s-1.12.0" "unicode-escape-1.1"
-    :tag "convenience" "emacs>=25"
-    :url "https://github.com/TommyX12/company-tabnine/"
-    :added "2021-09-05"
-    :emacs>= 25
-    :ensure t
-    :after company unicode-escape
-    :disabled t
-    :config
-    (add-to-list 'company-backends #'company-tabnine))
-  (leaf company-prescient
-    :doc "prescient.el + Company"
-    :req "emacs-25.1" "prescient-5.1" "company-0.9.6"
-    :tag "extensions" "emacs>=25.1"
-    :url "https://github.com/raxod502/prescient.el"
-    :added "2021-09-05"
-    :emacs>= 25.1
-    :ensure t
-    :after prescient company
-    :disabled t)
-  (leaf company-c-headers
-    :doc "Company mode backend for C/C++ header files"
-    :req "emacs-24.1" "company-0.8"
-    :tag "company" "development" "emacs>=24.1"
-    :added "2021-09-05"
-    :emacs>= 24.1
-    :ensure t
-    :after company
-    :config (add-to-list 'company-backends 'company-c-headers))
-  (leaf company-box
-    :doc "Company front-end with icons"
-    :req "emacs-26.0.91" "dash-2.13" "dash-functional-1.2.0" "company-0.9.6" "frame-local-0.0.1"
-    :tag "convenience" "front-end" "completion" "company" "emacs>=26.0.91"
-    :url "https://github.com/sebastiencs/company-box"
-    :added "2021-09-05"
-    :emacs>= 26.0
-    :ensure t
-    :after company frame-local
-    :diminish company-box-mode
-    :defvar (company-box-icons-alist company-box-icons-all-the-icons)
-    :disabled t
-    :init
-    (leaf all-the-icons
-      :doc "A library for inserting Developer icons"
-      :req "emacs-24.3"
-      :tag "lisp" "convenient" "emacs>=24.3"
-      :url "https://github.com/domtronn/all-the-icons.el"
-      :added "2021-09-05"
-      :emacs>= 24.3
-      :ensure t)
-    :custom ((company-box-max-candidates . 50)
-             (company-box-icons-alist    . 'company-box-icons-all-the-icons))
-    :hook ((company-mode-hook . company-box-mode))
-    :config
-    (when (memq window-system '(ns mac))
-      (declare-function all-the-icons-faicon 'all-the-icons)
-      (declare-function all-the-icons-material 'all-the-icons)
-      (declare-function all-the-icons-octicon 'all-the-icons)
-      (setq company-box-icons-all-the-icons
-            `((Unknown       . ,(all-the-icons-material "find_in_page" :height 0.9 :v-adjust -0.2))
-              (Text          . ,(all-the-icons-faicon "text-width" :height 0.85 :v-adjust -0.05))
-              (Method        . ,(all-the-icons-faicon "cube" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-purple))
-              (Function      . ,(all-the-icons-faicon "cube" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-purple))
-              (Constructor   . ,(all-the-icons-faicon "cube" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-purple))
-              (Field         . ,(all-the-icons-octicon "tag" :height 0.85 :v-adjust 0 :face 'all-the-icons-lblue))
-              (Variable      . ,(all-the-icons-octicon "tag" :height 0.85 :v-adjust 0 :face 'all-the-icons-lblue))
-              (Class         . ,(all-the-icons-material "settings_input_component" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-orange))
-              (Interface     . ,(all-the-icons-material "share" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-lblue))
-              (Module        . ,(all-the-icons-material "view_module" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-lblue))
-              (Property      . ,(all-the-icons-faicon "wrench" :height 0.85 :v-adjust -0.05))
-              (Unit          . ,(all-the-icons-material "settings_system_daydream" :height 0.9 :v-adjust -0.2))
-              (Value         . ,(all-the-icons-material "format_align_right" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-lblue))
-              (Enum          . ,(all-the-icons-material "storage" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-orange))
-              (Keyword       . ,(all-the-icons-material "filter_center_focus" :height 0.9 :v-adjust -0.2))
-              (Snippet       . ,(all-the-icons-material "format_align_center" :height 0.9 :v-adjust -0.2))
-              (Color         . ,(all-the-icons-material "palette" :height 0.9 :v-adjust -0.2))
-              (File          . ,(all-the-icons-faicon "file-o" :height 0.9 :v-adjust -0.05))
-              (Reference     . ,(all-the-icons-material "collections_bookmark" :height 0.9 :v-adjust -0.2))
-              (Folder        . ,(all-the-icons-faicon "folder-open" :height 0.9 :v-adjust -0.05))
-              (EnumMember    . ,(all-the-icons-material "format_align_right" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-lblue))
-              (Constant      . ,(all-the-icons-faicon "square-o" :height 0.9 :v-adjust -0.05))
-              (Struct        . ,(all-the-icons-material "settings_input_component" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-orange))
-              (Event         . ,(all-the-icons-faicon "bolt" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-orange))
-              (Operator      . ,(all-the-icons-material "control_point" :height 0.9 :v-adjust -0.2))
-              (TypeParameter . ,(all-the-icons-faicon "arrows" :height 0.85 :v-adjust -0.05))
-              (Template      . ,(all-the-icons-material "format_align_center" :height 0.9 :v-adjust -0.2))))
-      (setq company-box-icons-alist 'company-box-icons-all-the-icons))))
+;; (leaf company
+;;   :disabled t
+;;   :doc "Modular text completion framework"
+;;   :req "emacs-25.1"
+;;   :tag "matching" "convenience" "abbrev" "emacs>=25.1"
+;;   :url "http://company-mode.github.io/"
+;;   :added "2021-09-05"
+;;   :emacs>= 25.1
+;;   :ensure t
+;;   :bind ((company-active-map
+;;           ("M-n" . nil)
+;;           ("M-p" . nil)
+;;           ("C-s" . company-filter-candidates)
+;;           ("C-n" . company-select-next)
+;;           ("C-p" . company-select-previous)
+;;           ("<tab>" . company-complete-selection)
+;;           ("C-h" . nil)
+;;           ("C-f" . company-complete-selection))
+;;          (company-search-map
+;;           ("C-n" . company-select-next)
+;;           ("C-p" . company-select-previous)))
+;;   :custom `((company-idle-delay            . 0)
+;;             (company-minimum-prefix-length . 3)
+;;             (company-transformers          . '(company-sort-by-occurrence))
+;;             (company-tooltip-limit         . 12)
+;;             (global-company-mode           . nil)
+;;             (company-dabbrev-downcase      . nil)
+;;             (company-backends . '(company-capf)))
+;; ;;  :global-minor-mode global-company-mode
+;;   :config
+;;   (leaf company-math
+;;     :doc "Completion backends for unicode math symbols and latex tags"
+;;     :req "company-0.8.0" "math-symbol-lists-1.3"
+;;     :tag "completion" "symbols" "unicode"
+;;     :url "https://github.com/vspinu/company-math"
+;;     :added "2021-09-05"
+;;     :ensure t
+;;     :after company math-symbol-lists
+;;     :disabled t
+;;     :unless (eq system-type 'dawin)
+;;     :defvar (company-backends)
+;;     :preface
+;;     (defun c/latex-mode-setup ()
+;;       (setq-local company-backends
+;;                   (append '((company-math-symbols-latex
+;;                              company-math-symbols-unicode
+;;                              company-latex-commands))
+;;                           company-backends)))
+;;     :hook ((org-mode-hook . c/latex-mode-setup)
+;;            (tex-mode-hook . c/latex-mode-setup)
+;;            (yatex-mode-hook . c/latex-mode-setup)))
+;;   (leaf company-quickhelp
+;;     :doc "Popup documentation for completion candidates"
+;;     :req "emacs-24.3" "company-0.8.9" "pos-tip-0.4.6"
+;;     :tag "quickhelp" "documentation" "popup" "company" "emacs>=24.3"
+;;     :url "https://www.github.com/expez/company-quickhelp"
+;;     :added "2021-09-05"
+;;     :emacs>= 24.3
+;;     :ensure t
+;;     :after company pos-tip
+;;     :disabled t
+;;     :when (display-graphic-p)
+;;     :custom ((company-quickhelp-delay . 0.8)
+;;              (company-quickhelp-mode  . t))
+;;     :bind (company-active-map
+;;            ("M-h" . company-quickhelp-manual-begin))
+;;     :hook ((company-mode-hook . company-quickhelp-mode)))
+;;   (leaf company-tabnine
+;;     :doc "A company-mode backend for TabNine"
+;;     :req "emacs-25" "company-0.9.3" "cl-lib-0.5" "dash-2.16.0" "s-1.12.0" "unicode-escape-1.1"
+;;     :tag "convenience" "emacs>=25"
+;;     :url "https://github.com/TommyX12/company-tabnine/"
+;;     :added "2021-09-05"
+;;     :emacs>= 25
+;;     :ensure t
+;;     :after company unicode-escape
+;;     :disabled t
+;;     :config
+;;     (add-to-list 'company-backends #'company-tabnine))
+;;   (leaf company-prescient
+;;     :doc "prescient.el + Company"
+;;     :req "emacs-25.1" "prescient-5.1" "company-0.9.6"
+;;     :tag "extensions" "emacs>=25.1"
+;;     :url "https://github.com/raxod502/prescient.el"
+;;     :added "2021-09-05"
+;;     :emacs>= 25.1
+;;     :ensure t
+;;     :after prescient company
+;;     :disabled t)
+;;   (leaf company-c-headers
+;;     :doc "Company mode backend for C/C++ header files"
+;;     :req "emacs-24.1" "company-0.8"
+;;     :tag "company" "development" "emacs>=24.1"
+;;     :added "2021-09-05"
+;;     :emacs>= 24.1
+;;     :ensure t
+;;     :after company
+;;     :config (add-to-list 'company-backends 'company-c-headers))
+;;   (leaf company-box
+;;     :doc "Company front-end with icons"
+;;     :req "emacs-26.0.91" "dash-2.13" "dash-functional-1.2.0" "company-0.9.6" "frame-local-0.0.1"
+;;     :tag "convenience" "front-end" "completion" "company" "emacs>=26.0.91"
+;;     :url "https://github.com/sebastiencs/company-box"
+;;     :added "2021-09-05"
+;;     :emacs>= 26.0
+;;     :ensure t
+;;     :after company frame-local
+;;     :diminish company-box-mode
+;;     :defvar (company-box-icons-alist company-box-icons-all-the-icons)
+;;     :disabled t
+;;     :init
+;;     (leaf all-the-icons
+;;       :doc "A library for inserting Developer icons"
+;;       :req "emacs-24.3"
+;;       :tag "lisp" "convenient" "emacs>=24.3"
+;;       :url "https://github.com/domtronn/all-the-icons.el"
+;;       :added "2021-09-05"
+;;       :emacs>= 24.3
+;;       :ensure t)
+;;     :custom ((company-box-max-candidates . 50)
+;;              (company-box-icons-alist    . 'company-box-icons-all-the-icons))
+;;     :hook ((company-mode-hook . company-box-mode))
+;;     :config
+;;     (when (memq window-system '(ns mac))
+;;       (declare-function all-the-icons-faicon 'all-the-icons)
+;;       (declare-function all-the-icons-material 'all-the-icons)
+;;       (declare-function all-the-icons-octicon 'all-the-icons)
+;;       (setq company-box-icons-all-the-icons
+;;             `((Unknown       . ,(all-the-icons-material "find_in_page" :height 0.9 :v-adjust -0.2))
+;;               (Text          . ,(all-the-icons-faicon "text-width" :height 0.85 :v-adjust -0.05))
+;;               (Method        . ,(all-the-icons-faicon "cube" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-purple))
+;;               (Function      . ,(all-the-icons-faicon "cube" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-purple))
+;;               (Constructor   . ,(all-the-icons-faicon "cube" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-purple))
+;;               (Field         . ,(all-the-icons-octicon "tag" :height 0.85 :v-adjust 0 :face 'all-the-icons-lblue))
+;;               (Variable      . ,(all-the-icons-octicon "tag" :height 0.85 :v-adjust 0 :face 'all-the-icons-lblue))
+;;               (Class         . ,(all-the-icons-material "settings_input_component" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-orange))
+;;               (Interface     . ,(all-the-icons-material "share" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-lblue))
+;;               (Module        . ,(all-the-icons-material "view_module" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-lblue))
+;;               (Property      . ,(all-the-icons-faicon "wrench" :height 0.85 :v-adjust -0.05))
+;;               (Unit          . ,(all-the-icons-material "settings_system_daydream" :height 0.9 :v-adjust -0.2))
+;;               (Value         . ,(all-the-icons-material "format_align_right" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-lblue))
+;;               (Enum          . ,(all-the-icons-material "storage" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-orange))
+;;               (Keyword       . ,(all-the-icons-material "filter_center_focus" :height 0.9 :v-adjust -0.2))
+;;               (Snippet       . ,(all-the-icons-material "format_align_center" :height 0.9 :v-adjust -0.2))
+;;               (Color         . ,(all-the-icons-material "palette" :height 0.9 :v-adjust -0.2))
+;;               (File          . ,(all-the-icons-faicon "file-o" :height 0.9 :v-adjust -0.05))
+;;               (Reference     . ,(all-the-icons-material "collections_bookmark" :height 0.9 :v-adjust -0.2))
+;;               (Folder        . ,(all-the-icons-faicon "folder-open" :height 0.9 :v-adjust -0.05))
+;;               (EnumMember    . ,(all-the-icons-material "format_align_right" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-lblue))
+;;               (Constant      . ,(all-the-icons-faicon "square-o" :height 0.9 :v-adjust -0.05))
+;;               (Struct        . ,(all-the-icons-material "settings_input_component" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-orange))
+;;               (Event         . ,(all-the-icons-faicon "bolt" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-orange))
+;;               (Operator      . ,(all-the-icons-material "control_point" :height 0.9 :v-adjust -0.2))
+;;               (TypeParameter . ,(all-the-icons-faicon "arrows" :height 0.85 :v-adjust -0.05))
+;;               (Template      . ,(all-the-icons-material "format_align_center" :height 0.9 :v-adjust -0.2))))
+;;       (setq company-box-icons-alist 'company-box-icons-all-the-icons))))
 
 
 ;; Vertico お試し
@@ -2102,12 +2120,7 @@
   :emacs>= 27.1
   :ensure t
   :require t
-  :bind (("M-g g" . consult-goto-line)
-         ("C-c i" . consult-imenu)
-         ("M-y" . consult-yank-pop)
-         ("C-o" . consult-line)
-         ("C-c h" . consult-recent-file)
-         (vertico-map
+  :bind ((vertico-map
           ("?" . minibuffer-complition-help)
           ("M-RET" . minibuffer-force-complete-and-exit)
           ("M-TAB" . minibuffer-complete)
@@ -2139,6 +2152,12 @@
     :added "2021-09-05"
     :emacs>= 26.1
     :ensure t
+    :bind (("M-g g" . consult-goto-line)
+           ("C-c i" . consult-imenu)
+           ("M-y" . consult-yank-pop)
+           ("C-o" . consult-line)
+           ("C-c h" . consult-recent-file)
+           ("C-x b" . consult-buffer))
     :custom `((consult-buffer-sources . '(consult--source-hidden-buffer
                                           consult--source-buffer
                                           consult--source-file
