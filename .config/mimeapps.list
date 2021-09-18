@@ -1,7 +1,7 @@
 [Default Applications]
-text/html=brave-nightly-bin.desktop
-x-scheme-handler/http=brave-nightly-bin.desktop
-x-scheme-handler/https=brave-nightly-bin.desktop
+text/html=firefox.desktop
+x-scheme-handler/http=firefox.desktop
+x-scheme-handler/https=firefox.desktop
 x-scheme-handler/about=brave-nightly-bin.desktop
 x-scheme-handler/unknown=brave-nightly-bin.desktop
 application/javascript=wine-extension-txt.desktop
@@ -34,6 +34,13 @@ text/yaml=wine-extension-txt.desktop
 application/pdf=org.pwmt.zathura-pdf-poppler.desktop
 x-scheme-handler/discord-471872241299226636=discord-471872241299226636.desktop
 x-scheme-handler/msteams=teams.desktop
+x-scheme-handler/chrome=firefox.desktop
+application/x-extension-htm=firefox.desktop
+application/x-extension-html=firefox.desktop
+application/x-extension-shtml=firefox.desktop
+application/xhtml+xml=firefox.desktop
+application/x-extension-xhtml=firefox.desktop
+application/x-extension-xht=firefox.desktop
 
 [Added Associations]
 application/javascript=wine-extension-txt.desktop;
@@ -64,3 +71,13 @@ text/x-sql=wine-extension-txt.desktop;
 text/x-vb=wine-extension-txt.desktop;
 text/yaml=wine-extension-txt.desktop;
 application/pdf=org.pwmt.zathura-pdf-poppler.desktop;
+x-scheme-handler/http=firefox.desktop;
+x-scheme-handler/https=firefox.desktop;
+x-scheme-handler/chrome=firefox.desktop;
+text/html=firefox.desktop;
+application/x-extension-htm=firefox.desktop;
+application/x-extension-html=firefox.desktop;
+application/x-extension-shtml=firefox.desktop;
+application/xhtml+xml=firefox.desktop;
+application/x-extension-xhtml=firefox.desktop;
+application/x-extension-xht=firefox.desktop;

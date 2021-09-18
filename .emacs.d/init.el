@@ -1740,6 +1740,16 @@
   :emacs>= 24
   :ensure t)
 
+(leaf gcmh
+  :doc "the Garbage Collector Magic Hack"
+  :req "emacs-24"
+  :tag "internal" "emacs>=24"
+  :url "https://gitlab.com/koral/gcmh"
+  :added "2021-09-18"
+  :emacs>= 24
+  :ensure t
+  :global-minor-mode t)
+
 
 ;; lsp 設定
 (leaf lsp
