@@ -250,8 +250,7 @@
                                  :height 120))))
 
 (leaf *hooks
-  :hook  ((before-save-hook . delete-trailing-whitespace))
-  )
+  :hook  ((before-save-hook . delete-trailing-whitespace)))
 
 (leaf *scratch
   :hook  ((kill-buffer-query-functions . (lambda ()
@@ -1964,8 +1963,16 @@
     (corfu-quit-at-boundary . t)
     (corfu-quit-no-match . t)
     (corfu-echo-documentation . nil)
-    (completion-cycle-threshold . 3)
-    :global-minor-mode corfu-global-mode)
+    (completion-cycle-threshold . 1)
+    (corfu-auto-delay . 0)
+    :global-minor-mode corfu-global-mode
+    :config
+    (leaf dabbrev
+      :doc "dynamic abbreviation package"
+      :tag "builtin"
+      :added "2021-09-20"
+      :bind (("M-/" . dabbrev-completion)
+             ("C-M-/" . dabbrev-expand))))
   (leaf *emacs
     :preface
     ;; Add prompt indicator to `completing-read-multiple'.
