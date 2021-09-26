@@ -1823,6 +1823,7 @@
     :added "2021-09-05"
     :emacs>= 24.3
     :ensure t
+    :when (file-exists-p "/usr/bin/jedi-language-server")
     :hook (haskell-mode-hook . (lambda ()
                                  (require 'lsp-haskell)
                                  (lsp)))))
@@ -1842,6 +1843,7 @@
     :added "2021-09-18"
     :emacs>= 25.1
     :ensure t
+    :when (file-exists-p "/usr/bin/jedi-language-server")
     :hook (python-mode-hook . (lambda ()
                                 (require 'lsp-jedi)
                                 (lsp)))))
