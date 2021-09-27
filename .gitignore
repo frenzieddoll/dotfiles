@@ -1,25 +1,29 @@
 # gitで管理しない
-.*~
-*~
-/.emacs.d/*
-/.xkeysnail/*
-/.config/*
+# .*~
+# *~
+# /.emacs.d/*
+# /.config/*
+*
+*/
 
 # gitで管理する
 # emacs関係
 !/.emacs.d/.yatexrc
 !/.emacs.d/conf
 !/.emacs.d/elisp
-# !/.emacs.d/elpa
 !/.emacs.d/init.el
 !/.emacs.d/public_repos
 !/.emacs.d/script
 !/.emacs.d/snippets
-# !/.emacs.d/ddskk/init
+!/.emacs.d/ddskk/init
 # 設定ファイル
 !/.Xmodmap
 !/.Xresources
 !/.bashrc
+!/.pkglist
+!/.xinitrc
+!/.zshrc
+!/X11ForNotePC
 !/.config/alacritty
 !/.config/brave-flags.conf
 !/.config/libskk
@@ -27,10 +31,5 @@
 !/.config/termite
 !/.config/zathura
 !/.config/mimeapps.list
-!/.pkglist
-!/.xinitrc
-!/.zshrc
-!/X11ForNotePC
-/.local/share/xorg/
-/.local/share/recently-used.xbel
-/.local/share/zathura/bookmarks
+!/.config/qutebroser/config.py
+!/.config/qutebroser/autoconfig.yml
