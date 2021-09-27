@@ -1,0 +1,37 @@
+# gitで管理しない
+# .*~
+# *~
+# /.emacs.d/*
+# /.config/*
+*
+!*/
+
+
+# gitで管理する
+# emacs関係
+!/.emacs.d/.yatexrc
+!/.emacs.d/conf/*
+!/.emacs.d/elisp/*
+!/.emacs.d/init.el
+!/.emacs.d/public_repos/*
+!/.emacs.d/script/*
+!/.emacs.d/snippets/*
+!/.emacs.d/ddskk/init
+# .config
+!/.config/alacritty/*
+!/.config/brave-flags.conf
+!/.config/libskk/*
+!/.config/mpv/*
+!/.config/termite/*
+!/.config/zathura/*
+!/.config/mimeapps.list
+!/.config/qutebroser/config.py
+!/.config/qutebroser/autoconfig.yml
+# dotfile
+!/.gitignore
+!/.Xmodmap
+!/.Xresources
+!/.bashrc
+!/.pkglist
+!/.xinitrc
+!/.zshrc

@@ -1,0 +1,15 @@
+<<<<<<< HEAD
+=======
+(setq user-section-table '(
+("textsuperscript")
+("SI" 2)
+("textsubscript")
+("subcaption")
+))
+
+(setq user-singlecmd-table '(
+("angstrom")
+("degreeCelsius")
+("hsize")
+))
+>>>>>>> origin/origin/master
