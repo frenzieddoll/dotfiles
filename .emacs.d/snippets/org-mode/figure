@@ -1,7 +1,0 @@
-# key: figure
-# name: figure
-# --
-#+caption: $3
-#+name: fig:$2
-#+ATTR_LaTeX: :width 10cm
-$1

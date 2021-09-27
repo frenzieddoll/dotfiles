@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: shell template
-# key: shell
-# --
-#!/bin/zsh
-emulate -R sh
-$0

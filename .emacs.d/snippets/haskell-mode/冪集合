@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: 冪集合
-# key: 冪集合
-# expand-env: ((yas/indent-line 'fixed) (yas/wrap-around-region 'nil))
-# --
-powerSet :: [Int] -> [[Int]]
-powerSet xs = filterM (\x -> [True, False]) xs

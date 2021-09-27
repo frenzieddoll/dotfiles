@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: warningIgnore
-# key: warning
-# --
-;; Local Variables:
-;; byte-compile-warnings: (not free-vars unresolved callargs redefine obsolete noruntime cl-functions interactive-only make-local)
-;; End:
