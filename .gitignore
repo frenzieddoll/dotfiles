@@ -25,8 +25,8 @@
 !/.config/termite/*
 !/.config/zathura/*
 !/.config/mimeapps.list
-!/.config/qutebroser/config.py
-!/.config/qutebroser/autoconfig.yml
+!/.config/qutebrowser/config.py
+!/.config/qutebrowser/autoconfig.yml
 # dotfile
 !/.gitignore
 !/.Xmodmap
