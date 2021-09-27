@@ -9,22 +9,22 @@
 
 # gitで管理する
 # emacs関係
+!/.emacs.d/init.el
 !/.emacs.d/.yatexrc
 !/.emacs.d/conf/*
 !/.emacs.d/elisp/*
-!/.emacs.d/init.el
 !/.emacs.d/public_repos/*
 !/.emacs.d/script/*
 !/.emacs.d/snippets/*
 !/.emacs.d/ddskk/init
 # .config
-!/.config/alacritty/*
+!/.config/mimeapps.list
 !/.config/brave-flags.conf
+!/.config/alacritty/*
 !/.config/libskk/*
 !/.config/mpv/*
 !/.config/termite/*
 !/.config/zathura/*
-!/.config/mimeapps.list
 !/.config/qutebrowser/config.py
 !/.config/qutebrowser/autoconfig.yml
 # dotfile
@@ -35,4 +35,5 @@
 !/.pkglist
 !/.xinitrc
 !/.zshrc
+
 /.emacs.d/el-get/
