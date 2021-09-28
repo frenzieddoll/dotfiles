@@ -7,14 +7,34 @@
 config_version: 2
 settings:
   auto_save.interval:
-    global: 30000
+    global: 60000
   auto_save.session:
     global: false
   backend:
     global: webengine
-  url.searchengines:
+  bindings.commands:
     global:
-      DEFAULT: https://duckduckgo.com/?q={}
-      aw: https://wiki.archlinux.jp/?search={}
-  url.start_pages:
-    global: https://start.duckduckgo.com
+      normal:
+        J: tab-prev
+        K: tab-next
+        d: scroll-page 0 0.5
+        u: scroll-page 0 -0.5
+  bindings.key_mappings:
+    global:
+      <Ctrl-6>: <Ctrl-^>
+      <Ctrl-Enter>: <Ctrl-Return>
+      <Ctrl-I>: <Tab>
+      <Ctrl-J>: <Return>
+      <Ctrl-M>: <Return>
+      <Ctrl-[>: <Escape>
+      <Enter>: <Return>
+      <Shift-Enter>: <Return>
+      <Shift-Return>: <Return>
+  changelog_after_upgrade:
+    global: minor
+  url.default_page:
+    global: https://www.google.com
+  url.incdec_segments:
+    global:
+    - path
+    - query
