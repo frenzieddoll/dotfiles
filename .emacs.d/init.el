@@ -122,12 +122,9 @@
             (use-file-dialog                       . nil)
             (frame-resize-pixelwise                . t)
             (enable-recursive-minibuffers          . t)
-            (history-length                        . 1000)
             (history-delete-duplicates             . t)
             (mouse-wheel-scroll-amount             . '(1 ((control) . 5)))
             (text-quoting-style                    . 'straight)
-
-
             ;; システムの時計をCにする
             (system-time-locale                    . "C")
             ;; 改行コードを表示する
@@ -144,15 +141,8 @@
             (auto-save-default                     . nil)
             ;; バッファの最後でnewlineで新規行を追加するのを禁止する
             (next-line-add-newlines                . nil)
-            ;; auto-fill-modeを切る
-            (auto-fill-mode                        . nil)
-            ;; 補完で大文字小文字無視
-            (read-file-name-completion-ignore-case . t)
             ;; ミニバッファの履歴を保存する
             (savehist-mode                         . 1)
-            (history-length                        . 30000)
-            ;;
-            (history-delete-duplicates             . t)
             ;;
             (show-paren-mode                       . 1)
             (show-paren-delay                      . 0.125)
@@ -170,11 +160,9 @@
             (inhibit-startup-echo-area-message . t)
             (initial-buffer-choice             . t)
             (initial-scratch-message           . nil)
-
             ;; byte-compileのエラーを無視する
             (debug-on-error . nil)
             (byte-compile-no-warnings . t)
-
             ;; キルリングの設定(scratchの設定に書いていた)
             (kill-ring-max                . 100)
             (kill-read-only-ok            . t)
@@ -598,6 +586,12 @@
      (format "xbacklight -dec 10")))
   (defun minibuffer-delete-backward-char ()
     (local-set-key (kbd "C-h") 'delete-backward-char))
+  (defun my_xset ()
+    (interactive)
+    (start-process-shell-command
+     "xset 再設定"
+     nil
+     (format "xset r rate 250 40")))
   :init
   (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char))
 
@@ -1882,7 +1876,6 @@
                                    (save-excursion (end-of-line) (point))
                                    #'delete)))))
   :config
-  ;; (vertico-mode)
   (leaf consult
     :doc "Consulting completing-read"
     :req "emacs-26.1"
@@ -1950,6 +1943,34 @@
     :emacs>= 27.1
     :el-get sebastienwae/app-launcher
     :require t)
+  (leaf company
+    :doc "Modular text completion framework"
+    :req "emacs-25.1"
+    :tag "matching" "convenience" "abbrev" "emacs>=25.1"
+    :url "http://company-mode.github.io/"
+    :added "2021-10-01"
+    :emacs>= 25.1
+    :ensure t
+    :bind ((company-active-map
+            ("M-n" . nil)
+            ("M-p" . nil)
+            ("C-s" . company-filter-candidates)
+            ("C-n" . company-select-next)
+            ("C-p" . company-select-previous)
+            ("<tab>" . company-complete-selection)
+            ("C-h" . nil)
+            ("C-f" . company-complete-selection)
+            )
+           (company-search-map
+            ("C-n" . company-select-next)
+            ("C-p" . company-select-previous)))
+    :custom `((company-tooltip-limit         . 12)
+              (company-idle-delay            . 0)
+              (company-minimum-prefix-length . 3)
+              (company-transformers          . '(company-sort-by-occurrence))
+              (global-company-mode           . t)
+              (company-dabbrev-downcase      . nil)
+              (company-backends . '(company-capf))))
   (leaf corfu
     :doc "Completion Overlay Region FUnction"
     :req "emacs-27.1"
@@ -1958,6 +1979,7 @@
     :added "2021-09-11"
     :emacs>= 27.1
     :ensure t
+    :disabled t
     :require t
     :custom
     (corfu-cycle . t)

@@ -35,5 +35,6 @@
 !/.pkglist
 !/.xinitrc
 !/.zshrc
+!/.fbtermrc
 
 /.emacs.d/el-get/
