@@ -46,7 +46,9 @@
 ;; 必要なPackageのInstall
 (leaf leaf
   :config
-  (leaf leaf-convert :ensure t)
+  (leaf leaf-convert
+    :ensure t
+    :config (leaf use-package :emacs>= 24.3 :ensure t))
   (leaf leaf-tree
     :ensure t
     :custom ((imenu-list-size . 30)
@@ -778,7 +780,9 @@
               (doom-modeline-minor-modes            . nil)
               (line-number-mode                     . 0)
               (column-number-mode                   . 0)
-              (doom-modeline-mode                   . t))))
+              (doom-modeline-mode                   . t)
+              (line-number-mode . 0)
+              (column-number-mode . 0))))
 
 
 ;; メジャーモードの設定
@@ -1136,9 +1140,6 @@
             (shackle-lighter . ""))
   :bind (("C-z" . winner-undo)))
 
-
-;; マイナーモードの設定
-
 (leaf view
   :doc "peruse file or buffer without editing"
   :tag "builtin"
@@ -1322,6 +1323,8 @@
       (view-mode 1)
       (message "backward-kill-line"))))
 
+
+;; マイナーモードの設定
 (leaf *cua
   :bind (("C-x SPC" . cua-set-rectangle-mark))
   :custom ((cua-mode . t)
@@ -1369,79 +1372,17 @@
   :added "2021-09-05"
   :require t)
 
-(leaf smartparens
-  :doc "Automatic insertion, wrapping and paredit-like navigation with user defined pairs."
-  :req "dash-2.13.0" "cl-lib-0.3"
-  :tag "editing" "convenience" "abbrev"
-  :url "https://github.com/Fuco1/smartparens"
-  :added "2021-09-05"
-  :ensure t
-  :disabled t
-  :when window-system
-  :require smartparens-config
-  :custom ((sp-highlight-pari-overly . nil)
-           (sp-navigate-interactive-always-progress-point . t)
-           (smartparens-global-strict-mode . t))
-  :bind ((smartparens-mode-map
-            ;;;;
-            ;;;; navigation
-
-          ;; basic (fbnp-ae)
-          ("C-M-f" . sp-forward-sexp)
-          ("C-M-b" . sp-backward-sexp)
-          ("C-M-n" . sp-next-sexp)
-          ("C-M-p" . sp-previous-sexp)
-          ("C-M-a" . sp-beginning-of-sexp)
-          ("C-M-e" . sp-end-of-sexp)
-
-          ;; checkin/checkout
-          ("C-M-i" . sp-down-sexp)
-          ("C-M-o" . sp-backward-up-sexp)
-
-          ;; misc
-          ("C-M-k"   . sp-kill-sexp)
-          ("C-M-w"   . sp-copy-sexp)
-          ("C-M-t"   . sp-transpose-sexp)
-          ("C-M-SPC" . sp-mark-sexp)
-
-            ;;;;
-            ;;;; depth-changing commands
-
-          ;; basic
-          ("M-s"           . sp-splice-sexp)
-          ("M-r"           . sp-splice-sexp-killing-around)
-          ("M-<up>"        . nil)
-          ("M-<down>"      . nil)
-          ("C-M-u"         . sp-splice-sexp-killing-backward)
-          ("C-M-d"         . sp-splice-sexp-killing-forward)
-          ("M-("           . sp-wrap-round)
-          ("M-["           . sp-wrap-square)
-          ("M-{"           . sp-wrap-qurly)
-
-          ;; barf/slurp
-          ("C-)" . sp-forward-slurp-sexp)
-          ("C-}" . sp-forward-barf-sexp)
-          ("C-(" . sp-backward-slurp-sexp)
-          ("C-{" . sp-backward-barf-sexp)
-
-          ;; split/join
-          ("M-S-s" . sp-split-sexp)
-          ("M-j"   . sp-join-sexp)
-
-            ;;;;
-            ;;;; misc
-
-          ;; change constructure
-          ("M-?"     . sp-convolute-sexp)
-          ("C-c s a" . sp-absorb-sexp)
-          ("C-c s e" . sp-emit-sexp)
-          ("C-c s p" . sp-convolute-sexp)
-          ("C-c s t" . sp-transpose-hybrid-sexp)
-
-          ;; change elements
-          ("C-c s (" . sp-rewrap-sexp)
-          ("C-c s r" . sp-change-inner)
-          ("C-c s s" . sp-change-enclosing))))
+(leaf paren
+  :doc "highlight matching paren"
+  :tag "builtin"
+  :added "2021-10-02"
+  :ensure nil
+  :commands show-paren-mode
+  :hook ((after-init-hook . show-paren-mode))
+  :custom-face ((show-paren-match . '((nil (:background "#44475a" :foreground "#f1fa8c")))))
+  :custom ((show-paren-style . 'mixed)
+           (show-paren-when-point-inside-paren . t)
+           (show-paren-when-point-in-periphery . t)))
 
 (leaf undo-tree
   :doc "Treat undo history as a tree"
@@ -1686,6 +1627,23 @@
   :ensure t
   :global-minor-mode t)
 
+(leaf git-gutter
+  :doc "Port of Sublime Text plugin GitGutter"
+  :req "emacs-24.4"
+  :tag "emacs>=24.4"
+  :url "https://github.com/emacsorphanage/git-gutter"
+  :added "2021-10-02"
+  :emacs>= 24.4
+  :ensure t
+  :custom-face ((git-gutter:modified . '((t (:background "#f1fa8c"))))
+                (git-gutter:added . '((t (:background "#50fa7b"))))
+                (git-gutter:deleted . '((t (:background "#ff79c6")))))
+  :custom ((git-gutter:modified-sign . "~")
+           (git-gutter:added-sign . "+")
+           (git-gutter:deleted-sign . "-"))
+
+  :global-minor-mode t)
+
 
 ;; lsp 設定
 (leaf lsp
@@ -1713,54 +1671,6 @@
     :emacs>= 27.1
     :ensure t
     :after lsp-mode consult))
-  ;; :init
-  ;; (leaf lsp-ui
-  ;;   :doc "UI modules for lsp-mode"
-  ;;   :req "emacs-26.1" "dash-2.18.0" "lsp-mode-6.0" "markdown-mode-2.3"
-  ;;   :tag "tools" "languages" "emacs>=26.1"
-  ;;   :url "https://github.com/emacs-lsp/lsp-ui"
-  ;;   :added "2021-09-05"
-  ;;   :emacs>= 26.1
-  ;;   :ensure t
-  ;;   :after lsp-mode markdown-mode
-  ;;   :commands lsp-ui-mode
-  ;;   :disabled t
-  ;;   :custom
-  ;;   ((lsp-ui-doc-header            . t)
-  ;;    (lsp-ui-doc-include-signature . t)
-  ;;    (lsp-ui-doc-position          . 'at-point)
-  ;;    (lsp-ui-doc-max-width         . 150)
-  ;;    (lsp-ui-doc-max-height        . 30)
-  ;;    (lsp-ui-doc-use-childframe    . nil)
-  ;;    (lsp-ui-doc-use-webkit        . nil)
-  ;;    (lsp-ui-flycheck-enable       . t)
-  ;;    (lsp-ui-peek-enable           . t)
-  ;;    (lsp-ui-peek-peek-height      . 20)
-  ;;    (lsp-ui-peek-list-width       . 50)
-  ;;    (lsp-ui-peek-fontify          . 'on-demand))
-  ;;   :hook ((lsp-mode-hook . lsp-ui-mode)))
-  ;; (leaf lsp-ivy
-  ;;   :doc "LSP ivy integration"
-  ;;   :req "emacs-25.1" "dash-2.14.1" "lsp-mode-6.2.1" "ivy-0.13.0"
-  ;;   :tag "debug" "languages" "emacs>=25.1"
-  ;;   :url "https://github.com/emacs-lsp/lsp-ivy"
-  ;;   :added "2021-09-05"
-  ;;   :emacs>= 25.1
-  ;;   :ensure t
-  ;;   :after lsp-mode ivy
-  ;;   :disabled t
-  ;;   :commands lsp-ivy-workspace-symbol)
-  ;; (leaf lsp-treemacs
-  ;;   :doc "LSP treemacs"
-  ;;   :req "emacs-26.1" "dash-2.18.0" "f-0.20.0" "ht-2.0" "treemacs-2.5" "lsp-mode-6.0"
-  ;;   :tag "languages" "emacs>=26.1"
-  ;;   :url "https://github.com/emacs-lsp/lsp-treemacs"
-  ;;   :added "2021-09-05"
-  ;;   :emacs>= 26.1
-  ;;   :ensure t
-  ;;   :disabled t
-  ;;   :after treemacs lsp-mode
-  ;;   :commands lsp-treemacs-errors-list))
 
 (leaf rust-mode
   :doc "A major-mode for editing Rust source code"
@@ -2017,7 +1927,6 @@
 
     ;; Enable recursive minibuffers
     (setq enable-recursive-minibuffers t)))
-
 
 
 ;; window managr

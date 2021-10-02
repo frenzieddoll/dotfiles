@@ -695,3 +695,185 @@
     :after ivy hydra
     :disabled t
     :custom (ivy-read-action-function . #'ivy-hydra-read-action)))
+
+(leaf modus-themes
+  :doc "Highly accessible themes (WCAG AAA)"
+  :req "emacs-27.1"
+  :tag "accessibility" "theme" "faces" "emacs>=27.1"
+  :url "https://gitlab.com/protesilaos/modus-themes"
+  :added "2021-10-02"
+  :emacs>= 27.1
+  :ensure t
+  :custom ((modus-themes-italic-constructs . t)
+           (modus-themes-bold-constructs . nil)
+           (modus-themes-region . '(bg-only no-extend)))
+  :config
+  (modus-themes-load-themes)
+  :bind ("<f5>" . modus-themes-toggle)
+)
+
+(leaf modus-themes
+  :doc "Highly accessible themes (WCAG AAA)"
+  :req "emacs-27.1"
+  :tag "accessibility" "theme" "faces" "emacs>=27.1"
+  :url "https://gitlab.com/protesilaos/modus-themes"
+  :added "2021-10-02"
+  :emacs>= 27.1
+  :ensure t
+  :config
+  (setq modus-themes-italic-constructs t
+      modus-themes-bold-constructs nil
+      modus-themes-no-mixed-fonts nil
+      modus-themes-subtle-line-numbers nil
+      modus-themes-success-deuteranopia t
+      modus-themes-inhibit-reload t ; only applies to `customize-set-variable' and related
+
+      modus-themes-fringes nil ; {nil,'subtle,'intense}
+
+      ;; Options for `modus-themes-lang-checkers' are either nil (the
+      ;; default), or a list of properties that may include any of those
+      ;; symbols: `straight-underline', `text-also', `background',
+      ;; `intense'
+      modus-themes-lang-checkers nil
+
+      ;; Options for `modus-themes-mode-line' are either nil, or a list
+      ;; that can combine any of `3d' OR `moody', `borderless',
+      ;; `accented'.  The variable's doc string shows all possible
+      ;; combinations.
+      modus-themes-mode-line '(3d accented)
+
+      ;; Options for `modus-themes-syntax' are either nil (the default),
+      ;; or a list of properties that may include any of those symbols:
+      ;; `faint', `yellow-comments', `green-strings', `alt-syntax'
+      modus-themes-syntax nil
+
+      ;; Options for `modus-themes-hl-line' are either nil (the default),
+      ;; or a list of properties that may include any of those symbols:
+      ;; `accented', `underline', `intense'
+      modus-themes-hl-line '(underline accented)
+
+      ;; Options for `modus-themes-paren-match' are either nil (the
+      ;; default), or a list of properties that may include any of those
+      ;; symbols: `bold', `intense', `underline'
+      modus-themes-paren-match '(bold intense)
+
+      ;; Options for `modus-themes-links' are either nil (the default),
+      ;; or a list of properties that may include any of those symbols:
+      ;; `neutral-underline' OR `no-underline', `faint' OR `no-color',
+      ;; `bold', `italic', `background'
+      modus-themes-links '(neutral-underline background)
+
+      ;; Options for `modus-themes-prompts' are either nil (the
+      ;; default), or a list of properties that may include any of those
+      ;; symbols: `background', `bold', `gray', `intense', `italic'
+      modus-themes-prompts '(intense bold)
+
+      modus-themes-completions 'moderate ; {nil,'moderate,'opinionated}
+
+      modus-themes-mail-citations nil ; {nil,'faint,'monochrome}
+
+      ;; Options for `modus-themes-region' are either nil (the default),
+      ;; or a list of properties that may include any of those symbols:
+      ;; `no-extend', `bg-only', `accented'
+      modus-themes-region '(bg-only no-extend)
+
+      ;; Options for `modus-themes-diffs': nil, 'desaturated,
+      ;; 'bg-only, 'deuteranopia, 'fg-only-deuteranopia
+      modus-themes-diffs 'fg-only-deuteranopia
+
+      modus-themes-org-blocks 'gray-background ; {nil,'gray-background,'tinted-background}
+
+      modus-themes-org-agenda ; this is an alist: read the manual or its doc string
+      '((header-block . (variable-pitch scale-title))
+        (header-date . (grayscale workaholic bold-today))
+        (scheduled . uniform)
+        (habit . traffic-light-deuteranopia))
+
+      modus-themes-headings ; this is an alist: read the manual or its doc string
+      '((1 . (overline background))
+        (2 . (rainbow overline))
+        (t . (no-bold)))
+
+      modus-themes-variable-pitch-ui nil
+      modus-themes-variable-pitch-headings t
+      modus-themes-scale-headings t
+      modus-themes-scale-1 1.1
+      modus-themes-scale-2 1.15
+      modus-themes-scale-3 1.21
+      modus-themes-scale-4 1.27
+      modus-themes-scale-title 1.33)
+  (modus-themes-load-themes))
+
+(leaf smartparens
+  :doc "Automatic insertion, wrapping and paredit-like navigation with user defined pairs."
+  :req "dash-2.13.0" "cl-lib-0.3"
+  :tag "editing" "convenience" "abbrev"
+  :url "https://github.com/Fuco1/smartparens"
+  :added "2021-09-05"
+  :ensure t
+  :disabled t
+  :when window-system
+  :require smartparens-config
+  :custom ((sp-highlight-pari-overly . nil)
+           (sp-navigate-interactive-always-progress-point . t)
+           (smartparens-global-strict-mode . t))
+  :bind ((smartparens-mode-map
+            ;;;;
+            ;;;; navigation
+
+          ;; basic (fbnp-ae)
+          ("C-M-f" . sp-forward-sexp)
+          ("C-M-b" . sp-backward-sexp)
+          ("C-M-n" . sp-next-sexp)
+          ("C-M-p" . sp-previous-sexp)
+          ("C-M-a" . sp-beginning-of-sexp)
+          ("C-M-e" . sp-end-of-sexp)
+
+          ;; checkin/checkout
+          ("C-M-i" . sp-down-sexp)
+          ("C-M-o" . sp-backward-up-sexp)
+
+          ;; misc
+          ("C-M-k"   . sp-kill-sexp)
+          ("C-M-w"   . sp-copy-sexp)
+          ("C-M-t"   . sp-transpose-sexp)
+          ("C-M-SPC" . sp-mark-sexp)
+
+            ;;;;
+            ;;;; depth-changing commands
+
+          ;; basic
+          ("M-s"           . sp-splice-sexp)
+          ("M-r"           . sp-splice-sexp-killing-around)
+          ("M-<up>"        . nil)
+          ("M-<down>"      . nil)
+          ("C-M-u"         . sp-splice-sexp-killing-backward)
+          ("C-M-d"         . sp-splice-sexp-killing-forward)
+          ("M-("           . sp-wrap-round)
+          ("M-["           . sp-wrap-square)
+          ("M-{"           . sp-wrap-qurly)
+
+          ;; barf/slurp
+          ("C-)" . sp-forward-slurp-sexp)
+          ("C-}" . sp-forward-barf-sexp)
+          ("C-(" . sp-backward-slurp-sexp)
+          ("C-{" . sp-backward-barf-sexp)
+
+          ;; split/join
+          ("M-S-s" . sp-split-sexp)
+          ("M-j"   . sp-join-sexp)
+
+            ;;;;
+            ;;;; misc
+
+          ;; change constructure
+          ("M-?"     . sp-convolute-sexp)
+          ("C-c s a" . sp-absorb-sexp)
+          ("C-c s e" . sp-emit-sexp)
+          ("C-c s p" . sp-convolute-sexp)
+          ("C-c s t" . sp-transpose-hybrid-sexp)
+
+          ;; change elements
+          ("C-c s (" . sp-rewrap-sexp)
+          ("C-c s r" . sp-change-inner)
+          ("C-c s s" . sp-change-enclosing))))
