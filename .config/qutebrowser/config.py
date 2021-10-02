@@ -280,7 +280,9 @@ c.colors.tabs.selected.even.bg = '#202020'
 
 # config
 c.scrolling.smooth = True
-c.url.searchengines = {'DEFAULT': 'https://google.com/search?q={}'}
+c.url.searchengines = {
+    "DEFAULT" : "https://google.com/search?q={}",
+    "y" : "https://www.youtube.com/results?search_query={}"}
 c.zoom.levels = ['25%', '33%', '50%', '60%', '70%', '80%', '90%', '100%', '110%', '125%', '150%', '175%', '200%', '250%', '300%', '400%', '500%']
 
 # c.url.default_page = 'https://google.com/'
@@ -296,9 +298,11 @@ c.input.partial_timeout = 0
 
 host = socket.gethostname()
 if host == "archlinuxhonda":
-    config.set('zoom.default', '200')
+    config.set('zoom.default', '200%')
 elif host == "RaspberryPi":
-    config.set('zoom.default', '100')
+    config.set('zoom.default', '100%')
+
+c.content.pdfjs = True
 
 # config bind
 config.bind('K', 'tab-next')

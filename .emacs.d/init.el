@@ -751,6 +751,7 @@
 
 ;; theme
 (leaf doom-themes
+  ;; :disabled t
   :doc "an opinionated pack of modern color-themes"
   :req "emacs-25.1" "cl-lib-0.5"
   :tag "faces" "custom themes" "emacs>=25.1"
@@ -783,6 +784,103 @@
               (doom-modeline-mode                   . t)
               (line-number-mode . 0)
               (column-number-mode . 0))))
+
+(leaf nano-theme
+  :disabled t
+  :doc "N Λ N O theme"
+  :req "emacs-27.1"
+  :tag "light" "dark" "theme" "emacs>=27.1"
+  :url "https://github.com/rougier/nano-theme"
+  :added "2021-10-03"
+  :emacs>= 27.1
+  :ensure t
+  :config
+  (load-theme 'nano t)
+  (nano-dark)
+  (leaf nano-modeline
+    :tag "out-of-MELPA"
+    :added "2021-10-03"
+    :el-get rougier/nano-modeline
+    :require t
+    :custom ((nano-modeline-position . nil)))
+  (leaf minions
+    :doc "A minor-mode menu for the mode line"
+    :req "emacs-25.2"
+    :tag "emacs>=25.2"
+    :url "https://github.com/tarsius/minions"
+    :added "2021-10-03"
+    :emacs>= 25.2
+    :ensure t
+    :custom ((minions-mode-line-lighter . "[+]"))
+    :config (minions-mode)))
+
+(leaf modus-themes
+  :disabled t
+  :doc "Highly accessible themes (WCAG AAA)"
+  :req "emacs-27.1"
+  :tag "accessibility" "theme" "faces" "emacs>=27.1"
+  :url "https://gitlab.com/protesilaos/modus-themes"
+  :added "2021-10-02"
+  :emacs>= 27.1
+  :ensure t
+  :custom ((modus-themes-italic-constructs . t)
+           (modus-themes-bold-constructs . nil)
+           (modus-themes-no-mixed-fonts . nil)
+           (modus-themes-subtle-line-numbers . nil)
+           (modus-themes-success-deuteranopia . t)
+           (modus-themes-inhibit-reload . t)
+           (modus-themes-fringes . nil)
+           (modus-themes-lang-checkers . nil)
+           (modus-themes-mode-line . '(3d accented))
+           (modus-themes-syntax . nil)
+           (modus-themes-hl-line . '(underline accented))
+           (modus-themes-paren-match . '(bold intense))
+           (modus-themes-links . '(neutral-underline background))
+           (modus-themes-prompts . '(intense bold))
+           (modus-themes-completions . 'moderate)
+           (modus-themes-mail-citations . nil)
+           (modus-themes-region . '(bg-only no-extend))
+           (modus-themes-diffs . 'fg-only-deuteranopia)
+           (modus-themes-org-blocks . 'gray-background)
+           (modus-themes-org-agenda . '((header-block . (variable-pitch scale-title))
+                                        (header-date . (grayscale workaholic bold-today))
+                                        (scheduled . uniform)
+                                        (habit . traffic-light-deuteranopia)))
+           (modus-themes-headings . '((1 . (overline background))
+                                      (2 . (rainbow overline))
+                                      (t . (no-bold))))
+           (modus-themes-variable-pitch-ui . nil)
+           (modus-themes-variable-pitch-headings . t)
+           (modus-themes-scale-headings . t)
+           (modus-themes-scale-1 . 1.1)
+           (modus-themes-scale-2 . 1.15)
+           (modus-themes-scale-3 . 1.21)
+           (modus-themes-scale-4 . 1.27)
+           (modus-themes-scale-title . 1.33))
+  :config
+  (modus-themes-load-themes)
+  (leaf moody
+    :doc "Tabs and ribbons for the mode line"
+    :req "emacs-25.3"
+    :tag "emacs>=25.3"
+    :url "https://github.com/tarsius/moody"
+    :added "2021-10-03"
+    :emacs>= 25.3
+    :ensure t
+    :custom ((x-underline-at-descent-line . t))
+    :config
+    (moody-replace-mode-line-buffer-identification)
+    (moody-replace-vc-mode))
+  (leaf minions
+    :doc "A minor-mode menu for the mode line"
+    :req "emacs-25.2"
+    :tag "emacs>=25.2"
+    :url "https://github.com/tarsius/minions"
+    :added "2021-10-03"
+    :emacs>= 25.2
+    :ensure t
+    :custom ((minions-mode-line-lighter . "[+]"))
+    :config (minions-mode)))
 
 
 ;; メジャーモードの設定
