@@ -1959,6 +1959,7 @@
     :added "2021-10-01"
     :emacs>= 25.1
     :ensure t
+    :disabled t
     :bind ((company-active-map
             ("M-n" . nil)
             ("M-p" . nil)
@@ -1987,11 +1988,10 @@
     :added "2021-09-11"
     :emacs>= 27.1
     :ensure t
-    :disabled t
     :require t
     :custom
     (corfu-cycle . t)
-    (corfu-auto . t)
+    (corfu-auto . nil)
     (corfu-quit-at-boundary . t)
     (corfu-quit-no-match . t)
     (corfu-echo-documentation . nil)
