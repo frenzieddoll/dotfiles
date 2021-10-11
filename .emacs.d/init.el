@@ -1744,11 +1744,14 @@
 
 
 ;; lsp 設定
-(leaf lsp
-  :tag "out-of-MELPA"
-  :added "2021-09-05"
-  ;; :el-get emacs-lsp/lsp-mode
-  :require t
+(leaf lsp-mode
+  :doc "LSP mode"
+  :req "emacs-26.1" "dash-2.18.0" "f-0.20.0" "ht-2.3" "spinner-1.7.3" "markdown-mode-2.3" "lv-0"
+  :tag "languages" "emacs>=26.1"
+  :url "https://github.com/emacs-lsp/lsp-mode"
+  :added "2021-10-11"
+  :emacs>= 26.1
+  :ensure t
   ;; :unless (string-match "Raspberrypi" (system-name))
   :custom ((lsp-idle-delay . 0.500)
            (lsp-log-io . nil)
@@ -2157,13 +2160,16 @@
     (leaf exwm-randr
       :require t
       :when (string= (system-name) "archlinuxhonda")
-      :custom ((exwm-randr-workspace-monitor-plist . '(0 "DP-0" 1 "HDMI-0" 2 "DP-0" 3 "DP-0" 4 "DP-0" 5 "DP-0")))
+      :custom ((exwm-randr-workspace-monitor-plist . '(0 "HDMI-0" 1 "HDMI-0" 2 "HDMI-0" 3 "DP-4" 4 "DP-4" 5 "DP-4")))
+      :hook (exwm-randr-screen-change-hook . (lambda ()
+                                                (start-process-shell-command
+                                                 "xrandr" nil "xrandr --output HDMI-0 --right-of DP-4 --auto")))
       :config
       (exwm-randr-enable))
+    (leaf *fix_ediff
+      :after ediff-wind
+      :custom `((ediff-window-setup-function . 'ediff-setup-windows-plain))))
     (leaf exwm-enable
       :defun (exwm-enable)
       :config
-      (exwm-enable))
-    (leaf *fix_ediff
-      :after ediff-wind
-      :custom `((ediff-window-setup-function . 'ediff-setup-windows-plain)))))
+      (exwm-enable)))
