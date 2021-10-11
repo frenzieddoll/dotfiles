@@ -2163,7 +2163,7 @@
       :custom ((exwm-randr-workspace-monitor-plist . '(0 "HDMI-0" 1 "HDMI-0" 2 "HDMI-0" 3 "DP-4" 4 "DP-4" 5 "DP-4")))
       :hook (exwm-randr-screen-change-hook . (lambda ()
                                                 (start-process-shell-command
-                                                 "xrandr" nil "xrandr --output HDMI-0 --right-of DP-4 --auto")))
+                                                 "xrandr" nil "xrandr --output DP-4 --auto --output HDMI-0 --auto --right-of DP-4; xrandr --output HDMI-0 --auto --scale 1.5x1.5")))
       :config
       (exwm-randr-enable))
     (leaf *fix_ediff
