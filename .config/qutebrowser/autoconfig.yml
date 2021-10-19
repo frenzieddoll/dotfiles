@@ -6,35 +6,7 @@
 
 config_version: 2
 settings:
-  auto_save.interval:
-    global: 60000
-  auto_save.session:
-    global: false
-  backend:
-    global: webengine
-  bindings.commands:
-    global:
-      normal:
-        J: tab-prev
-        K: tab-next
-        d: scroll-page 0 0.5
-        u: scroll-page 0 -0.5
-  bindings.key_mappings:
-    global:
-      <Ctrl-6>: <Ctrl-^>
-      <Ctrl-Enter>: <Ctrl-Return>
-      <Ctrl-I>: <Tab>
-      <Ctrl-J>: <Return>
-      <Ctrl-M>: <Return>
-      <Ctrl-[>: <Escape>
-      <Enter>: <Return>
-      <Shift-Enter>: <Return>
-      <Shift-Return>: <Return>
-  changelog_after_upgrade:
-    global: minor
-  url.default_page:
-    global: https://www.google.com
-  url.incdec_segments:
-    global:
-    - path
-    - query
+  content.blocking.method:
+    global: both
+  content.blocking.whitelist:
+    global: null

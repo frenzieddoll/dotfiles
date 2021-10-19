@@ -446,6 +446,7 @@
     :unless (eq system-type 'windows)
     :config (eval-after-load "esh-module"
               '(defvar eshell-modules-list (delq 'eshell-ls (delq 'eshell-unix eshell-modules-list)))))
+  (setenv "GIT_PAGER" "")
 
   :preface
   (defun eshell-alias ()
@@ -1421,6 +1422,15 @@
       (view-mode 1)
       (message "backward-kill-line"))))
 
+(leaf pulseaudio-control
+  :doc "Use `pactl' to manage PulseAudio volumes."
+  :tag "pulseaudio" "sound" "hardware" "multimedia"
+  :url "https://github.com/flexibeast/pulseaudio-control"
+  :added "2021-10-11"
+  :ensure t
+  :config
+  (pulseaudio-control-default-keybindings))
+
 
 ;; マイナーモードの設定
 (leaf *cua
@@ -1962,7 +1972,7 @@
     :added "2021-10-01"
     :emacs>= 25.1
     :ensure t
-    :disabled t
+    ;; :disabled t
     :bind ((company-active-map
             ("M-n" . nil)
             ("M-p" . nil)
@@ -1992,15 +2002,18 @@
     :emacs>= 27.1
     :ensure t
     :require t
+    :disabled t
     :custom
     (corfu-cycle . t)
-    (corfu-auto . nil)
+    (corfu-auto . t)
     (corfu-quit-at-boundary . t)
     (corfu-quit-no-match . t)
     (corfu-echo-documentation . nil)
     (completion-cycle-threshold . 1)
     (corfu-auto-delay . 0)
     :global-minor-mode corfu-global-mode
+    ;; :hook ((eshell-mode-hook . (lambda () (custom-set-variables '(corfu-auto nil))))
+    ;;        (emacs-lisp-mode-hook . (lambda () (custom-set-variables '(corfu-auto t)))))
     :config
     (leaf dabbrev
       :doc "dynamic abbreviation package"
@@ -2133,13 +2146,13 @@
                                               (,(kbd "s-t")           . [C-t ?\C-k])
                                               (,(kbd "s-T")           . [C-T])
                                               ;;
-                                              ;;
-                                              ;;
                                               (,(kbd "s-l")           . [C-k])
                                               (,(kbd "s-k")           . [C-l])
                                               ;;
                                               (,(kbd "C-x C-s")       . [C-s])
-                                              (,(kbd "C-u C-/")       . [C-y]))))
+                                              (,(kbd "C-u C-/")       . [C-y])
+                                              (,(kbd "<mouse-11>")    . [right])
+                                              (,(kbd "<mouse-12>")    . [left]))))
     :bind (("C-&" . skk-hiragana-set)
            ("C-^" . skk-latin-mode))
     :preface
@@ -2166,10 +2179,10 @@
                                                  "xrandr" nil "xrandr --output DP-4 --auto --output HDMI-0 --auto --right-of DP-4; xrandr --output HDMI-0 --auto --scale 1.5x1.5")))
       :config
       (exwm-randr-enable))
-    (leaf *fix_ediff
-      :after ediff-wind
-      :custom `((ediff-window-setup-function . 'ediff-setup-windows-plain))))
     (leaf exwm-enable
       :defun (exwm-enable)
       :config
-      (exwm-enable)))
+      (exwm-enable))
+    (leaf *fix_ediff
+      :after ediff-wind
+      :custom `((ediff-window-setup-function . 'ediff-setup-windows-plain)))))

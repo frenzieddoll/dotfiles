@@ -298,7 +298,7 @@ c.input.partial_timeout = 0
 
 host = socket.gethostname()
 if host == "archlinuxhonda":
-    config.set('zoom.default', '200%')
+    config.set('zoom.default', '150%')
 elif host == "RaspberryPi":
     config.set('zoom.default', '100%')
 
@@ -317,10 +317,13 @@ config.bind('X', ':undo')
 
 config.bind('<Ctrl+f>', ':set-cmd-text /')
 
-def filter_yt(info: interceptor.Request):
-    """Block the given request if necessary."""
-    url = info.request_url
-    if (url.host() == "www.youtube.com" and url.path() == "/get_video_info" and "&adformat=" in url.query()):
-        info.block()
+# def filter_yt(info: interceptor.Request):
+#     """Block the given request if necessary."""
+#     url = info.request_url
+#     if (url.host() == "www.youtube.com"
+#         and url.path() == "/get_video_info"
+#         and "&adformat=" in url.query()
+#         ):
+#         info.block()
 
-interceptor.register(filter_yt)
+# interceptor.register(filter_yt)
