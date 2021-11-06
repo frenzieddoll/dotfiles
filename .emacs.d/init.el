@@ -1655,9 +1655,10 @@
   :custom ((lsp-idle-delay . 0.500)
            (lsp-log-io . nil)
            (lsp-keymap-prefix . "M-l"))
-  :hook ((lsp-mode-hook . lsp-enable-which-key-integration)
-         (haskell-mode-hook . lsp)
-         (haskell-literate-mode-hook . lsp)
+  :hook ((lsp-mode . lsp-enable-which-key-integration)
+         (haskell-mode . lsp)
+         (haskell-literate-mode . lsp)
+         (rustic-mode . lsp)
          ;; (lsp-mode-hook . (lambda ()
          ;;                    (company-mode nil)))
          )
@@ -1680,6 +1681,7 @@
   :added "2021-09-05"
   :emacs>= 25.1
   :ensure t
+  :disabled t
   :config
   (leaf racer
     :doc "code completion, goto-definition and docs browsing for Rust via racer"
@@ -1690,6 +1692,14 @@
     :emacs>= 25.1
     :ensure t
     :after rust-mode pos-tip))
+
+(leaf rustic
+  :doc "Rust development environment"
+  :req "emacs-26.1" "dash-2.13.0" "f-0.18.2" "let-alist-1.0.4" "markdown-mode-2.3" "project-0.3.0" "s-1.10.0" "seq-2.3" "spinner-1.7.3" "xterm-color-1.6"
+  :tag "languages" "emacs>=26.1"
+  :added "2021-11-06"
+  :emacs>= 26.1
+  :ensure t)
 
 (leaf haskell-mode
   :doc "A Haskell editing mode"
@@ -1751,6 +1761,18 @@
     :hook (python-mode-hook . (lambda ()
                                 (require 'lsp-jedi)
                                 (lsp)))))
+
+(leaf *c++
+  :hook ((c++-mode . lsp)))
+
+(leaf quickrun
+  :doc "Run commands quickly"
+  :req "emacs-24.3"
+  :tag "emacs>=24.3"
+  :url "https://github.com/syohex/emacs-quickrun"
+  :added "2021-11-06"
+  :emacs>= 24.3
+  :ensure t)
 
 
 ;; Vertico
@@ -1876,7 +1898,7 @@
             ("C-p" . company-select-previous)))
     :custom `((company-tooltip-limit         . 12)
               (company-idle-delay            . 0)
-              (company-minimum-prefix-length . 3)
+              (company-minimum-prefix-length . 1)
               (company-transformers          . '(company-sort-by-occurrence))
               (global-company-mode           . t)
               (company-dabbrev-downcase      . nil)
