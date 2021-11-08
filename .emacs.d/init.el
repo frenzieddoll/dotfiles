@@ -777,7 +777,7 @@
     ;; :after all-the-icons shrink-path
     :hook (after-init . doom-modeline-mode)
     :custom `((doom-modeline-buffer-file-name-style . 'truncate-with-project)
-              (doom-modeline-icon                   . t)
+              (doom-modeline-icon                   . nil)
               (doom-modeline-major-mode-icon        . nil)
               (doom-modeline-minor-modes            . nil)
               (line-number-mode                     . 0)
@@ -785,103 +785,6 @@
               (doom-modeline-mode                   . t)
               (line-number-mode . 0)
               (column-number-mode . 0))))
-
-(leaf nano-theme
-  :disabled t
-  :doc "N Λ N O theme"
-  :req "emacs-27.1"
-  :tag "light" "dark" "theme" "emacs>=27.1"
-  :url "https://github.com/rougier/nano-theme"
-  :added "2021-10-03"
-  :emacs>= 27.1
-  :ensure t
-  :config
-  (load-theme 'nano t)
-  (nano-dark)
-  (leaf nano-modeline
-    :tag "out-of-MELPA"
-    :added "2021-10-03"
-    :el-get rougier/nano-modeline
-    :require t
-    :custom ((nano-modeline-position . nil)))
-  (leaf minions
-    :doc "A minor-mode menu for the mode line"
-    :req "emacs-25.2"
-    :tag "emacs>=25.2"
-    :url "https://github.com/tarsius/minions"
-    :added "2021-10-03"
-    :emacs>= 25.2
-    :ensure t
-    :custom ((minions-mode-line-lighter . "[+]"))
-    :config (minions-mode)))
-
-(leaf modus-themes
-  :disabled t
-  :doc "Highly accessible themes (WCAG AAA)"
-  :req "emacs-27.1"
-  :tag "accessibility" "theme" "faces" "emacs>=27.1"
-  :url "https://gitlab.com/protesilaos/modus-themes"
-  :added "2021-10-02"
-  :emacs>= 27.1
-  :ensure t
-  :custom ((modus-themes-italic-constructs . t)
-           (modus-themes-bold-constructs . nil)
-           (modus-themes-no-mixed-fonts . nil)
-           (modus-themes-subtle-line-numbers . nil)
-           (modus-themes-success-deuteranopia . t)
-           (modus-themes-inhibit-reload . t)
-           (modus-themes-fringes . nil)
-           (modus-themes-lang-checkers . nil)
-           (modus-themes-mode-line . '(3d accented))
-           (modus-themes-syntax . nil)
-           (modus-themes-hl-line . '(underline accented))
-           (modus-themes-paren-match . '(bold intense))
-           (modus-themes-links . '(neutral-underline background))
-           (modus-themes-prompts . '(intense bold))
-           (modus-themes-completions . 'moderate)
-           (modus-themes-mail-citations . nil)
-           (modus-themes-region . '(bg-only no-extend))
-           (modus-themes-diffs . 'fg-only-deuteranopia)
-           (modus-themes-org-blocks . 'gray-background)
-           (modus-themes-org-agenda . '((header-block . (variable-pitch scale-title))
-                                        (header-date . (grayscale workaholic bold-today))
-                                        (scheduled . uniform)
-                                        (habit . traffic-light-deuteranopia)))
-           (modus-themes-headings . '((1 . (overline background))
-                                      (2 . (rainbow overline))
-                                      (t . (no-bold))))
-           (modus-themes-variable-pitch-ui . nil)
-           (modus-themes-variable-pitch-headings . t)
-           (modus-themes-scale-headings . t)
-           (modus-themes-scale-1 . 1.1)
-           (modus-themes-scale-2 . 1.15)
-           (modus-themes-scale-3 . 1.21)
-           (modus-themes-scale-4 . 1.27)
-           (modus-themes-scale-title . 1.33))
-  :config
-  (modus-themes-load-themes)
-  (leaf moody
-    :doc "Tabs and ribbons for the mode line"
-    :req "emacs-25.3"
-    :tag "emacs>=25.3"
-    :url "https://github.com/tarsius/moody"
-    :added "2021-10-03"
-    :emacs>= 25.3
-    :ensure t
-    :custom ((x-underline-at-descent-line . t))
-    :config
-    (moody-replace-mode-line-buffer-identification)
-    (moody-replace-vc-mode))
-  (leaf minions
-    :doc "A minor-mode menu for the mode line"
-    :req "emacs-25.2"
-    :tag "emacs>=25.2"
-    :url "https://github.com/tarsius/minions"
-    :added "2021-10-03"
-    :emacs>= 25.2
-    :ensure t
-    :custom ((minions-mode-line-lighter . "[+]"))
-    :config (minions-mode)))
 
 
 ;; メジャーモードの設定
@@ -1431,6 +1334,12 @@
   :config
   (pulseaudio-control-default-keybindings))
 
+(leaf ssh
+  :doc "Support for remote logins using ssh."
+  :tag "comm" "unix"
+  :added "2021-11-03"
+  :ensure t)
+
 
 ;; マイナーモードの設定
 (leaf *cua
@@ -1753,35 +1662,141 @@
   :global-minor-mode t)
 
 
-;; lsp 設定
+;; プログラミング設定
+
+
 (leaf lsp-mode
   :doc "LSP mode"
   :req "emacs-26.1" "dash-2.18.0" "f-0.20.0" "ht-2.3" "spinner-1.7.3" "markdown-mode-2.3" "lv-0"
   :tag "languages" "emacs>=26.1"
   :url "https://github.com/emacs-lsp/lsp-mode"
-  :added "2021-10-11"
+  :added "2021-11-06"
   :emacs>= 26.1
-  :ensure t
-  ;; :unless (string-match "Raspberrypi" (system-name))
-  :custom ((lsp-idle-delay . 0.500)
-           (lsp-log-io . nil)
-           (lsp-keymap-prefix . "M-l"))
-  :hook ((lsp-mode-hook . lsp-enable-which-key-integration)
-         (haskell-mode-hook . lsp)
-         (haskell-literate-mode-hook . lsp)
-         ;; (lsp-mode-hook . (lambda ()
-         ;;                    (company-mode nil)))
-         )
+  ;; :el-get emacs-lsp/lsp-mode
+  :require t
+  :custom ((lsp-keymap-prefix . "M-z")
+           (lsp-lens-mode . t))
+  :hook ((lsp-mode . lsp-enable-which-key-integration)
+         (lsp-mode . lsp-lens-mode)
+         (haskell-mode . lsp))
+  :commands lsp
   :config
-  (leaf consult-lsp
-    :doc "LSP-mode Consult integration"
-    :req "emacs-27.1" "lsp-mode-5.0" "consult-0.9" "f-0.20.0"
-    :tag "lsp" "completion" "tools" "emacs>=27.1"
-    :url "https://github.com/gagbo/consult-lsp"
-    :added "2021-09-06"
-    :emacs>= 27.1
+  (leaf lsp-ui
+    :doc "UI modules for lsp-mode"
+    :req "emacs-26.1" "dash-2.18.0" "lsp-mode-6.0" "markdown-mode-2.3"
+    :tag "tools" "languages" "emacs>=26.1"
+    :url "https://github.com/emacs-lsp/lsp-ui"
+    :added "2021-11-06"
+    :emacs>= 26.1
     :ensure t
-    :after lsp-mode consult))
+    :disabled t
+    :commands lsp-ui-mode))
+
+
+;; (leaf quickrun
+;;   :ensure t
+;;   :after t
+;;   :config
+;;   (quickrun-add-command "haskell"
+;;                         '((:command . "stack runghc")
+;;                           (:description . "Run Haskell file with Stack runghc(GHC)"))
+;;                         :override t))
+
+;; (leaf flycheck
+;;   :ensure t
+;;   :custom
+;;   (global-flycheck-mode . t)               ; グローバルに有効にすます
+;;   (flycheck-display-errors-function . nil) ; Echoエリアにエラーを表示しない
+;;   :defvar
+;;   flycheck-error-list-format
+;;   :init
+;;   (defun flycheck-error-list-mode-setup ()
+;;     ;; levelを幅10に、idを幅20にします。
+;;     ;; flycheck-error-list-formatがdefconstなので強引に変更せざるを得ません。
+;;     (setf (cadr (aref flycheck-error-list-format 3)) 10)
+;;     (setf (cadr (aref flycheck-error-list-format 4)) 20))
+;;   :hook (flycheck-error-list-mode-hook . flycheck-error-list-mode-setup)
+;;   :bind (:flycheck-mode-map
+;;          ("C-z" . flycheck-list-errors)
+;;          ([remap previous-error] . flycheck-previous-error)
+;;          ([remap next-error] . flycheck-next-error)))
+
+;; (leaf lsp-mode
+;;   :doc "LSP mode"
+;;   :req "emacs-26.1" "dash-2.18.0" "f-0.20.0" "ht-2.3" "spinner-1.7.3" "markdown-mode-2.3" "lv-0"
+;;   :tag "languages" "emacs>=26.1"
+;;   :url "https://github.com/emacs-lsp/lsp-mode"
+;;   :added "2021-10-11"
+;;   :emacs>= 26.1
+;;   :ensure t
+;;   :defun lsp-enable-which-key-integration
+;;   :defvar lsp-command-map lsp-signature-mode-map
+;;   ;; :unless (string-match "Raspberrypi" (system-name))
+;;   :custom `((lsp-auto-guess-root      . t)
+;;             (lsp-enable-snippet . nil)
+;;             (lsp-file-watch-threshold . 10000)
+;;             (lsp-keymap-prefix . "M-z")
+;;             (lsp-lens-mode . t)
+;;             (lsp-prefer-flymake . nil)
+;;             (read-process-output-max . 1048576)
+;;             (lsp-print-io             . nil)
+;;             (lsp-trace                . nil)
+;;             (lsp-print-performance    . nil)
+;;             (lsp-document-sync-method . 'incremental)
+;;             (lsp-response-timeout     . 5)
+;;             (lsp-idle-delay . 0.500))
+;;   :hook ((lsp-mode-hook . lsp-enable-which-key-integration)
+;;          (lsp-mode-hook . lsp-ui-mode)
+;;          (haskell-mode-hook . lsp))
+;;   :init
+;;   (defun lsp-format-before-save ()
+;;     "保存する前にフォーマットする"
+;;     (add-hook 'before-save-hook 'lsp-format-buffer nil t))
+;;   :bind (:lsp-mode-map
+;;          ("C-S-SPC" . nil)
+;;          ("C-c C-a" . lsp-execute-code-action)
+;;          ("C-c C-i" . lsp-format-region)
+;;          ("C-c C-n" . lsp-rename)
+;;          ("C-c C-r" . lsp-workspace-restart)
+;;          ("C-c C-t" . lsp-describe-thing-at-point))
+;;   :config
+;;   ;; lsp-keymap-prefixはドキュメント用なのでこちらでの設定も必要。
+;;   ;; bindだとうまく行かなかった。
+;;   (define-key lsp-mode-map (kbd "M-z") lsp-command-map)
+;;   (leaf lsp-ui
+;;     :doc "UI modules for lsp-mode"
+;;     :req "emacs-26.1" "dash-2.18.0" "lsp-mode-6.0" "markdown-mode-2.3"
+;;     :tag "tools" "languages" "emacs>=26.1"
+;;     :url "https://github.com/emacs-lsp/lsp-ui"
+;;     :added "2021-11-06"
+;;     :emacs>= 26.1
+;;     :ensure t
+;;     :disabled t
+;;     :defvar lsp-ui-peek-mode-map
+;;     :custom ((lsp-ui-doc-header . t)             ; 何を見ているのかわからなくなりがちなので名前が含まれるヘッダも表示
+;;              (lsp-ui-doc-include-signature . t)  ; シグネチャも表示する
+;;              (lsp-ui-doc-position . 'top)        ; カーソル位置に表示されると下のコードが見えなくなるので上
+;;              (lsp-ui-sideline-enable . nil))      ; エラーはflycheckで出して型はdocで出すので幅を取るサイドラインは不要
+;;     :bind (:lsp-ui-mode-map
+;;            ("C-c C-d" . lsp-ui-doc-show)  ; 手動でドキュメントを表示するコマンド
+;;            ([remap smart-jump-go] . lsp-ui-peek-find-definitions)
+;;            ([remap smart-jump-references] . lsp-ui-peek-find-references)
+;;            ("C->" . lsp-find-type-definition)
+;;            ("C-c C-p" . lsp-ui-peek-find-implementation)))
+;;   (leaf dap-mode
+;;     :ensure t
+;;     :hook
+;;     (lsp-mode-hook . dap-mode)
+;;     (lsp-mode-hook . dap-ui-mode))
+;;   (leaf consult-lsp
+;;     :doc "LSP-mode Consult integration"
+;;     :req "emacs-27.1" "lsp-mode-5.0" "consult-0.9" "f-0.20.0"
+;;     :tag "lsp" "completion" "tools" "emacs>=27.1"
+;;     :url "https://github.com/gagbo/consult-lsp"
+;;     :added "2021-09-06"
+;;     :emacs>= 27.1
+;;     :ensure t
+;;     :disabled t))
 
 (leaf rust-mode
   :doc "A major-mode for editing Rust source code"
@@ -1818,17 +1833,19 @@
             (haskell-indent-after-keywords . '(("where" 4 0) ("of" 4) ("do" 4) ("mdo" 4) ("rec" 4) ("in" 4 0) ("{" 4) "if" "then" "else" "let"))
             (haskell-indent-offset         . 4)
             (haskell-indendt-spaces        . 4)
-            (haskell-compile-stack-build-command . t))
+            (haskell-compile-stack-build-command . t)
+            (haskell-hoogle-command . nil)
+            (haskell-hoogle-url . "https://www.stackage.org/lts/hoogle?q=%s"))
   :bind `((haskell-mode-map
            ("C-c C-z" . haskell-interactive-bring)
            ("C-c C-l" . haskell-process-load-file)
            ("C-c C-," . haskell-mode-format-imports)
            ("<f5>" . haskell-compile)
            ("<f8>" . haskell-navigate-imports)))
-  :hook ((haskell-mode-hook . interactive-haskell-mode)
-         (haskell-mode-hook . haskell-decl-scan-mode)
-         (haskell-mode-hook . haskell-doc-mode)
-         (haskell-mode-hook . haskell-indentation-mode))
+  :hook ((haskell-mode . interactive-haskell-mode)
+         (haskell-mode . haskell-decl-scan-mode)
+         (haskell-mode . haskell-doc-mode)
+         (haskell-mode . haskell-indentation-mode))
   :config
   (leaf lsp-haskell
     :doc "Haskell support for lsp-mode"
@@ -1838,10 +1855,8 @@
     :added "2021-09-05"
     :emacs>= 24.3
     :ensure t
-    :when (file-exists-p "/usr/bin/jedi-language-server")
-    :hook (haskell-mode-hook . (lambda ()
-                                 (require 'lsp-haskell)
-                                 (lsp)))))
+    :hook ((haskell-mode . lsp)
+           (haskell-literate-mode . lsp))))
 
 (leaf python-mode
   :doc "Python major mode"
@@ -1981,18 +1996,18 @@
             ("C-p" . company-select-previous)
             ("<tab>" . company-complete-selection)
             ("C-h" . nil)
-            ("C-f" . company-complete-selection)
-            )
+            ("C-f" . company-complete-selection))
            (company-search-map
             ("C-n" . company-select-next)
             ("C-p" . company-select-previous)))
     :custom `((company-tooltip-limit         . 12)
               (company-idle-delay            . 0)
-              (company-minimum-prefix-length . 3)
+              (company-minimum-prefix-length . 1)
               (company-transformers          . '(company-sort-by-occurrence))
-              (global-company-mode           . t)
               (company-dabbrev-downcase      . nil)
-              (company-backends . '(company-capf))))
+              (lsp-prefer-capf . t)
+              (company-backends . '(company-capf)))
+    :global-minor-mode global-company-mode)
   (leaf corfu
     :doc "Completion Overlay Region FUnction"
     :req "emacs-27.1"
@@ -2001,16 +2016,16 @@
     :added "2021-09-11"
     :emacs>= 27.1
     :ensure t
-    :require t
+    ;; :require t
     :disabled t
-    :custom
-    (corfu-cycle . t)
-    (corfu-auto . t)
-    (corfu-quit-at-boundary . t)
-    (corfu-quit-no-match . t)
-    (corfu-echo-documentation . nil)
-    (completion-cycle-threshold . 1)
-    (corfu-auto-delay . 0)
+    :custom ((corfu-cycle . t)
+             (corfu-auto . t)
+             (corfu-quit-at-boundary . t)
+             (corfu-quit-no-match . t)
+             (corfu-echo-documentation . nil)
+             (completion-cycle-threshold . 1)
+             (corfu-auto-delay . 0)
+             (tab-always-indent . 'complete))
     :global-minor-mode corfu-global-mode
     ;; :hook ((eshell-mode-hook . (lambda () (custom-set-variables '(corfu-auto nil))))
     ;;        (emacs-lisp-mode-hook . (lambda () (custom-set-variables '(corfu-auto t)))))
@@ -2173,7 +2188,7 @@
     (leaf exwm-randr
       :require t
       :when (string= (system-name) "archlinuxhonda")
-      :custom ((exwm-randr-workspace-monitor-plist . '(0 "HDMI-0" 1 "HDMI-0" 2 "HDMI-0" 3 "DP-4" 4 "DP-4" 5 "DP-4")))
+      :custom ((exwm-randr-workspace-monitor-plist . '(0 "DP-4" 1 "DP-4" 2 "HDMI-0" 3 "DP-4" 4 "DP-4" 5 "DP-4")))
       :hook (exwm-randr-screen-change-hook . (lambda ()
                                                 (start-process-shell-command
                                                  "xrandr" nil "xrandr --output DP-4 --auto --output HDMI-0 --auto --right-of DP-4; xrandr --output HDMI-0 --auto --scale 1.5x1.5")))
