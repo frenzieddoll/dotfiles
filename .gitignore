@@ -4,7 +4,7 @@
 # /.emacs.d/*
 # /.config/*
 *
-!*/
+*/
 
 
 # gitで管理する
@@ -36,5 +36,3 @@
 !/.xinitrc
 !/.zshrc
 !/.fbtermrc
-
-/.emacs.d/el-get/

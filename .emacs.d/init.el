@@ -1663,8 +1663,6 @@
 
 
 ;; プログラミング設定
-
-
 (leaf lsp-mode
   :doc "LSP mode"
   :req "emacs-26.1" "dash-2.18.0" "f-0.20.0" "ht-2.3" "spinner-1.7.3" "markdown-mode-2.3" "lv-0"
@@ -1673,17 +1671,15 @@
   :added "2021-11-06"
   :emacs>= 26.1
   :ensure t
+  ;; :el-get emacs-lsp/lsp-mode
   ;; :unless (string-match "Raspberrypi" (system-name))
   :custom ((lsp-idle-delay . 0.500)
            (lsp-log-io . nil)
            (lsp-keymap-prefix . "M-l"))
   :hook ((lsp-mode . lsp-enable-which-key-integration)
-         (haskell-mode . lsp)
-         (haskell-literate-mode . lsp)
-         (rustic-mode . lsp)
-         ;; (lsp-mode-hook . (lambda ()
-         ;;                    (company-mode nil)))
-         )
+         (haskell-mode-hook . lsp)
+         (haskell-mode-hook . flycheck-mode)
+         (rustic-mode . lsp))
   :config
   (leaf lsp-ui
     :doc "UI modules for lsp-mode"
@@ -1693,9 +1689,16 @@
     :added "2021-11-06"
     :emacs>= 26.1
     :ensure t
-    :disabled t
-    :commands lsp-ui-mode))
-
+    :hook ((lsp-mode-hook . lsp-ui-mode))
+    :commands lsp-ui-mode)
+  (leaf consult-lsp
+    :doc "LSP-mode Consult integration"
+    :req "emacs-27.1" "lsp-mode-5.0" "consult-0.9" "f-0.20.0"
+    :tag "lsp" "completion" "tools" "emacs>=27.1"
+    :url "https://github.com/gagbo/consult-lsp"
+    :added "2021-11-08"
+    :emacs>= 27.1
+    :ensure t))
 
 ;; (leaf quickrun
 ;;   :ensure t
@@ -1868,6 +1871,8 @@
     :added "2021-09-05"
     :emacs>= 24.3
     :ensure t
+    :require t
+    :custom ((lsp-haskell-server-path . "~/.ghcup/bin/haskell-language-server-9.0.1"))
     :hook ((haskell-mode . lsp)
            (haskell-literate-mode . lsp))))
 
