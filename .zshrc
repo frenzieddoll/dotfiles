@@ -46,6 +46,8 @@ bindkey "^[[3~" delete-char
 # pathを通す
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.emacs.d/script:$PATH"
+export PATH="$HOME/.ghcup/bin:$PATH"
+export PATH="$HOME/.ghcup/ghc/8.10.7/bin/:$PATH"
 
 # export PATH="/Library/Frameworks/Python.framework/Versions/3.7/bin/:$PATH"
 
@@ -57,11 +59,11 @@ alias la='ls -a'
 alias ll='ls -lh'
 alias rm='rm -i'
 alias cp='cp -p'
-# alias startx='startx -- -dpi 138'
-alias ghc="stack ghc"
-alias ghci="stack ghci"
-alias runghc="stack runghc"
-alias runhaskell="stack runghc"
+alias startx='startx -- -dpi 138'
+# alias ghc="stack ghc"
+# alias ghci="stack ghci"
+# alias runghc="stack runghc"
+# alias runhaskell="stack runghc"
 alias pacmanlist="pacman -Qqe > ~/projects/dotfiles/.pkglist"
 
 case `uname -n` in

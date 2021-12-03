@@ -442,10 +442,9 @@
   ;;                                                 '(list "dvd" "mpv dvd:// -dvd-device $1")
   ;;                                                 '(list "dvdCopy" "dvdbackup -i /dev/sr0 -o ~/Downloads/iso/ -M"))))
   :config
-  (leaf *unixCommandEmu
-    :unless (eq system-type 'windows)
-    :config (eval-after-load "esh-module"
-              '(defvar eshell-modules-list (delq 'eshell-ls (delq 'eshell-unix eshell-modules-list)))))
+  (if (not (eq system-type 'windows))
+          (eval-after-load "esh-module"
+            '(defvar eshell-modules-list (delq 'eshell-ls (delq 'eshell-unix eshell-modules-list)))))
   (setenv "GIT_PAGER" "")
 
   :preface
@@ -1675,7 +1674,8 @@
   ;; :unless (string-match "Raspberrypi" (system-name))
   :custom ((lsp-idle-delay . 0.500)
            (lsp-log-io . nil)
-           (lsp-keymap-prefix . "M-l"))
+           (lsp-keymap-prefix . "M-l")
+           (lsp-prefer-capf . t))
   :hook ((lsp-mode . lsp-enable-which-key-integration)
          (haskell-mode-hook . lsp)
          (haskell-mode-hook . flycheck-mode)
@@ -1872,9 +1872,16 @@
     :emacs>= 24.3
     :ensure t
     :require t
-    :custom ((lsp-haskell-server-path . "~/.ghcup/bin/haskell-language-server-9.0.1"))
-    :hook ((haskell-mode . lsp)
-           (haskell-literate-mode . lsp))))
+    :custom ((lsp-haskell-server-path . "/home/toshiaki/.ghcup/bin/haskell-language-server-wrapper"))
+    :hook ((haskell-mode-hook . lsp)
+           (haskell-literate-mode . lsp)))
+  (leaf company-ghci
+    :doc "company backend which uses the current ghci process."
+    :req "company-0.8.11" "haskell-mode-13"
+    :added "2021-12-03"
+    :ensure t
+    :config
+    (push 'company-ghci company-backends)))
 
 (leaf python-mode
   :doc "Python major mode"
@@ -2049,7 +2056,7 @@
     ;; :require t
     :disabled t
     :custom ((corfu-cycle . t)
-             (corfu-auto . t)
+             (corfu-auto . nil)
              (corfu-quit-at-boundary . t)
              (corfu-quit-no-match . t)
              (corfu-echo-documentation . nil)
