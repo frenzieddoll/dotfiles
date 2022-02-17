@@ -1541,8 +1541,7 @@
   :url "http://github.com/joaotavora/yasnippet"
   :added "2021-09-05"
   :ensure t
-  :disabled t
-  :diminish t
+  ;; :disabled t
   :unless (string-match "Raspberrypi" (system-name))
   :custom ((yas-global-mode . t))
   :bind ((yas-minor-mode-map
@@ -1550,6 +1549,7 @@
   :config
   (leaf yas_hook
     :require cl
+    :disabled t
     :config
     (defvar ivy-programing-hooks ()
       '(emacs-lisp-mode
@@ -1670,16 +1670,25 @@
   :added "2021-11-06"
   :emacs>= 26.1
   :ensure t
+  ;; :disabled t
   ;; :el-get emacs-lsp/lsp-mode
   ;; :unless (string-match "Raspberrypi" (system-name))
   :custom ((lsp-idle-delay . 0.500)
            (lsp-log-io . nil)
            (lsp-keymap-prefix . "M-l")
-           (lsp-prefer-capf . t))
+           (lsp-prefer-capf . t)
+           (lsp-headerline-breadcrumb-icons-enable . nil)
+           (lsp-completion-provider . :none))
+  :init
+  (defun my/lsp-mode-setup-completion ()
+    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+          '(orderless)))
   :hook ((lsp-mode . lsp-enable-which-key-integration)
+         (lsp-completion-mode . my/lsp-mode-setup-completion)
          (haskell-mode-hook . lsp)
          (haskell-mode-hook . flycheck-mode)
-         (rustic-mode . lsp))
+         (rustic-mode . lsp)
+         (c-mode-hook . lps))
   :config
   (leaf lsp-ui
     :doc "UI modules for lsp-mode"
@@ -1689,8 +1698,18 @@
     :added "2021-11-06"
     :emacs>= 26.1
     :ensure t
+    ;; :disabled t
     :hook ((lsp-mode-hook . lsp-ui-mode))
     :commands lsp-ui-mode)
+  (leaf lsp-treemacs
+    :doc "LSP treemacs"
+    :req "emacs-26.1" "dash-2.18.0" "f-0.20.0" "ht-2.0" "treemacs-2.5" "lsp-mode-6.0"
+    :tag "languages" "emacs>=26.1"
+    :url "https://github.com/emacs-lsp/lsp-treemacs"
+    :added "2021-12-21"
+    :emacs>= 26.1
+    ;; :disabled t
+    :ensure t)
   (leaf consult-lsp
     :doc "LSP-mode Consult integration"
     :req "emacs-27.1" "lsp-mode-5.0" "consult-0.9" "f-0.20.0"
@@ -1698,7 +1717,9 @@
     :url "https://github.com/gagbo/consult-lsp"
     :added "2021-11-08"
     :emacs>= 27.1
-    :ensure t))
+    ;; :disabled t
+    :ensure t)
+  )
 
 ;; (leaf quickrun
 ;;   :ensure t
@@ -1870,18 +1891,12 @@
     :url "https://github.com/emacs-lsp/lsp-haskell"
     :added "2021-09-05"
     :emacs>= 24.3
-    :ensure t
     :require t
-    :custom ((lsp-haskell-server-path . "/home/toshiaki/.ghcup/bin/haskell-language-server-wrapper"))
-    :hook ((haskell-mode-hook . lsp)
-           (haskell-literate-mode . lsp)))
-  (leaf company-ghci
-    :doc "company backend which uses the current ghci process."
-    :req "company-0.8.11" "haskell-mode-13"
-    :added "2021-12-03"
-    :ensure t
-    :config
-    (push 'company-ghci company-backends)))
+    ;; :disabled t
+    :custom ((lsp-haskell-server-path . "haskell-language-server-wrapper"))
+    :hook (;; (lsp-mode-hook . lsp-ui-mode)
+           (haskell-mode-hook . lsp)
+           (haskell-literate-mode . lsp))))
 
 (leaf python-mode
   :doc "Python major mode"
@@ -1926,6 +1941,7 @@
   :emacs>= 27.1
   :ensure t
   :require t
+  ;; :disabled t
   :bind ((vertico-map
           ("?" . minibuffer-complition-help)
           ("M-RET" . minibuffer-force-complete-and-exit)
@@ -2024,7 +2040,7 @@
     :added "2021-10-01"
     :emacs>= 25.1
     :ensure t
-    ;; :disabled t
+    :disabled t
     :bind ((company-active-map
             ("M-n" . nil)
             ("M-p" . nil)
@@ -2053,16 +2069,19 @@
     :added "2021-09-11"
     :emacs>= 27.1
     :ensure t
-    ;; :require t
-    :disabled t
-    :custom ((corfu-cycle . t)
-             (corfu-auto . nil)
-             (corfu-quit-at-boundary . t)
+    :require t
+    ;; :disabled t
+    :custom ((tab-always-indent . 'complete)
+             (corfu-cycle . t)
+             (corfu-auto . t)
+             (corfu-auto-prefix . 1)
+             (corfu-auto-delay . 0.1)
+             (corfu-preselect-first . nil)
+             (corfu-quit-at-boundary . nil)
              (corfu-quit-no-match . t)
              (corfu-echo-documentation . nil)
              (completion-cycle-threshold . 1)
-             (corfu-auto-delay . 0)
-             (tab-always-indent . 'complete))
+             )
     :global-minor-mode corfu-global-mode
     ;; :hook ((eshell-mode-hook . (lambda () (custom-set-variables '(corfu-auto nil))))
     ;;        (emacs-lisp-mode-hook . (lambda () (custom-set-variables '(corfu-auto t)))))
@@ -2151,7 +2170,7 @@
                                           (,(kbd "s-]")     . upperLight)
                                           ;; (,(kbd "s-d")     . counsel-linux-app)
                                           (,(kbd "s-d")     . app-launcher-run-app)
-                                          ;; (,(kbd "s-o")     . ivy-switch-buffer)
+                                          (,(kbd "s-o")     . ivy-switch-buffer)
                                           (,(kbd "s-a")     . zoom-window-zoom)
                                           (,(kbd "s-o")     . consult-buffer)))
               (exwm-input-simulation-keys . '(;; new version
@@ -2225,7 +2244,7 @@
     (leaf exwm-randr
       :require t
       :when (string= (system-name) "archlinuxhonda")
-      :custom ((exwm-randr-workspace-monitor-plist . '(0 "DP-4" 1 "DP-4" 2 "HDMI-0" 3 "DP-4" 4 "DP-4" 5 "DP-4")))
+      :custom ((exwm-randr-workspace-monitor-plist . '(0 "HDMI-0" 1 "HDMI-0" 2 "HDMI-0" 3 "HDMI-0" 4 "HDMI-0" 5 "HDMI-0")))
       :hook (exwm-randr-screen-change-hook . (lambda ()
                                                 (start-process-shell-command
                                                  "xrandr" nil "xrandr --output DP-4 --auto --output HDMI-0 --auto --right-of DP-4; xrandr --output HDMI-0 --auto --scale 1.5x1.5")))
