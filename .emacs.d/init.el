@@ -2076,22 +2076,38 @@
              (corfu-auto . t)
              (corfu-auto-prefix . 1)
              (corfu-auto-delay . 0.1)
-             (corfu-preselect-first . nil)
-             (corfu-quit-at-boundary . nil)
-             (corfu-quit-no-match . t)
-             (corfu-echo-documentation . nil)
-             (completion-cycle-threshold . 1)
+             (corfu-quit-no-match . 'separator)
+             (corfu-separator . ?\s)
              )
+    :bind
+    ((corfu-map ("SPC" . corfu-insert-separator)
+                )
+     )
+
+    :init
+    (defun my/corfu-enable-in-minibuffer ()
+      (when (where-is-internal #'completion-at-point (list (current-local-map)))
+        (setq-local corfu-auto nil)
+        (corfu-mode 1)))
+    (defun my/corfu-insert-and-send ()
+      (interactive)
+      (corfu-insert)
+      (cond
+       ((and (derived-mode-p 'eshell-mode) (fboundp 'eshell-send-input))
+        (eshell-send-input)
+        ((derived-mode-p 'comint-mode)
+         (comint-send-input)))))
     :global-minor-mode corfu-global-mode
-    ;; :hook ((eshell-mode-hook . (lambda () (custom-set-variables '(corfu-auto nil))))
-    ;;        (emacs-lisp-mode-hook . (lambda () (custom-set-variables '(corfu-auto t)))))
-    :config
-    (leaf dabbrev
-      :doc "dynamic abbreviation package"
-      :tag "builtin"
-      :added "2021-09-20"
-      :bind (("M-/" . dabbrev-completion)
-             ("C-M-/" . dabbrev-expand))))
+    :hook ((minibuffer-setup-hook . my/corfu-enable-in-minibuffer)
+           (eshell-mode-hook . (lambda ()
+                                 (setq-local corfu-auto nil)
+                                 (corfu-mode)))))
+  (leaf dabbrev
+    :doc "dynamic abbreviation package"
+    :tag "builtin"
+    :added "2021-09-20"
+    :bind (("M-/" . dabbrev-completion)
+           ("C-M-/" . dabbrev-expand)))
   (leaf *emacs
     :preface
     ;; Add prompt indicator to `completing-read-multiple'.
