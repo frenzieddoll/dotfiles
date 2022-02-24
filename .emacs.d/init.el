@@ -1660,6 +1660,16 @@
 
   :global-minor-mode t)
 
+(leaf smartparens
+  :doc "Automatic insertion, wrapping and paredit-like navigation with user defined pairs."
+  :req "dash-2.13.0" "cl-lib-0.3"
+  :tag "editing" "convenience" "abbrev"
+  :url "https://github.com/Fuco1/smartparens"
+  :added "2022-02-25"
+  :ensure t
+  :hook ((after-init-hook . smartparents-global-strict-mode))
+  :custom ((electric-pair-mode . nil)))
+
 
 ;; プログラミング設定
 (leaf lsp-mode
