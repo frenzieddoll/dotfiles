@@ -446,7 +446,6 @@
           (eval-after-load "esh-module"
             '(defvar eshell-modules-list (delq 'eshell-ls (delq 'eshell-unix eshell-modules-list)))))
   (setenv "GIT_PAGER" "")
-
   :preface
   (defun eshell-alias ()
     (interactive)
@@ -502,7 +501,20 @@
       (cond ((pcomplete-test "--user")
              (pcomplete-here pcomplete-systemctl-commands)
              (pcomplete-here pcomplete-systemd-user-units))
-            (t (pcomplete-here pcomplete-systemd-units))))))
+            (t (pcomplete-here pcomplete-systemd-units)))))
+  (leaf eshell-prompt-extras
+    :doc "Display extra information for your eshell prompt."
+    :req "emacs-25"
+    :tag "prompt" "eshell" "emacs>=25"
+    :url "https://github.com/zwild/eshell-prompt-extras"
+    :added "2022-03-19"
+    :emacs>= 25
+    :ensure t
+    :config
+    (with-eval-after-load "esh-opt"
+      (autoload 'epe-theme-lambda "eshell-prompt-extras")
+      (setq eshell-highlight-prompt nil
+            eshell-prompt-function 'epe-theme-lambda))))
 
 (leaf *globa-keybinding
   :hook (minibuffer-setup-hook . minibuffer-delete-backward-char)
@@ -1667,8 +1679,17 @@
   :url "https://github.com/Fuco1/smartparens"
   :added "2022-02-25"
   :ensure t
-  :hook ((after-init-hook . smartparents-global-strict-mode))
-  :custom ((electric-pair-mode . nil)))
+  :bind (("C-c s" . smartparens-mode)
+         (:smartparens-mode-map
+          ("C-M-f" . sp-forward-sexp)
+          ("C-M-b" . sp-backward-sexp)
+          ("C-M-n" . sp-next-sexp)
+          ("C-M-p" . sp-previous-sexp)
+          ("C-M-a" . sp-beginning-of-sexp)
+          ("C-M-e" . sp-end-of-sexp))
+         (:lisp-mode-map
+          :package lisp-mode-map
+          ("C-c s" . smartparens-strict-mode))))
 
 
 ;; プログラミング設定
@@ -1996,7 +2017,14 @@
                                           consult--source-project-buffer
                                           consult--source-project-file))
               (consult-preview-key . ,(kbd "C-.")))
-    :global-minor-mode (recentf-mode))
+    :global-minor-mode (recentf-mode)
+    :config
+    (define-obsolete-variable-alias
+      'consult--source-file
+      'consult--source-recent-file "0.14")
+    (define-obsolete-variable-alias
+      'consult--source-project-file
+      'consult--source-project-recent-file "0.14"))
   (leaf marginalia
     :doc "Enrich existing commands with completion annotations"
     :req "emacs-26.1"
@@ -2084,7 +2112,7 @@
     :custom ((tab-always-indent . 'complete)
              (corfu-cycle . t)
              (corfu-auto . t)
-             (corfu-auto-prefix . 1)
+             (corfu-auto-prefix . 3)
              (corfu-auto-delay . 0.1)
              (corfu-quit-no-match . 'separator)
              (corfu-separator . ?\s)
