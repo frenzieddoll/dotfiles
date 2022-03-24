@@ -760,6 +760,13 @@
     :config
     (run-with-idle-timer 60 t 'my-save-frame-size)))
 
+(leaf ediff
+  :doc "a comprehensive visual interface to diff & patch"
+  :tag "builtin"
+  :added "2022-03-24"
+  :custom `((ediff-window-setup-function . 'ediff-setup-windows-plain)
+            (ediff-split-window-function . 'split-window-horizontally)))
+
 
 ;; theme
 (leaf doom-themes
@@ -2055,7 +2062,17 @@
     :emacs>= 26.1
     :ensure t
     :bind (("s-g" . embark-act))
-    :custom ((prefix-help-command . #'embark-prefix-help-command)))
+    ;; :custom ((prefix-help-command . #'embark-prefix-help-command))
+    :config
+    (leaf embark-consult
+      :doc "Consult integration for Embark"
+      :req "emacs-26.1" "embark-0.12" "consult-0.10"
+      :tag "convenience" "emacs>=26.1"
+      :url "https://github.com/oantolin/embark"
+      :added "2022-03-24"
+      :emacs>= 26.1
+      :ensure t
+      :after embark consult))
   (leaf savehist
     :doc "Save minibuffer history"
     :tag "builtin"

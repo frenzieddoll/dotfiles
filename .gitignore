@@ -20,6 +20,7 @@
 # .config
 !/.config/mimeapps.list
 !/.config/brave-flags.conf
+!/.config/fbtermrc
 !/.config/alacritty/*
 !/.config/libskk/*
 !/.config/mpv/*
@@ -35,4 +36,3 @@
 !/.pkglist
 !/.xinitrc
 !/.zshrc
-!/.fbtermrc
