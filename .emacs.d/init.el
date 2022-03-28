@@ -849,15 +849,7 @@
   :emacs>= 25.1
   :ensure t
   :after git-commit magit-section with-editor
-  :config
-  (leaf gitignore-mode
-    :doc "Major mode for editing .gitignore files"
-    :req "emacs-24.3"
-    :tag "git" "vc" "convenience" "emacs>=24.3"
-    :url "https://github.com/magit/git-modes"
-    :added "2021-09-05"
-    :emacs>= 24.3
-    :ensure t))
+  :config)
 
 (leaf yatex
   :doc "Yet Another tex-mode for emacs //野鳥//"
