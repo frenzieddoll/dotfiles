@@ -2,6 +2,7 @@
     "define": {
         "keymap": {
             "Escape": "abort",
+            "C-g": "abort",
             "\n": "commit-unhandled",
             "C-m": "commit-unhandled",
             "\b": "delete",

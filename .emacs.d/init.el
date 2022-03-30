@@ -1478,6 +1478,7 @@
   :bind (("C-x j" . skk-mode)
          ("C-j" . nil)
          ("C-j" . skk-hiragana-set)
+         ("<Insert>" . skk-latin-mode)
          ("C-l" . skk-latin-mode)
          (minibuffer-local-map
           ("C-j" . skk-kakutei)
@@ -2247,7 +2248,7 @@
                                           (,(kbd "s-e")     . exwm-input-toggle-keyboard)
                                           (,(kbd "s-r")     . exwm-reset)
                                           (,(kbd "C-j")     . ,(kbd "C-q"))
-                                          (,(kbd "C-l")     . [insert])
+                                          (,(kbd "C-l")     . ,(kbd "C-]"))
                                           ;; (,(kbd "C-j")     . ,(kbd "C-,"))
                                           ;; (,(kbd "C-l")     . ,(kbd "C-."))
                                           ,@(mapcar (lambda (i)
@@ -2328,8 +2329,8 @@
                                               (,(kbd "C-u C-/")       . [C-y])
                                               (,(kbd "<mouse-11>")    . [right])
                                               (,(kbd "<mouse-12>")    . [left]))))
-    :bind (("C-&" . skk-hiragana-set)
-           ("C-^" . skk-latin-mode))
+    :bind (("C-]" . skk-latin-mode)
+           ("C-l" . skk-latin-mode))
     :preface
     (defun exwm-workspace-toggle ()
       (interactive)
