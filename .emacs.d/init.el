@@ -670,7 +670,7 @@
     :added "2021-09-05"
     :emacs>= 24.3
     :ensure t
-    :custom (zoom-window-mode-line-color . "DarkBlue"))
+    :custom (zoom-window-mode-line-color . "DarkGreen"))
 
   (leaf *ForMac
     :when (eq system-type 'darwin)
@@ -777,6 +777,7 @@
   :url "https://github.com/hlissner/emacs-doom-themes"
   :added "2021-09-05"
   :emacs>= 25.1
+  :disabled t
   :ensure t
   :when (eq (window-system) 'x)
   :custom ((doom-themes-enable-italic . t)
@@ -803,6 +804,44 @@
               (doom-modeline-mode                   . t)
               (line-number-mode . 0)
               (column-number-mode . 0))))
+
+(leaf nord-theme
+  :doc "An arctic, north-bluish clean and elegant theme"
+  :req "emacs-24"
+  :tag "emacs>=24"
+  :url "https://github.com/arcticicestudio/nord-emacs"
+  :added "2022-03-30"
+  :emacs>= 24
+  :ensure t
+  :config
+  (load-theme 'nord t))
+
+(leaf moody
+  :doc "Tabs and ribbons for the mode line"
+  :req "emacs-25.3"
+  :tag "emacs>=25.3"
+  :url "https://github.com/tarsius/moody"
+  :added "2022-03-30"
+  :emacs>= 25.3
+  :ensure t
+  :custom
+  ((x-uderline-at-descent-line . t))
+  :config
+  (moody-replace-mode-line-buffer-identification)
+  (moody-replace-vc-mode)
+  (moody-replace-eldoc-minibuffer-message-function)
+  (column-number-mode)
+  (leaf minions
+    :doc "A minor-mode menu for the mode line"
+    :req "emacs-25.2"
+    :tag "emacs>=25.2"
+    :url "https://github.com/tarsius/minions"
+    :added "2022-03-30"
+    :emacs>= 25.2
+    :ensure t
+    :custom ((minions-mode-line-lighter . "[+]"))
+    :global-minor-mode (minions-mode))
+  )
 
 
 ;; メジャーモードの設定
@@ -1552,7 +1591,7 @@
   :url "http://github.com/joaotavora/yasnippet"
   :added "2021-09-05"
   :ensure t
-  ;; :disabled t
+  :disabled t
   :unless (string-match "Raspberrypi" (system-name))
   :custom ((yas-global-mode . t))
   :bind ((yas-minor-mode-map
@@ -2207,8 +2246,10 @@
                                           (,(kbd "s-SPC")   . exwm-floating-toggle-floating)
                                           (,(kbd "s-e")     . exwm-input-toggle-keyboard)
                                           (,(kbd "s-r")     . exwm-reset)
-                                          (,(kbd "C-j")     . ,(kbd "C-&"))
-                                          (,(kbd "C-l")     . ,(kbd "C-^"))
+                                          (,(kbd "C-j")     . ,(kbd "C-q"))
+                                          (,(kbd "C-l")     . [insert])
+                                          ;; (,(kbd "C-j")     . ,(kbd "C-,"))
+                                          ;; (,(kbd "C-l")     . ,(kbd "C-."))
                                           ,@(mapcar (lambda (i)
                                                       `(,(kbd (format "s-%d" i)) .
                                                         (lambda ()
