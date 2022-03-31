@@ -1132,21 +1132,21 @@
   :doc "Export Framework for Org Mode"
   :tag "builtin"
   :added "2021-09-05"
-  :custom ((org-agenda-files . '("~/Dropbox/org/todo.org"
-                                 "~/Dropbox/org/todo_SonyLSI.org")))
+  :custom ((org-agenda-files . '("~/Dropbox/org/todo.org")))
   :bind (("C-c a" . org-agenda))
   :config
   (leaf org-plus-contrib
     :doc "Outline-based notes management and organizer"
     :added "2021-09-05"
     :ensure t
-    :hook ((org-mode-hook . eldoc-mode))    :config
+    :hook ((org-mode-hook . eldoc-mode))
+    :config
     (defadvice org-eldoc-documentation-function (around add-field-info activate)
       (or
        (ignore-errors (and (not (org-at-table-hline-p)) (org-table-field-info nil)))
        ad-do-it))
     (eldoc-add-command-completions
-     "org-table-next-" "org-table-previous" "org-cycle")))
+     "org-table-next-" "org-table-previous" "org-cycle"))
 
 (leaf pdf-tools
   :doc "Support library for PDF documents"
@@ -1576,7 +1576,7 @@
     (add-hook 'calendar-load-hook (lambda ()
                                     (require 'japanese-holidays)
                                     (setq calendar-holidays
-                                          (append japanese-holidays local-holidays other-holidays))))))
+                                          (append japanese-holidays))))))
 
 (leaf online-judge
   :when (executable-find "oj")
@@ -1628,7 +1628,7 @@
   :after lv
   :hydra
   (hydra-pinky
-   (global-map "C-]")
+   (global-map "C-.")
    "pinky"
    ("n" next-line)
    ("p" previous-line)
