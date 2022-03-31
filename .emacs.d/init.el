@@ -1146,7 +1146,7 @@
        (ignore-errors (and (not (org-at-table-hline-p)) (org-table-field-info nil)))
        ad-do-it))
     (eldoc-add-command-completions
-     "org-table-next-" "org-table-previous" "org-cycle"))
+     "org-table-next-" "org-table-previous" "org-cycle")))
 
 (leaf pdf-tools
   :doc "Support library for PDF documents"
