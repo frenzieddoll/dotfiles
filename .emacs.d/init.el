@@ -2084,7 +2084,20 @@
     :ensure t
     :custom ((completion-styles . '(orderless))
              (completion-category-defaults . nil)
-             (completion-category-overrides . '((file (style . (partial-completion)))))))
+             (completion-category-overrides . '((file (style . (partial-completion))))))
+    :init
+    (defun my/orderless-dispatch-flex-first (_pattern index _total)
+      (and (eq index 0) 'orderless-flex))
+
+    (defun my/orderless-for-corfu ()
+      (setq-local orderless-style-dispatchers '(my/orderless-dispatch-flex-first)))
+
+    (defun my/orderless-for-lsp-mode ()
+      (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+	        '(orderless)))
+    :hook
+    ((corfu-mode-hook . my/orderless-for-corfu)
+     (lsp-completion-mode-hook . my/orderless-for-lsp-mode)))
   (leaf embark
     :doc "Conveniently act on minibuffer completions"
     :req "emacs-26.1"
@@ -2165,11 +2178,11 @@
              (corfu-auto-delay . 0.1)
              (corfu-quit-no-match . 'separator)
              (corfu-separator . ?\s)
+             (corfu-preselect-first . nil)
              )
     :bind
-    ((corfu-map ("SPC" . corfu-insert-separator)
-                )
-     )
+    ((corfu-map
+      ("SPC" . corfu-insert-separator)))
 
     :init
     (defun my/corfu-enable-in-minibuffer ()
@@ -2188,7 +2201,24 @@
     :hook ((minibuffer-setup-hook . my/corfu-enable-in-minibuffer)
            (eshell-mode-hook . (lambda ()
                                  (setq-local corfu-auto nil)
-                                 (corfu-mode)))))
+                                 (corfu-mode))))
+    :config
+    (leaf cape
+      :doc "Completion At Point Extensions"
+      :req "emacs-27.1"
+      :tag "emacs>=27.1"
+      :url "https://github.com/minad/cape"
+      :added "2022-03-31"
+      :emacs>= 27.1
+      :ensure t
+      :config
+      (add-to-list 'completion-at-point-functions #'cape-file)
+      (add-to-list 'completion-at-point-functions #'cape-tex)
+      (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+      (add-to-list 'completion-at-point-functions #'cape-keyword)
+      (add-to-list 'completion-at-point-functions #'cape-abbrev)
+      (add-to-list 'completion-at-point-functions #'cape-ispell)
+      (add-to-list 'completion-at-point-functions #'cape-symbol)))
   (leaf dabbrev
     :doc "dynamic abbreviation package"
     :tag "builtin"
