@@ -176,19 +176,7 @@
   :config
   (set-face-background 'region "#555")
   (run-with-idle-timer 60.0 t #'garbage-collect)
-  (defalias 'yes-or-no-p 'y-or-n-p)
-  (leaf *gc-cons-threshold-arch
-    :when (string-match (system-name) "archlinuxhonda")
-    :custom `((gc-cons-threshold . ,(* 1024 1024 1024))))
-  (leaf *gc-cons-threshold-arch-laptop
-    :when (string-match (system-name) "ArchLinuxonLaptopPC")
-    :custom `((gc-cons-threshold . ,(* 64 1024 1024))))
-  (leaf *gc-cons-threshold-mac
-    :when (string= system-type "darwin")
-    :custom `((gc-cons-threshold . ,(* 32 1024 1024))))
-  (leaf *gc-cons-threshold-pi
-    :when (string= (system-name) "RaspberryPi")
-    :custom `((gc-cons-threshold . ,(* 16 1024 1024)))))
+  (defalias 'yes-or-no-p 'y-or-n-p))
 
 (leaf *fontSetting
   :config
