@@ -1680,7 +1680,8 @@
   :added "2021-09-18"
   :emacs>= 24
   :ensure t
-  :global-minor-mode t)
+  :global-minor-mode t
+  :custom `((read-process-output-max . ,(* 64 1024 1024))))
 
 (leaf git-gutter
   :doc "Port of Sublime Text plugin GitGutter"
