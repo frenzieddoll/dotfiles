@@ -59,7 +59,7 @@
   :bind (("C-c j" . macrostep-expand)))
 
 
-;; 起動初期設定
+;; boot
 (leaf *add-to-load-path
   :load-path `(,(mapcar (lambda (elm)
                           (concat user-emacs-directory elm))
@@ -92,13 +92,50 @@
   :config
   (exec-path-from-shell-initialize))
 
+(leaf gcmh
+  :doc "the Garbage Collector Magic Hack"
+  :req "emacs-24"
+  :tag "internal" "emacs>=24"
+  :url "https://gitlab.com/koral/gcmh"
+  :added "2021-09-18"
+  :emacs>= 24
+  :ensure t
+  :global-minor-mode t
+  :custom `((read-process-output-max . ,(* 64 1024 1024))
+            (garbage-collection-messages           . t)))
+
+  (leaf async
+    :doc "Asynchronous processing in Emacs"
+    :req "emacs-24.4"
+    :tag "async" "emacs>=24.4"
+    :url "https://github.com/jwiegley/emacs-async"
+    :added "2021-09-05"
+    :emacs>= 24.4
+    :ensure t
+    :custom ((dired-async-mode . 1)
+             (async-bytecomp-package-mode . 1)
+             (async-bytecomp-allowed-packages . '(all))))
+
+;; 基本設定
 (leaf *cus-start
   :doc "define customization properties of builtins"
   :url "http://handlename.hatenablog.jp/entry/2011/12/11/214923" ; align sumple
   :defvar show-paren-deley
-  :custom `(;; GC
-            (garbage-collection-messages           . t)
-            ;; 表示
+
+  :hook  (;; 保存時にいらないスペースを削除
+          (before-save-hook . delete-trailing-whitespace)
+          (after-save-hook . flashAfterSave))
+
+  :preface
+  (defun flashAfterSave ()
+    (interactive)
+    (let ((orig-fg (face-background 'mode-line)))
+      (set-face-background 'mode-line "dark green")
+      (run-with-idle-timer 0.1 nil
+                           (lambda (fg) (set-face-background 'mode-line fg))
+                           orig-fg)))
+
+  :custom `(;; 表示
             (tool-bar-mode                         . nil)
             (scroll-bar-mode                       . nil)
             (menu-bar-mode                         . nil)
@@ -113,12 +150,12 @@
             (truncate-partial-width-windows        . nil)
             (paragraph-start                       . '"^\\([ 　・○<\t\n\f]\\|(?[0-9a-zA-Z]+)\\)")
             (auto-fill-mode                        . nil)
-            (next-line-add-newlines                . nil)  ;; バッファ終端で newline を入れない
             (read-file-name-completion-ignore-case . t)  ; 大文字小文字区別無し
             ;; undo/redo - 数字に根拠無し
             (undo-limit                            . 200000)
             (undo-strong-limit                     . 260000)
-            (history-length                        . t)  ;; 無制限(の筈)
+            ;; 履歴無制限
+            (history-length                        . t)
             (create-lockfiles                      . nil)
             (use-dialog-box                        . nil)
             (use-file-dialog                       . nil)
@@ -165,8 +202,8 @@
             ;; byte-compileのエラーを無視する
             (debug-on-error . nil)
             (byte-compile-no-warnings . t)
-            ;; キルリングの設定(scratchの設定に書いていた)
-            (kill-ring-max                . 100)
+            ;; キルリングの設定
+            (kill-ring-max                . 10000)
             (kill-read-only-ok            . t)
             (kill-whole-line              . t)
             (eval-expression-print-length . nil)
@@ -176,7 +213,12 @@
   :config
   (set-face-background 'region "#555")
   (run-with-idle-timer 60.0 t #'garbage-collect)
-  (defalias 'yes-or-no-p 'y-or-n-p))
+  (defalias 'yes-or-no-p 'y-or-n-p)
+  (with-current-buffer "*scratch*"
+    (emacs-lock-mode 'kill))
+  (with-current-buffer "*Messages*"
+    (emacs-lock-mode 'kill))
+)
 
 (leaf *fontSetting
   :config
@@ -227,10 +269,8 @@
                       (font-spec :family "HackGen"
                                  :height 120))))
 
-(leaf *hooks
-  :hook  ((before-save-hook . delete-trailing-whitespace)))
-
 (leaf *scratch
+  :disabled t
   :hook  ((kill-buffer-query-functions . (lambda ()
                                            (if (string= "*scratch*" (buffer-name))
                                                (progn (my:make-scratch 0) nil)
@@ -309,18 +349,7 @@
     :bind ((dired-mode-map
             :package dired
             ("P" . peep-dired))))
-  (leaf async
-    :doc "Asynchronous processing in Emacs"
-    :req "emacs-24.4"
-    :tag "async" "emacs>=24.4"
-    :url "https://github.com/jwiegley/emacs-async"
-    :added "2021-09-05"
-    :emacs>= 24.4
-    :ensure t
-    :custom ((dired-async-mode . 1)
-             (async-bytecomp-package-mode . 1)
-             (async-bytecomp-allowed-packages . '(all))))
-  (leaf dired-open
+(leaf dired-open
     :doc "Open files from dired using using custom actions"
     :req "dash-2.5.0" "dired-hacks-utils-0.0.1"
     :tag "files"
@@ -413,27 +442,26 @@
   :bind (("C-c e" . eshell))
   :hook (eshell-mode-hook . eshell-alias)
   :defvar eshell-command-aliases-list
-  ;; :custom `((eshell-command-aliase-list . '(list '(list "ll" "ls -ltrh")
-  ;;                                                 '(list "la" "ls -a")
-  ;;                                                 '(list "o" "xdg-open")
-  ;;                                                 '(list "emacs" "find-file $1")
-  ;;                                                 '(list "m" "find-file $1")
-  ;;                                                 '(list "mc" "find-file $1")
-  ;;                                                 '(list "d" "dired .")
-  ;;                                                 '(list "l" "eshell/less $1")
-  ;;                                                 '(list "translate" "~/python/translate.py")
-  ;;                                                 '(list "pacmandate" "expac --timefmt='%Y-%m-%d %T' '%l\t%n' | sort | tail -n $1")
-  ;;                                                 '(list "manga" "wine ~/Documents/Software/picture/MangaMeeya_73/MangaMeeya.exe")
-  ;;                                                 '(list "backup" "~/.emacs.d/script/backup.sh $1")
-  ;;                                                 '(list "nvidiafix" "nvidia-settings --assign CurrentMetaMode='nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }'")
-  ;;                                                 '(list "usbmount" "sudo mount -t vfat $1 $2 -o rw,umask=000")
-  ;;                                                 '(list "dvd" "mpv dvd:// -dvd-device $1")
-  ;;                                                 '(list "dvdCopy" "dvdbackup -i /dev/sr0 -o ~/Downloads/iso/ -M"))))
   :config
   (if (not (eq system-type 'windows))
           (eval-after-load "esh-module"
             '(defvar eshell-modules-list (delq 'eshell-ls (delq 'eshell-unix eshell-modules-list)))))
   (setenv "GIT_PAGER" "")
+
+  (leaf eshell-prompt-extras
+    :doc "Display extra information for your eshell prompt."
+    :req "emacs-25"
+    :tag "prompt" "eshell" "emacs>=25"
+    :url "https://github.com/zwild/eshell-prompt-extras"
+    :added "2022-03-19"
+    :emacs>= 25
+    :ensure t
+    :config
+    (with-eval-after-load "esh-opt"
+      (autoload 'epe-theme-lambda "eshell-prompt-extras")
+      (setq eshell-highlight-prompt nil
+            eshell-prompt-function 'epe-theme-lambda)))
+
   :preface
   (defun eshell-alias ()
     (interactive)
@@ -456,53 +484,39 @@
             (list "dvd" "mpv dvd:// -dvd-device $1")
             (list "dvdCopy" "dvdbackup -i /dev/sr0 -o ~/Downloads/iso/ -M")
             (list "pkglist" "yay -Qe | cut -f 1 -d " " > ~/.emacs.d/pkglist")))))
-  (leaf *pcomplete-func
-    :preface
-    (defun pcomplete/sudo ()
-      "Completion rules for the `sudo' command."
-      (let ((pcomplete-ignore-case t))
-        (pcomplete-here (funcall pcomplete-command-completion-function))
-        (while (pcomplete-here (pcomplete-entries)))))
 
-    ;;systemctlの補完
-    (defcustom pcomplete-systemctl-commands
-      '("disable" "enable" "status" "start" "restart" "stop" "reenable"
-        "list-units" "list-unit-files")
-      "p-completion candidates for `systemctl' main commands"
-      :type '(repeat (string :tag "systemctl command"))
-      :group 'pcomplete)
-    (defvar pcomplete-systemd-units
-      (split-string
-       (shell-command-to-string
-        "(systemctl list-units --all --full --no-legend;systemctl list-unit-files --full --no-legend)|while read -r a b; do echo \" $a\";done;"))
-      "p-completion candidates for all `systemd' units")
+  (defun pcomplete/sudo ()
+    "Completion rules for the `sudo' command."
+    (let ((pcomplete-ignore-case t))
+      (pcomplete-here (funcall pcomplete-command-completion-function))
+      (while (pcomplete-here (pcomplete-entries)))))
 
-    (defvar pcomplete-systemd-user-units
-      (split-string
-       (shell-command-to-string
-        "(systemctl list-units --user --all --full --no-legend;systemctl list-unit-files --user --full --no-legend)|while read -r a b;do echo \" $a\";done;"))
-      "p-completion candidates for all `systemd' user units")
+  ;;systemctlの補完
+  (defcustom pcomplete-systemctl-commands
+    '("disable" "enable" "status" "start" "restart" "stop" "reenable"
+      "list-units" "list-unit-files")
+    "p-completion candidates for `systemctl' main commands"
+    :type '(repeat (string :tag "systemctl command"))
+    :group 'pcomplete)
+  (defvar pcomplete-systemd-units
+    (split-string
+     (shell-command-to-string
+      "(systemctl list-units --all --full --no-legend;systemctl list-unit-files --full --no-legend)|while read -r a b; do echo \" $a\";done;"))
+    "p-completion candidates for all `systemd' units")
 
-    (defun pcomplete/systemctl ()
-      "Completion rules for the `systemctl' command."
-      (pcomplete-here (append pcomplete-systemctl-commands '("--user")))
-      (cond ((pcomplete-test "--user")
-             (pcomplete-here pcomplete-systemctl-commands)
-             (pcomplete-here pcomplete-systemd-user-units))
-            (t (pcomplete-here pcomplete-systemd-units)))))
-  (leaf eshell-prompt-extras
-    :doc "Display extra information for your eshell prompt."
-    :req "emacs-25"
-    :tag "prompt" "eshell" "emacs>=25"
-    :url "https://github.com/zwild/eshell-prompt-extras"
-    :added "2022-03-19"
-    :emacs>= 25
-    :ensure t
-    :config
-    (with-eval-after-load "esh-opt"
-      (autoload 'epe-theme-lambda "eshell-prompt-extras")
-      (setq eshell-highlight-prompt nil
-            eshell-prompt-function 'epe-theme-lambda))))
+  (defvar pcomplete-systemd-user-units
+    (split-string
+     (shell-command-to-string
+      "(systemctl list-units --user --all --full --no-legend;systemctl list-unit-files --user --full --no-legend)|while read -r a b;do echo \" $a\";done;"))
+    "p-completion candidates for all `systemd' user units")
+
+  (defun pcomplete/systemctl ()
+    "Completion rules for the `systemctl' command."
+    (pcomplete-here (append pcomplete-systemctl-commands '("--user")))
+    (cond ((pcomplete-test "--user")
+           (pcomplete-here pcomplete-systemctl-commands)
+           (pcomplete-here pcomplete-systemd-user-units))
+          (t (pcomplete-here pcomplete-systemd-units)))))
 
 (leaf *globa-keybinding
   :hook (minibuffer-setup-hook . minibuffer-delete-backward-char)
@@ -596,17 +610,6 @@
      (format "xset r rate 250 40")))
   :init
   (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char))
-
-(leaf *afterSave
-  :hook (after-save-hook . flashAfterSave)
-  :preface
-  (defun flashAfterSave ()
-    (interactive)
-    (let ((orig-fg (face-background 'mode-line)))
-      (set-face-background 'mode-line "dark green")
-      (run-with-idle-timer 0.1 nil
-                           (lambda (fg) (set-face-background 'mode-line fg))
-                           orig-fg))))
 
 (leaf *window-tools
   :custom ((scroll-preserve-screen-position . t)
@@ -748,13 +751,6 @@
     :config
     (run-with-idle-timer 60 t 'my-save-frame-size)))
 
-(leaf ediff
-  :doc "a comprehensive visual interface to diff & patch"
-  :tag "builtin"
-  :added "2022-03-24"
-  :custom `((ediff-window-setup-function . 'ediff-setup-windows-plain)
-            (ediff-split-window-function . 'split-window-horizontally)))
-
 
 ;; theme
 (leaf doom-themes
@@ -833,146 +829,11 @@
 
 
 ;; メジャーモードの設定
-(leaf ein
-  :doc "Emacs IPython Notebook"
-  :req "emacs-25" "websocket-1.12" "anaphora-1.0.4" "request-0.3.3" "deferred-0.5" "polymode-0.2.2" "dash-2.13.0" "with-editor-0.-1"
-  :tag "reproducible research" "literate programming" "jupyter" "emacs>=25"
-  :url "https://github.com/dickmao/emacs-ipython-notebook"
-  :added "2021-09-05"
-  :emacs>= 25
-  :ensure t
-  :after websocket anaphora deferred polymode with-editor)
-
 (leaf csv
   :doc "Functions for reading and parsing CSV files."
   :tag "csv" "data" "extensions"
   :added "2021-09-05"
   :ensure t)
-
-(leaf vlf
-  :doc "View Large Files"
-  :tag "utilities" "large files"
-  :url "https://github.com/m00natic/vlfi"
-  :added "2021-09-05"
-  ;; :require vlf-setup
-  :ensure t
-  :disabled t)
-
-(leaf yaml
-  :doc "YAML parser for Elisp"
-  :req "emacs-25.1"
-  :tag "tools" "emacs>=25.1"
-  :url "https://github.com/zkry/yaml.el"
-  :added "2021-09-05"
-  :emacs>= 25.1
-  :ensure t)
-
-(leaf magit
-  :doc "A Git porcelain inside Emacs."
-  :req "emacs-25.1" "dash-20210330" "git-commit-20210806" "magit-section-20210806" "transient-20210701" "with-editor-20210524"
-  :tag "vc" "tools" "git" "emacs>=25.1"
-  :url "https://github.com/magit/magit"
-  :added "2021-09-05"
-  :emacs>= 25.1
-  :ensure t
-  :after git-commit magit-section with-editor
-  :config)
-
-(leaf yatex
-  :doc "Yet Another tex-mode for emacs //野鳥//"
-  :added "2021-09-05"
-  :ensure t
-  :hook ((yatex-mode-hook . (lambda () (auto-fill-mode -1)))
-         (yatex-mode-hook . reftex-mode))
-  ;; :bind (("C-c C-z" . ebib))
-  :mode (("\\.tex\\'" . yatex-mode)
-         ("\\.ltx\\'"     . yatex-mode)
-         ("\\.cls\\'"     . yatex-mode)
-         ("\\.sty\\'"     . yatex-mode)
-         ("\\.clo\\'"     . yatex-mode)
-         ("\\.bbl\\'"     . yatex-mode))
-  :custom `((YaTeX-inhibit-prefix-letter  .   t)
-            (YaTeX-kanji-code                 .   4)
-            (YaTeX-latex-message-code         .   'utf-8)
-            (YaTeX-use-LaTeX2e            .   t)
-            (YaTeX-use-AMS-LaTeX          .   t)
-            (YaTeX-dvi2-command-ext-alist .   '(("TeXworks\\|texworks\\|texstudio\\|mupdf\\|SumatraPDF\\|Preview\\|Skim\\|TeXShop\\|evince\\|atril\\|xreader\\|okular\\|zathura\\|qpdfview\\|Firefox\\|firefox\\|chrome\\|chromium\\|MicrosoftEdge\\|microsoft-edge\\|Adobe\\|Acrobat\\|AcroRd32\\|acroread\\|pdfopen\\|xdg-open\\|open\\|start" . ".pdf")))
-            (tex-command                  .   "uplatex -synctex=1")
-            ;; (tex-command  . "ptex2pdf -u -l -ot '-synctex=1 -file-line-error'")
-            ;; (tex-command  . "ptex2pdf -l -ot '-synctex=1")
-            (bibtex-command               .   "upbibtex")
-            ;; (makeindex-command  . "mendex")
-            (dviprint-command-format      .   "open -a \"Adobe Acrobat Reader DC\" `echo %s | gsed -e \"s/\\.[^.]*$/\\.pdf/\"`")
-            (YaTeX-nervous                .   nil)
-            (YaTeX-close-paren-always         .   nil))
-  :config
-  (leaf *yatexForLinux
-    :when (eq system-type 'gnu/linux)
-    :custom ((dvi2-command        .   "zathura -x \"emacsclient --no-wait +%{line} %{input}\"")
-             (tex-pdfview-command .   "zathura -x \"emacsclient --no-wait +%{line} %{input}\"")))
-
-  (leaf *yatexforMac
-    ;; :disabled t
-    :when (eq system-type 'darwin)
-    :custom ((dvi2-command        .   "open -a Skim")
-             (tex-pdfview-command .   "open -a Skim")))
-
-  (leaf *yatex_after_load
-    :after yatexprc
-    :defvar YaTeX-parent-file YaTeX-cmd-displayline
-    :defun YaTeX-preview-default-previewer YaTeX-visit-main YaTeX-system
-    :config
-    (defun YaTeX-preview-jump-line ()
-      "Call jump-line function of various previewer on current main file"
-      (interactive)
-      (save-excursion
-        (save-restriction
-          (widen)
-          (let*((pf (or YaTeX-parent-file
-                        (save-excursion (YaTeX-visit-main t) (buffer-file-name))))
-                (pdir (file-name-directory pf))
-                (bnr (substring pf 0 (string-match "\\....$" pf)))
-                                        ;(cf (file-relative-name (buffer-file-name) pdir))
-                (cf (buffer-file-name)) ;2016-01-08
-                (buffer (get-buffer-create " *preview-jump-line*"))
-                (line (count-lines (point-min) (point-end-of-line)))
-                (previewer (YaTeX-preview-default-previewer))
-                (cmd (cond
-                      ((string-match "Skim" previewer)
-                       (format "%s %d '%s.pdf' '%s'"
-                               YaTeX-cmd-displayline line bnr cf))
-                      ((string-match "evince" previewer)
-                       (format "%s '%s.pdf' %d '%s'"
-                               "fwdevince" bnr line cf))
-                      ((string-match "sumatra" previewer)
-                       (format "%s \"%s.pdf\" -forward-search \"%s\" %d"
-                               previewer bnr cf line))
-                      ((string-match "zathura" previewer)
-                       (format "%s --synctex-forward '%d:0:%s' '%s.pdf'"
-                               previewer line cf bnr))
-                      ((string-match "qpdfview" previewer)
-                       (format "%s '%s.pdf#src:%s:%d:0'"
-                               previewer bnr cf line))
-                      ((string-match "okular" previewer)
-                       (format "%s '%s.pdf#src:%d %s'"
-                               previewer bnr line (expand-file-name cf)))
-                      )))
-            (YaTeX-system cmd "jump-line" 'noask pdir)))))
-    )
-
-  (leaf reftex
-    :doc "minor mode for doing \\label, \\ref, \\cite, \\index in LaTeX"
-    :tag "builtin"
-    :added "2021-09-05"
-    :hook (yatex-mode . reftex-mode)
-    :custom ((reftex-mode . 1)
-             (reftex-label-alist . '((nil ?e nil "\\eqref{%s}" nil nil)))
-             (reftex-default-bibliography . '("~/tex/references.bib"))
-             (reftex-bibliography-commands . '("bibliography" "nobibliography" "addbibresorce")))
-
-    :bind ((YaTeX-mode-map
-            (">" . YaTeX-comment-region)
-            ("<" . YaTeX-uncomment-region)))))
 
 (leaf ebib
   :doc "a BibTeX database manager"
@@ -1007,33 +868,22 @@
     :when (eq system-type 'gnu/linux)
     :custom ((ebib-file-associations . '(("pdf" . "zathura") ("ps"  . "zathura"))))))
 
-(leaf google-translate
+(leaf ediff
+  :doc "a comprehensive visual interface to diff & patch"
+  :tag "builtin"
+  :added "2022-03-24"
+  :custom `((ediff-window-setup-function . 'ediff-setup-windows-plain)
+            (ediff-split-window-function . 'split-window-horizontally)))
+
+(leaf ein
+  :doc "Emacs IPython Notebook"
+  :req "emacs-25" "websocket-1.12" "anaphora-1.0.4" "request-0.3.3" "deferred-0.5" "polymode-0.2.2" "dash-2.13.0" "with-editor-0.-1"
+  :tag "reproducible research" "literate programming" "jupyter" "emacs>=25"
+  :url "https://github.com/dickmao/emacs-ipython-notebook"
+  :added "2021-09-05"
+  :emacs>= 25
   :ensure t
-  :require t
-  :disabled t
-  :bind (("s-v" . google-translate-enja-or-jaen))
-  :preface
-  (defun google-translate-enja-or-jaen (&optional string)
-    "Translate words in region or current position. Can also specify query with C-u"
-    (interactive)
-    (setq string
-          (cond ((stringp string) string)
-                (current-prefix-arg
-                 (read-string "Google Translate: "))
-                ((use-region-p)
-                 (buffer-substring (region-beginning) (region-end)))
-                (t
-                 (thing-at-point 'word))))
-    (let* ((asciip (string-match
-                    (format "\\`[%s]+\\'" "[:ascii:]’“”–")
-                    string)))
-      (run-at-time 0.1 nil 'deactivate-mark)
-      (google-translate-translate
-       (if asciip "en" "ja")
-       (if asciip "ja" "en")
-       string)))
-  (defun google-translate--get-b-d1 ()
-    (list 427110 1469889687)))
+  :after websocket anaphora deferred polymode with-editor)
 
 (leaf eww
   :doc "Emacs Web Wowser"
@@ -1116,6 +966,45 @@
     (setq-local eww-disable-colorize nil)
     (eww-reload)))
 
+(leaf google-translate
+  :ensure t
+  :require t
+  :disabled t
+  :bind (("s-v" . google-translate-enja-or-jaen))
+  :preface
+  (defun google-translate-enja-or-jaen (&optional string)
+    "Translate words in region or current position. Can also specify query with C-u"
+    (interactive)
+    (setq string
+          (cond ((stringp string) string)
+                (current-prefix-arg
+                 (read-string "Google Translate: "))
+                ((use-region-p)
+                 (buffer-substring (region-beginning) (region-end)))
+                (t
+                 (thing-at-point 'word))))
+    (let* ((asciip (string-match
+                    (format "\\`[%s]+\\'" "[:ascii:]’“”–")
+                    string)))
+      (run-at-time 0.1 nil 'deactivate-mark)
+      (google-translate-translate
+       (if asciip "en" "ja")
+       (if asciip "ja" "en")
+       string)))
+  (defun google-translate--get-b-d1 ()
+    (list 427110 1469889687)))
+
+(leaf magit
+  :doc "A Git porcelain inside Emacs."
+  :req "emacs-25.1" "dash-20210330" "git-commit-20210806" "magit-section-20210806" "transient-20210701" "with-editor-20210524"
+  :tag "vc" "tools" "git" "emacs>=25.1"
+  :url "https://github.com/magit/magit"
+  :added "2021-09-05"
+  :emacs>= 25.1
+  :ensure t
+  :after git-commit magit-section with-editor
+  :config)
+
 (leaf org
   :doc "Export Framework for Org Mode"
   :tag "builtin"
@@ -1150,14 +1039,14 @@
          (pdf-view-mode-hook . pdf-links-minor-mode)
          (pdf-view-mode-hook . pdf-isearch-minor-mode)))
 
-(leaf twittering-mode
-  :doc "Major mode for Twitter"
-  :tag "web" "twitter"
-  :url "http://twmode.sf.net/"
-  :added "2021-09-05"
+(leaf pulseaudio-control
+  :doc "Use `pactl' to manage PulseAudio volumes."
+  :tag "pulseaudio" "sound" "hardware" "multimedia"
+  :url "https://github.com/flexibeast/pulseaudio-control"
+  :added "2021-10-11"
   :ensure t
-  :custom ((twittering-allow-insecure-server-cert . t)
-           (twittering-use-master-password . t)))
+  :config
+  (pulseaudio-control-default-keybindings))
 
 (leaf shackle
   :doc "Enforce rules for popups"
@@ -1178,6 +1067,15 @@
             (winner-mode . 1)
             (shackle-lighter . ""))
   :bind (("C-z" . winner-undo)))
+
+(leaf twittering-mode
+  :doc "Major mode for Twitter"
+  :tag "web" "twitter"
+  :url "http://twmode.sf.net/"
+  :added "2021-09-05"
+  :ensure t
+  :custom ((twittering-allow-insecure-server-cert . t)
+           (twittering-use-master-password . t)))
 
 (leaf view
   :doc "peruse file or buffer without editing"
@@ -1362,95 +1260,178 @@
       (view-mode 1)
       (message "backward-kill-line"))))
 
-(leaf pulseaudio-control
-  :doc "Use `pactl' to manage PulseAudio volumes."
-  :tag "pulseaudio" "sound" "hardware" "multimedia"
-  :url "https://github.com/flexibeast/pulseaudio-control"
-  :added "2021-10-11"
+(leaf vlf
+  :doc "View Large Files"
+  :tag "utilities" "large files"
+  :url "https://github.com/m00natic/vlfi"
+  :added "2021-09-05"
+  ;; :require vlf-setup
   :ensure t
-  :config
-  (pulseaudio-control-default-keybindings))
+  :disabled t)
 
-(leaf ssh
-  :doc "Support for remote logins using ssh."
-  :tag "comm" "unix"
-  :added "2021-11-03"
+(leaf yaml
+  :doc "YAML parser for Elisp"
+  :req "emacs-25.1"
+  :tag "tools" "emacs>=25.1"
+  :url "https://github.com/zkry/yaml.el"
+  :added "2021-09-05"
+  :emacs>= 25.1
   :ensure t)
+
+(leaf yatex
+  :doc "Yet Another tex-mode for emacs //野鳥//"
+  :added "2021-09-05"
+  :ensure t
+  :hook ((yatex-mode-hook . (lambda () (auto-fill-mode -1)))
+         (yatex-mode-hook . reftex-mode))
+  ;; :bind (("C-c C-z" . ebib))
+  :mode (("\\.tex\\'" . yatex-mode)
+         ("\\.ltx\\'"     . yatex-mode)
+         ("\\.cls\\'"     . yatex-mode)
+         ("\\.sty\\'"     . yatex-mode)
+         ("\\.clo\\'"     . yatex-mode)
+         ("\\.bbl\\'"     . yatex-mode))
+  :custom `((YaTeX-inhibit-prefix-letter  .   t)
+            (YaTeX-kanji-code                 .   4)
+            (YaTeX-latex-message-code         .   'utf-8)
+            (YaTeX-use-LaTeX2e            .   t)
+            (YaTeX-use-AMS-LaTeX          .   t)
+            (YaTeX-dvi2-command-ext-alist .   '(("TeXworks\\|texworks\\|texstudio\\|mupdf\\|SumatraPDF\\|Preview\\|Skim\\|TeXShop\\|evince\\|atril\\|xreader\\|okular\\|zathura\\|qpdfview\\|Firefox\\|firefox\\|chrome\\|chromium\\|MicrosoftEdge\\|microsoft-edge\\|Adobe\\|Acrobat\\|AcroRd32\\|acroread\\|pdfopen\\|xdg-open\\|open\\|start" . ".pdf")))
+            (tex-command                  .   "uplatex -synctex=1")
+            ;; (tex-command  . "ptex2pdf -u -l -ot '-synctex=1 -file-line-error'")
+            ;; (tex-command  . "ptex2pdf -l -ot '-synctex=1")
+            (bibtex-command               .   "upbibtex")
+            ;; (makeindex-command  . "mendex")
+            (dviprint-command-format      .   "open -a \"Adobe Acrobat Reader DC\" `echo %s | gsed -e \"s/\\.[^.]*$/\\.pdf/\"`")
+            (YaTeX-nervous                .   nil)
+            (YaTeX-close-paren-always         .   nil))
+  :config
+  (leaf *yatexForLinux
+    :when (eq system-type 'gnu/linux)
+    :custom ((dvi2-command        .   "zathura -x \"emacsclient --no-wait +%{line} %{input}\"")
+             (tex-pdfview-command .   "zathura -x \"emacsclient --no-wait +%{line} %{input}\"")))
+
+  (leaf *yatexforMac
+    ;; :disabled t
+    :when (eq system-type 'darwin)
+    :custom ((dvi2-command        .   "open -a Skim")
+             (tex-pdfview-command .   "open -a Skim")))
+
+  (leaf *yatex_after_load
+    :after yatexprc
+    :defvar YaTeX-parent-file YaTeX-cmd-displayline
+    :defun YaTeX-preview-default-previewer YaTeX-visit-main YaTeX-system
+    :config
+    (defun YaTeX-preview-jump-line ()
+      "Call jump-line function of various previewer on current main file"
+      (interactive)
+      (save-excursion
+        (save-restriction
+          (widen)
+          (let*((pf (or YaTeX-parent-file
+                        (save-excursion (YaTeX-visit-main t) (buffer-file-name))))
+                (pdir (file-name-directory pf))
+                (bnr (substring pf 0 (string-match "\\....$" pf)))
+                                        ;(cf (file-relative-name (buffer-file-name) pdir))
+                (cf (buffer-file-name)) ;2016-01-08
+                (buffer (get-buffer-create " *preview-jump-line*"))
+                (line (count-lines (point-min) (point-end-of-line)))
+                (previewer (YaTeX-preview-default-previewer))
+                (cmd (cond
+                      ((string-match "Skim" previewer)
+                       (format "%s %d '%s.pdf' '%s'"
+                               YaTeX-cmd-displayline line bnr cf))
+                      ((string-match "evince" previewer)
+                       (format "%s '%s.pdf' %d '%s'"
+                               "fwdevince" bnr line cf))
+                      ((string-match "sumatra" previewer)
+                       (format "%s \"%s.pdf\" -forward-search \"%s\" %d"
+                               previewer bnr cf line))
+                      ((string-match "zathura" previewer)
+                       (format "%s --synctex-forward '%d:0:%s' '%s.pdf'"
+                               previewer line cf bnr))
+                      ((string-match "qpdfview" previewer)
+                       (format "%s '%s.pdf#src:%s:%d:0'"
+                               previewer bnr cf line))
+                      ((string-match "okular" previewer)
+                       (format "%s '%s.pdf#src:%d %s'"
+                               previewer bnr line (expand-file-name cf)))
+                      )))
+            (YaTeX-system cmd "jump-line" 'noask pdir)))))
+    )
+
+  (leaf reftex
+    :doc "minor mode for doing \\label, \\ref, \\cite, \\index in LaTeX"
+    :tag "builtin"
+    :added "2021-09-05"
+    :hook (yatex-mode . reftex-mode)
+    :custom ((reftex-mode . 1)
+             (reftex-label-alist . '((nil ?e nil "\\eqref{%s}" nil nil)))
+             (reftex-default-bibliography . '("~/tex/references.bib"))
+             (reftex-bibliography-commands . '("bibliography" "nobibliography" "addbibresorce")))
+
+    :bind ((YaTeX-mode-map
+            (">" . YaTeX-comment-region)
+            ("<" . YaTeX-uncomment-region)))))
 
 
 ;; マイナーモードの設定
-(leaf *cua
-  :bind (("C-x SPC" . cua-set-rectangle-mark))
-  :custom ((cua-mode . t)
-           (cua-enable-cua-keys . nil)))
-
-(leaf *hs-minor-mode
-  :hook ((emacs-lisp-mode-hook . hs-minor-mode-active))
-  :bind (("C-'" . hs-toggle-hiding))
-  :preface
-  (defun hs-minor-mode-active ()
-    (interactive)
-    (hs-minor-mode 1)))
-
-(leaf highlight-indent-guides
-  :doc "Minor mode to highlight indentation"
-  :req "emacs-24.1"
-  :tag "emacs>=24.1"
-  :url "https://github.com/DarthFennec/highlight-indent-guides"
-  :added "2021-09-05"
-  :emacs>= 24.1
-  :ensure t
-  :unless (string-match "RaspberryPi" (system-name))
-  :hook ((prog-mode-hook . highlight-indent-guides-mode))
-  :custom '((highlight-indent-guides-method . 'column)))
-
-(leaf visual-regexp-steroids
-  :doc "Extends visual-regexp to support other regexp engines"
-  :req "visual-regexp-1.1"
-  :tag "feedback" "visual" "python" "replace" "regexp" "foreign" "external"
-  :url "https://github.com/benma/visual-regexp-steroids.el/"
-  :added "2021-09-05"
-  :ensure t
-  :after visual-regexp
-  :bind (("M-%" . vr/query-replace)
-         ;; multiple-cursorsを使っているならこれで
-         ("C-c m" . vr/mc-mark)
-         ;; 普段の正規表現isearchにも使いたいならこれを
-         ("C-M-r" . vr/isearch-backward)
-         ("C-M-s" . vr/isearch-forward))
-  :custom `((vr/engine . 'python)))
-
-(leaf page-ext
-  :doc "extended page handling commands"
-  :tag "builtin"
-  :added "2021-09-05"
-  :require t)
-
-(leaf paren
-  :doc "highlight matching paren"
-  :tag "builtin"
-  :added "2021-10-02"
-  :ensure nil
-  :commands show-paren-mode
-  :hook ((after-init-hook . show-paren-mode))
-  :custom-face ((show-paren-match . '((nil (:background "#44475a" :foreground "#f1fa8c")))))
-  :custom ((show-paren-style . 'mixed)
-           (show-paren-when-point-inside-paren . t)
-           (show-paren-when-point-in-periphery . t)))
-
-(leaf undo-tree
-  :doc "Treat undo history as a tree"
-  :tag "tree" "history" "redo" "undo" "files" "convenience"
-  :url "http://www.dr-qubit.org/emacs.php"
-  :added "2021-09-05"
-  :ensure t
-  :unless (string-match "RaspberryPi" (system-name))
-  :global-minor-mode t)
-
 (leaf align
   :doc "align text to a specific column, by regexp"
   :tag "builtin"
   :added "2021-09-05")
+
+(leaf calfw
+  :doc "Calendar view framework on Emacs"
+  :tag "calendar"
+  :url "https://github.com/kiwanami/emacs-calfw"
+  :added "2021-09-05"
+  :ensure t
+  :config
+  (leaf japanese-holidays
+    :doc "Calendar functions for the Japanese calendar"
+    :req "emacs-24.1" "cl-lib-0.3"
+    :tag "calendar" "emacs>=24.1"
+    :url "https://github.com/emacs-jp/japanese-holidays"
+    :added "2021-09-05"
+    :emacs>= 24.1
+    :ensure t
+    :after calendar
+    :require japanese-holidays
+    :hook ((calendar-today-visible-hook . japanese-holiday-mark-weekend)
+           (calendar-today-invisible-hook .  japanese-holiday-mark-weekend)
+           (calendar-today-visible-hook . calendar-mark-today))
+    :custom ((calendar-mark-holidays-flag . t)
+             (japanese-holiday-weekend . '(0 6))
+             (japanese-holiday-weekend-marker . '(holiday nil nil nil nil nil japanese-holiday-saturday))
+             (org-agenda-include-diary . t))
+    :config
+    (let ((array ["日" "月" "火" "水" "木" "金" "土"]))
+      (setq calendar-day-header-array array
+            calendar-day-name-array array)))
+  (leaf calfw-org
+    :doc "calendar view for org-agenda"
+    :tag "org" "calendar"
+    :added "2021-09-05"
+    :ensure t
+    :require t)
+  (leaf calfw-ical
+    :doc "calendar view for ical format"
+    :tag "calendar"
+    :added "2021-09-05"
+    :ensure t
+    :require t
+    :config
+    (load "calfw_functions" t)
+    (add-hook 'calendar-load-hook (lambda ()
+                                    (require 'japanese-holidays)
+                                    (setq calendar-holidays
+                                          (append japanese-holidays))))))
+
+(leaf *cua
+  :bind (("C-x SPC" . cua-set-rectangle-mark))
+  :custom ((cua-mode . t)
+           (cua-enable-cua-keys . nil)))
 
 (leaf ddskk
   :doc "Simple Kana to Kanji conversion program."
@@ -1519,92 +1500,42 @@
            (dolist (skk-kakutei (skk-toggle-kana nil))))))
   )
 
-(leaf calfw
-  :doc "Calendar view framework on Emacs"
-  :tag "calendar"
-  :url "https://github.com/kiwanami/emacs-calfw"
-  :added "2021-09-05"
+(leaf git-gutter
+  :doc "Port of Sublime Text plugin GitGutter"
+  :req "emacs-24.4"
+  :tag "emacs>=24.4"
+  :url "https://github.com/emacsorphanage/git-gutter"
+  :added "2021-10-02"
+  :emacs>= 24.4
   :ensure t
-  :config
-  (leaf japanese-holidays
-    :doc "Calendar functions for the Japanese calendar"
-    :req "emacs-24.1" "cl-lib-0.3"
-    :tag "calendar" "emacs>=24.1"
-    :url "https://github.com/emacs-jp/japanese-holidays"
-    :added "2021-09-05"
-    :emacs>= 24.1
-    :ensure t
-    :after calendar
-    :require japanese-holidays
-    :hook ((calendar-today-visible-hook . japanese-holiday-mark-weekend)
-           (calendar-today-invisible-hook .  japanese-holiday-mark-weekend)
-           (calendar-today-visible-hook . calendar-mark-today))
-    :custom ((calendar-mark-holidays-flag . t)
-             (japanese-holiday-weekend . '(0 6))
-             (japanese-holiday-weekend-marker . '(holiday nil nil nil nil nil japanese-holiday-saturday))
-             (org-agenda-include-diary . t))
-    :config
-    (let ((array ["日" "月" "火" "水" "木" "金" "土"]))
-      (setq calendar-day-header-array array
-            calendar-day-name-array array)))
-  (leaf calfw-org
-    :doc "calendar view for org-agenda"
-    :tag "org" "calendar"
-    :added "2021-09-05"
-    :ensure t
-    :require t)
-  (leaf calfw-ical
-    :doc "calendar view for ical format"
-    :tag "calendar"
-    :added "2021-09-05"
-    :ensure t
-    :require t
-    :config
-    (load "calfw_functions" t)
-    (add-hook 'calendar-load-hook (lambda ()
-                                    (require 'japanese-holidays)
-                                    (setq calendar-holidays
-                                          (append japanese-holidays))))))
+  :custom-face ((git-gutter:modified . '((t (:background "#f1fa8c"))))
+                (git-gutter:added . '((t (:background "#50fa7b"))))
+                (git-gutter:deleted . '((t (:background "#ff79c6")))))
+  :custom ((git-gutter:modified-sign . "~")
+           (git-gutter:added-sign . "+")
+           (git-gutter:deleted-sign . "-"))
 
-(leaf online-judge
-  :when (executable-find "oj")
-  :el-get ROCKTAKEY/emacs-online-judge
-  :require t
-  :custom ((online-judge-directories . '("~/Dropbox/atcoder/"))
-           (online-judge-command-name . nil)))
+  :global-minor-mode t)
 
-(leaf yasnippet
-  :doc "Yet another snippet extension for Emacs"
-  :req "cl-lib-0.5"
-  :tag "emulation" "convenience"
-  :url "http://github.com/joaotavora/yasnippet"
+(leaf highlight-indent-guides
+  :doc "Minor mode to highlight indentation"
+  :req "emacs-24.1"
+  :tag "emacs>=24.1"
+  :url "https://github.com/DarthFennec/highlight-indent-guides"
   :added "2021-09-05"
+  :emacs>= 24.1
   :ensure t
-  :disabled t
-  :unless (string-match "Raspberrypi" (system-name))
-  :custom ((yas-global-mode . t))
-  :bind ((yas-minor-mode-map
-          ("C-." . ivy-yasnippet)))
-  :config
-  (leaf yas_hook
-    :require cl
-    :disabled t
-    :config
-    (defvar ivy-programing-hooks ()
-      '(emacs-lisp-mode
-        org-mode
-        yatex-mode
-        haskell-mode))
-    (loop for hook in ivy-programing-hooks
-          do (add-hook hook 'yas-minor-mode))))
+  :unless (string-match "RaspberryPi" (system-name))
+  :hook ((prog-mode-hook . highlight-indent-guides-mode))
+  :custom '((highlight-indent-guides-method . 'column)))
 
-(leaf rainbow-delimiters
-  :doc "Highlight brackets according to their depth"
-  :tag "tools" "lisp" "convenience" "faces"
-  :url "https://github.com/Fanael/rainbow-delimiters"
-  :added "2021-09-05"
-  :ensure t
-  :hook (emacs-lisp-mode-hook . rainbow-delimiters-mode))
+(leaf *hs-minor-mode
+  :hook ((emacs-lisp-mode-hook . hs-minor-mode-active))
+  :bind (("C-'" . hs-toggle-hiding))
+  :preface
+  (defun hs-minor-mode-active ()
+    (interactive)
+    (hs-minor-mode 1)))
 
 (leaf hydra
   :doc "Make bindings that stick around."
@@ -1654,51 +1585,38 @@
    ("g" text-scale-increase "in")
    ("l" text-scale-decrease "out")))
 
-(leaf which-key
-  :doc "Display available keybindings in popup"
-  :req "emacs-24.4"
-  :tag "emacs>=24.4"
-  :url "https://github.com/justbur/emacs-which-key"
-  :added "2021-09-12"
-  :emacs>= 24.4
-  :ensure t)
+(leaf online-judge
+  :when (executable-find "oj")
+  :el-get ROCKTAKEY/emacs-online-judge
+  :require t
+  :custom ((online-judge-directories . '("~/Dropbox/atcoder/"))
+           (online-judge-command-name . nil)))
 
-(leaf sudo-edit
-  :doc "Open files as another user"
-  :req "emacs-24" "cl-lib-0.5"
-  :tag "convenience" "emacs>=24"
-  :url "https://github.com/nflath/sudo-edit"
-  :added "2021-09-10"
-  :emacs>= 24
-  :ensure t)
+(leaf page-ext
+  :doc "extended page handling commands"
+  :tag "builtin"
+  :added "2021-09-05"
+  :require t)
 
-(leaf gcmh
-  :doc "the Garbage Collector Magic Hack"
-  :req "emacs-24"
-  :tag "internal" "emacs>=24"
-  :url "https://gitlab.com/koral/gcmh"
-  :added "2021-09-18"
-  :emacs>= 24
-  :ensure t
-  :global-minor-mode t
-  :custom `((read-process-output-max . ,(* 64 1024 1024))))
-
-(leaf git-gutter
-  :doc "Port of Sublime Text plugin GitGutter"
-  :req "emacs-24.4"
-  :tag "emacs>=24.4"
-  :url "https://github.com/emacsorphanage/git-gutter"
+(leaf paren
+  :doc "highlight matching paren"
+  :tag "builtin"
   :added "2021-10-02"
-  :emacs>= 24.4
-  :ensure t
-  :custom-face ((git-gutter:modified . '((t (:background "#f1fa8c"))))
-                (git-gutter:added . '((t (:background "#50fa7b"))))
-                (git-gutter:deleted . '((t (:background "#ff79c6")))))
-  :custom ((git-gutter:modified-sign . "~")
-           (git-gutter:added-sign . "+")
-           (git-gutter:deleted-sign . "-"))
+  :ensure nil
+  :commands show-paren-mode
+  :hook ((after-init-hook . show-paren-mode))
+  :custom-face ((show-paren-match . '((nil (:background "#44475a" :foreground "#f1fa8c")))))
+  :custom ((show-paren-style . 'mixed)
+           (show-paren-when-point-inside-paren . t)
+           (show-paren-when-point-in-periphery . t)))
 
-  :global-minor-mode t)
+(leaf rainbow-delimiters
+  :doc "Highlight brackets according to their depth"
+  :tag "tools" "lisp" "convenience" "faces"
+  :url "https://github.com/Fanael/rainbow-delimiters"
+  :added "2021-09-05"
+  :ensure t
+  :hook (emacs-lisp-mode-hook . rainbow-delimiters-mode))
 
 (leaf smartparens
   :doc "Automatic insertion, wrapping and paredit-like navigation with user defined pairs."
@@ -1719,278 +1637,30 @@
           :package lisp-mode-map
           ("C-c s" . smartparens-strict-mode))))
 
-
-;; プログラミング設定
-(leaf lsp-mode
-  :doc "LSP mode"
-  :req "emacs-26.1" "dash-2.18.0" "f-0.20.0" "ht-2.3" "spinner-1.7.3" "markdown-mode-2.3" "lv-0"
-  :tag "languages" "emacs>=26.1"
-  :url "https://github.com/emacs-lsp/lsp-mode"
-  :added "2021-11-06"
-  :emacs>= 26.1
-  :ensure t
-  ;; :disabled t
-  ;; :el-get emacs-lsp/lsp-mode
-  ;; :unless (string-match "Raspberrypi" (system-name))
-  :custom ((lsp-idle-delay . 0.500)
-           (lsp-log-io . nil)
-           (lsp-keymap-prefix . "M-l")
-           (lsp-prefer-capf . t)
-           (lsp-headerline-breadcrumb-icons-enable . nil)
-           (lsp-completion-provider . :none))
-  :init
-  (defun my/lsp-mode-setup-completion ()
-    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-          '(orderless)))
-  :hook ((lsp-mode . lsp-enable-which-key-integration)
-         (lsp-completion-mode . my/lsp-mode-setup-completion)
-         (haskell-mode-hook . lsp)
-         (haskell-mode-hook . flycheck-mode)
-         (rustic-mode . lsp)
-         (c-mode-hook . lps))
-  :config
-  (leaf lsp-ui
-    :doc "UI modules for lsp-mode"
-    :req "emacs-26.1" "dash-2.18.0" "lsp-mode-6.0" "markdown-mode-2.3"
-    :tag "tools" "languages" "emacs>=26.1"
-    :url "https://github.com/emacs-lsp/lsp-ui"
-    :added "2021-11-06"
-    :emacs>= 26.1
-    :ensure t
-    ;; :disabled t
-    :hook ((lsp-mode-hook . lsp-ui-mode))
-    :commands lsp-ui-mode)
-  (leaf lsp-treemacs
-    :doc "LSP treemacs"
-    :req "emacs-26.1" "dash-2.18.0" "f-0.20.0" "ht-2.0" "treemacs-2.5" "lsp-mode-6.0"
-    :tag "languages" "emacs>=26.1"
-    :url "https://github.com/emacs-lsp/lsp-treemacs"
-    :added "2021-12-21"
-    :emacs>= 26.1
-    ;; :disabled t
-    :ensure t)
-  (leaf consult-lsp
-    :doc "LSP-mode Consult integration"
-    :req "emacs-27.1" "lsp-mode-5.0" "consult-0.9" "f-0.20.0"
-    :tag "lsp" "completion" "tools" "emacs>=27.1"
-    :url "https://github.com/gagbo/consult-lsp"
-    :added "2021-11-08"
-    :emacs>= 27.1
-    ;; :disabled t
-    :ensure t)
-  )
-
-;; (leaf quickrun
-;;   :ensure t
-;;   :after t
-;;   :config
-;;   (quickrun-add-command "haskell"
-;;                         '((:command . "stack runghc")
-;;                           (:description . "Run Haskell file with Stack runghc(GHC)"))
-;;                         :override t))
-
-;; (leaf flycheck
-;;   :ensure t
-;;   :custom
-;;   (global-flycheck-mode . t)               ; グローバルに有効にすます
-;;   (flycheck-display-errors-function . nil) ; Echoエリアにエラーを表示しない
-;;   :defvar
-;;   flycheck-error-list-format
-;;   :init
-;;   (defun flycheck-error-list-mode-setup ()
-;;     ;; levelを幅10に、idを幅20にします。
-;;     ;; flycheck-error-list-formatがdefconstなので強引に変更せざるを得ません。
-;;     (setf (cadr (aref flycheck-error-list-format 3)) 10)
-;;     (setf (cadr (aref flycheck-error-list-format 4)) 20))
-;;   :hook (flycheck-error-list-mode-hook . flycheck-error-list-mode-setup)
-;;   :bind (:flycheck-mode-map
-;;          ("C-z" . flycheck-list-errors)
-;;          ([remap previous-error] . flycheck-previous-error)
-;;          ([remap next-error] . flycheck-next-error)))
-
-;; (leaf lsp-mode
-;;   :doc "LSP mode"
-;;   :req "emacs-26.1" "dash-2.18.0" "f-0.20.0" "ht-2.3" "spinner-1.7.3" "markdown-mode-2.3" "lv-0"
-;;   :tag "languages" "emacs>=26.1"
-;;   :url "https://github.com/emacs-lsp/lsp-mode"
-;;   :added "2021-10-11"
-;;   :emacs>= 26.1
-;;   :ensure t
-;;   :defun lsp-enable-which-key-integration
-;;   :defvar lsp-command-map lsp-signature-mode-map
-;;   ;; :unless (string-match "Raspberrypi" (system-name))
-;;   :custom `((lsp-auto-guess-root      . t)
-;;             (lsp-enable-snippet . nil)
-;;             (lsp-file-watch-threshold . 10000)
-;;             (lsp-keymap-prefix . "M-z")
-;;             (lsp-lens-mode . t)
-;;             (lsp-prefer-flymake . nil)
-;;             (read-process-output-max . 1048576)
-;;             (lsp-print-io             . nil)
-;;             (lsp-trace                . nil)
-;;             (lsp-print-performance    . nil)
-;;             (lsp-document-sync-method . 'incremental)
-;;             (lsp-response-timeout     . 5)
-;;             (lsp-idle-delay . 0.500))
-;;   :hook ((lsp-mode-hook . lsp-enable-which-key-integration)
-;;          (lsp-mode-hook . lsp-ui-mode)
-;;          (haskell-mode-hook . lsp))
-;;   :init
-;;   (defun lsp-format-before-save ()
-;;     "保存する前にフォーマットする"
-;;     (add-hook 'before-save-hook 'lsp-format-buffer nil t))
-;;   :bind (:lsp-mode-map
-;;          ("C-S-SPC" . nil)
-;;          ("C-c C-a" . lsp-execute-code-action)
-;;          ("C-c C-i" . lsp-format-region)
-;;          ("C-c C-n" . lsp-rename)
-;;          ("C-c C-r" . lsp-workspace-restart)
-;;          ("C-c C-t" . lsp-describe-thing-at-point))
-;;   :config
-;;   ;; lsp-keymap-prefixはドキュメント用なのでこちらでの設定も必要。
-;;   ;; bindだとうまく行かなかった。
-;;   (define-key lsp-mode-map (kbd "M-z") lsp-command-map)
-;;   (leaf lsp-ui
-;;     :doc "UI modules for lsp-mode"
-;;     :req "emacs-26.1" "dash-2.18.0" "lsp-mode-6.0" "markdown-mode-2.3"
-;;     :tag "tools" "languages" "emacs>=26.1"
-;;     :url "https://github.com/emacs-lsp/lsp-ui"
-;;     :added "2021-11-06"
-;;     :emacs>= 26.1
-;;     :ensure t
-;;     :disabled t
-;;     :defvar lsp-ui-peek-mode-map
-;;     :custom ((lsp-ui-doc-header . t)             ; 何を見ているのかわからなくなりがちなので名前が含まれるヘッダも表示
-;;              (lsp-ui-doc-include-signature . t)  ; シグネチャも表示する
-;;              (lsp-ui-doc-position . 'top)        ; カーソル位置に表示されると下のコードが見えなくなるので上
-;;              (lsp-ui-sideline-enable . nil))      ; エラーはflycheckで出して型はdocで出すので幅を取るサイドラインは不要
-;;     :bind (:lsp-ui-mode-map
-;;            ("C-c C-d" . lsp-ui-doc-show)  ; 手動でドキュメントを表示するコマンド
-;;            ([remap smart-jump-go] . lsp-ui-peek-find-definitions)
-;;            ([remap smart-jump-references] . lsp-ui-peek-find-references)
-;;            ("C->" . lsp-find-type-definition)
-;;            ("C-c C-p" . lsp-ui-peek-find-implementation)))
-;;   (leaf dap-mode
-;;     :ensure t
-;;     :hook
-;;     (lsp-mode-hook . dap-mode)
-;;     (lsp-mode-hook . dap-ui-mode))
-;;   (leaf consult-lsp
-;;     :doc "LSP-mode Consult integration"
-;;     :req "emacs-27.1" "lsp-mode-5.0" "consult-0.9" "f-0.20.0"
-;;     :tag "lsp" "completion" "tools" "emacs>=27.1"
-;;     :url "https://github.com/gagbo/consult-lsp"
-;;     :added "2021-09-06"
-;;     :emacs>= 27.1
-;;     :ensure t
-;;     :disabled t))
-
-(leaf rust-mode
-  :doc "A major-mode for editing Rust source code"
-  :req "emacs-25.1"
-  :tag "languages" "emacs>=25.1"
-  :url "https://github.com/rust-lang/rust-mode"
-  :added "2021-09-05"
-  :emacs>= 25.1
-  :ensure t
-  :disabled t
-  :config
-  (leaf racer
-    :doc "code completion, goto-definition and docs browsing for Rust via racer"
-    :req "emacs-25.1" "rust-mode-0.2.0" "dash-2.13.0" "s-1.10.0" "f-0.18.2" "pos-tip-0.4.6"
-    :tag "tools" "rust" "matching" "convenience" "abbrev" "emacs>=25.1"
-    :url "https://github.com/racer-rust/emacs-racer"
-    :added "2021-09-05"
-    :emacs>= 25.1
-    :ensure t
-    :after rust-mode pos-tip))
-
-(leaf rustic
-  :doc "Rust development environment"
-  :req "emacs-26.1" "dash-2.13.0" "f-0.18.2" "let-alist-1.0.4" "markdown-mode-2.3" "project-0.3.0" "s-1.10.0" "seq-2.3" "spinner-1.7.3" "xterm-color-1.6"
-  :tag "languages" "emacs>=26.1"
-  :added "2021-11-06"
-  :emacs>= 26.1
+(leaf ssh
+  :doc "Support for remote logins using ssh."
+  :tag "comm" "unix"
+  :added "2021-11-03"
   :ensure t)
 
-(leaf haskell-mode
-  :doc "A Haskell editing mode"
-  :req "emacs-25.1"
-  :tag "haskell" "files" "faces" "emacs>=25.1"
-  :url "https://github.com/haskell/haskell-mode"
-  :added "2021-09-05"
-  :emacs>= 25.1
-  :ensure t
-  :defvar haskell-process-args-ghcie
-  :custom `(;; (flymake-proc-allowed-file-name-masks . ,(delete '("\\.l?hs\\'" haskell-flymake-init) flymake-proc-allowed-file-name-masks))
-            (haskell-process-type          . 'stack-ghci)
-            (haskell-process-path-ghci     . "stack")
-            (haskell-process-args-ghcie    . "ghci")
-            (haskell-indent-after-keywords . '(("where" 4 0) ("of" 4) ("do" 4) ("mdo" 4) ("rec" 4) ("in" 4 0) ("{" 4) "if" "then" "else" "let"))
-            (haskell-indent-offset         . 4)
-            (haskell-indendt-spaces        . 4)
-            (haskell-compile-stack-build-command . t)
-            (haskell-hoogle-command . nil)
-            (haskell-hoogle-url . "https://www.stackage.org/lts/hoogle?q=%s"))
-  :bind `((haskell-mode-map
-           ("C-c C-z" . haskell-interactive-bring)
-           ("C-c C-l" . haskell-process-load-file)
-           ("C-c C-," . haskell-mode-format-imports)
-           ("<f5>" . haskell-compile)
-           ("<f8>" . haskell-navigate-imports)))
-  :hook ((haskell-mode . interactive-haskell-mode)
-         (haskell-mode . haskell-decl-scan-mode)
-         (haskell-mode . haskell-doc-mode)
-         (haskell-mode . haskell-indentation-mode))
-  :config
-  (leaf lsp-haskell
-    :doc "Haskell support for lsp-mode"
-    :req "emacs-24.3" "lsp-mode-3.0" "haskell-mode-1.0"
-    :tag "haskell" "emacs>=24.3"
-    :url "https://github.com/emacs-lsp/lsp-haskell"
-    :added "2021-09-05"
-    :emacs>= 24.3
-    :require t
-    ;; :disabled t
-    :custom ((lsp-haskell-server-path . "haskell-language-server-wrapper"))
-    :hook (;; (lsp-mode-hook . lsp-ui-mode)
-           (haskell-mode-hook . lsp)
-           (haskell-literate-mode . lsp))))
-
-(leaf python-mode
-  :doc "Python major mode"
-  :tag "oop" "python" "processes" "languages"
-  :url "https://gitlab.com/groups/python-mode-devs"
-  :added "2021-09-11"
-  :ensure t
-  :config
-  (leaf lsp-jedi
-    :doc "Lsp client plugin for Python Jedi Language Server"
-    :req "emacs-25.1" "lsp-mode-6.0"
-    :tag "ide" "jedi" "python" "tools" "language-server" "emacs>=25.1"
-    :url "http://github.com/fredcamps/lsp-jedi"
-    :added "2021-09-18"
-    :emacs>= 25.1
-    :ensure t
-    :when (file-exists-p "/usr/bin/jedi-language-server")
-    :hook (python-mode-hook . (lambda ()
-                                (require 'lsp-jedi)
-                                (lsp)))))
-
-(leaf *c++
-  :hook ((c++-mode . lsp)))
-
-(leaf quickrun
-  :doc "Run commands quickly"
-  :req "emacs-24.3"
-  :tag "emacs>=24.3"
-  :url "https://github.com/syohex/emacs-quickrun"
-  :added "2021-11-06"
-  :emacs>= 24.3
+(leaf sudo-edit
+  :doc "Open files as another user"
+  :req "emacs-24" "cl-lib-0.5"
+  :tag "convenience" "emacs>=24"
+  :url "https://github.com/nflath/sudo-edit"
+  :added "2021-09-10"
+  :emacs>= 24
   :ensure t)
 
-
-;; Vertico
+(leaf undo-tree
+  :doc "Treat undo history as a tree"
+  :tag "tree" "history" "redo" "undo" "files" "convenience"
+  :url "http://www.dr-qubit.org/emacs.php"
+  :added "2021-09-05"
+  :ensure t
+  :unless (string-match "RaspberryPi" (system-name))
+  :global-minor-mode t)
+
 (leaf vertico
   :doc "VERTical Interactive COmpletion"
   :req "emacs-27.1"
@@ -2234,6 +1904,218 @@
 
     ;; Enable recursive minibuffers
     (setq enable-recursive-minibuffers t)))
+
+(leaf visual-regexp-steroids
+  :doc "Extends visual-regexp to support other regexp engines"
+  :req "visual-regexp-1.1"
+  :tag "feedback" "visual" "python" "replace" "regexp" "foreign" "external"
+  :url "https://github.com/benma/visual-regexp-steroids.el/"
+  :added "2021-09-05"
+  :ensure t
+  :after visual-regexp
+  :bind (("M-%" . vr/query-replace)
+         ;; multiple-cursorsを使っているならこれで
+         ("C-c m" . vr/mc-mark)
+         ;; 普段の正規表現isearchにも使いたいならこれを
+         ("C-M-r" . vr/isearch-backward)
+         ("C-M-s" . vr/isearch-forward))
+  :custom `((vr/engine . 'python)))
+
+(leaf which-key
+  :doc "Display available keybindings in popup"
+  :req "emacs-24.4"
+  :tag "emacs>=24.4"
+  :url "https://github.com/justbur/emacs-which-key"
+  :added "2021-09-12"
+  :emacs>= 24.4
+  :ensure t)
+
+(leaf yasnippet
+  :doc "Yet another snippet extension for Emacs"
+  :req "cl-lib-0.5"
+  :tag "emulation" "convenience"
+  :url "http://github.com/joaotavora/yasnippet"
+  :added "2021-09-05"
+  :ensure t
+  :disabled t
+  :unless (string-match "Raspberrypi" (system-name))
+  :custom ((yas-global-mode . t))
+  :bind ((yas-minor-mode-map
+          ("C-." . ivy-yasnippet)))
+  :config
+  (leaf yas_hook
+    :require cl
+    :disabled t
+    :config
+    (defvar ivy-programing-hooks ()
+      '(emacs-lisp-mode
+        org-mode
+        yatex-mode
+        haskell-mode))
+    (loop for hook in ivy-programing-hooks
+          do (add-hook hook 'yas-minor-mode))))
+
+
+;; プログラミング設定
+(leaf haskell-mode
+  :doc "A Haskell editing mode"
+  :req "emacs-25.1"
+  :tag "haskell" "files" "faces" "emacs>=25.1"
+  :url "https://github.com/haskell/haskell-mode"
+  :added "2021-09-05"
+  :emacs>= 25.1
+  :ensure t
+  :defvar haskell-process-args-ghcie
+  :custom `(;; (flymake-proc-allowed-file-name-masks . ,(delete '("\\.l?hs\\'" haskell-flymake-init) flymake-proc-allowed-file-name-masks))
+            (haskell-process-type          . 'stack-ghci)
+            (haskell-process-path-ghci     . "stack")
+            (haskell-process-args-ghcie    . "ghci")
+            (haskell-indent-after-keywords . '(("where" 4 0) ("of" 4) ("do" 4) ("mdo" 4) ("rec" 4) ("in" 4 0) ("{" 4) "if" "then" "else" "let"))
+            (haskell-indent-offset         . 4)
+            (haskell-indendt-spaces        . 4)
+            (haskell-compile-stack-build-command . t)
+            (haskell-hoogle-command . nil)
+            (haskell-hoogle-url . "https://www.stackage.org/lts/hoogle?q=%s"))
+  :bind `((haskell-mode-map
+           ("C-c C-z" . haskell-interactive-bring)
+           ("C-c C-l" . haskell-process-load-file)
+           ("C-c C-," . haskell-mode-format-imports)
+           ("<f5>" . haskell-compile)
+           ("<f8>" . haskell-navigate-imports)))
+  :hook ((haskell-mode . interactive-haskell-mode)
+         (haskell-mode . haskell-decl-scan-mode)
+         (haskell-mode . haskell-doc-mode)
+         (haskell-mode . haskell-indentation-mode))
+  :config
+  (leaf lsp-haskell
+    :doc "Haskell support for lsp-mode"
+    :req "emacs-24.3" "lsp-mode-3.0" "haskell-mode-1.0"
+    :tag "haskell" "emacs>=24.3"
+    :url "https://github.com/emacs-lsp/lsp-haskell"
+    :added "2021-09-05"
+    :emacs>= 24.3
+    :require t
+    ;; :disabled t
+    :custom ((lsp-haskell-server-path . "haskell-language-server-wrapper"))
+    :hook (;; (lsp-mode-hook . lsp-ui-mode)
+           (haskell-mode-hook . lsp)
+           (haskell-literate-mode . lsp))))
+
+(leaf lsp-mode
+  :doc "LSP mode"
+  :req "emacs-26.1" "dash-2.18.0" "f-0.20.0" "ht-2.3" "spinner-1.7.3" "markdown-mode-2.3" "lv-0"
+  :tag "languages" "emacs>=26.1"
+  :url "https://github.com/emacs-lsp/lsp-mode"
+  :added "2021-11-06"
+  :emacs>= 26.1
+  :ensure t
+  ;; :disabled t
+  ;; :el-get emacs-lsp/lsp-mode
+  ;; :unless (string-match "Raspberrypi" (system-name))
+  :custom ((lsp-idle-delay . 0.500)
+           (lsp-log-io . nil)
+           (lsp-keymap-prefix . "M-l")
+           (lsp-prefer-capf . t)
+           (lsp-headerline-breadcrumb-icons-enable . nil)
+           (lsp-completion-provider . :none))
+  :init
+  (defun my/lsp-mode-setup-completion ()
+    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+          '(orderless)))
+  :hook ((lsp-mode . lsp-enable-which-key-integration)
+         (lsp-completion-mode . my/lsp-mode-setup-completion)
+         (haskell-mode-hook . lsp)
+         (haskell-mode-hook . flycheck-mode)
+         (rustic-mode . lsp)
+         (c-mode-hook . lps)
+         (c++-mode-hook . lsp))
+  :config
+  (leaf lsp-ui
+    :doc "UI modules for lsp-mode"
+    :req "emacs-26.1" "dash-2.18.0" "lsp-mode-6.0" "markdown-mode-2.3"
+    :tag "tools" "languages" "emacs>=26.1"
+    :url "https://github.com/emacs-lsp/lsp-ui"
+    :added "2021-11-06"
+    :emacs>= 26.1
+    :ensure t
+    ;; :disabled t
+    :hook ((lsp-mode-hook . lsp-ui-mode))
+    :commands lsp-ui-mode)
+  (leaf lsp-treemacs
+    :doc "LSP treemacs"
+    :req "emacs-26.1" "dash-2.18.0" "f-0.20.0" "ht-2.0" "treemacs-2.5" "lsp-mode-6.0"
+    :tag "languages" "emacs>=26.1"
+    :url "https://github.com/emacs-lsp/lsp-treemacs"
+    :added "2021-12-21"
+    :emacs>= 26.1
+    ;; :disabled t
+    :ensure t)
+  (leaf consult-lsp
+    :doc "LSP-mode Consult integration"
+    :req "emacs-27.1" "lsp-mode-5.0" "consult-0.9" "f-0.20.0"
+    :tag "lsp" "completion" "tools" "emacs>=27.1"
+    :url "https://github.com/gagbo/consult-lsp"
+    :added "2021-11-08"
+    :emacs>= 27.1
+    ;; :disabled t
+    :ensure t)
+  )
+
+(leaf python-mode
+  :doc "Python major mode"
+  :tag "oop" "python" "processes" "languages"
+  :url "https://gitlab.com/groups/python-mode-devs"
+  :added "2021-09-11"
+  :ensure t
+  :config
+  (leaf lsp-jedi
+    :doc "Lsp client plugin for Python Jedi Language Server"
+    :req "emacs-25.1" "lsp-mode-6.0"
+    :tag "ide" "jedi" "python" "tools" "language-server" "emacs>=25.1"
+    :url "http://github.com/fredcamps/lsp-jedi"
+    :added "2021-09-18"
+    :emacs>= 25.1
+    :ensure t
+    :when (file-exists-p "/usr/bin/jedi-language-server")
+    :hook (python-mode-hook . (lambda ()
+                                (require 'lsp-jedi)
+                                (lsp)))))
+
+(leaf quickrun
+  :doc "Run commands quickly"
+  :req "emacs-24.3"
+  :tag "emacs>=24.3"
+  :url "https://github.com/syohex/emacs-quickrun"
+  :added "2021-11-06"
+  :emacs>= 24.3
+  :ensure t)
+
+(leaf rust-mode
+  :doc "A major-mode for editing Rust source code"
+  :req "emacs-25.1"
+  :tag "languages" "emacs>=25.1"
+  :url "https://github.com/rust-lang/rust-mode"
+  :added "2021-09-05"
+  :emacs>= 25.1
+  :ensure t
+  :disabled t
+  :config
+  (leaf racer
+    :doc "code completion, goto-definition and docs browsing for Rust via racer"
+    :req "emacs-25.1" "rust-mode-0.2.0" "dash-2.13.0" "s-1.10.0" "f-0.18.2" "pos-tip-0.4.6"
+    :tag "tools" "rust" "matching" "convenience" "abbrev" "emacs>=25.1"
+    :url "https://github.com/racer-rust/emacs-racer"
+    :added "2021-09-05"
+    :emacs>= 25.1
+    :ensure t
+    :after rust-mode pos-tip)
+  (leaf rustic
+    :doc "Rust development environment"
+    :req "emacs-26.1" "dash-2.13.0" "f-0.18.2" "let-alist-1.0.4" "markdown-mode-2.3" "project-0.3.0" "s-1.10.0" "seq-2.3" "spinner-1.7.3" "xterm-color-1.6"
+    :tag "languages" "emacs>=26.1"
+    :added "2021-11-06"
+    :emacs>= 26.1
+    :ensure t))
 
 
 ;; window managr
