@@ -104,7 +104,7 @@
   :custom `((read-process-output-max . ,(* 64 1024 1024))
             (garbage-collection-messages           . t)))
 
-  (leaf async
+(leaf async
     :doc "Asynchronous processing in Emacs"
     :req "emacs-24.4"
     :tag "async" "emacs>=24.4"
@@ -115,6 +115,7 @@
     :custom ((dired-async-mode . 1)
              (async-bytecomp-package-mode . 1)
              (async-bytecomp-allowed-packages . '(all))))
+
 
 ;; 基本設定
 (leaf *cus-start
@@ -124,7 +125,8 @@
 
   :hook  (;; 保存時にいらないスペースを削除
           (before-save-hook . delete-trailing-whitespace)
-          (after-save-hook . flashAfterSave))
+          (after-save-hook . flashAfterSave)
+          (after-save-hook . executable-make-buffer-file-executable-if-script-p))
 
   :preface
   (defun flashAfterSave ()
@@ -1676,7 +1678,7 @@
           ("M-RET" . minibuffer-force-complete-and-exit)
           ("M-TAB" . minibuffer-complete)
           ("C-," . up-to-dir)))
-  :custom ((vertico-count . 20))
+  :custom ((vertico-count . 15))
   :global-minor-mode t
   :preface
   (defun up-to-dir ()
@@ -1834,7 +1836,7 @@
              (corfu-cycle . t)
              (corfu-auto . t)
              (corfu-auto-prefix . 3)
-             (corfu-auto-delay . 0.1)
+             (corfu-auto-delay . 0.01)
              (corfu-quit-no-match . 'separator)
              (corfu-separator . ?\s)
              (corfu-preselect-first . nil)
