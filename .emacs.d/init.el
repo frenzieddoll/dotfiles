@@ -753,6 +753,25 @@
     :config
     (run-with-idle-timer 60 t 'my-save-frame-size)))
 
+(leaf info
+  ;; info日本語化
+  :require t
+  :config
+  (add-to-list 'Info-directory-list "~/.emacs.d/info/")
+  (defun Info-find-node--info-ja (orig-fn filename &rest args)
+    (apply orig-fn
+           (pcase filename
+             ;; elisp を elisp-ja.info に置き換える
+             ("elisp" "elisp-ja.info")
+             (t filename))
+           args)
+    (apply orig-fn
+           (pcase filename
+             ("emacs" "emacs-ja.info")
+             (t filename))
+           args))
+  (advice-add 'Info-find-node :around 'Info-find-node--info-ja))
+
 
 ;; theme
 (leaf doom-themes
