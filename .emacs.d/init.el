@@ -212,7 +212,7 @@
             (eval-expression-print-level  . nil)
             (auto-revert-interval . 0.1)
             (global-auto-revert-mode . t))
-  :config
+  :init
   (set-face-background 'region "#555")
   (run-with-idle-timer 60.0 t #'garbage-collect)
   (defalias 'yes-or-no-p 'y-or-n-p)
@@ -443,7 +443,7 @@
 (leaf *eshell-tools
   :bind (("C-c e" . eshell))
   :hook (eshell-mode-hook . eshell-alias)
-  :defvar eshell-command-aliases-list
+  :defvar (eshell-command-aliases-list pcomplete-systemctl-commands pcomplete-command-completion-function)
   :config
   (if (not (eq system-type 'windows))
           (eval-after-load "esh-module"
@@ -458,11 +458,16 @@
     :added "2022-03-19"
     :emacs>= 25
     :ensure t
-    :config
-    (with-eval-after-load "esh-opt"
-      (autoload 'epe-theme-lambda "eshell-prompt-extras")
-      (setq eshell-highlight-prompt nil
-            eshell-prompt-function 'epe-theme-lambda)))
+    :after esh-opt
+    :commands epe-theme-lambda
+    :custom ((eshell-highlight-prompt . nil)
+             (eshell-prompt-function . 'epe-theme-lambda))
+    ;; :config
+    ;; (with-eval-after-load "esh-opt"
+    ;;   (autoload 'epe-theme-lambda "eshell-prompt-extras")
+    ;;   (setq eshell-highlight-prompt nil
+    ;;         eshell-prompt-function 'epe-theme-lambda))
+    )
 
   :preface
   (defun eshell-alias ()
@@ -663,7 +668,7 @@
     :added "2021-09-05"
     :emacs>= 24.3
     :ensure t
-    :custom (zoom-window-mode-line-color . "DarkGreen"))
+    :custom (zoom-window-mode-line-color . "RoyalBlue4"))
 
   (leaf *ForMac
     :when (eq system-type 'darwin)
@@ -763,12 +768,12 @@
            (pcase filename
              ;; elisp を elisp-ja.info に置き換える
              ("elisp" "elisp-ja.info")
-             (t filename))
+             (_ filename))
            args)
     (apply orig-fn
            (pcase filename
              ("emacs" "emacs-ja.info")
-             (t filename))
+             (_ filename))
            args))
   (advice-add 'Info-find-node :around 'Info-find-node--info-ja))
 
@@ -819,33 +824,35 @@
   :emacs>= 24
   :ensure t
   :config
-  (load-theme 'nord t))
-
-(leaf moody
-  :doc "Tabs and ribbons for the mode line"
-  :req "emacs-25.3"
-  :tag "emacs>=25.3"
-  :url "https://github.com/tarsius/moody"
-  :added "2022-03-30"
-  :emacs>= 25.3
-  :ensure t
-  :custom
-  ((x-uderline-at-descent-line . t))
-  :config
-  (moody-replace-mode-line-buffer-identification)
-  (moody-replace-vc-mode)
-  (moody-replace-eldoc-minibuffer-message-function)
-  (column-number-mode)
-  (leaf minions
-    :doc "A minor-mode menu for the mode line"
-    :req "emacs-25.2"
-    :tag "emacs>=25.2"
-    :url "https://github.com/tarsius/minions"
+  (load-theme 'nord t)
+  (leaf moody
+    ;; :disabled t
+    :doc "Tabs and ribbons for the mode line"
+    :req "emacs-25.3"
+    :tag "emacs>=25.3"
+    :url "https://github.com/tarsius/moody"
     :added "2022-03-30"
-    :emacs>= 25.2
+    :emacs>= 25.3
     :ensure t
-    :custom ((minions-mode-line-lighter . "[+]"))
-    :global-minor-mode (minions-mode))
+    :custom ((x-uderline-at-descent-line . t))
+    :config
+    (moody-replace-mode-line-buffer-identification)
+    (moody-replace-vc-mode)
+    (moody-replace-eldoc-minibuffer-message-function)
+    (column-number-mode)
+    (set-face-foreground 'mode-line-inactive "SlateGray")
+    (set-face-background 'mode-line-inactive "gray20")
+    (leaf minions
+      :doc "A minor-mode menu for the mode line"
+      :req "emacs-25.2"
+      :tag "emacs>=25.2"
+      :url "https://github.com/tarsius/minions"
+      :added "2022-03-30"
+      :emacs>= 25.2
+      :ensure t
+      :custom ((minions-mode-line-lighter . "[+]"))
+      :global-minor-mode (minions-mode))
+    )
   )
 
 
@@ -913,6 +920,7 @@
   ;; :disabled t
   :hook ((eww-mode-hook . eww-mode-hook-disable-image))
   :defun eww-reload
+  :defvar (shr-put-image-function eww-disable-colorize)
   :custom ((eww-search-prefix . "https://www.google.co.jp/search?btnl&q=")
            (eww-browse-with-external-link . t)
            (eww-disable-colorize . t))
@@ -1418,6 +1426,7 @@
     :emacs>= 24.1
     :ensure t
     :after calendar
+    :defvar (calendar-day-header-array calendar-day-name-array calendar-holidays japanese-holidays)
     :require japanese-holidays
     :hook ((calendar-today-visible-hook . japanese-holiday-mark-weekend)
            (calendar-today-invisible-hook .  japanese-holiday-mark-weekend)
@@ -1461,7 +1470,7 @@
   :ensure t
   ;; :after ccc cdb
   :require skk skk-study
-  :defvar skk-user-directory
+  :defvar (skk-user-directory skk-rom-kana-rule-list skk-katakana skk-j-mode skk-latin-mode)
   :defun skk-toggle-kana skk-hiragana-set skk-katakana-set
   :hook ((isearch-mode-hook . skk-isearch-mode-setup)
          (isearch-mode-end-hook . skk-isearch-mode-cleanup))
@@ -1762,6 +1771,7 @@
     :added "2021-09-05"
     :emacs>= 26.1
     :ensure t
+    :defvar (orderless-style-dispatchers)
     :custom ((completion-styles . '(orderless))
              (completion-category-defaults . nil)
              (completion-category-overrides . '((file (style . (partial-completion))))))
@@ -1850,6 +1860,7 @@
     :emacs>= 27.1
     :ensure t
     :require t
+    :defvar (corfu-auto)
     ;; :disabled t
     :custom ((tab-always-indent . 'complete)
              (corfu-cycle . t)
@@ -1978,6 +1989,18 @@
 
 
 ;; プログラミング設定
+(leaf flycheck
+  :doc "On-the-fly syntax checking"
+  :req "dash-2.12.1" "pkg-info-0.4" "let-alist-1.0.4" "seq-1.11" "emacs-24.3"
+  :tag "tools" "languages" "convenience" "emacs>=24.3"
+  :url "http://www.flycheck.org"
+  :added "2022-04-04"
+  :emacs>= 24.3
+  :ensure t
+  :bind (("M-n" . flycheck-next-error)
+         ("M-p" . flycheck-previous-error))
+  :global-minor-mode global-flycheck-mode)
+
 (leaf haskell-mode
   :doc "A Haskell editing mode"
   :req "emacs-25.1"
@@ -2017,7 +2040,8 @@
     :emacs>= 24.3
     :require t
     ;; :disabled t
-    :custom ((lsp-haskell-server-path . "haskell-language-server-wrapper"))
+    :custom ((lsp-haskell-server-path . "haskell-language-server-wrapper")
+             (lsp-haskell-completion-snippets-on . nil))
     :hook (;; (lsp-mode-hook . lsp-ui-mode)
            (haskell-mode-hook . lsp)
            (haskell-literate-mode . lsp))))
@@ -2038,7 +2062,8 @@
            (lsp-keymap-prefix . "M-l")
            (lsp-prefer-capf . t)
            (lsp-headerline-breadcrumb-icons-enable . nil)
-           (lsp-completion-provider . :none))
+           (lsp-completion-provider . :none)
+           (lsp-enable-snippet . nil))
   :init
   (defun my/lsp-mode-setup-completion ()
     (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
@@ -2152,9 +2177,14 @@
     :ensure t
     :ensure exwm-x
     :require exwm
-    :defun (exwm-workspace-rename-buffer exwm-workspace-toggle)
-    :hook (exwm-update-class-hook . (lambda ()
-                                      (exwm-workspace-rename-buffer exwm-class-name)))
+    :defun (exwm-workspace-rename-buffer exwm-workspace-toggle exwm-randr-enable exwm-input-set-local-simulation-keys)
+    :defvar (exwm-workspace-current-index exwm-class-name)
+    :hook ((exwm-update-class-hook . (lambda ()
+                                       (exwm-workspace-rename-buffer exwm-class-name)))
+           (exwm-mana-finish-hook . (lambda ()
+                                      (when (and exwm-class-name
+                                                 (string= exwm-class-name "Alacritty"))
+                                        (exwm-input-set-local-simulation-keys nil)))))
 
     :custom `((use-dialog-box . nil)
               (window-divider-default-right-width . 1)
@@ -2284,3 +2314,11 @@
     (leaf *fix_ediff
       :after ediff-wind
       :custom `((ediff-window-setup-function . 'ediff-setup-windows-plain)))))
+
+(provide 'init)
+
+;; Local Variables:
+;; indent-tabs-mode: nil
+;; End:
+
+;;; init.el ends here
