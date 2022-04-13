@@ -199,6 +199,38 @@ number is required for the calculations performed by
 
 '-120' is the rough dB equivalent of 1% volume.")
 
+(defun pulseaudio-control--call-pactl (command)
+  "Call `pactl' with COMMAND as its arguments.
+
+  COMMAND is a single string separated by spaces,
+  e.g. 'list short sinks'."
+  (let ((args `("" nil
+                ,pulseaudio-control-pactl-path
+                nil t nil
+                ,@(split-string command " "))))
+    (apply #'call-process-region args)
+    ;; (prin1 args)
+    )
+  ;; (async-shell-command pulseaudio-control-pactl-path)
+  ;; (let ((arg (mapconcat #'identity '("aaa" " " 'command) " ")))
+  ;;   (print arg))
+  )
+
+
+(pulseaudio-control--call-pactl "list short sinks")
+1	alsa_output.pci-0000_00_1f.3.iec958-stereo	module-alsa-card.c	s16le 2ch 44100Hz	SUSPENDED
+4	alsa_output.pci-0000_01_00.1.hdmi-stereo-extra1	module-alsa-card.c	s16le 2ch 44100Hz	SUSPENDED
+0
+
+
+(split-string "1	alsa_output.pci-0000_00_1f.3.iec958-stereo	module-alsa-card.c	s16le 2ch 44100Hz	SUSPENDED" "	")
+
+
+
+
+
+
+
 
 ;; Internal functions.
 (defun pulseaudio-control--get-default-sink ()
@@ -221,17 +253,6 @@ number is required for the calculations performed by
         (setq sinks-list
               (append sinks-list `((,(match-string 1) . ,(match-string 2)))))))
     (car (rassoc sink-name sinks-list))))
-
-(defun pulseaudio-control--call-pactl (command)
-  "Call `pactl' with COMMAND as its arguments.
-
-  COMMAND is a single string separated by spaces,
-  e.g. 'list short sinks'."
-  (let ((args `("" nil
-                ,pulseaudio-control-pactl-path
-                nil t nil
-                ,@(append '("--") (split-string command " ")))))
-    (apply #'call-process-region args)))
 
 (defun pulseaudio-control--get-current-volume ()
   "Get volume of currently-selected sink."
