@@ -24,8 +24,7 @@
 (eval-and-compile
   (customize-set-variable
    'package-archives '(("gnu"   . "https://elpa.gnu.org/packages/")
-                       ("melpa" . "https://melpa.org/packages/")
-                       ("org"   . "https://orgmode.org/elpa/")))
+                       ("melpa" . "https://melpa.org/packages/")))
   (package-initialize)
   (unless (package-installed-p 'leaf)
     (package-refresh-contents)
@@ -1045,6 +1044,7 @@
     :doc "Outline-based notes management and organizer"
     :added "2021-09-05"
     :ensure t
+    :disabled t
     :hook ((org-mode-hook . eldoc-mode))
     :config
     (defadvice org-eldoc-documentation-function (around add-field-info activate)
@@ -2304,7 +2304,7 @@
     (leaf exwm-randr
       :require t
       :when (string= (system-name) "archlinuxhonda")
-      :custom ((exwm-randr-workspace-monitor-plist . '(0 "HDMI-0" 1 "HDMI-0" 2 "HDMI-0" 3 "HDMI-0" 4 "HDMI-0" 5 "HDMI-0")))
+      :custom ((exwm-randr-workspace-monitor-plist . '(0 "DP-1" 1 "HDMI-0" 2 "HDMI-0" 3 "HDMI-0" 4 "HDMI-0" 5 "HDMI-0")))
       :hook (exwm-randr-screen-change-hook . (lambda ()
                                                 (start-process-shell-command
                                                  "xrandr" nil "xrandr --output DP-4 --auto --output HDMI-0 --auto --right-of DP-4; xrandr --output HDMI-0 --auto --scale 1.5x1.5")))
