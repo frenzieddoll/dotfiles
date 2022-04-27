@@ -786,14 +786,20 @@ colors:
 # If the same trigger is assigned to multiple actions, all of them are executed
 # in the order they were defined in.
 key_bindings:
-  - { key: V,         mods: Control,                    action: Paste          }
-  #- { key: Copy,                                        action: Copy           }
+  - { key: V,         mods: Control,           action: Paste         }
+  - { key: Home,                               chars: "\x01"         }
+  - { key: End,                                chars: "\x05"         }
+  # - { key: PageDown,                           action: ScrollPageDown         }
+  # - { key: PageUp,                             action: ScrollPageUp         }
+  - { key: X,          mods: Control,          chars: "\x0b"         }
+  - { key: F,          mods: Control,          action: SearchForward   }
+  - { key: R,          mods: Control,          action: SearchBackward   }
+
+ #- { key: Copy,                                        action: Copy           }
   #- { key: L,         mods: Control,                    action: ClearLogNotice }
   #- { key: L,         mods: Control, mode: ~Vi|~Search, chars: "\x0c"          }
   #- { key: PageUp,    mods: Shift,   mode: ~Alt,        action: ScrollPageUp,  }
   #- { key: PageDown,  mods: Shift,   mode: ~Alt,        action: ScrollPageDown }
-  # - { key: Home,                                         chars: "a",   }
-  # - { key: End,                                          chars: "e", }
 
   # Vi Mode
   #- { key: Space,  mods: Shift|Control, mode: ~Search,    action: ToggleViMode            }

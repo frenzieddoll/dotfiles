@@ -2227,7 +2227,6 @@
                                           (,(kbd "s-]")     . upperLight)
                                           ;; (,(kbd "s-d")     . counsel-linux-app)
                                           (,(kbd "s-d")     . app-launcher-run-app)
-                                          (,(kbd "s-o")     . ivy-switch-buffer)
                                           (,(kbd "s-a")     . zoom-window-zoom)
                                           (,(kbd "s-o")     . consult-buffer)))
               (exwm-input-simulation-keys . '(;; new version
