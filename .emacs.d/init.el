@@ -923,7 +923,7 @@
   :custom ((eww-search-prefix . "https://www.google.co.jp/search?btnl&q=")
            (eww-browse-with-external-link . t)
            (eww-disable-colorize . t))
-  :bind (("C-c m" . browse-url-with-eww)
+  :bind (("C-c m"  . browse-url-with-eww)
          (eww-mode-map
           ("f"     . ace-link-eww)
           ("s-l"   . eww-search-words)
@@ -932,17 +932,16 @@
           ("C-s-v" . eww-enable-images)
           ("s-v"   . eww-disable-images)
           ("s-e"   . eww-browse-with-external-browser)
-          ("r" . eww-reload)
-
+          ("r"     . eww-reload)
           ;; vi風
           ("h"     . backward-char)
           ("j"     . next-line)
           ("k"     . previous-line)
           ("l"     . forward-char)
-          ("g" . eww-top)
-          ("/" . isearch-forward)
-          ("n" . isearch-next)
-          ("?" . isearch-backward)
+          ("g"     . eww-top)
+          ("/"     . isearch-forward)
+          ("n"     . isearch-next)
+          ("?"     . isearch-backward)
           ;; vimium風
           ("J"     . View-scroll-line-forward)
           ("K"     . View-scroll-line-backward)
@@ -952,7 +951,14 @@
           ("K"     . next-buffer)
           ("d"     . scroll-up)
           ("u"     . scroll-down)))
-
+  :config
+  (leaf ace-link
+    :doc "Quickly follow links"
+    :req "avy-0.4.0"
+    :tag "avy" "links" "convenience"
+    :url "https://github.com/abo-abo/ace-link"
+    :added "2022-04-30"
+    :ensure t)
   :preface
   (defun eww-disable-images ()
     "eww で画像表示させない"
