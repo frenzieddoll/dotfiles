@@ -526,6 +526,11 @@
 
 (leaf *globa-keybinding
   :hook (minibuffer-setup-hook . minibuffer-delete-backward-char)
+  :config
+  ;; (leaf *blobal-keybind_wsl
+  ;;   :when (string= (system-name) "sx12_toshiaki")
+  ;;   :bind (("CR-s" . async-shell-command))
+  ;;   )
   :bind (;; C-m : 改行プラスインデント
          ("C-m"           . newline-and-indent)
          ;; ;; exwm用
@@ -695,6 +700,24 @@
            ("C-M-p" . upper_volume)
            ("M-d" . app-launcher-run-app)
            ("M-o" . consult-buffer)))
+
+  (leaf *ForWsl
+    :when (eq system-type 'gnu/linux)
+    :unless (eq (system-name) "sx12_toshiaki")
+    :bind (("s-n" . windmove-down)
+           ("s-f" . windmove-right)
+           ("s-b" . windmove-left)
+           ("s-p" . windmove-up)
+           ("s-a" . zoom-window-zoom)
+           ("s-q" . kill-current-buffer)
+           ("s-h" . delete-window)
+           ("s-d" . app-launcher-run-app)
+           ("s-o" . consult-buffer)
+           ;; ("C-s-i" . output_toggle)
+           ;; ("C-s-m" . mute_toggle)
+           ;; ("C-s-n" . lower_volume)
+           ;; ("C-s-p" . upper_volume)
+           ))
 
   (leaf *ForCUI
     :unless (eq window-system 'x)
@@ -2291,7 +2314,7 @@
                                               )))
     :bind (("C-\\" . skk-latin-mode)
            ("C-l" . skk-latin-mode))
-    :preface
+    :init
     (defun exwm-workspace-toggle ()
       (interactive)
       (if (= exwm-workspace-current-index 0)
