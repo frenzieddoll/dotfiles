@@ -703,16 +703,16 @@
 
   (leaf *ForWsl
     :when (eq system-type 'gnu/linux)
-    :unless (eq (system-name) "sx12_toshiaki")
-    :bind (("s-n" . windmove-down)
+    :when (string= (system-name) "sx12_toshiaki")
+    :bind (("M-n" . windmove-down)
            ("s-f" . windmove-right)
            ("s-b" . windmove-left)
-           ("s-p" . windmove-up)
+           ("M-p" . windmove-up)
            ("s-a" . zoom-window-zoom)
-           ("s-q" . kill-current-buffer)
+           ("M-q" . kill-current-buffer)
            ("s-h" . delete-window)
            ("s-d" . app-launcher-run-app)
-           ("s-o" . consult-buffer)
+           ("M-o" . consult-buffer)
            ;; ("C-s-i" . output_toggle)
            ;; ("C-s-m" . mute_toggle)
            ;; ("C-s-n" . lower_volume)
@@ -720,6 +720,7 @@
            ))
 
   (leaf *ForCUI
+    :unless (string= (system-name) "sx12_toshiaki")
     :unless (eq window-system 'x)
     :bind (("M-n" . windmove-down)
            ("M-f" . windmove-right)
@@ -2026,6 +2027,7 @@
   :added "2022-04-04"
   :emacs>= 24.3
   :ensure t
+  :unless (string= (system-name) "sx12_toshiaki")
   :bind (("M-n" . flycheck-next-error)
          ("M-p" . flycheck-previous-error))
   :global-minor-mode global-flycheck-mode)
