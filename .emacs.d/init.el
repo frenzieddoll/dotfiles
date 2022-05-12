@@ -698,6 +698,7 @@
 
   (leaf *ForCUI
     :unless (eq window-system 'x)
+    :when (eq system-type 'gnu/linux)
     :bind (("M-n" . windmove-down)
            ("M-f" . windmove-right)
            ("M-b" . windmove-left)
@@ -1894,7 +1895,7 @@
         (eshell-send-input)
         ((derived-mode-p 'comint-mode)
          (comint-send-input)))))
-    :global-minor-mode corfu-global-mode
+    ;; :global-minor-mode corfu-global-mode
     :hook ((minibuffer-setup-hook . my/corfu-enable-in-minibuffer)
            (eshell-mode-hook . (lambda ()
                                  (setq-local corfu-auto nil)
@@ -2003,6 +2004,7 @@
   :added "2022-04-04"
   :emacs>= 24.3
   :ensure t
+  :disabled t
   :bind (("M-n" . flycheck-next-error)
          ("M-p" . flycheck-previous-error))
   :global-minor-mode global-flycheck-mode)
