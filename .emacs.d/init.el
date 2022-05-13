@@ -703,15 +703,25 @@
 
   (leaf *ForWsl
     :when (eq system-type 'gnu/linux)
-    :when (string= (system-name) "sx12_toshiaki")
-    :bind (("M-n" . windmove-down)
-           ("s-f" . windmove-right)
+    :when (or (string= (system-name) "sx12toshiaki-wsl")
+              (string= (system-name) "sx12_toshiaki"))
+    :bind (("s-f" . windmove-right)
            ("s-b" . windmove-left)
-           ("M-p" . windmove-up)
            ("s-a" . zoom-window-zoom)
-           ("M-q" . kill-current-buffer)
            ("s-h" . delete-window)
            ("s-d" . app-launcher-run-app)
+           ("s-n" . windmove-down)
+           ("s-p" . windmove-up)
+           ("s-q" . kill-current-buffer)
+           ("s-o" . consult-buffer)
+           ("M-f" . windmove-right)
+           ("M-b" . windmove-left)
+           ("M-a" . zoom-window-zoom)
+           ("M-h" . delete-window)
+           ("M-d" . app-launcher-run-app)
+           ("M-n" . windmove-down)
+           ("M-p" . windmove-up)
+           ("M-q" . kill-current-buffer)
            ("M-o" . consult-buffer)
            ;; ("C-s-i" . output_toggle)
            ;; ("C-s-m" . mute_toggle)
@@ -934,7 +944,10 @@
   :added "2021-09-05"
   :emacs>= 25
   :ensure t
-  :after websocket anaphora deferred polymode with-editor)
+  :after websocket anaphora deferred polymode with-editor
+  :custom ((ein:worksheet-enable-undo . t)
+           (ein:output-area-inlined-images . t)
+           ))
 
 (leaf eww
   :doc "Emacs Web Wowser"
@@ -2027,7 +2040,8 @@
   :added "2022-04-04"
   :emacs>= 24.3
   :ensure t
-  :unless (string= (system-name) "sx12_toshiaki")
+  :unless (or (string= (system-name) "sx12toshiaki-wsl")
+              (string= (system-name) "sx12_toshiaki"))
   :bind (("M-n" . flycheck-next-error)
          ("M-p" . flycheck-previous-error))
   :global-minor-mode global-flycheck-mode)
