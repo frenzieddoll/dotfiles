@@ -68,9 +68,10 @@ alias startx='startx -- -dpi 138'
 # alias runhaskell="stack runghc"
 alias pacmanlist="pacman -Qqe > ~/projects/dotfiles/.pkglist"
 
-case `uname -n` in
+case $(uname -n) in
     "ArchLinuxonLaptopPC" ) alias startx='startx' ;;
     "archlinuxhonda" ) alias startx='startx -- -dpi 138' ;;
+    "sx12toshiaki" ) xkbcomp -I$HOME/.xkb/ ~/.xkb/keymap/myxkb $DISPLAY 2> /dev/null;;
 esac
 
 
