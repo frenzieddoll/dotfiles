@@ -489,7 +489,8 @@
             (list "usbmount" "sudo mount -t vfat $1 $2 -o rw,umask=000")
             (list "dvd" "mpv dvd:// -dvd-device $1")
             (list "dvdCopy" "dvdbackup -i /dev/sr0 -o ~/Downloads/iso/ -M")
-            (list "pkglist" "yay -Qe | cut -f 1 -d " " > ~/.emacs.d/pkglist")))))
+            (list "pkglist" "yay -Qe | cut -f 1 -d " " > ~/.emacs.d/pkglist")
+            (list "open" "cmd.exe /c start {wslpath -w $*}")))))
 
   (defun pcomplete/sudo ()
     "Completion rules for the `sudo' command."
@@ -1931,7 +1932,7 @@
         (eshell-send-input)
         ((derived-mode-p 'comint-mode)
          (comint-send-input)))))
-    :global-minor-mode corfu-global-mode
+    :global-minor-mode global-corfu-mode
     :hook ((minibuffer-setup-hook . my/corfu-enable-in-minibuffer)
            (eshell-mode-hook . (lambda ()
                                  (setq-local corfu-auto nil)
@@ -2317,7 +2318,7 @@
                                               ;; ([s-down] . [C-tab])
                                               (,(kbd "s-t")           . [C-t ?\C-k])
                                               (,(kbd "s-T")           . [C-T])
-                                              ;;
+
                                               (,(kbd "s-l")           . [C-k])
                                               (,(kbd "s-k")           . [C-l])
                                               ;;
