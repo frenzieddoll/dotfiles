@@ -62,6 +62,7 @@ export XMODIFIERS=@im=fcitx
 fcitx5 &
 
 dropbox &
+# megasync &
 
 # if [ $(hostname) = "archlinuxhonda" ]; then
 #     # export GDK_SCALE=2

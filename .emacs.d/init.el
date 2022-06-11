@@ -733,6 +733,7 @@
   (leaf *ForCUI
     :unless (string= (system-name) "sx12_toshiaki")
     :unless (eq window-system 'x)
+    :when (eq system-type 'gnu/linux)
     :bind (("M-n" . windmove-down)
            ("M-f" . windmove-right)
            ("M-b" . windmove-left)
@@ -945,10 +946,15 @@
   :added "2021-09-05"
   :emacs>= 25
   :ensure t
-  :after websocket anaphora deferred polymode with-editor
+  :require t
+  :hook ((ein:notebook-mode-hook . jedi:setup)
+         (ein:notebook-mode-hook . smartparens-mode))
   :custom ((ein:worksheet-enable-undo . t)
            (ein:output-area-inlined-images . t)
-           ))
+           ;; (ein:markdown-command . "pandoc --metadata pagetitle=\"markdown preview\" -f markdown -c ~/.pandoc/github-markdown.css -s --self-contained --mathjax=https://raw.githubusercontent.com/ustasb/dotfiles/b54b8f502eb94d6146c2a02bfc62ebda72b91035/pandoc/mathjax.js")
+           (jedi:complete-on-dot . t)
+           )
+)
 
 (leaf eww
   :doc "Emacs Web Wowser"
@@ -2043,6 +2049,7 @@
   :ensure t
   :unless (or (string= (system-name) "sx12toshiaki-wsl")
               (string= (system-name) "sx12_toshiaki"))
+  :disabled t
   :bind (("M-n" . flycheck-next-error)
          ("M-p" . flycheck-previous-error))
   :global-minor-mode global-flycheck-mode)
@@ -2057,9 +2064,9 @@
   :ensure t
   :defvar haskell-process-args-ghcie
   :custom `(;; (flymake-proc-allowed-file-name-masks . ,(delete '("\\.l?hs\\'" haskell-flymake-init) flymake-proc-allowed-file-name-masks))
-            (haskell-process-type          . 'stack-ghci)
-            (haskell-process-path-ghci     . "stack")
-            (haskell-process-args-ghcie    . "ghci")
+            (haskell-process-type          . 'ghci)
+            ;; (haskell-process-path-ghci     . "")
+            ;; (haskell-process-args-ghcie    . "ghci")
             (haskell-indent-after-keywords . '(("where" 4 0) ("of" 4) ("do" 4) ("mdo" 4) ("rec" 4) ("in" 4 0) ("{" 4) "if" "then" "else" "let"))
             (haskell-indent-offset         . 4)
             (haskell-indendt-spaces        . 4)
@@ -2160,6 +2167,14 @@
   :added "2021-09-11"
   :ensure t
   :config
+  (leaf jedi
+    :doc "a Python auto-completion for Emacs"
+    :req "emacs-24" "jedi-core-0.2.2" "auto-complete-1.4"
+    :tag "emacs>=24"
+    :added "2022-05-29"
+    :emacs>= 24
+    :ensure t
+    :after jedi-core auto-complete)
   (leaf lsp-jedi
     :doc "Lsp client plugin for Python Jedi Language Server"
     :req "emacs-25.1" "lsp-mode-6.0"
@@ -2328,6 +2343,7 @@
                                               (,(kbd "<mouse-12>")    . [left])
                                               ;; (,(kbd "C-j")           .,(kbd "C-<"))
                                               ;; (,(kbd "C-l")           .,(kbd "C->"))
+                                              (,(kbd "C-c C-c")       . ,(kbd "C-c"))
                                               )))
     :bind (("C-\\" . skk-latin-mode)
            ("C-l" . skk-latin-mode))
