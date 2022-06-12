@@ -447,7 +447,7 @@
   (if (not (eq system-type 'windows))
           (eval-after-load "esh-module"
             '(defvar eshell-modules-list (delq 'eshell-ls (delq 'eshell-unix eshell-modules-list)))))
-  (setenv "GIT_PAGER" "")
+
 
   (leaf eshell-prompt-extras
     :doc "Display extra information for your eshell prompt."
@@ -469,6 +469,7 @@
     )
 
   :preface
+  (setenv "GIT_PAGER" "")
   (defun eshell-alias ()
     (interactive)
     "eshell alias set"
@@ -1081,7 +1082,7 @@
   :emacs>= 25.1
   :ensure t
   :after git-commit magit-section with-editor
-  :config)
+  :config (setenv "GIT_PAGER" ""))
 
 (leaf org
   :doc "Export Framework for Org Mode"
@@ -2064,7 +2065,7 @@
   :ensure t
   :defvar haskell-process-args-ghcie
   :custom `(;; (flymake-proc-allowed-file-name-masks . ,(delete '("\\.l?hs\\'" haskell-flymake-init) flymake-proc-allowed-file-name-masks))
-            (haskell-process-type          . 'ghci)
+            (haskell-process-type          . 'cabal-repl)
             ;; (haskell-process-path-ghci     . "")
             ;; (haskell-process-args-ghcie    . "ghci")
             (haskell-indent-after-keywords . '(("where" 4 0) ("of" 4) ("do" 4) ("mdo" 4) ("rec" 4) ("in" 4 0) ("{" 4) "if" "then" "else" "let"))
