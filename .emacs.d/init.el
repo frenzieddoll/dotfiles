@@ -236,7 +236,8 @@
     :config
     (set-face-attribute 'default nil
                         :family "HackGen"
-                        :height 140))
+                        :height 140)
+    (set-fontset-font t 'japanese-jisx0208 (font-spec :family "HackGen")))
   (leaf *forMac
     :when (eq system-type 'darwin)
     :config
