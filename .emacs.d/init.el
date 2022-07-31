@@ -997,6 +997,7 @@
           ("K"     . next-buffer)
           ("d"     . scroll-up)
           ("u"     . scroll-down)))
+
   :config
   (leaf ace-link
     :doc "Quickly follow links"
@@ -1005,7 +1006,15 @@
     :url "https://github.com/abo-abo/ace-link"
     :added "2022-04-30"
     :ensure t)
+
+  :advice
+  (:around shr-colorize-region shr-colorize-region--disable)
+  (:around eww-colorize-region shr-colorize-region--disable)
+
   :preface
+  (defun shr-put-image-alt (spec alt &optional flags)
+    (insert alt))
+
   (defun eww-disable-images ()
     "eww で画像表示させない"
     (interactive)
@@ -1016,11 +1025,10 @@
     (interactive)
     (setq-local shr-put-image-function 'shr-put-image)
     (eww-reload))
-  (defun shr-put-image-alt (spec alt &optional flags)
-    (insert alt))
   ;; はじめから非表示
   (defun eww-mode-hook-disable-image ()
     (setq-local shr-put-image-function 'shr-put-image-alt))
+
   (defun browse-url-with-eww ()
     (interactive)
     (let ((url-region (bounds-of-thing-at-point 'url)))
@@ -1030,16 +1038,17 @@
                                                           (cdr url-region))))
       ;; org-link
       (setq browse-url-browser-function 'eww-browse-url)))
+
   (defun shr-colorize-region--disable (orig start end fg &optional bg &rest _)
     (unless eww-disable-colorize
       (funcall orig start end fg)))
-  (advice-add 'shr-colorize-region :around 'shr-colorize-region--disable)
-  (advice-add 'eww-colorize-region :around 'shr-colorize-region--disable)
+
   (defun eww-disable-color ()
     "eww で文字色を反映させない"
     (interactive)
     (setq-local eww-disable-colorize t)
     (eww-reload))
+
   (defun eww-enable-color ()
     "eww で文字色を反映させる"
     (interactive)
