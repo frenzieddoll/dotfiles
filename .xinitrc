@@ -58,11 +58,11 @@ export DefaultIMModule=fcitx
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
-# fcitx-autostart  &
+# fcitx5-autostart  &
 fcitx5 &
 
-dropbox &
-# megasync &
+# dropbox &
+megasync &
 
 # if [ $(hostname) = "archlinuxhonda" ]; then
 #     # export GDK_SCALE=2

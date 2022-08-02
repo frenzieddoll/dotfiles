@@ -65,8 +65,8 @@
                         '("elisp" "conf" "public_repos")))
   :config
   (leaf private-path
-    :when (file-directory-p "~/Doropbox/private/elisp")
-    :load-path "~/Doropbox/private/elisp"))
+    :when (file-directory-p "~/private/elisp")
+    :load-path "~/private/elisp"))
 
 (leaf *cus-edit
   :doc "customファイルをinit.elに記入しない"
@@ -1012,9 +1012,9 @@
 
 (leaf google-translate
   :ensure t
-  :require t
-  :disabled t
-  :bind (("s-v" . google-translate-enja-or-jaen))
+  :require google-translate noflet
+  ;; :disabled t
+  :bind (("s-t" . google-translate-enja-or-jaen))
   :preface
   (defun google-translate-enja-or-jaen (&optional string)
     "Translate words in region or current position. Can also specify query with C-u"
@@ -1035,7 +1035,38 @@
        (if asciip "en" "ja")
        (if asciip "ja" "en")
        string)))
+  ;; (defun google-translate--get-b-d1 ()
+  ;;   (list 427110 1469889687))
+  ;; (defun google-translate-at-point-autodetect (&optional override-p)
+  ;;   (interactive "P")
+  ;;   (noflet ((google-translate-translate
+  ;;             (source-language target-language text &optional output-destination)
+  ;;             (when (use-region-p)
+  ;;               ;; リージョンのテキストを取得する（矩形リージョンにも対応）
+  ;;               (setq text (funcall region-extract-function nil))
+  ;;               ;; マークを無効にする
+  ;;               (deactivate-mark)
+  ;;               (when (fboundp 'cua-cancel)
+  ;;                 (cua-cancel)))
+
+  ;;             ;; 行頭、行末のホワイトスペースを削除し、文章の途中にある改行をスペース
+  ;;             ;; に変換してから翻訳する
+  ;;             (let ((str (replace-regexp-in-string
+  ;;                         "\\([^\n]\\)\n\\([^\n]\\)" "\\1 \\2"
+  ;;                         (replace-regexp-in-string "^\s*\\(.*?\\)\s*$" "\\1" text))))
+  ;;               ;; C-u が前置された場合は、翻訳言語を選択する
+  ;;               (if current-prefix-arg
+  ;;                   (funcall this-fn source-language target-language str
+  ;;                            output-destination)
+  ;;                 ;; 翻訳する文字列に英字以外の文字が含まれている割合（閾値：20%）で翻訳方向を決定する
+  ;;                 (if (>= (/ (* (length (replace-regexp-in-string "[[:ascii:]]" "" str)) 100)
+  ;;                            (length str))
+  ;;                         20) ; %
+  ;;                     (funcall this-fn "ja" "en" str output-destination)
+  ;;                   (funcall this-fn "en" "ja" str output-destination))))))
+  ;;           (google-translate-at-point override-p)))
   (defun google-translate--get-b-d1 ()
+    ;; TKK='427110.1469889687'
     (list 427110 1469889687)))
 
 (leaf magit
