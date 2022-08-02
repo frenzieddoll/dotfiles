@@ -236,7 +236,8 @@
     :config
     (set-face-attribute 'default nil
                         :family "HackGen"
-                        :height 140))
+                        :height 140)
+    (set-fontset-font t 'japanese-jisx0208 (font-spec :family "HackGen")))
   (leaf *forMac
     :when (eq system-type 'darwin)
     :config
@@ -490,7 +491,8 @@
             (list "usbmount" "sudo mount -t vfat $1 $2 -o rw,umask=000")
             (list "dvd" "mpv dvd:// -dvd-device $1")
             (list "dvdCopy" "dvdbackup -i /dev/sr0 -o ~/Downloads/iso/ -M")
-            (list "pkglist" "yay -Qe | cut -f 1 -d " " > ~/.emacs.d/pkglist")))))
+            (list "pkglist" "yay -Qe | cut -f 1 -d " " > ~/.emacs.d/pkglist")
+            (list "open" "cmd.exe /c start {wslpath -w $*}")))))
 
   (defun pcomplete/sudo ()
     "Completion rules for the `sudo' command."
@@ -527,6 +529,11 @@
 
 (leaf *globa-keybinding
   :hook (minibuffer-setup-hook . minibuffer-delete-backward-char)
+  :config
+  ;; (leaf *blobal-keybind_wsl
+  ;;   :when (string= (system-name) "sx12_toshiaki")
+  ;;   :bind (("CR-s" . async-shell-command))
+  ;;   )
   :bind (;; C-m : 改行プラスインデント
          ("C-m"           . newline-and-indent)
          ;; ;; exwm用
@@ -697,7 +704,36 @@
            ("M-d" . app-launcher-run-app)
            ("M-o" . consult-buffer)))
 
+  (leaf *ForWsl
+    :when (eq system-type 'gnu/linux)
+    :when (or (string= (system-name) "sx12toshiaki-wsl")
+              (string= (system-name) "sx12_toshiaki"))
+    :bind (("s-f" . windmove-right)
+           ("s-b" . windmove-left)
+           ("s-a" . zoom-window-zoom)
+           ("s-h" . delete-window)
+           ("s-d" . app-launcher-run-app)
+           ("s-n" . windmove-down)
+           ("s-p" . windmove-up)
+           ("s-q" . kill-current-buffer)
+           ("s-o" . consult-buffer)
+           ("M-f" . windmove-right)
+           ("M-b" . windmove-left)
+           ("M-a" . zoom-window-zoom)
+           ("M-h" . delete-window)
+           ("M-d" . app-launcher-run-app)
+           ("M-n" . windmove-down)
+           ("M-p" . windmove-up)
+           ("M-q" . kill-current-buffer)
+           ("M-o" . consult-buffer)
+           ;; ("C-s-i" . output_toggle)
+           ;; ("C-s-m" . mute_toggle)
+           ;; ("C-s-n" . lower_volume)
+           ;; ("C-s-p" . upper_volume)
+           ))
+
   (leaf *ForCUI
+    :unless (string= (system-name) "sx12_toshiaki")
     :unless (eq window-system 'x)
     :when (eq system-type 'gnu/linux)
     :bind (("M-n" . windmove-down)
@@ -961,6 +997,7 @@
           ("K"     . next-buffer)
           ("d"     . scroll-up)
           ("u"     . scroll-down)))
+
   :config
   (leaf ace-link
     :doc "Quickly follow links"
@@ -969,7 +1006,15 @@
     :url "https://github.com/abo-abo/ace-link"
     :added "2022-04-30"
     :ensure t)
+
+  :advice
+  (:around shr-colorize-region shr-colorize-region--disable)
+  (:around eww-colorize-region shr-colorize-region--disable)
+
   :preface
+  (defun shr-put-image-alt (spec alt &optional flags)
+    (insert alt))
+
   (defun eww-disable-images ()
     "eww で画像表示させない"
     (interactive)
@@ -980,11 +1025,10 @@
     (interactive)
     (setq-local shr-put-image-function 'shr-put-image)
     (eww-reload))
-  (defun shr-put-image-alt (spec alt &optional flags)
-    (insert alt))
   ;; はじめから非表示
   (defun eww-mode-hook-disable-image ()
     (setq-local shr-put-image-function 'shr-put-image-alt))
+
   (defun browse-url-with-eww ()
     (interactive)
     (let ((url-region (bounds-of-thing-at-point 'url)))
@@ -994,16 +1038,17 @@
                                                           (cdr url-region))))
       ;; org-link
       (setq browse-url-browser-function 'eww-browse-url)))
+
   (defun shr-colorize-region--disable (orig start end fg &optional bg &rest _)
     (unless eww-disable-colorize
       (funcall orig start end fg)))
-  (advice-add 'shr-colorize-region :around 'shr-colorize-region--disable)
-  (advice-add 'eww-colorize-region :around 'shr-colorize-region--disable)
+
   (defun eww-disable-color ()
     "eww で文字色を反映させない"
     (interactive)
     (setq-local eww-disable-colorize t)
     (eww-reload))
+
   (defun eww-enable-color ()
     "eww で文字色を反映させる"
     (interactive)
@@ -2044,6 +2089,8 @@
   :added "2022-04-04"
   :emacs>= 24.3
   :ensure t
+  :unless (or (string= (system-name) "sx12toshiaki-wsl")
+              (string= (system-name) "sx12_toshiaki"))
   :disabled t
   :bind (("M-n" . flycheck-next-error)
          ("M-p" . flycheck-previous-error))
@@ -2328,7 +2375,7 @@
                                               ;; ([s-down] . [C-tab])
                                               (,(kbd "s-t")           . [C-t ?\C-k])
                                               (,(kbd "s-T")           . [C-T])
-                                              ;;
+
                                               (,(kbd "s-l")           . [C-k])
                                               (,(kbd "s-k")           . [C-l])
                                               ;;
@@ -2342,7 +2389,7 @@
                                               )))
     :bind (("C-\\" . skk-latin-mode)
            ("C-l" . skk-latin-mode))
-    :preface
+    :init
     (defun exwm-workspace-toggle ()
       (interactive)
       (if (= exwm-workspace-current-index 0)
