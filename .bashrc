@@ -15,4 +15,18 @@ export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.emacs.d/script:$PATH"
 export PATH="$HOME/.ghcup/bin:$PATH"
 export PATH="$HOME/.cabal/bin:$PATH"
+
+function open() {
+    if [ $# != 1 ]; then
+        explorer.exe .
+    else
+        if [ -e $1 ]; then
+            cmd.exe /c start $(wslpath -w $1) 2> /dev/null
+        else
+            echo "open: $1 : No such file or directory"
+        fi
+    fi
+}
+
+
 cd

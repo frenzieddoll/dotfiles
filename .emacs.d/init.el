@@ -65,8 +65,8 @@
                         '("elisp" "conf" "public_repos")))
   :config
   (leaf private-path
-    :when (file-directory-p "~/Doropbox/private/elisp")
-    :load-path "~/Doropbox/private/elisp"))
+    :when (file-directory-p "~/private/elisp")
+    :load-path "~/private/elisp"))
 
 (leaf *cus-edit
   :doc "customファイルをinit.elに記入しない"
