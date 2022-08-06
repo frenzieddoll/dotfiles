@@ -50,6 +50,7 @@ export PATH="$HOME/.ghcup/bin:$PATH"
 export PATH="$HOME/.cabal/bin:$PATH"
 # export PATH="$HOME/.ghcup/ghc/8.10.7/bin/:$PATH"
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/home/toshiaki/.local/lib"
+export QT_QPA_PLATFORMTHEME="qt5ct"
 
 # export PATH="/Library/Frameworks/Python.framework/Versions/3.7/bin/:$PATH"
 
