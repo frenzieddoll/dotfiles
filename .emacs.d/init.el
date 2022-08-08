@@ -65,8 +65,8 @@
                         '("elisp" "conf" "public_repos")))
   :config
   (leaf private-path
-    :when (file-directory-p "~/Doropbox/private/elisp")
-    :load-path "~/Doropbox/private/elisp"))
+    :when (file-directory-p "~/private/elisp")
+    :load-path "~/private/elisp"))
 
 (leaf *cus-edit
   :doc "customファイルをinit.elに記入しない"
@@ -236,7 +236,8 @@
     :config
     (set-face-attribute 'default nil
                         :family "HackGen"
-                        :height 120))
+                        :height 140)
+    (set-fontset-font t 'japanese-jisx0208 (font-spec :family "HackGen")))
   (leaf *forMac
     :when (eq system-type 'darwin)
     :config
@@ -447,7 +448,7 @@
   (if (not (eq system-type 'windows))
           (eval-after-load "esh-module"
             '(defvar eshell-modules-list (delq 'eshell-ls (delq 'eshell-unix eshell-modules-list)))))
-  (setenv "GIT_PAGER" "")
+
 
   (leaf eshell-prompt-extras
     :doc "Display extra information for your eshell prompt."
@@ -469,6 +470,7 @@
     )
 
   :preface
+  (setenv "GIT_PAGER" "")
   (defun eshell-alias ()
     (interactive)
     "eshell alias set"
@@ -489,7 +491,8 @@
             (list "usbmount" "sudo mount -t vfat $1 $2 -o rw,umask=000")
             (list "dvd" "mpv dvd:// -dvd-device $1")
             (list "dvdCopy" "dvdbackup -i /dev/sr0 -o ~/Downloads/iso/ -M")
-            (list "pkglist" "yay -Qe | cut -f 1 -d " " > ~/.emacs.d/pkglist")))))
+            (list "pkglist" "yay -Qe | cut -f 1 -d " " > ~/.emacs.d/pkglist")
+            (list "open" "cmd.exe /c start {wslpath -w $*}")))))
 
   (defun pcomplete/sudo ()
     "Completion rules for the `sudo' command."
@@ -526,6 +529,11 @@
 
 (leaf *globa-keybinding
   :hook (minibuffer-setup-hook . minibuffer-delete-backward-char)
+  :config
+  ;; (leaf *blobal-keybind_wsl
+  ;;   :when (string= (system-name) "sx12_toshiaki")
+  ;;   :bind (("CR-s" . async-shell-command))
+  ;;   )
   :bind (;; C-m : 改行プラスインデント
          ("C-m"           . newline-and-indent)
          ;; ;; exwm用
@@ -696,7 +704,36 @@
            ("M-d" . app-launcher-run-app)
            ("M-o" . consult-buffer)))
 
+  (leaf *ForWsl
+    :when (eq system-type 'gnu/linux)
+    :when (or (string= (system-name) "sx12toshiaki-wsl")
+              (string= (system-name) "sx12_toshiaki"))
+    :bind (("s-f" . windmove-right)
+           ("s-b" . windmove-left)
+           ("s-a" . zoom-window-zoom)
+           ("s-h" . delete-window)
+           ("s-d" . app-launcher-run-app)
+           ("s-n" . windmove-down)
+           ("s-p" . windmove-up)
+           ("s-q" . kill-current-buffer)
+           ("s-o" . consult-buffer)
+           ("M-f" . windmove-right)
+           ("M-b" . windmove-left)
+           ("M-a" . zoom-window-zoom)
+           ("M-h" . delete-window)
+           ("M-d" . app-launcher-run-app)
+           ("M-n" . windmove-down)
+           ("M-p" . windmove-up)
+           ("M-q" . kill-current-buffer)
+           ("M-o" . consult-buffer)
+           ;; ("C-s-i" . output_toggle)
+           ;; ("C-s-m" . mute_toggle)
+           ;; ("C-s-n" . lower_volume)
+           ;; ("C-s-p" . upper_volume)
+           ))
+
   (leaf *ForCUI
+    :unless (string= (system-name) "sx12_toshiaki")
     :unless (eq window-system 'x)
     :when (eq system-type 'gnu/linux)
     :bind (("M-n" . windmove-down)
@@ -911,7 +948,15 @@
   :added "2021-09-05"
   :emacs>= 25
   :ensure t
-  :after websocket anaphora deferred polymode with-editor)
+  :require t
+  :hook ((ein:notebook-mode-hook . jedi:setup)
+         (ein:notebook-mode-hook . smartparens-mode))
+  :custom ((ein:worksheet-enable-undo . t)
+           (ein:output-area-inlined-images . t)
+           ;; (ein:markdown-command . "pandoc --metadata pagetitle=\"markdown preview\" -f markdown -c ~/.pandoc/github-markdown.css -s --self-contained --mathjax=https://raw.githubusercontent.com/ustasb/dotfiles/b54b8f502eb94d6146c2a02bfc62ebda72b91035/pandoc/mathjax.js")
+           (jedi:complete-on-dot . t)
+           )
+)
 
 (leaf eww
   :doc "Emacs Web Wowser"
@@ -952,6 +997,7 @@
           ("K"     . next-buffer)
           ("d"     . scroll-up)
           ("u"     . scroll-down)))
+
   :config
   (leaf ace-link
     :doc "Quickly follow links"
@@ -960,7 +1006,15 @@
     :url "https://github.com/abo-abo/ace-link"
     :added "2022-04-30"
     :ensure t)
+
+  :advice
+  (:around shr-colorize-region shr-colorize-region--disable)
+  (:around eww-colorize-region shr-colorize-region--disable)
+
   :preface
+  (defun shr-put-image-alt (spec alt &optional flags)
+    (insert alt))
+
   (defun eww-disable-images ()
     "eww で画像表示させない"
     (interactive)
@@ -971,11 +1025,10 @@
     (interactive)
     (setq-local shr-put-image-function 'shr-put-image)
     (eww-reload))
-  (defun shr-put-image-alt (spec alt &optional flags)
-    (insert alt))
   ;; はじめから非表示
   (defun eww-mode-hook-disable-image ()
     (setq-local shr-put-image-function 'shr-put-image-alt))
+
   (defun browse-url-with-eww ()
     (interactive)
     (let ((url-region (bounds-of-thing-at-point 'url)))
@@ -985,16 +1038,17 @@
                                                           (cdr url-region))))
       ;; org-link
       (setq browse-url-browser-function 'eww-browse-url)))
+
   (defun shr-colorize-region--disable (orig start end fg &optional bg &rest _)
     (unless eww-disable-colorize
       (funcall orig start end fg)))
-  (advice-add 'shr-colorize-region :around 'shr-colorize-region--disable)
-  (advice-add 'eww-colorize-region :around 'shr-colorize-region--disable)
+
   (defun eww-disable-color ()
     "eww で文字色を反映させない"
     (interactive)
     (setq-local eww-disable-colorize t)
     (eww-reload))
+
   (defun eww-enable-color ()
     "eww で文字色を反映させる"
     (interactive)
@@ -1003,9 +1057,9 @@
 
 (leaf google-translate
   :ensure t
-  :require t
-  :disabled t
-  :bind (("s-v" . google-translate-enja-or-jaen))
+  :require google-translate noflet
+  ;; :disabled t
+  :bind (("s-t" . google-translate-enja-or-jaen))
   :preface
   (defun google-translate-enja-or-jaen (&optional string)
     "Translate words in region or current position. Can also specify query with C-u"
@@ -1026,7 +1080,38 @@
        (if asciip "en" "ja")
        (if asciip "ja" "en")
        string)))
+  ;; (defun google-translate--get-b-d1 ()
+  ;;   (list 427110 1469889687))
+  ;; (defun google-translate-at-point-autodetect (&optional override-p)
+  ;;   (interactive "P")
+  ;;   (noflet ((google-translate-translate
+  ;;             (source-language target-language text &optional output-destination)
+  ;;             (when (use-region-p)
+  ;;               ;; リージョンのテキストを取得する（矩形リージョンにも対応）
+  ;;               (setq text (funcall region-extract-function nil))
+  ;;               ;; マークを無効にする
+  ;;               (deactivate-mark)
+  ;;               (when (fboundp 'cua-cancel)
+  ;;                 (cua-cancel)))
+
+  ;;             ;; 行頭、行末のホワイトスペースを削除し、文章の途中にある改行をスペース
+  ;;             ;; に変換してから翻訳する
+  ;;             (let ((str (replace-regexp-in-string
+  ;;                         "\\([^\n]\\)\n\\([^\n]\\)" "\\1 \\2"
+  ;;                         (replace-regexp-in-string "^\s*\\(.*?\\)\s*$" "\\1" text))))
+  ;;               ;; C-u が前置された場合は、翻訳言語を選択する
+  ;;               (if current-prefix-arg
+  ;;                   (funcall this-fn source-language target-language str
+  ;;                            output-destination)
+  ;;                 ;; 翻訳する文字列に英字以外の文字が含まれている割合（閾値：20%）で翻訳方向を決定する
+  ;;                 (if (>= (/ (* (length (replace-regexp-in-string "[[:ascii:]]" "" str)) 100)
+  ;;                            (length str))
+  ;;                         20) ; %
+  ;;                     (funcall this-fn "ja" "en" str output-destination)
+  ;;                   (funcall this-fn "en" "ja" str output-destination))))))
+  ;;           (google-translate-at-point override-p)))
   (defun google-translate--get-b-d1 ()
+    ;; TKK='427110.1469889687'
     (list 427110 1469889687)))
 
 (leaf magit
@@ -1038,7 +1123,7 @@
   :emacs>= 25.1
   :ensure t
   :after git-commit magit-section with-editor
-  :config)
+  :config (setenv "GIT_PAGER" ""))
 
 (leaf org
   :doc "Export Framework for Org Mode"
@@ -1895,7 +1980,7 @@
         (eshell-send-input)
         ((derived-mode-p 'comint-mode)
          (comint-send-input)))))
-    ;; :global-minor-mode corfu-global-mode
+    :global-minor-mode global-corfu-mode
     :hook ((minibuffer-setup-hook . my/corfu-enable-in-minibuffer)
            (eshell-mode-hook . (lambda ()
                                  (setq-local corfu-auto nil)
@@ -2004,6 +2089,8 @@
   :added "2022-04-04"
   :emacs>= 24.3
   :ensure t
+  :unless (or (string= (system-name) "sx12toshiaki-wsl")
+              (string= (system-name) "sx12_toshiaki"))
   :disabled t
   :bind (("M-n" . flycheck-next-error)
          ("M-p" . flycheck-previous-error))
@@ -2019,9 +2106,9 @@
   :ensure t
   :defvar haskell-process-args-ghcie
   :custom `(;; (flymake-proc-allowed-file-name-masks . ,(delete '("\\.l?hs\\'" haskell-flymake-init) flymake-proc-allowed-file-name-masks))
-            (haskell-process-type          . 'stack-ghci)
-            (haskell-process-path-ghci     . "stack")
-            (haskell-process-args-ghcie    . "ghci")
+            (haskell-process-type          . 'cabal-repl)
+            ;; (haskell-process-path-ghci     . "")
+            ;; (haskell-process-args-ghcie    . "ghci")
             (haskell-indent-after-keywords . '(("where" 4 0) ("of" 4) ("do" 4) ("mdo" 4) ("rec" 4) ("in" 4 0) ("{" 4) "if" "then" "else" "let"))
             (haskell-indent-offset         . 4)
             (haskell-indendt-spaces        . 4)
@@ -2122,6 +2209,14 @@
   :added "2021-09-11"
   :ensure t
   :config
+  (leaf jedi
+    :doc "a Python auto-completion for Emacs"
+    :req "emacs-24" "jedi-core-0.2.2" "auto-complete-1.4"
+    :tag "emacs>=24"
+    :added "2022-05-29"
+    :emacs>= 24
+    :ensure t
+    :after jedi-core auto-complete)
   (leaf lsp-jedi
     :doc "Lsp client plugin for Python Jedi Language Server"
     :req "emacs-25.1" "lsp-mode-6.0"
@@ -2280,7 +2375,7 @@
                                               ;; ([s-down] . [C-tab])
                                               (,(kbd "s-t")           . [C-t ?\C-k])
                                               (,(kbd "s-T")           . [C-T])
-                                              ;;
+
                                               (,(kbd "s-l")           . [C-k])
                                               (,(kbd "s-k")           . [C-l])
                                               ;;
@@ -2290,10 +2385,11 @@
                                               (,(kbd "<mouse-12>")    . [left])
                                               ;; (,(kbd "C-j")           .,(kbd "C-<"))
                                               ;; (,(kbd "C-l")           .,(kbd "C->"))
+                                              (,(kbd "C-c C-c")       . ,(kbd "C-c"))
                                               )))
     :bind (("C-\\" . skk-latin-mode)
            ("C-l" . skk-latin-mode))
-    :preface
+    :init
     (defun exwm-workspace-toggle ()
       (interactive)
       (if (= exwm-workspace-current-index 0)
