@@ -25,6 +25,7 @@
 !/.config/brave-flags.conf
 !/.config/fbtermrc
 !/.config/alacritty/*
+/.config/alacritty/alacritty_local.yml
 !/.config/libskk/*
 !/.config/mpv/*
 !/.config/termite/*
@@ -39,4 +40,3 @@
 !/.pkglist
 !/.xinitrc
 !/.zshrc
-!/.xkb/*/*
