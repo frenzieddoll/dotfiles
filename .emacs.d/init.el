@@ -230,13 +230,13 @@
     (set-face-attribute 'default nil
                         :family "HackGen"
                         :height 140))
-  (leaf *forLinux
+  (leaf *forSX12
     :when (eq system-type 'gnu/linux)
-    :unless (string-match (system-name) "archlinuxhonda")
+    :when (string= (system-name) "sx12toshiaki")
     :config
     (set-face-attribute 'default nil
                         :family "HackGen"
-                        :height 140))
+                        :height 120))
   (leaf *forMac
     :when (eq system-type 'darwin)
     :config
@@ -260,7 +260,7 @@
   (leaf *pi
     ;; :disabled t
     :when (string= (system-name) "RaspberryPi")
-    :when (string= (getenv "EXWM") "enable" )
+    :when (string= (getenv "EXWM") "enable")
     :config
     (set-face-attribute 'default nil
                         :family "HackGen"
