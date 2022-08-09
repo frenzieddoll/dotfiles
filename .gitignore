@@ -42,3 +42,5 @@
 !/.xinitrc
 !/.xkb/*/*
 !/.zshrc
+# setting
+!/setting/*/*

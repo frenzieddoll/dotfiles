@@ -73,6 +73,10 @@ megasync &
 export LANG=ja_JP.UTF-8
 export EXWM=enable
 
+case $(uname -n) in
+    "sx12toshiaki" ) xkbcomp -I$HOME/.xkb/ ~/.xkb/keymap/sx12 $DISPLAY > /dev/null 2>&1;;
+esac
+
 
 xhost +SI:localuser:$USER
 xset r rate 250 40
