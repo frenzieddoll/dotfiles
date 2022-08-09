@@ -1,0 +1,5 @@
+partial modifier_keys
+xkb_symbols "swapkeys" {
+  replace key <RALT> { [ Super_R ] };
+  replace key <LALT> { [ Alt_L ] };
+};

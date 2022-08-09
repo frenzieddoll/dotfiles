@@ -72,7 +72,7 @@ alias pacmanlist="pacman -Qqe > ~/projects/dotfiles/.pkglist"
 case $(uname -n) in
     "ArchLinuxonLaptopPC" ) alias startx='startx' ;;
     "archlinuxhonda" ) alias startx='startx -- -dpi 138' ;;
-    "sx12toshiaki" ) xkbcomp -I$HOME/.xkb/ ~/.xkb/keymap/myxkb $DISPLAY 2> /dev/null;;
+    "sx12toshiaki" ) xkbcomp -I$HOME/.xkb/ ~/.xkb/keymap/sx12 $DISPLAY 2$>1 /dev/null;;
 esac
 
 

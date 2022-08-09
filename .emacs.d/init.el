@@ -705,9 +705,10 @@
            ("M-o" . consult-buffer)))
 
   (leaf *ForWsl
-    :when (eq system-type 'gnu/linux)
-    :when (or (string= (system-name) "sx12toshiaki-wsl")
-              (string= (system-name) "sx12_toshiaki"))
+    ;; :when (eq system-type 'gnu/linux)
+    :when (and (eq system-type 'gnu/linux)
+               (or  (string= (system-name) "sx12toshiaki-wsl")
+                    (string= (system-name) "sx12_toshiaki")))
     :bind (("s-f" . windmove-right)
            ("s-b" . windmove-left)
            ("s-a" . zoom-window-zoom)
