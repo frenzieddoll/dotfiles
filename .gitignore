@@ -25,6 +25,8 @@
 /.config/alacritty/alacritty_local.yml
 !/.config/brave-flags.conf
 !/.config/fbtermrc
+!/.config/fcitx
+!/.config/fcitx5
 !/.config/gtk-3.0/*
 !/.config/libskk/*
 !/.config/mimeapps.list
@@ -40,7 +42,8 @@
 !/.bashrc
 !/.pkglist
 !/.xinitrc
-!/.xkb/*/*
 !/.zshrc
 # setting
 !/setting/*/*
+# xkb
+!/.xkb/*/*
