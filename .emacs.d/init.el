@@ -369,6 +369,7 @@
                                       ("flv"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
                                       ("m4v"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
                                       ("mp3"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+                                      ("flac"     . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
                                       ("wav"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
                                       ("m4a"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
                                       ("3gp"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
@@ -706,9 +707,8 @@
 
   (leaf *ForWsl
     ;; :when (eq system-type 'gnu/linux)
-    :when (and (eq system-type 'gnu/linux)
-               (or  (string= (system-name) "sx12toshiaki-wsl")
-                    (string= (system-name) "sx12_toshiaki")))
+    :when (eq system-type 'gnu/linux)
+    :when (string= (system-name) "sx12toshiaki-wsl")
     :bind (("s-f" . windmove-right)
            ("s-b" . windmove-left)
            ("s-a" . zoom-window-zoom)
@@ -734,7 +734,7 @@
            ))
 
   (leaf *ForCUI
-    :unless (string= (system-name) "sx12_toshiaki")
+    ;; :unless (string= (system-name) "sx12_toshiaki")
     :unless (eq window-system 'x)
     :when (eq system-type 'gnu/linux)
     :bind (("M-n" . windmove-down)
