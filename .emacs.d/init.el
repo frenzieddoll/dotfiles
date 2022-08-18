@@ -238,6 +238,14 @@
                         :family "HackGen"
                         :height 110)
     (set-fontset-font t 'japanese-jisx0208 (font-spec :family "HackGen")))
+  (leaf *forSX12_wsl
+    :when (eq system-type 'gnu/linux)
+    :when (string= (system-name) "sx12_toshiaki")
+    :config
+    (set-face-attribute 'default nil
+                        :family "HackGen"
+                        :height 140)
+    (set-fontset-font t 'japanese-jisx0208 (font-spec :family "HackGen")))
   (leaf *forMac
     :when (eq system-type 'darwin)
     :config
@@ -708,7 +716,7 @@
   (leaf *ForWsl
     ;; :when (eq system-type 'gnu/linux)
     :when (eq system-type 'gnu/linux)
-    :when (string= (system-name) "sx12toshiaki-wsl")
+    :when (string= (system-name) "sx12_toshiaki")
     :bind (("s-f" . windmove-right)
            ("s-b" . windmove-left)
            ("s-a" . zoom-window-zoom)
@@ -718,13 +726,13 @@
            ("s-p" . windmove-up)
            ("s-q" . kill-current-buffer)
            ("s-o" . consult-buffer)
-           ("M-f" . windmove-right)
-           ("M-b" . windmove-left)
-           ("M-a" . zoom-window-zoom)
-           ("M-h" . delete-window)
-           ("M-d" . app-launcher-run-app)
-           ("M-n" . windmove-down)
-           ("M-p" . windmove-up)
+           ;; ("M-f" . windmove-right)
+           ;; ("M-b" . windmove-left)
+           ;; ("M-n" . windmove-down)
+           ;; ("M-p" . windmove-up)
+           ;; ("M-a" . zoom-window-zoom)
+           ;; ("M-h" . delete-window)
+           ;; ("M-d" . app-launcher-run-app)
            ("M-q" . kill-current-buffer)
            ("M-o" . consult-buffer)
            ;; ("C-s-i" . output_toggle)
