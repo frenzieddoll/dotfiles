@@ -237,7 +237,8 @@
     (set-face-attribute 'default nil
                         :family "HackGen"
                         :height 110)
-    (set-fontset-font t 'japanese-jisx0208 (font-spec :family "HackGen")))
+    ;; (set-fontset-font t 'japanese-jisx0208 (font-spec :family "HackGen"))
+    )
   (leaf *forMac
     :when (eq system-type 'darwin)
     :config
@@ -2266,6 +2267,26 @@
     :added "2021-11-06"
     :emacs>= 26.1
     :ensure t))
+
+(leaf web-mode
+  :doc "major mode for editing web templates"
+  :req "emacs-23.1"
+  :tag "languages" "emacs>=23.1"
+  :url "https://web-mode.org"
+  :added "2022-09-03"
+  :emacs>= 23.1
+  :ensure t
+  :hook (web-mode-hook . smartparens-mode)
+  :mode (("\\.html\\'" . web-mode))
+  :custom ((web-mode-markup-offset . 2)
+           (web-mode-css-indent-offset . 2)
+           (web-mode-code-indent-offset . 2)
+           (seb-mode-enable-current-element-highliht . t)
+           (seb-mode-enable-auto-pairing . t)
+           (seb-mode-enable-auto-closing))
+  :config
+
+  )
 
 
 ;; window managr
