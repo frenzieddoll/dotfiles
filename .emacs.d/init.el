@@ -2070,23 +2070,24 @@
   :url "http://github.com/joaotavora/yasnippet"
   :added "2021-09-05"
   :ensure t
-  :disabled t
+  ;; :disabled t
+  :hook ((emacs-lisp-mode-hook org-mode-hook yatex-mode-hook haskell-mode-hook) . yas-minor-mode-on)
   :unless (string-match "Raspberrypi" (system-name))
-  :custom ((yas-global-mode . t))
+  ;; :custom ((yas-global-mode . t))
   :bind ((yas-minor-mode-map
-          ("C-." . ivy-yasnippet)))
+          ("C-." . consult-yasnippet)))
+  :custom `((yas-snippet-dirs . '("~/.emacs.d/snippets/")))
   :config
-  (leaf yas_hook
-    :require cl
-    :disabled t
-    :config
-    (defvar ivy-programing-hooks ()
-      '(emacs-lisp-mode
-        org-mode
-        yatex-mode
-        haskell-mode))
-    (loop for hook in ivy-programing-hooks
-          do (add-hook hook 'yas-minor-mode))))
+  (leaf consult-yasnippet
+    :doc "A consulting-read interface for yasnippet"
+    :req "emacs-27.1" "yasnippet-0.14" "consult-0.16"
+    :tag "emacs>=27.1"
+    :url "https://github.com/mohkale/consult-yasnippet"
+    :added "2022-09-04"
+    :emacs>= 27.1
+    :ensure t
+    :after yasnippet consult)
+  )
 
 
 ;; プログラミング設定
