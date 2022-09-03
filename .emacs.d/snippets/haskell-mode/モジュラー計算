@@ -1,0 +1,30 @@
+# -*- mode: snippet -*-
+# name: モジュラー計算
+# key: モジュラー計算
+# expand-env: ((yas/indent-line 'fixed) (yas/wrap-around-region 'nil))
+# --
+modulus :: Int
+modulus = 10^9+7
+
+addMod :: Int -> Int -> Int
+addMod x y = (x + y) \`mod\` modulus
+subMod :: Int -> Int -> Int
+subMod x y = (x - y) \`mod\` modulus
+mulMod :: Int -> Int -> Int
+mulMod x y = (x * y) \`mod\` modulus
+powMod :: Int -> Int -> Int
+powMod n k = n^k `mod` modulus
+invMod :: Int -> Int
+invMod 0 = error "inverse of 0"
+invMod x = powMod x (modulus - 2)
+
+newtype IntMod = IntMod Int deriving Eq
+instance Show IntMod where
+  show (IntMod x) = show x
+instance Num IntMod where
+  IntMod x + IntMod y = IntMod ((x + y) `mod` modulus)
+  IntMod x - IntMod y = IntMod ((x - y) `mod` modulus)
+  IntMod x * IntMod y = IntMod ((x * y) `mod` modulus)
+  fromInteger n = IntMod (fromInteger (n `mod` fromIntegral modulus))
+  abs = undefined
+  signum = undefined

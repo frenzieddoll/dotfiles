@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: 部分文字列
+# key: substring
+# --
+substring sVector = do
+  let n = VU.length sVector
+  i <- [0..n-1]
+  j <- [1..n-i]
+  let chosen = VU.slice i j sVector
+
+  -- guard $ VU.foldr ((&&) . (\n -> n == 'A' || n == 'C' || n == 'G' || n == 'T')) True chosen
+  return $ VU.slice i j sVector
