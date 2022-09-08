@@ -1511,6 +1511,33 @@
   :tag "builtin"
   :added "2021-09-05")
 
+(leaf japanese-holidays
+  :doc "Calendar functions for the Japanese calendar"
+  :req "emacs-24.1" "cl-lib-0.3"
+  :tag "calendar" "emacs>=24.1"
+  :url "https://github.com/emacs-jp/japanese-holidays"
+  :added "2021-09-05"
+  :emacs>= 24.1
+  :ensure t
+  :after calendar
+  :defvar (calendar-day-header-array calendar-day-name-array calendar-holidays japanese-holidays)
+  :require japanese-holidays
+  :hook ((calendar-today-visible-hook   . japanese-holiday-mark-weekend)
+         (calendar-today-invisible-hook . japanese-holiday-mark-weekend)
+         (calendar-today-visible-hook   . calendar-mark-today))
+  :custom ((calendar-mark-holidays-flag     . t)
+           (japanese-holiday-weekend        . '(0 6))
+           (japanese-holiday-weekend-marker . '(holiday nil nil nil nil nil japanese-holiday-saturday))
+           (org-agenda-include-diary        . t)
+           (calendar-day-header-array       . ["日" "月" "火" "水" "木" "金" "土"])
+           (calendar-day-name-array array   . ["日" "月" "火" "水" "木" "金" "土"])
+           (calendar-month-header . '(propertize
+                                      (format "%d年 %s月" year month)
+                                      'font-lock-face 'calendar-month-header)))
+  :config
+  (setq calendar-holidays (append japanese-holidays holiday-local-holidays holiday-other-holidays))
+  )
+
 (leaf calfw
   :doc "Calendar view framework on Emacs"
   :tag "calendar"
@@ -1518,28 +1545,6 @@
   :added "2021-09-05"
   :ensure t
   :config
-  (leaf japanese-holidays
-    :doc "Calendar functions for the Japanese calendar"
-    :req "emacs-24.1" "cl-lib-0.3"
-    :tag "calendar" "emacs>=24.1"
-    :url "https://github.com/emacs-jp/japanese-holidays"
-    :added "2021-09-05"
-    :emacs>= 24.1
-    :ensure t
-    :after calendar
-    :defvar (calendar-day-header-array calendar-day-name-array calendar-holidays japanese-holidays)
-    :require japanese-holidays
-    :hook ((calendar-today-visible-hook . japanese-holiday-mark-weekend)
-           (calendar-today-invisible-hook .  japanese-holiday-mark-weekend)
-           (calendar-today-visible-hook . calendar-mark-today))
-    :custom ((calendar-mark-holidays-flag . t)
-             (japanese-holiday-weekend . '(0 6))
-             (japanese-holiday-weekend-marker . '(holiday nil nil nil nil nil japanese-holiday-saturday))
-             (org-agenda-include-diary . t))
-    :config
-    (let ((array ["日" "月" "火" "水" "木" "金" "土"]))
-      (setq calendar-day-header-array array
-            calendar-day-name-array array)))
   (leaf calfw-org
     :doc "calendar view for org-agenda"
     :tag "org" "calendar"
@@ -2071,12 +2076,12 @@
   :added "2021-09-05"
   :ensure t
   ;; :disabled t
-  :hook ((emacs-lisp-mode-hook org-mode-hook yatex-mode-hook haskell-mode-hook) . yas-minor-mode-on)
+  :hook ((emacs-lisp-mode-hook org-mode-hook yatex-mode-hook haskell-mode-hook web-mode-hook) . yas-minor-mode)
   :unless (string-match "Raspberrypi" (system-name))
   ;; :custom ((yas-global-mode . t))
   :bind ((yas-minor-mode-map
           ("C-." . consult-yasnippet)))
-  :custom `((yas-snippet-dirs . '("~/.emacs.d/snippets/")))
+  ;; :custom ((yas-snippet-dirs . '("~/.emacs.d/elpa/yasnippet-snippets-20220713.1234/snippets/")))
   :config
   (leaf consult-yasnippet
     :doc "A consulting-read interface for yasnippet"
@@ -2087,6 +2092,14 @@
     :emacs>= 27.1
     :ensure t
     :after yasnippet consult)
+(leaf yasnippet-snippets
+  :doc "Collection of yasnippet snippets"
+  :req "yasnippet-0.8.0"
+  :tag "snippets"
+  :url "https://github.com/AndreaCrotti/yasnippet-snippets"
+  :added "2022-09-04"
+  :ensure t
+  :after yasnippet)
   )
 
 
