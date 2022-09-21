@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: define key
+# key: defkey
+# --
+(define-key $1 (kbd "$2") '$3)$0
