@@ -956,7 +956,7 @@
   :url "https://github.com/dickmao/emacs-ipython-notebook"
   :added "2021-09-05"
   :emacs>= 25
-  :ensure t
+  :ensure ein
   :require t
   :hook ((ein:notebook-mode-hook . jedi:setup)
          (ein:notebook-mode-hook . smartparens-mode))
@@ -2275,6 +2275,27 @@
     :emacs>= 26.1
     :ensure t))
 
+(leaf web-mode
+  :doc "major mode for editing web templates"
+  :req "emacs-23.1"
+  :tag "languages" "emacs>=23.1"
+  :url "https://web-mode.org"
+  :added "2022-09-03"
+  :emacs>= 23.1
+  :ensure t
+  :mode ((("\\.html\\'" "\\.js\\'") . web-mode))
+  :custom ((web-mode-markup-indent-offset . 4)
+           (web-mode-css-indent-offset . 4)
+           (web-mode-enable-current-element-highlight . t)
+           (web-mode-enable-auto-pairing . t)
+           (web-mode-enable-auto-closing . t))
+
+  ;; :custom-face
+  ;; (web-mode-doctype-face ((nil (:foreground "Ping3"))))
+  ;; (web-mode-html-tag-face ((nil (:foreground "Green"))))
+  ;; (web-mode-html-attr-value-face ((nil (:foreground "Yellow"))))
+  ;; (web-mode-html-attr-name-face ((nil (:foreground "#0FF"))))
+  )
 
 ;; window managr
 (leaf *exwm-config
