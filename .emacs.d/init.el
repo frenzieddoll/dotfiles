@@ -563,6 +563,7 @@
          ("C-c C-j"       . eval-print-last-sexp)
          ;; async shell command
          ("s-s"           . async-shell-command)
+         ("s-S"           . window-capcher)
          ("C-x g"         . magit-status)
          ("C-S-n"         . scroll-up_alt)
          ("C-S-p"         . scroll-down_alt)
@@ -674,6 +675,12 @@
                 (t
                  (message "Quit")
                  (throw 'end-flag t)))))))
+  (defun window-capcher ()
+    "capcher window by imagemagic"
+    (interactive)
+    (let ((stringShellCommand (concat "import " "~/Downloads/screenshot_" "20" (format-time-string "%02y%02m%02d%02H%02M%02S" (current-time)) ".png"))
+          )
+      (shell-command stringShellCommand)))
 
   :config
   (leaf zoom-window
@@ -2369,7 +2376,10 @@
                                           ;; (,(kbd "s-d")     . counsel-linux-app)
                                           (,(kbd "s-d")     . app-launcher-run-app)
                                           (,(kbd "s-a")     . zoom-window-zoom)
-                                          (,(kbd "s-o")     . consult-buffer)))
+                                          (,(kbd "s-o")     . consult-buffer)
+                                          (,(kbd "M-!")     . shell-command)
+                                          (,(kbd "s-S")     . window-capcher)
+                                          ))
               (exwm-input-simulation-keys . '(;; new version
                                               (,(kbd "C-b")           . [left])
                                               (,(kbd "M-b")           . [C-left])
