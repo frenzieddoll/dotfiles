@@ -124,8 +124,8 @@
 
   :hook  (;; 保存時にいらないスペースを削除
           (before-save-hook . delete-trailing-whitespace)
-          (after-save-hook . flashAfterSave)
-          (after-save-hook . executable-make-buffer-file-executable-if-script-p))
+          (after-save-hook  . flashAfterSave)
+          (after-save-hook  . executable-make-buffer-file-executable-if-script-p))
 
   :preface
   (defun flashAfterSave ()
@@ -965,14 +965,17 @@
   :url "https://github.com/dickmao/emacs-ipython-notebook"
   :added "2021-09-05"
   :emacs>= 25
-  :ensure ein
-  :require t
-  :hook ((ein:notebook-mode-hook . jedi:setup)
+  :ensure t
+  :require ein ein-notebook
+  ;; :el-get millejoh/emacs-ipython-notebook
+  :hook (
+         ;; (ein:notebook-mode-hook . jedi:setup)
          (ein:notebook-mode-hook . smartparens-mode))
-  :custom ((ein:worksheet-enable-undo . t)
+  :custom (
+           (ein:worksheet-enable-undo . t)
            (ein:output-area-inlined-images . t)
-           ;; (ein:markdown-command . "pandoc --metadata pagetitle=\"markdown preview\" -f markdown -c ~/.pandoc/github-markdown.css -s --self-contained --mathjax=https://raw.githubusercontent.com/ustasb/dotfiles/b54b8f502eb94d6146c2a02bfc62ebda72b91035/pandoc/mathjax.js")
-           (jedi:complete-on-dot . t)
+           (ein:markdown-command . "pandoc --metadata pagetitle=\"markdown preview\" -f markdown -c ~/.pandoc/github-markdown.css -s --self-contained --mathjax=https://raw.githubusercontent.com/ustasb/dotfiles/b54b8f502eb94d6146c2a02bfc62ebda72b91035/pandoc/mathjax.js")
+           ;; (jedi:complete-on-dot . t)
            )
 )
 
@@ -2247,8 +2250,7 @@
     :tag "emacs>=24"
     :added "2022-05-29"
     :emacs>= 24
-    :ensure t
-    :after jedi-core auto-complete)
+    :ensure t)
   (leaf lsp-jedi
     :doc "Lsp client plugin for Python Jedi Language Server"
     :req "emacs-25.1" "lsp-mode-6.0"
