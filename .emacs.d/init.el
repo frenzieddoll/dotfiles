@@ -1889,10 +1889,14 @@
     :added "2021-09-05"
     :emacs>= 26.1
     :ensure t
+    :hook ((corfu-mode-hook . my/orderless-for-corfu)
+           (lsp-completion-mode-hook . my/orderless-for-lsp-mode))
     :defvar (orderless-style-dispatchers)
     :custom ((completion-styles . '(orderless))
              (completion-category-defaults . nil)
-             (completion-category-overrides . '((file (style . (partial-completion))))))
+             (completion-category-overrides . nil)
+             ;; (completion-category-overrides . '((file (style . (partial-completion)))))
+             )
     :init
     (defun my/orderless-dispatch-flex-first (_pattern index _total)
       (and (eq index 0) 'orderless-flex))
@@ -1985,13 +1989,13 @@
              (corfu-auto . t)
              (corfu-auto-prefix . 3)
              (corfu-auto-delay . 0.01)
-             (corfu-quit-no-match . 'separator)
-             (corfu-separator . ?\s)
-             (corfu-preselect-first . nil)
+             ;; (corfu-quit-no-match . 'separator)
+             ;; (corfu-separator . ?\s)
+             ;; (corfu-preselect-first . nil)
              )
     :bind
     ((corfu-map
-      ("SPC" . corfu-insert-separator)))
+      ("M-SPC" . corfu-insert-separator)))
 
     :init
     (defun my/corfu-enable-in-minibuffer ()
@@ -2053,7 +2057,18 @@
     ;;       #'command-completion-default-include-p)
 
     ;; Enable recursive minibuffers
-    (setq enable-recursive-minibuffers t)))
+    (setq enable-recursive-minibuffers t))
+  (leaf kind-icon
+    :doc "Completion kind icons"
+    :req "emacs-27.1" "svg-lib-0"
+    :tag "completion" "emacs>=27.1"
+    :url "https://github.com/jdtsmith/kind-icon"
+    :added "2022-11-26"
+    :emacs>= 27.1
+    :ensure t
+    :pre-setq (kind-icon-defalut-face . 'corfu-default)
+    :config
+    (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter)))
 
 (leaf visual-regexp-steroids
   :doc "Extends visual-regexp to support other regexp engines"
@@ -2187,12 +2202,12 @@
   ;; :disabled t
   ;; :el-get emacs-lsp/lsp-mode
   ;; :unless (string-match "Raspberrypi" (system-name))
-  :custom ((lsp-idle-delay . 0.500)
+  :custom ((lsp-keymap-prefix . "s-z")
+           (lsp-idle-delay . 0.500)
            (lsp-log-io . nil)
-           (lsp-keymap-prefix . "M-l")
+           (lsp-completion-provider . :none)
            (lsp-prefer-capf . t)
            (lsp-headerline-breadcrumb-icons-enable . nil)
-           (lsp-completion-provider . :none)
            (lsp-enable-snippet . nil))
   :init
   (defun my/lsp-mode-setup-completion ()
@@ -2204,7 +2219,8 @@
          (haskell-mode-hook . flycheck-mode)
          (rustic-mode . lsp)
          (c-mode-hook . lps)
-         (c++-mode-hook . lsp))
+         (c++-mode-hook . lsp)
+         (lsp-mode . lsp-enable-which-key-integration))
   :config
   (leaf lsp-ui
     :doc "UI modules for lsp-mode"
@@ -2273,32 +2289,45 @@
   :emacs>= 24.3
   :ensure t)
 
-(leaf rust-mode
-  :doc "A major-mode for editing Rust source code"
-  :req "emacs-25.1"
-  :tag "languages" "emacs>=25.1"
-  :url "https://github.com/rust-lang/rust-mode"
-  :added "2021-09-05"
-  :emacs>= 25.1
+
+(leaf rustic
+  :doc "Rust development environment"
+  :req "emacs-26.1" "dash-2.13.0" "f-0.18.2" "let-alist-1.0.4" "markdown-mode-2.3" "project-0.3.0" "s-1.10.0" "seq-2.3" "spinner-1.7.3" "xterm-color-1.6"
+  :tag "languages" "emacs>=26.1"
+  :added "2021-11-06"
+  :emacs>= 26.1
   :ensure t
-  :disabled t
+  :mode (("\\.rs\\'" . rust-mode))
+  :hook ((rustic-mode-hook . smartparens-mode))
+  :custom ((rustic-format-trigger . 'on-save))
+  :bind ((rustic-mode-map
+          ("M-j" . lsp-ui-imenu)
+          ("M-?" . lsp-find-references)
+          ("C-c C-c l" . flycheck-list-errors)
+          ("C-c C-c a" . lsp-execute-code-action)
+          ("C-c C-c r" . lsp-rename)
+          ("C-c C-c q" . lsp-workspace-restart)
+          ("C-c C-c Q" . lsp-workspace-shutdown)
+          ("C-c C-c s" . lsp-rust-analyzer-status)))
   :config
-  (leaf racer
-    :doc "code completion, goto-definition and docs browsing for Rust via racer"
-    :req "emacs-25.1" "rust-mode-0.2.0" "dash-2.13.0" "s-1.10.0" "f-0.18.2" "pos-tip-0.4.6"
-    :tag "tools" "rust" "matching" "convenience" "abbrev" "emacs>=25.1"
-    :url "https://github.com/racer-rust/emacs-racer"
-    :added "2021-09-05"
-    :emacs>= 25.1
+  (leaf cargo
+    :doc "Emacs Minor Mode for Cargo, Rust's Package Manager."
+    :req "emacs-24.3" "markdown-mode-2.4"
+    :tag "tools" "emacs>=24.3"
+    :added "2022-11-25"
+    :emacs>= 24.3
     :ensure t
-    :after rust-mode pos-tip)
-  (leaf rustic
-    :doc "Rust development environment"
-    :req "emacs-26.1" "dash-2.13.0" "f-0.18.2" "let-alist-1.0.4" "markdown-mode-2.3" "project-0.3.0" "s-1.10.0" "seq-2.3" "spinner-1.7.3" "xterm-color-1.6"
-    :tag "languages" "emacs>=26.1"
-    :added "2021-11-06"
-    :emacs>= 26.1
-    :ensure t))
+    )
+  :preface
+  (defun rk/rustic-mode-hook ()
+    ;; so that run C-c C-c C-r works without having to confirm, but don't try to
+    ;; save rust buffers that are not file visiting. Once
+    ;; https://github.com/brotzeit/rustic/issues/253 has been resolved this should
+    ;; no longer be necessary.
+    (when buffer-file-name
+      (setq-local buffer-save-without-query t))
+    (add-hook 'before-save-hook 'lsp-format-buffer nil t))
+  )
 
 (leaf web-mode
   :doc "major mode for editing web templates"
