@@ -2191,6 +2191,15 @@
            (haskell-mode-hook . lsp)
            (haskell-literate-mode . lsp))))
 
+(leaf purescript-mode
+  :doc "A PureScript editing mode"
+  :req "emacs-25.1"
+  :tag "purescript" "files" "faces" "emacs>=25.1"
+  :url "https://github.com/purescript-emacs/purescript-mode"
+  :added "2022-12-14"
+  :emacs>= 25.1
+  :ensure t)
+
 (leaf lsp-mode
   :doc "LSP mode"
   :req "emacs-26.1" "dash-2.18.0" "f-0.20.0" "ht-2.3" "spinner-1.7.3" "markdown-mode-2.3" "lv-0"
