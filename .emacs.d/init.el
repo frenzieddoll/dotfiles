@@ -966,16 +966,16 @@
   :added "2021-09-05"
   :emacs>= 25
   :ensure t
-  :require ein ein-notebook
+  ;; :require ein ein-notebook
   ;; :el-get millejoh/emacs-ipython-notebook
   :hook (
-         ;; (ein:notebook-mode-hook . jedi:setup)
+         (ein:notebook-mode-hook . jedi:setup)
          (ein:notebook-mode-hook . smartparens-mode))
   :custom (
            (ein:worksheet-enable-undo . t)
            (ein:output-area-inlined-images . t)
            (ein:markdown-command . "pandoc --metadata pagetitle=\"markdown preview\" -f markdown -c ~/.pandoc/github-markdown.css -s --self-contained --mathjax=https://raw.githubusercontent.com/ustasb/dotfiles/b54b8f502eb94d6146c2a02bfc62ebda72b91035/pandoc/mathjax.js")
-           ;; (jedi:complete-on-dot . t)
+           (jedi:complete-on-dot . t)
            )
 )
 
@@ -1892,7 +1892,7 @@
     :hook ((corfu-mode-hook . my/orderless-for-corfu)
            (lsp-completion-mode-hook . my/orderless-for-lsp-mode))
     :defvar (orderless-style-dispatchers)
-    :custom ((completion-styles . '(orderless))
+    :custom ((completion-styles . '(orderless basic))
              (completion-category-defaults . nil)
              (completion-category-overrides . nil)
              ;; (completion-category-overrides . '((file (style . (partial-completion)))))
@@ -2198,7 +2198,15 @@
   :url "https://github.com/purescript-emacs/purescript-mode"
   :added "2022-12-14"
   :emacs>= 25.1
-  :ensure t)
+  :ensure t
+  ;; :bind `((purescript-mode-map
+  ;;           ("C-c C-z" . purescript-interactive-switch)
+  ;;           ("C-c C-l" . purescript-process-load-file)
+  ;;           ("C-c C-b" . purescript-interactive-switch)
+  ;;           ("C-c C-t" . purescript-process-do-type)
+  ;;           ("C-c C-i" . purescript-process-do-info)))
+  :hook ((purescript-mode-hook . lsp))
+  )
 
 (leaf lsp-mode
   :doc "LSP mode"
@@ -2222,14 +2230,16 @@
   (defun my/lsp-mode-setup-completion ()
     (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
           '(orderless)))
-  :hook ((lsp-mode . lsp-enable-which-key-integration)
-         (lsp-completion-mode . my/lsp-mode-setup-completion)
+  :hook (
+         (lsp-mode-hook . lsp-enable-which-key-integration)
+         (lsp-completion-mode-hook . my/lsp-mode-setup-completion)
+         (lsp-mode-hook . lsp-enable-which-key-integration)
          (haskell-mode-hook . lsp)
          (haskell-mode-hook . flycheck-mode)
          (rustic-mode . lsp)
          (c-mode-hook . lps)
          (c++-mode-hook . lsp)
-         (lsp-mode . lsp-enable-which-key-integration))
+         )
   :config
   (leaf lsp-ui
     :doc "UI modules for lsp-mode"
