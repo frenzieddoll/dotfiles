@@ -1081,12 +1081,34 @@
   :require t
   :bind (("s-g" . google-translate-enja-or-jaen))
   :custom ((google-translate--translation-directions-alist . '(("en" . "ja")
-                                                              ("ja" . "en")))
+                                                               ("ja" . "en")))
            (google-translate-output-destination . 'popup))
   :preface
+  (defun google-translate-enja-or-jaen (&optional string)
+    "Translate words in region or current position. Can also specify query with C-u"
+    (interactive)
+    (setq string
+          (cond ((stringp string) string)
+                (current-prefix-arg
+                 (read-string "Google Translate: "))
+                ((use-region-p)
+                 (buffer-substring (region-beginning) (region-end)))
+                (t
+                 (thing-at-point 'word))))
+    (let* ((asciip (string-match
+                    (format "\\`[%s]+\\'" "[:ascii:]’“”–")
+                    string)))
+      (run-at-time 0.1 nil 'deactivate-mark)
+      (google-translate-translate
+       (if asciip "en" "ja")
+       (if asciip "ja" "en")
+       string)))
   (defun google-translate--search-tkk ()
     "Search TKK."
     (list 430675 2721866130))
+  ;; (defun google-translate--get-b-d1 ()
+  ;;   ;; TKK='427110.1469889687'
+  ;;   (list 427110 1469889687))
   )
 
 (leaf google-this
