@@ -1078,62 +1078,25 @@
 
 (leaf google-translate
   :ensure t
-  :require google-translate noflet
-  :disabled t
-  :bind (("s-t" . google-translate-enja-or-jaen))
+  :require t
+  :bind (("s-g" . google-translate-enja-or-jaen))
+  :custom ((google-translate--translation-directions-alist . '(("en" . "ja")
+                                                              ("ja" . "en")))
+           (google-translate-output-destination . 'popup))
   :preface
-  (defun google-translate-enja-or-jaen (&optional string)
-    "Translate words in region or current position. Can also specify query with C-u"
-    (interactive)
-    (setq string
-          (cond ((stringp string) string)
-                (current-prefix-arg
-                 (read-string "Google Translate: "))
-                ((use-region-p)
-                 (buffer-substring (region-beginning) (region-end)))
-                (t
-                 (thing-at-point 'word))))
-    (let* ((asciip (string-match
-                    (format "\\`[%s]+\\'" "[:ascii:]’“”–")
-                    string)))
-      (run-at-time 0.1 nil 'deactivate-mark)
-      (google-translate-translate
-       (if asciip "en" "ja")
-       (if asciip "ja" "en")
-       string)))
-  ;; (defun google-translate--get-b-d1 ()
-  ;;   (list 427110 1469889687))
-  ;; (defun google-translate-at-point-autodetect (&optional override-p)
-  ;;   (interactive "P")
-  ;;   (noflet ((google-translate-translate
-  ;;             (source-language target-language text &optional output-destination)
-  ;;             (when (use-region-p)
-  ;;               ;; リージョンのテキストを取得する（矩形リージョンにも対応）
-  ;;               (setq text (funcall region-extract-function nil))
-  ;;               ;; マークを無効にする
-  ;;               (deactivate-mark)
-  ;;               (when (fboundp 'cua-cancel)
-  ;;                 (cua-cancel)))
+  (defun google-translate--search-tkk ()
+    "Search TKK."
+    (list 430675 2721866130))
+  )
 
-  ;;             ;; 行頭、行末のホワイトスペースを削除し、文章の途中にある改行をスペース
-  ;;             ;; に変換してから翻訳する
-  ;;             (let ((str (replace-regexp-in-string
-  ;;                         "\\([^\n]\\)\n\\([^\n]\\)" "\\1 \\2"
-  ;;                         (replace-regexp-in-string "^\s*\\(.*?\\)\s*$" "\\1" text))))
-  ;;               ;; C-u が前置された場合は、翻訳言語を選択する
-  ;;               (if current-prefix-arg
-  ;;                   (funcall this-fn source-language target-language str
-  ;;                            output-destination)
-  ;;                 ;; 翻訳する文字列に英字以外の文字が含まれている割合（閾値：20%）で翻訳方向を決定する
-  ;;                 (if (>= (/ (* (length (replace-regexp-in-string "[[:ascii:]]" "" str)) 100)
-  ;;                            (length str))
-  ;;                         20) ; %
-  ;;                     (funcall this-fn "ja" "en" str output-destination)
-  ;;                   (funcall this-fn "en" "ja" str output-destination))))))
-  ;;           (google-translate-at-point override-p)))
-  (defun google-translate--get-b-d1 ()
-    ;; TKK='427110.1469889687'
-    (list 427110 1469889687)))
+(leaf google-this
+  :doc "A set of functions and bindings to google under point."
+  :req "emacs-24.1"
+  :tag "hypermedia" "convenience" "emacs>=24.1"
+  :url "http://github.com/Malabarba/emacs-google-this"
+  :added "2022-12-30"
+  :emacs>= 24.1
+  :ensure t)
 
 (leaf magit
   :doc "A Git porcelain inside Emacs."
@@ -1591,7 +1554,8 @@
   :defvar (skk-user-directory skk-rom-kana-rule-list skk-katakana skk-j-mode skk-latin-mode)
   :defun skk-toggle-kana skk-hiragana-set skk-katakana-set
   :hook ((isearch-mode-hook . skk-isearch-mode-setup)
-         (isearch-mode-end-hook . skk-isearch-mode-cleanup))
+         (isearch-mode-end-hook . skk-isearch-mode-cleanup)
+         (find-file-hooks . my/always-enable-skk-latin-mode-hook))
   :bind (("C-x j" . skk-mode)
          ("C-j" . nil)
          ("C-j" . skk-hiragana-set)
@@ -1646,6 +1610,8 @@
            (skk-toggle-kana nil))
           (skk-latin-mode
            (dolist (skk-kakutei (skk-toggle-kana nil))))))
+  (defun my/always-enable-skk-latin-mode-hook ()
+    (skk-latin-mode 1))
   )
 
 (leaf git-gutter
@@ -1685,17 +1651,15 @@
     (interactive)
     (hs-minor-mode 1)))
 
-(leaf hydra
+(leaf *hydra-config
   :doc "Make bindings that stick around."
   :req "cl-lib-0.5" "lv-0"
   :tag "bindings"
   :url "https://github.com/abo-abo/hydra"
   :added "2021-09-06"
-  :ensure t
-  :after lv
   :hydra
   (hydra-pinky
-   (global-map "C-.")
+   (global-map "s-j p")
    "pinky"
    ("n" next-line)
    ("p" previous-line)
@@ -1730,8 +1694,10 @@
   (hydra-zoom
    (global-map "<f2>")
    "zoom"
-   ("g" text-scale-increase "in")
-   ("l" text-scale-decrease "out")))
+   ("j" text-scale-increase "in")
+   ("k" text-scale-decrease "out")
+   ("l" text-scale-set "adjust"))
+  )
 
 (leaf online-judge
   :when (executable-find "oj")
@@ -1918,6 +1884,7 @@
     :added "2021-09-17"
     :emacs>= 26.1
     :ensure t
+    :disabled t
     :bind (("s-g" . embark-act))
     ;; :custom ((prefix-help-command . #'embark-prefix-help-command))
     :config
