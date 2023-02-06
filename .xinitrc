@@ -80,4 +80,5 @@ esac
 xhost +SI:localuser:$USER
 xset r rate 250 40
 exec emacs
+# exec cutefish-session
 # exec dbus-launch --exit-with-session --sh-syntax emacs
