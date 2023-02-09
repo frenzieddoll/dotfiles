@@ -1508,33 +1508,6 @@
   :tag "builtin"
   :added "2021-09-05")
 
-(leaf japanese-holidays
-  :doc "Calendar functions for the Japanese calendar"
-  :req "emacs-24.1" "cl-lib-0.3"
-  :tag "calendar" "emacs>=24.1"
-  :url "https://github.com/emacs-jp/japanese-holidays"
-  :added "2021-09-05"
-  :emacs>= 24.1
-  :ensure t
-  :after calendar
-  :defvar (calendar-day-header-array calendar-day-name-array calendar-holidays japanese-holidays)
-  :require japanese-holidays
-  :hook ((calendar-today-visible-hook   . japanese-holiday-mark-weekend)
-         (calendar-today-invisible-hook . japanese-holiday-mark-weekend)
-         (calendar-today-visible-hook   . calendar-mark-today))
-  :custom ((calendar-mark-holidays-flag     . t)
-           (japanese-holiday-weekend        . '(0 6))
-           (japanese-holiday-weekend-marker . '(holiday nil nil nil nil nil japanese-holiday-saturday))
-           (org-agenda-include-diary        . t)
-           (calendar-day-header-array       . ["日" "月" "火" "水" "木" "金" "土"])
-           (calendar-day-name-array array   . ["日" "月" "火" "水" "木" "金" "土"])
-           (calendar-month-header . '(propertize
-                                      (format "%d年 %s月" year month)
-                                      'font-lock-face 'calendar-month-header)))
-  :config
-  (setq calendar-holidays (append japanese-holidays holiday-local-holidays holiday-other-holidays))
-  )
-
 (leaf calfw
   :doc "Calendar view framework on Emacs"
   :tag "calendar"
@@ -1721,6 +1694,33 @@
    ("l" text-scale-set "adjust"))
   )
 
+(leaf japanese-holidays
+  :doc "Calendar functions for the Japanese calendar"
+  :req "emacs-24.1" "cl-lib-0.3"
+  :tag "calendar" "emacs>=24.1"
+  :url "https://github.com/emacs-jp/japanese-holidays"
+  :added "2021-09-05"
+  :emacs>= 24.1
+  :ensure t
+  :after calendar
+  :defvar (calendar-day-header-array calendar-day-name-array calendar-holidays japanese-holidays)
+  :require japanese-holidays
+  :hook ((calendar-today-visible-hook   . japanese-holiday-mark-weekend)
+         (calendar-today-invisible-hook . japanese-holiday-mark-weekend)
+         (calendar-today-visible-hook   . calendar-mark-today))
+  :custom ((calendar-mark-holidays-flag     . t)
+           (japanese-holiday-weekend        . '(0 6))
+           (japanese-holiday-weekend-marker . '(holiday nil nil nil nil nil japanese-holiday-saturday))
+           (org-agenda-include-diary        . t)
+           (calendar-day-header-array       . ["日" "月" "火" "水" "木" "金" "土"])
+           (calendar-day-name-array array   . ["日" "月" "火" "水" "木" "金" "土"])
+           (calendar-month-header . '(propertize
+                                      (format "%d年 %s月" year month)
+                                      'font-lock-face 'calendar-month-header)))
+  :config
+  (setq calendar-holidays (append japanese-holidays holiday-local-holidays holiday-other-holidays))
+  )
+
 (leaf online-judge
   :when (executable-find "oj")
   :el-get ROCKTAKEY/emacs-online-judge
@@ -1754,6 +1754,21 @@
   :ensure t
   :hook (emacs-lisp-mode-hook . rainbow-delimiters-mode))
 
+(leaf recentf
+  :init
+  (leaf recentf-ext
+    :doc "Recentf extensions"
+    :tag "files" "convenience"
+    :url "http://www.emacswiki.org/cgi-bin/wiki/download/recentf-ext.el"
+    :added "2023-02-09"
+    :ensure t)
+  :custom
+  `((recentf-save-file . "~/.emacs.d/recentf")
+    (recentf-max-saved-items . 500)
+    (recentf-auto-cleanup . 'mode)
+    (recnetf-exclude . '(".recentf"
+                         ))))
+
 (leaf smartparens
   :doc "Automatic insertion, wrapping and paredit-like navigation with user defined pairs."
   :req "dash-2.13.0" "cl-lib-0.3"
@@ -1768,10 +1783,18 @@
           ("C-M-n" . sp-next-sexp)
           ("C-M-p" . sp-previous-sexp)
           ("C-M-a" . sp-beginning-of-sexp)
-          ("C-M-e" . sp-end-of-sexp))
+          ("C-M-e" . sp-end-of-sexp)
+          ("M-["   . sp-backward-unwrap-sexp)
+          ("M-]"   . sp-unwrap-sexp))
          (:lisp-mode-map
           :package lisp-mode-map
-          ("C-c s" . smartparens-strict-mode))))
+          ("C-c s" . smartparens-strict-mode)))
+  :config
+  (sp-pair "'" "'" :actions :rem)
+  (sp-pair "`" "`" :actions :rem)
+  (sp-local-pair 'python-mode "'" "'")
+  (sp-local-pair 'ein:ipynb-mode "'" "'")
+)
 
 (leaf ssh
   :doc "Support for remote logins using ssh."
@@ -1796,6 +1819,14 @@
   :ensure t
   :unless (string-match "RaspberryPi" (system-name))
   :global-minor-mode t)
+
+(leaf uniquify
+  :doc "unique buffer names dependent on file name"
+  :tag "builtin" "files"
+  :added "2023-02-09"
+  :custom
+  ((uniquify-buffer-name-style . 'post-forward-angle-brackets)
+   (uniquify-min-dir-content . 1)))
 
 (leaf vertico
   :doc "VERTical Interactive COmpletion"
@@ -1843,7 +1874,8 @@
            ("M-y" . consult-yank-pop)
            ("C-o" . consult-line)
            ("C-c h" . consult-recent-file)
-           ("C-x b" . consult-buffer))
+           ("C-x b" . consult-buffer)
+           ("C-c ;" . consult-history))
     :custom `((consult-buffer-sources . '(consult--source-hidden-buffer
                                           consult--source-buffer
                                           consult--source-file
@@ -1907,7 +1939,7 @@
     :emacs>= 26.1
     :ensure t
     :disabled t
-    :bind (("s-g" . embark-act))
+    :bind (("s-e" . embark-act))
     ;; :custom ((prefix-help-command . #'embark-prefix-help-command))
     :config
     (leaf embark-consult
@@ -2180,23 +2212,6 @@
            (haskell-mode-hook . lsp)
            (haskell-literate-mode . lsp))))
 
-(leaf purescript-mode
-  :doc "A PureScript editing mode"
-  :req "emacs-25.1"
-  :tag "purescript" "files" "faces" "emacs>=25.1"
-  :url "https://github.com/purescript-emacs/purescript-mode"
-  :added "2022-12-14"
-  :emacs>= 25.1
-  :ensure t
-  ;; :bind `((purescript-mode-map
-  ;;           ("C-c C-z" . purescript-interactive-switch)
-  ;;           ("C-c C-l" . purescript-process-load-file)
-  ;;           ("C-c C-b" . purescript-interactive-switch)
-  ;;           ("C-c C-t" . purescript-process-do-type)
-  ;;           ("C-c C-i" . purescript-process-do-info)))
-  :hook ((purescript-mode-hook . lsp))
-  )
-
 (leaf lsp-mode
   :doc "LSP mode"
   :req "emacs-26.1" "dash-2.18.0" "f-0.20.0" "ht-2.3" "spinner-1.7.3" "markdown-mode-2.3" "lv-0"
@@ -2209,7 +2224,7 @@
   ;; :el-get emacs-lsp/lsp-mode
   ;; :unless (string-match "Raspberrypi" (system-name))
   :custom ((lsp-keymap-prefix . "s-z")
-           (lsp-idle-delay . 0.500)
+           (lsp-idle-delay . 0.5)
            (lsp-log-io . nil)
            (lsp-completion-provider . :none)
            (lsp-prefer-capf . t)
@@ -2297,6 +2312,22 @@
   :emacs>= 24.3
   :ensure t)
 
+(leaf purescript-mode
+  :doc "A PureScript editing mode"
+  :req "emacs-25.1"
+  :tag "purescript" "files" "faces" "emacs>=25.1"
+  :url "https://github.com/purescript-emacs/purescript-mode"
+  :added "2022-12-14"
+  :emacs>= 25.1
+  :ensure t
+  ;; :bind `((purescript-mode-map
+  ;;           ("C-c C-z" . purescript-interactive-switch)
+  ;;           ("C-c C-l" . purescript-process-load-file)
+  ;;           ("C-c C-b" . purescript-interactive-switch)
+  ;;           ("C-c C-t" . purescript-process-do-type)
+  ;;           ("C-c C-i" . purescript-process-do-info)))
+  :hook ((purescript-mode-hook . lsp))
+  )
 
 (leaf rustic
   :doc "Rust development environment"
