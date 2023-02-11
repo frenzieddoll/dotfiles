@@ -1908,7 +1908,36 @@
       :added "2022-03-31"
       :emacs>= 27.1
       :ensure t
+      :defun (my/convert-super-capf)
+      :hook ((prog-mode-hook . my/set-basic-capf)
+             (text-mode-hook . my/set-basic-capf)
+             (lsp-completion-mode-hook . my/set-lsp-capf))
+      :init
+      (leaf company-tabnine
+        :doc "A company-mode backend for TabNine"
+        :req "emacs-25" "company-0.9.3" "cl-lib-0.5" "dash-2.16.0" "s-1.12.0" "unicode-escape-1.1"
+        :tag "convenience" "emacs>=25"
+        :url "https://github.com/TommyX12/company-tabnine/"
+        :added "2022-05-01"
+        :emacs>= 25
+        :ensure t
+        :require t)
+      (defun my/convert-super-capf (arg-capf)
+        (list (cape-capf-buster
+               (cape-super-capf arg-capf
+                                (cape-company-to-capf #'company-yasnippet)
+                                (cape-company-to-capf #'company-tabnine)))
+              #'cape-file
+              #'cape-dabbrev))
+      (defun my/set-basic-capf ()
+        (setq-local completion-at-point-functions (my/convert-super-capf (car compilation-finish-functions))))
+      ;; (defun my/set-meghanada-capf ()
+      ;;   (setq-local completion-at-point-functions (my/convert-super-capf (cape-company-to-capf #' company-meghanada))))
+      (defun my/set-lsp-capf ()
+        (setq-local completion-at-point-functions (my/convert-super-capf #'lsp-completion-at-point)))
+
       :config
+      (add-to-list 'completion-at-point-functions (cape-company-to-capf #'company-tabnine) t)
       (add-to-list 'completion-at-point-functions #'cape-file)
       (add-to-list 'completion-at-point-functions #'cape-tex)
       (add-to-list 'completion-at-point-functions #'cape-dabbrev)
