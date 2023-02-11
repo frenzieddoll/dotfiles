@@ -1,0 +1,39 @@
+# -*- mode: snippet -*-
+# name: グラフ
+# key: グラフ
+# expand-env: ((yas/indent-line 'fixed) (yas/wrap-around-region 'nil))
+# --
+toDirectedGraph n input = V.create $ do
+  graph <- VM.replicate n []
+  V.forM_ input $ \\(a,b) -> do
+    VM.modify graph (b:) a
+  return graph
+
+toUnDirectedGraph n input = V.create $ do
+  graph <- VM.replicate n []
+  V.forM_ input $ \\(a,b) -> do
+    VM.modify graph (b:) a
+    VM.modify graph (a:) b
+  return graph
+
+createGraph n input = V.accumulate (flip (:)) (V.replicate n []) input
+
+dfs graph start goal = dfs' start []
+  where
+    next' = next graph
+    dfs' now path
+      | now == goal = return $ reverse $ now:path
+      | otherwise = concatMap (\\node -> dfs' node $ now:path) [x | x <- next' now, not (x \`elem\` path)]
+
+next :: V.Vector [Int] -> Int -> [Int]
+next graph node = graph V.! node
+
+bfs :: V.Vector [Int] -> Int -> Int -> Maybe [Int]
+bfs graph start goal = bfs' [x : [start] | x <- next' start]
+  where
+    next' = next graph
+    bfs' [] = fail "no Path"
+    bfs' (path:queue)
+      | goal == now = (return $ reverse path) \`mplus\` (bfs' queue)
+      | otherwise = bfs' $ queue ++ [x : path | x <- next' now, not $ x \`elem\` path]
+      where now = head path

@@ -21,16 +21,20 @@
 !/.emacs.d/snippets/*
 !/.emacs.d/ddskk/init
 # .config
-!/.config/mimeapps.list
+!/.config/alacritty/*
+/.config/alacritty/alacritty_local.yml
 !/.config/brave-flags.conf
 !/.config/fbtermrc
-!/.config/alacritty/*
+!/.config/fcitx
+!/.config/fcitx5
+!/.config/gtk-3.0/*
 !/.config/libskk/*
+!/.config/mimeapps.list
 !/.config/mpv/*
-!/.config/termite/*
-!/.config/zathura/*
 !/.config/qutebrowser/config.py
 !/.config/qutebrowser/autoconfig.yml
+!/.config/termite/*
+!/.config/zathura/*
 # dotfile
 !/.gitignore
 !/.Xmodmap
@@ -39,3 +43,7 @@
 !/.pkglist
 !/.xinitrc
 !/.zshrc
+# setting
+!/setting/*/*
+# xkb
+!/.xkb/*/*

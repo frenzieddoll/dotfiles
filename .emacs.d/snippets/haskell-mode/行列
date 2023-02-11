@@ -1,0 +1,31 @@
+# -*- mode: snippet -*-
+# name: 行列
+# key: 行列
+# expand-env: ((yas/indent-line 'fixed) (yas/wrap-around-region 'nil))
+# --
+type Matrix a = V.Vector (VU.Vector a)
+type MMatrix m a = m (VM.MVector (Control.Monad.Primitive.PrimState m) (VUM.MVector (Control.Monad.Primitive.PrimState m) a))
+
+readMatrix :: (VUM.Unbox a) => Matrix a -> Int -> Int -> a
+readMatrix mat i j = (mat V.! i) VU.! j
+
+readMMatrix mat i j = do
+  vec <- VM.read mat i
+  VUM.read vec j
+
+writeMMatrix mat i j x = do
+  uvec <- VM.read mat i
+  VUM.write uvec j x
+  VM.write mat i uvec
+
+
+
+initMMatrix n m x = VM.replicate n (VUM.replicate m x)
+
+-- freezeMatrix mat = V.freeze mat >>= (n -> VU.ma
+
+test = do
+  mat <- initMMatrix 3 3 (0 :: Int)
+  forM_ [0..2] $ \i -> do
+    forM_ [0..2] $ \j -> do
+      print =<< readMMatrix mat i j

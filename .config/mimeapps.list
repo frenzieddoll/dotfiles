@@ -1,9 +1,9 @@
 [Default Applications]
-text/html=firefox.desktop
-x-scheme-handler/http=firefox.desktop
-x-scheme-handler/https=firefox.desktop
-x-scheme-handler/about=brave-nightly-bin.desktop
-x-scheme-handler/unknown=brave-nightly-bin.desktop
+text/html=brave-browser-nightly.desktop
+x-scheme-handler/http=brave-browser-nightly.desktop
+x-scheme-handler/https=brave-browser-nightly.desktop
+x-scheme-handler/about=brave-browser-nightly.desktop
+x-scheme-handler/unknown=brave-browser-nightly.desktop
 application/javascript=wine-extension-txt.desktop
 application/x-httpd-php3=wine-extension-txt.desktop
 application/x-httpd-php4=wine-extension-txt.desktop
@@ -41,6 +41,7 @@ application/x-extension-shtml=firefox.desktop
 application/xhtml+xml=firefox.desktop
 application/x-extension-xhtml=firefox.desktop
 application/x-extension-xht=firefox.desktop
+x-scheme-handler/discord-712465656758665259=discord-712465656758665259.desktop
 
 [Added Associations]
 application/javascript=wine-extension-txt.desktop;

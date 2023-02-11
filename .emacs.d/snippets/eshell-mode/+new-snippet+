@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: usbmount
+# key: usbmount
+# --
+sudo mount -o gid=users,fmask=113,dmas=002 $1 $2

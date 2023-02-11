@@ -65,8 +65,8 @@
                         '("elisp" "conf" "public_repos")))
   :config
   (leaf private-path
-    :when (file-directory-p "~/Doropbox/private/elisp")
-    :load-path "~/Doropbox/private/elisp"))
+    :when (file-directory-p "~/private/elisp")
+    :load-path "~/private/elisp"))
 
 (leaf *cus-edit
   :doc "customファイルをinit.elに記入しない"
@@ -124,8 +124,8 @@
 
   :hook  (;; 保存時にいらないスペースを削除
           (before-save-hook . delete-trailing-whitespace)
-          (after-save-hook . flashAfterSave)
-          (after-save-hook . executable-make-buffer-file-executable-if-script-p))
+          (after-save-hook  . flashAfterSave)
+          (after-save-hook  . executable-make-buffer-file-executable-if-script-p))
 
   :preface
   (defun flashAfterSave ()
@@ -230,13 +230,22 @@
     (set-face-attribute 'default nil
                         :family "HackGen"
                         :height 140))
-  (leaf *forLinux
+  (leaf *forSX12
     :when (eq system-type 'gnu/linux)
-    :unless (string-match (system-name) "archlinuxhonda")
+    :when (string= (system-name) "sx12toshiaki")
     :config
     (set-face-attribute 'default nil
                         :family "HackGen"
-                        :height 140))
+                        :height 110)
+    (set-fontset-font t 'japanese-jisx0208 (font-spec :family "HackGen")))
+  (leaf *forSX12_wsl
+    :when (eq system-type 'gnu/linux)
+    :when (string= (system-name) "sx12_toshiaki")
+    :config
+    (set-face-attribute 'default nil
+                        :family "HackGen"
+                        :height 140)
+    (set-fontset-font t 'japanese-jisx0208 (font-spec :family "HackGen")))
   (leaf *forMac
     :when (eq system-type 'darwin)
     :config
@@ -260,7 +269,7 @@
   (leaf *pi
     ;; :disabled t
     :when (string= (system-name) "RaspberryPi")
-    :when (string= (getenv "EXWM") "enable" )
+    :when (string= (getenv "EXWM") "enable")
     :config
     (set-face-attribute 'default nil
                         :family "HackGen"
@@ -359,22 +368,23 @@
     :require t
     :when (eq system-type 'gnu/linux)
     :custom ((dired-open-extensions .
-                                    '(("mkv"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-                                      ("mp4"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-                                      ("avi"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-                                      ("wmv"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-                                      ("webm"     . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-                                      ("mpg"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-                                      ("flv"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-                                      ("m4v"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-                                      ("mp3"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-                                      ("wav"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-                                      ("m4a"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-                                      ("3gp"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-                                      ("rm"       . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-                                      ("rmvb"     . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-                                      ("mpeg"     . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
-                                      ("VOB"      . "~/projects/dotfiles/.emacs.d/script/mpv-rifle.sh")
+                                    '(("mkv"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                      ("mp4"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                      ("avi"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                      ("wmv"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                      ("webm"     . "~/.emacs.d/script/mpv-rifle.sh")
+                                      ("mpg"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                      ("flv"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                      ("m4v"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                      ("mp3"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                      ("flac"     . "~/.emacs.d/script/mpv-rifle.sh")
+                                      ("wav"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                      ("m4a"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                      ("3gp"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                      ("rm"       . "~/.emacs.d/script/mpv-rifle.sh")
+                                      ("rmvb"     . "~/.emacs.d/script/mpv-rifle.sh")
+                                      ("mpeg"     . "~/.emacs.d/script/mpv-rifle.sh")
+                                      ("VOB"      . "~/.emacs.d/script/mpv-rifle.sh")
                                       ("iso"      . "mpv dvd:// -dvd-device")
                                       ("playlist" . "mpv --playlist")
                                       ("exe"      . "wine")
@@ -394,7 +404,9 @@
                                       ("png"      . "sxiv-rifle")
                                       ("jpeg"     . "sxiv-rifle")
                                       ("gif"      . "sxiv-rifle")
-                                      ("png"      . "sxiv-rifle")))))
+                                      ("png"      . "sxiv-rifle")
+                                      ("webp"     . "sxiv-rifle")
+                                      ))))
   (leaf dired-open
     :doc "Open files from dired using using custom actions"
     :req "dash-2.5.0" "dired-hacks-utils-0.0.1"
@@ -447,7 +459,7 @@
   (if (not (eq system-type 'windows))
           (eval-after-load "esh-module"
             '(defvar eshell-modules-list (delq 'eshell-ls (delq 'eshell-unix eshell-modules-list)))))
-  (setenv "GIT_PAGER" "")
+
 
   (leaf eshell-prompt-extras
     :doc "Display extra information for your eshell prompt."
@@ -469,6 +481,7 @@
     )
 
   :preface
+  (setenv "GIT_PAGER" "")
   (defun eshell-alias ()
     (interactive)
     "eshell alias set"
@@ -489,7 +502,8 @@
             (list "usbmount" "sudo mount -t vfat $1 $2 -o rw,umask=000")
             (list "dvd" "mpv dvd:// -dvd-device $1")
             (list "dvdCopy" "dvdbackup -i /dev/sr0 -o ~/Downloads/iso/ -M")
-            (list "pkglist" "yay -Qe | cut -f 1 -d " " > ~/.emacs.d/pkglist")))))
+            (list "pkglist" "yay -Qe | cut -f 1 -d " " > ~/.emacs.d/pkglist")
+            (list "open" "cmd.exe /c start {wslpath -w $*}")))))
 
   (defun pcomplete/sudo ()
     "Completion rules for the `sudo' command."
@@ -526,6 +540,11 @@
 
 (leaf *globa-keybinding
   :hook (minibuffer-setup-hook . minibuffer-delete-backward-char)
+  :config
+  ;; (leaf *blobal-keybind_wsl
+  ;;   :when (string= (system-name) "sx12_toshiaki")
+  ;;   :bind (("CR-s" . async-shell-command))
+  ;;   )
   :bind (;; C-m : 改行プラスインデント
          ("C-m"           . newline-and-indent)
          ;; ;; exwm用
@@ -546,6 +565,7 @@
          ("C-c C-j"       . eval-print-last-sexp)
          ;; async shell command
          ("s-s"           . async-shell-command)
+         ("s-S"           . window-capcher)
          ("C-x g"         . magit-status)
          ("C-S-n"         . scroll-up_alt)
          ("C-S-p"         . scroll-down_alt)
@@ -657,6 +677,12 @@
                 (t
                  (message "Quit")
                  (throw 'end-flag t)))))))
+  (defun window-capcher ()
+    "capcher window by imagemagic"
+    (interactive)
+    (let ((stringShellCommand (concat "import " "~/Downloads/screenshot_" "20" (format-time-string "%02y%02m%02d%02H%02M%02S" (current-time)) ".png"))
+          )
+      (shell-command stringShellCommand)))
 
   :config
   (leaf zoom-window
@@ -696,8 +722,38 @@
            ("M-d" . app-launcher-run-app)
            ("M-o" . consult-buffer)))
 
+  (leaf *ForWsl
+    ;; :when (eq system-type 'gnu/linux)
+    :when (eq system-type 'gnu/linux)
+    :when (string= (system-name) "sx12_toshiaki")
+    :bind (("s-f" . windmove-right)
+           ("s-b" . windmove-left)
+           ("s-a" . zoom-window-zoom)
+           ("s-h" . delete-window)
+           ("s-d" . app-launcher-run-app)
+           ("s-n" . windmove-down)
+           ("s-p" . windmove-up)
+           ("s-q" . kill-current-buffer)
+           ("s-o" . consult-buffer)
+           ;; ("M-f" . windmove-right)
+           ;; ("M-b" . windmove-left)
+           ;; ("M-n" . windmove-down)
+           ;; ("M-p" . windmove-up)
+           ;; ("M-a" . zoom-window-zoom)
+           ;; ("M-h" . delete-window)
+           ;; ("M-d" . app-launcher-run-app)
+           ("M-q" . kill-current-buffer)
+           ("M-o" . consult-buffer)
+           ;; ("C-s-i" . output_toggle)
+           ;; ("C-s-m" . mute_toggle)
+           ;; ("C-s-n" . lower_volume)
+           ;; ("C-s-p" . upper_volume)
+           ))
+
   (leaf *ForCUI
+    ;; :unless (string= (system-name) "sx12_toshiaki")
     :unless (eq window-system 'x)
+    :when (eq system-type 'gnu/linux)
     :bind (("M-n" . windmove-down)
            ("M-f" . windmove-right)
            ("M-b" . windmove-left)
@@ -910,7 +966,18 @@
   :added "2021-09-05"
   :emacs>= 25
   :ensure t
-  :after websocket anaphora deferred polymode with-editor)
+  ;; :require ein ein-notebook
+  ;; :el-get millejoh/emacs-ipython-notebook
+  :hook (
+         (ein:notebook-mode-hook . jedi:setup)
+         (ein:notebook-mode-hook . smartparens-mode))
+  :custom (
+           (ein:worksheet-enable-undo . t)
+           (ein:output-area-inlined-images . t)
+           (ein:markdown-command . "pandoc --metadata pagetitle=\"markdown preview\" -f markdown -c ~/.pandoc/github-markdown.css -s --self-contained --mathjax=https://raw.githubusercontent.com/ustasb/dotfiles/b54b8f502eb94d6146c2a02bfc62ebda72b91035/pandoc/mathjax.js")
+           (jedi:complete-on-dot . t)
+           )
+)
 
 (leaf eww
   :doc "Emacs Web Wowser"
@@ -951,6 +1018,7 @@
           ("K"     . next-buffer)
           ("d"     . scroll-up)
           ("u"     . scroll-down)))
+
   :config
   (leaf ace-link
     :doc "Quickly follow links"
@@ -959,7 +1027,15 @@
     :url "https://github.com/abo-abo/ace-link"
     :added "2022-04-30"
     :ensure t)
+
+  :advice
+  (:around shr-colorize-region shr-colorize-region--disable)
+  (:around eww-colorize-region shr-colorize-region--disable)
+
   :preface
+  (defun shr-put-image-alt (spec alt &optional flags)
+    (insert alt))
+
   (defun eww-disable-images ()
     "eww で画像表示させない"
     (interactive)
@@ -970,11 +1046,10 @@
     (interactive)
     (setq-local shr-put-image-function 'shr-put-image)
     (eww-reload))
-  (defun shr-put-image-alt (spec alt &optional flags)
-    (insert alt))
   ;; はじめから非表示
   (defun eww-mode-hook-disable-image ()
     (setq-local shr-put-image-function 'shr-put-image-alt))
+
   (defun browse-url-with-eww ()
     (interactive)
     (let ((url-region (bounds-of-thing-at-point 'url)))
@@ -984,16 +1059,17 @@
                                                           (cdr url-region))))
       ;; org-link
       (setq browse-url-browser-function 'eww-browse-url)))
+
   (defun shr-colorize-region--disable (orig start end fg &optional bg &rest _)
     (unless eww-disable-colorize
       (funcall orig start end fg)))
-  (advice-add 'shr-colorize-region :around 'shr-colorize-region--disable)
-  (advice-add 'eww-colorize-region :around 'shr-colorize-region--disable)
+
   (defun eww-disable-color ()
     "eww で文字色を反映させない"
     (interactive)
     (setq-local eww-disable-colorize t)
     (eww-reload))
+
   (defun eww-enable-color ()
     "eww で文字色を反映させる"
     (interactive)
@@ -1003,8 +1079,10 @@
 (leaf google-translate
   :ensure t
   :require t
-  :disabled t
-  :bind (("s-v" . google-translate-enja-or-jaen))
+  :bind (("s-g" . google-translate-enja-or-jaen))
+  :custom ((google-translate--translation-directions-alist . '(("en" . "ja")
+                                                               ("ja" . "en")))
+           (google-translate-output-destination . 'popup))
   :preface
   (defun google-translate-enja-or-jaen (&optional string)
     "Translate words in region or current position. Can also specify query with C-u"
@@ -1025,8 +1103,22 @@
        (if asciip "en" "ja")
        (if asciip "ja" "en")
        string)))
-  (defun google-translate--get-b-d1 ()
-    (list 427110 1469889687)))
+  (defun google-translate--search-tkk ()
+    "Search TKK."
+    (list 430675 2721866130))
+  ;; (defun google-translate--get-b-d1 ()
+  ;;   ;; TKK='427110.1469889687'
+  ;;   (list 427110 1469889687))
+  )
+
+(leaf google-this
+  :doc "A set of functions and bindings to google under point."
+  :req "emacs-24.1"
+  :tag "hypermedia" "convenience" "emacs>=24.1"
+  :url "http://github.com/Malabarba/emacs-google-this"
+  :added "2022-12-30"
+  :emacs>= 24.1
+  :ensure t)
 
 (leaf magit
   :doc "A Git porcelain inside Emacs."
@@ -1037,7 +1129,7 @@
   :emacs>= 25.1
   :ensure t
   :after git-commit magit-section with-editor
-  :config)
+  :config (setenv "GIT_PAGER" ""))
 
 (leaf org
   :doc "Export Framework for Org Mode"
@@ -1423,28 +1515,6 @@
   :added "2021-09-05"
   :ensure t
   :config
-  (leaf japanese-holidays
-    :doc "Calendar functions for the Japanese calendar"
-    :req "emacs-24.1" "cl-lib-0.3"
-    :tag "calendar" "emacs>=24.1"
-    :url "https://github.com/emacs-jp/japanese-holidays"
-    :added "2021-09-05"
-    :emacs>= 24.1
-    :ensure t
-    :after calendar
-    :defvar (calendar-day-header-array calendar-day-name-array calendar-holidays japanese-holidays)
-    :require japanese-holidays
-    :hook ((calendar-today-visible-hook . japanese-holiday-mark-weekend)
-           (calendar-today-invisible-hook .  japanese-holiday-mark-weekend)
-           (calendar-today-visible-hook . calendar-mark-today))
-    :custom ((calendar-mark-holidays-flag . t)
-             (japanese-holiday-weekend . '(0 6))
-             (japanese-holiday-weekend-marker . '(holiday nil nil nil nil nil japanese-holiday-saturday))
-             (org-agenda-include-diary . t))
-    :config
-    (let ((array ["日" "月" "火" "水" "木" "金" "土"]))
-      (setq calendar-day-header-array array
-            calendar-day-name-array array)))
   (leaf calfw-org
     :doc "calendar view for org-agenda"
     :tag "org" "calendar"
@@ -1479,7 +1549,8 @@
   :defvar (skk-user-directory skk-rom-kana-rule-list skk-katakana skk-j-mode skk-latin-mode)
   :defun skk-toggle-kana skk-hiragana-set skk-katakana-set
   :hook ((isearch-mode-hook . skk-isearch-mode-setup)
-         (isearch-mode-end-hook . skk-isearch-mode-cleanup))
+         (isearch-mode-end-hook . skk-isearch-mode-cleanup)
+         (find-file-hooks . my/always-enable-skk-latin-mode-hook))
   :bind (("C-x j" . skk-mode)
          ("C-j" . nil)
          ("C-j" . skk-hiragana-set)
@@ -1534,6 +1605,8 @@
            (skk-toggle-kana nil))
           (skk-latin-mode
            (dolist (skk-kakutei (skk-toggle-kana nil))))))
+  (defun my/always-enable-skk-latin-mode-hook ()
+    (skk-latin-mode 1))
   )
 
 (leaf git-gutter
@@ -1573,17 +1646,15 @@
     (interactive)
     (hs-minor-mode 1)))
 
-(leaf hydra
+(leaf *hydra-config
   :doc "Make bindings that stick around."
   :req "cl-lib-0.5" "lv-0"
   :tag "bindings"
   :url "https://github.com/abo-abo/hydra"
   :added "2021-09-06"
-  :ensure t
-  :after lv
   :hydra
   (hydra-pinky
-   (global-map "C-.")
+   (global-map "s-j p")
    "pinky"
    ("n" next-line)
    ("p" previous-line)
@@ -1618,8 +1689,37 @@
   (hydra-zoom
    (global-map "<f2>")
    "zoom"
-   ("g" text-scale-increase "in")
-   ("l" text-scale-decrease "out")))
+   ("j" text-scale-increase "in")
+   ("k" text-scale-decrease "out")
+   ("l" text-scale-set "adjust"))
+  )
+
+(leaf japanese-holidays
+  :doc "Calendar functions for the Japanese calendar"
+  :req "emacs-24.1" "cl-lib-0.3"
+  :tag "calendar" "emacs>=24.1"
+  :url "https://github.com/emacs-jp/japanese-holidays"
+  :added "2021-09-05"
+  :emacs>= 24.1
+  :ensure t
+  :after calendar
+  :defvar (calendar-day-header-array calendar-day-name-array calendar-holidays japanese-holidays)
+  :require japanese-holidays
+  :hook ((calendar-today-visible-hook   . japanese-holiday-mark-weekend)
+         (calendar-today-invisible-hook . japanese-holiday-mark-weekend)
+         (calendar-today-visible-hook   . calendar-mark-today))
+  :custom ((calendar-mark-holidays-flag     . t)
+           (japanese-holiday-weekend        . '(0 6))
+           (japanese-holiday-weekend-marker . '(holiday nil nil nil nil nil japanese-holiday-saturday))
+           (org-agenda-include-diary        . t)
+           (calendar-day-header-array       . ["日" "月" "火" "水" "木" "金" "土"])
+           (calendar-day-name-array array   . ["日" "月" "火" "水" "木" "金" "土"])
+           (calendar-month-header . '(propertize
+                                      (format "%d年 %s月" year month)
+                                      'font-lock-face 'calendar-month-header)))
+  :config
+  (setq calendar-holidays (append japanese-holidays holiday-local-holidays holiday-other-holidays))
+  )
 
 (leaf online-judge
   :when (executable-find "oj")
@@ -1654,6 +1754,21 @@
   :ensure t
   :hook (emacs-lisp-mode-hook . rainbow-delimiters-mode))
 
+(leaf recentf
+  :init
+  (leaf recentf-ext
+    :doc "Recentf extensions"
+    :tag "files" "convenience"
+    :url "http://www.emacswiki.org/cgi-bin/wiki/download/recentf-ext.el"
+    :added "2023-02-09"
+    :ensure t)
+  :custom
+  `((recentf-save-file . "~/.emacs.d/recentf")
+    (recentf-max-saved-items . 500)
+    (recentf-auto-cleanup . 'mode)
+    (recnetf-exclude . '(".recentf"
+                         ))))
+
 (leaf smartparens
   :doc "Automatic insertion, wrapping and paredit-like navigation with user defined pairs."
   :req "dash-2.13.0" "cl-lib-0.3"
@@ -1668,10 +1783,18 @@
           ("C-M-n" . sp-next-sexp)
           ("C-M-p" . sp-previous-sexp)
           ("C-M-a" . sp-beginning-of-sexp)
-          ("C-M-e" . sp-end-of-sexp))
+          ("C-M-e" . sp-end-of-sexp)
+          ("M-["   . sp-backward-unwrap-sexp)
+          ("M-]"   . sp-unwrap-sexp))
          (:lisp-mode-map
           :package lisp-mode-map
-          ("C-c s" . smartparens-strict-mode))))
+          ("C-c s" . smartparens-strict-mode)))
+  :config
+  (sp-pair "'" "'" :actions :rem)
+  (sp-pair "`" "`" :actions :rem)
+  (sp-local-pair 'python-mode "'" "'")
+  (sp-local-pair 'ein:ipynb-mode "'" "'")
+)
 
 (leaf ssh
   :doc "Support for remote logins using ssh."
@@ -1696,6 +1819,14 @@
   :ensure t
   :unless (string-match "RaspberryPi" (system-name))
   :global-minor-mode t)
+
+(leaf uniquify
+  :doc "unique buffer names dependent on file name"
+  :tag "builtin" "files"
+  :added "2023-02-09"
+  :custom
+  ((uniquify-buffer-name-style . 'post-forward-angle-brackets)
+   (uniquify-min-dir-content . 1)))
 
 (leaf vertico
   :doc "VERTical Interactive COmpletion"
@@ -1743,7 +1874,8 @@
            ("M-y" . consult-yank-pop)
            ("C-o" . consult-line)
            ("C-c h" . consult-recent-file)
-           ("C-x b" . consult-buffer))
+           ("C-x b" . consult-buffer)
+           ("C-c ;" . consult-history))
     :custom `((consult-buffer-sources . '(consult--source-hidden-buffer
                                           consult--source-buffer
                                           consult--source-file
@@ -1777,10 +1909,14 @@
     :added "2021-09-05"
     :emacs>= 26.1
     :ensure t
+    :hook ((corfu-mode-hook . my/orderless-for-corfu)
+           (lsp-completion-mode-hook . my/orderless-for-lsp-mode))
     :defvar (orderless-style-dispatchers)
-    :custom ((completion-styles . '(orderless))
+    :custom ((completion-styles . '(orderless basic))
              (completion-category-defaults . nil)
-             (completion-category-overrides . '((file (style . (partial-completion))))))
+             (completion-category-overrides . nil)
+             ;; (completion-category-overrides . '((file (style . (partial-completion)))))
+             )
     :init
     (defun my/orderless-dispatch-flex-first (_pattern index _total)
       (and (eq index 0) 'orderless-flex))
@@ -1802,7 +1938,8 @@
     :added "2021-09-17"
     :emacs>= 26.1
     :ensure t
-    :bind (("s-g" . embark-act))
+    :disabled t
+    :bind (("s-e" . embark-act))
     ;; :custom ((prefix-help-command . #'embark-prefix-help-command))
     :config
     (leaf embark-consult
@@ -1873,13 +2010,13 @@
              (corfu-auto . t)
              (corfu-auto-prefix . 3)
              (corfu-auto-delay . 0.01)
-             (corfu-quit-no-match . 'separator)
-             (corfu-separator . ?\s)
-             (corfu-preselect-first . nil)
+             ;; (corfu-quit-no-match . 'separator)
+             ;; (corfu-separator . ?\s)
+             ;; (corfu-preselect-first . nil)
              )
     :bind
     ((corfu-map
-      ("SPC" . corfu-insert-separator)))
+      ("M-SPC" . corfu-insert-separator)))
 
     :init
     (defun my/corfu-enable-in-minibuffer ()
@@ -1894,7 +2031,7 @@
         (eshell-send-input)
         ((derived-mode-p 'comint-mode)
          (comint-send-input)))))
-    :global-minor-mode corfu-global-mode
+    :global-minor-mode global-corfu-mode
     :hook ((minibuffer-setup-hook . my/corfu-enable-in-minibuffer)
            (eshell-mode-hook . (lambda ()
                                  (setq-local corfu-auto nil)
@@ -1970,7 +2107,18 @@
     ;;       #'command-completion-default-include-p)
 
     ;; Enable recursive minibuffers
-    (setq enable-recursive-minibuffers t)))
+    (setq enable-recursive-minibuffers t))
+  (leaf kind-icon
+    :doc "Completion kind icons"
+    :req "emacs-27.1" "svg-lib-0"
+    :tag "completion" "emacs>=27.1"
+    :url "https://github.com/jdtsmith/kind-icon"
+    :added "2022-11-26"
+    :emacs>= 27.1
+    :ensure t
+    :pre-setq (kind-icon-defalut-face . 'corfu-default)
+    :config
+    (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter)))
 
 (leaf visual-regexp-steroids
   :doc "Extends visual-regexp to support other regexp engines"
@@ -2004,23 +2152,32 @@
   :url "http://github.com/joaotavora/yasnippet"
   :added "2021-09-05"
   :ensure t
-  :disabled t
+  ;; :disabled t
+  :hook ((emacs-lisp-mode-hook org-mode-hook yatex-mode-hook haskell-mode-hook web-mode-hook) . yas-minor-mode)
   :unless (string-match "Raspberrypi" (system-name))
-  :custom ((yas-global-mode . t))
+  ;; :custom ((yas-global-mode . t))
   :bind ((yas-minor-mode-map
-          ("C-." . ivy-yasnippet)))
+          ("C-." . consult-yasnippet)))
+  ;; :custom ((yas-snippet-dirs . '("~/.emacs.d/elpa/yasnippet-snippets-20220713.1234/snippets/")))
   :config
-  (leaf yas_hook
-    :require cl
-    :disabled t
-    :config
-    (defvar ivy-programing-hooks ()
-      '(emacs-lisp-mode
-        org-mode
-        yatex-mode
-        haskell-mode))
-    (loop for hook in ivy-programing-hooks
-          do (add-hook hook 'yas-minor-mode))))
+  (leaf consult-yasnippet
+    :doc "A consulting-read interface for yasnippet"
+    :req "emacs-27.1" "yasnippet-0.14" "consult-0.16"
+    :tag "emacs>=27.1"
+    :url "https://github.com/mohkale/consult-yasnippet"
+    :added "2022-09-04"
+    :emacs>= 27.1
+    :ensure t
+    :after yasnippet consult)
+(leaf yasnippet-snippets
+  :doc "Collection of yasnippet snippets"
+  :req "yasnippet-0.8.0"
+  :tag "snippets"
+  :url "https://github.com/AndreaCrotti/yasnippet-snippets"
+  :added "2022-09-04"
+  :ensure t
+  :after yasnippet)
+  )
 
 
 ;; プログラミング設定
@@ -2032,6 +2189,9 @@
   :added "2022-04-04"
   :emacs>= 24.3
   :ensure t
+  :unless (or (string= (system-name) "sx12toshiaki-wsl")
+              (string= (system-name) "sx12_toshiaki"))
+  :disabled t
   :bind (("M-n" . flycheck-next-error)
          ("M-p" . flycheck-previous-error))
   :global-minor-mode global-flycheck-mode)
@@ -2046,9 +2206,9 @@
   :ensure t
   :defvar haskell-process-args-ghcie
   :custom `(;; (flymake-proc-allowed-file-name-masks . ,(delete '("\\.l?hs\\'" haskell-flymake-init) flymake-proc-allowed-file-name-masks))
-            (haskell-process-type          . 'stack-ghci)
-            (haskell-process-path-ghci     . "stack")
-            (haskell-process-args-ghcie    . "ghci")
+            (haskell-process-type          . 'cabal-repl)
+            ;; (haskell-process-path-ghci     . "")
+            ;; (haskell-process-args-ghcie    . "ghci")
             (haskell-indent-after-keywords . '(("where" 4 0) ("of" 4) ("do" 4) ("mdo" 4) ("rec" 4) ("in" 4 0) ("{" 4) "if" "then" "else" "let"))
             (haskell-indent-offset         . 4)
             (haskell-indendt-spaces        . 4)
@@ -2092,24 +2252,27 @@
   ;; :disabled t
   ;; :el-get emacs-lsp/lsp-mode
   ;; :unless (string-match "Raspberrypi" (system-name))
-  :custom ((lsp-idle-delay . 0.500)
+  :custom ((lsp-keymap-prefix . "s-z")
+           (lsp-idle-delay . 0.5)
            (lsp-log-io . nil)
-           (lsp-keymap-prefix . "M-l")
+           (lsp-completion-provider . :none)
            (lsp-prefer-capf . t)
            (lsp-headerline-breadcrumb-icons-enable . nil)
-           (lsp-completion-provider . :none)
            (lsp-enable-snippet . nil))
   :init
   (defun my/lsp-mode-setup-completion ()
     (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
           '(orderless)))
-  :hook ((lsp-mode . lsp-enable-which-key-integration)
-         (lsp-completion-mode . my/lsp-mode-setup-completion)
+  :hook (
+         (lsp-mode-hook . lsp-enable-which-key-integration)
+         (lsp-completion-mode-hook . my/lsp-mode-setup-completion)
+         (lsp-mode-hook . lsp-enable-which-key-integration)
          (haskell-mode-hook . lsp)
          (haskell-mode-hook . flycheck-mode)
          (rustic-mode . lsp)
          (c-mode-hook . lps)
-         (c++-mode-hook . lsp))
+         (c++-mode-hook . lsp)
+         )
   :config
   (leaf lsp-ui
     :doc "UI modules for lsp-mode"
@@ -2149,6 +2312,13 @@
   :added "2021-09-11"
   :ensure t
   :config
+  (leaf jedi
+    :doc "a Python auto-completion for Emacs"
+    :req "emacs-24" "jedi-core-0.2.2" "auto-complete-1.4"
+    :tag "emacs>=24"
+    :added "2022-05-29"
+    :emacs>= 24
+    :ensure t)
   (leaf lsp-jedi
     :doc "Lsp client plugin for Python Jedi Language Server"
     :req "emacs-25.1" "lsp-mode-6.0"
@@ -2171,33 +2341,77 @@
   :emacs>= 24.3
   :ensure t)
 
-(leaf rust-mode
-  :doc "A major-mode for editing Rust source code"
+(leaf purescript-mode
+  :doc "A PureScript editing mode"
   :req "emacs-25.1"
-  :tag "languages" "emacs>=25.1"
-  :url "https://github.com/rust-lang/rust-mode"
-  :added "2021-09-05"
+  :tag "purescript" "files" "faces" "emacs>=25.1"
+  :url "https://github.com/purescript-emacs/purescript-mode"
+  :added "2022-12-14"
   :emacs>= 25.1
   :ensure t
-  :disabled t
-  :config
-  (leaf racer
-    :doc "code completion, goto-definition and docs browsing for Rust via racer"
-    :req "emacs-25.1" "rust-mode-0.2.0" "dash-2.13.0" "s-1.10.0" "f-0.18.2" "pos-tip-0.4.6"
-    :tag "tools" "rust" "matching" "convenience" "abbrev" "emacs>=25.1"
-    :url "https://github.com/racer-rust/emacs-racer"
-    :added "2021-09-05"
-    :emacs>= 25.1
-    :ensure t
-    :after rust-mode pos-tip)
-  (leaf rustic
-    :doc "Rust development environment"
-    :req "emacs-26.1" "dash-2.13.0" "f-0.18.2" "let-alist-1.0.4" "markdown-mode-2.3" "project-0.3.0" "s-1.10.0" "seq-2.3" "spinner-1.7.3" "xterm-color-1.6"
-    :tag "languages" "emacs>=26.1"
-    :added "2021-11-06"
-    :emacs>= 26.1
-    :ensure t))
+  ;; :bind `((purescript-mode-map
+  ;;           ("C-c C-z" . purescript-interactive-switch)
+  ;;           ("C-c C-l" . purescript-process-load-file)
+  ;;           ("C-c C-b" . purescript-interactive-switch)
+  ;;           ("C-c C-t" . purescript-process-do-type)
+  ;;           ("C-c C-i" . purescript-process-do-info)))
+  :hook ((purescript-mode-hook . lsp))
+  )
 
+(leaf rustic
+  :doc "Rust development environment"
+  :req "emacs-26.1" "dash-2.13.0" "f-0.18.2" "let-alist-1.0.4" "markdown-mode-2.3" "project-0.3.0" "s-1.10.0" "seq-2.3" "spinner-1.7.3" "xterm-color-1.6"
+  :tag "languages" "emacs>=26.1"
+  :added "2021-11-06"
+  :emacs>= 26.1
+  :ensure t
+  :mode (("\\.rs\\'" . rust-mode))
+  :hook ((rustic-mode-hook . smartparens-mode))
+  :custom ((rustic-format-trigger . 'on-save))
+  :bind ((rustic-mode-map
+          ("M-j" . lsp-ui-imenu)
+          ("M-?" . lsp-find-references)
+          ("C-c C-c l" . flycheck-list-errors)
+          ("C-c C-c a" . lsp-execute-code-action)
+          ("C-c C-c r" . lsp-rename)
+          ("C-c C-c q" . lsp-workspace-restart)
+          ("C-c C-c Q" . lsp-workspace-shutdown)
+          ("C-c C-c s" . lsp-rust-analyzer-status)))
+  :config
+  (leaf cargo
+    :doc "Emacs Minor Mode for Cargo, Rust's Package Manager."
+    :req "emacs-24.3" "markdown-mode-2.4"
+    :tag "tools" "emacs>=24.3"
+    :added "2022-11-25"
+    :emacs>= 24.3
+    :ensure t
+    )
+  :preface
+  (defun rk/rustic-mode-hook ()
+    ;; so that run C-c C-c C-r works without having to confirm, but don't try to
+    ;; save rust buffers that are not file visiting. Once
+    ;; https://github.com/brotzeit/rustic/issues/253 has been resolved this should
+    ;; no longer be necessary.
+    (when buffer-file-name
+      (setq-local buffer-save-without-query t))
+    (add-hook 'before-save-hook 'lsp-format-buffer nil t))
+  )
+
+(leaf web-mode
+  :doc "major mode for editing web templates"
+  :req "emacs-23.1"
+  :tag "languages" "emacs>=23.1"
+  :url "https://web-mode.org"
+  :added "2022-09-03"
+  :emacs>= 23.1
+  :ensure t
+  :hook (web-mode-hook . smartparens-mode)
+  :mode ((("\\.html\\'" "\\.js\\'") . web-mode))
+  :custom ((web-mode-markup-indent-offset . 4)
+           (web-mode-css-indent-offset . 4)
+           (web-mode-enable-current-element-highlight . t)
+           (web-mode-enable-auto-pairing . t)
+           (web-mode-enable-auto-closing . t)))
 
 ;; window managr
 (leaf *exwm-config
@@ -2263,7 +2477,10 @@
                                           ;; (,(kbd "s-d")     . counsel-linux-app)
                                           (,(kbd "s-d")     . app-launcher-run-app)
                                           (,(kbd "s-a")     . zoom-window-zoom)
-                                          (,(kbd "s-o")     . consult-buffer)))
+                                          (,(kbd "s-o")     . consult-buffer)
+                                          (,(kbd "M-!")     . shell-command)
+                                          (,(kbd "s-S")     . window-capcher)
+                                          ))
               (exwm-input-simulation-keys . '(;; new version
                                               (,(kbd "C-b")           . [left])
                                               (,(kbd "M-b")           . [C-left])
@@ -2307,7 +2524,7 @@
                                               ;; ([s-down] . [C-tab])
                                               (,(kbd "s-t")           . [C-t ?\C-k])
                                               (,(kbd "s-T")           . [C-T])
-                                              ;;
+
                                               (,(kbd "s-l")           . [C-k])
                                               (,(kbd "s-k")           . [C-l])
                                               ;;
@@ -2317,10 +2534,11 @@
                                               (,(kbd "<mouse-12>")    . [left])
                                               ;; (,(kbd "C-j")           .,(kbd "C-<"))
                                               ;; (,(kbd "C-l")           .,(kbd "C->"))
+                                              (,(kbd "C-c C-c")       . ,(kbd "C-c"))
                                               )))
     :bind (("C-\\" . skk-latin-mode)
            ("C-l" . skk-latin-mode))
-    :preface
+    :init
     (defun exwm-workspace-toggle ()
       (interactive)
       (if (= exwm-workspace-current-index 0)

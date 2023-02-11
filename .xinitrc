@@ -58,10 +58,10 @@ export DefaultIMModule=fcitx
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
-# fcitx-autostart  &
 fcitx5 &
 
-dropbox &
+# dropbox &
+megasync &
 
 # if [ $(hostname) = "archlinuxhonda" ]; then
 #     # export GDK_SCALE=2
@@ -72,8 +72,13 @@ dropbox &
 export LANG=ja_JP.UTF-8
 export EXWM=enable
 
+case $(uname -n) in
+    "sx12toshiaki" ) xkbcomp -I$HOME/.xkb/ ~/.xkb/keymap/sx12 $DISPLAY > /dev/null 2>&1;;
+esac
+
 
 xhost +SI:localuser:$USER
 xset r rate 250 40
 exec emacs
+# exec cutefish-session
 # exec dbus-launch --exit-with-session --sh-syntax emacs
