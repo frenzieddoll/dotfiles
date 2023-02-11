@@ -400,12 +400,12 @@
                                       ;; ("tar"       . "mcomix")
                                       ("xls"      . "xdg-open")
                                       ("xlsx"     . "xdg-open")
-                                      ("jpg"      . "sxiv-rifle")
-                                      ("png"      . "sxiv-rifle")
-                                      ("jpeg"     . "sxiv-rifle")
-                                      ("gif"      . "sxiv-rifle")
-                                      ("png"      . "sxiv-rifle")
-                                      ("webp"     . "sxiv-rifle")
+                                      ("jpg"      . "sxiv-rifle.sh")
+                                      ("png"      . "sxiv-rifle.sh")
+                                      ("jpeg"     . "sxiv-rifle.sh")
+                                      ("gif"      . "sxiv-rifle.sh")
+                                      ("png"      . "sxiv-rifle.sh")
+                                      ("webp"     . "sxiv-rifle.sh")
                                       ))))
   (leaf dired-open
     :doc "Open files from dired using using custom actions"
