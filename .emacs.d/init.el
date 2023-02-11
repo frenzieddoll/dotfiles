@@ -1973,7 +1973,7 @@
     :added "2021-10-01"
     :emacs>= 25.1
     :ensure t
-    :disabled t
+    ;; :disabled t
     :bind ((company-active-map
             ("M-n" . nil)
             ("M-p" . nil)
@@ -1993,7 +1993,7 @@
               (company-dabbrev-downcase      . nil)
               (lsp-prefer-capf . t)
               (company-backends . '(company-capf)))
-    :global-minor-mode global-company-mode
+    ;; :global-minor-mode global-company-mode
     :config
     (leaf company-tabnine
       :doc "A company-mode backend for TabNine"
@@ -2091,6 +2091,7 @@
       :added "2022-03-31"
       :emacs>= 27.1
       :ensure t
+      ;; :disabled t
       :config
       (add-to-list 'completion-at-point-functions #'cape-file)
       (add-to-list 'completion-at-point-functions #'cape-tex)
@@ -2265,7 +2266,6 @@
     :added "2023-02-10"
     :emacs>= 24.3
     :ensure t
-    :after lsp-mode haskell-mode
     ;; :disabled t
     :custom ((lsp-haskell-server-path . "haskell-language-server-wrapper")
              (lsp-haskell-completion-snippets-on . nil))
@@ -2285,7 +2285,7 @@
   ;; :el-get emacs-lsp/lsp-mode
   ;; :unless (string-match "Raspberrypi" (system-name))
   :custom ((lsp-keymap-prefix . "s-z")
-           (lsp-idle-delay . 0.5)
+           (lsp-idle-delay . 0.500)
            (lsp-log-io . nil)
            (lsp-completion-provider . :none)
            (lsp-prefer-capf . t)
@@ -2324,7 +2324,7 @@
     :url "https://github.com/emacs-lsp/lsp-treemacs"
     :added "2021-12-21"
     :emacs>= 26.1
-    :disabled t
+    ;; :disabled t
     :ensure t)
   (leaf consult-lsp
     :doc "LSP-mode Consult integration"
