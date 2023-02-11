@@ -2152,6 +2152,20 @@
 
 
 ;; プログラミング設定
+(leaf eglot
+  :doc "The Emacs Client for LSP servers"
+  :req "emacs-26.3" "jsonrpc-1.0.14" "flymake-1.2.1" "project-0.3.0" "xref-1.0.1" "eldoc-1.11.0" "seq-2.23"
+  :tag "languages" "convenience" "emacs>=26.3"
+  :url "https://github.com/joaotavora/eglot"
+  :added "2023-02-09"
+  :emacs>= 26.3
+  :ensure t
+  :disabled t
+  :config
+  (setq read-process-output-max (* 1024 1024))
+  (setq completion-category-overrides '((eglot (styles orderless))))
+  )
+
 (leaf flycheck
   :doc "On-the-fly syntax checking"
   :req "dash-2.12.1" "pkg-info-0.4" "let-alist-1.0.4" "seq-1.11" "emacs-24.3"
@@ -2199,12 +2213,13 @@
   :config
   (leaf lsp-haskell
     :doc "Haskell support for lsp-mode"
-    :req "emacs-24.3" "lsp-mode-3.0" "haskell-mode-1.0"
+    :req "emacs-24.3" "lsp-mode-3.0" "haskell-mode-16.1"
     :tag "haskell" "emacs>=24.3"
     :url "https://github.com/emacs-lsp/lsp-haskell"
-    :added "2021-09-05"
+    :added "2023-02-10"
     :emacs>= 24.3
-    :require t
+    :ensure t
+    :after lsp-mode haskell-mode
     ;; :disabled t
     :custom ((lsp-haskell-server-path . "haskell-language-server-wrapper")
              (lsp-haskell-completion-snippets-on . nil))
@@ -2263,7 +2278,7 @@
     :url "https://github.com/emacs-lsp/lsp-treemacs"
     :added "2021-12-21"
     :emacs>= 26.1
-    ;; :disabled t
+    :disabled t
     :ensure t)
   (leaf consult-lsp
     :doc "LSP-mode Consult integration"
