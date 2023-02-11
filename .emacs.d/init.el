@@ -2003,7 +2003,43 @@
       :added "2022-05-01"
       :emacs>= 25
       :ensure t
-      :require t))
+      :require t)
+    (leaf cape
+      :doc "Completion At Point Extensions"
+      :req "emacs-27.1"
+      :tag "emacs>=27.1"
+      :url "https://github.com/minad/cape"
+      :added "2022-03-31"
+      :emacs>= 27.1
+      :ensure t
+      :defun (my/convert-super-capf)
+      :hook ((prog-mode-hook . my/set-basic-capf)
+             (text-mode-hook . my/set-basic-capf)
+             (lsp-completion-mode-hook . my/set-lsp-capf))
+      :init
+      (defun my/convert-super-capf (arg-capf)
+        (list (cape-capf-buster
+               (cape-super-capf arg-capf
+                                (cape-company-to-capf #'company-yasnippet)
+                                (cape-company-to-capf #'company-tabnine)))
+              #'cape-file
+              #'cape-dabbrev))
+      (defun my/set-basic-capf ()
+        (setq-local completion-at-point-functions (my/convert-super-capf (car compilation-finish-functions))))
+      ;; (defun my/set-meghanada-capf ()
+      ;;   (setq-local completion-at-point-functions (my/convert-super-capf (cape-company-to-capf #' company-meghanada))))
+      (defun my/set-lsp-capf ()
+        (setq-local completion-at-point-functions (my/convert-super-capf #'lsp-completion-at-point)))
+
+      :config
+      (add-to-list 'completion-at-point-functions (cape-company-to-capf #'company-tabnine) t)
+      (add-to-list 'completion-at-point-functions #'cape-file)
+      (add-to-list 'completion-at-point-functions #'cape-tex)
+      (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+      (add-to-list 'completion-at-point-functions #'cape-keyword)
+      (add-to-list 'completion-at-point-functions #'cape-abbrev)
+      (add-to-list 'completion-at-point-functions #'cape-ispell)
+      (add-to-list 'completion-at-point-functions #'cape-symbol)))
   (leaf corfu
     :doc "Completion Overlay Region FUnction"
     :req "emacs-27.1"
@@ -2055,27 +2091,7 @@
       :added "2022-03-31"
       :emacs>= 27.1
       :ensure t
-      :defun (my/convert-super-capf)
-      :hook ((prog-mode-hook . my/set-basic-capf)
-             (text-mode-hook . my/set-basic-capf)
-             (lsp-completion-mode-hook . my/set-lsp-capf))
-      :init
-      (defun my/convert-super-capf (arg-capf)
-        (list (cape-capf-buster
-               (cape-super-capf arg-capf
-                                (cape-company-to-capf #'company-yasnippet)
-                                (cape-company-to-capf #'company-tabnine)))
-              #'cape-file
-              #'cape-dabbrev))
-      (defun my/set-basic-capf ()
-        (setq-local completion-at-point-functions (my/convert-super-capf (car compilation-finish-functions))))
-      ;; (defun my/set-meghanada-capf ()
-      ;;   (setq-local completion-at-point-functions (my/convert-super-capf (cape-company-to-capf #' company-meghanada))))
-      (defun my/set-lsp-capf ()
-        (setq-local completion-at-point-functions (my/convert-super-capf #'lsp-completion-at-point)))
-
       :config
-      (add-to-list 'completion-at-point-functions (cape-company-to-capf #'company-tabnine) t)
       (add-to-list 'completion-at-point-functions #'cape-file)
       (add-to-list 'completion-at-point-functions #'cape-tex)
       (add-to-list 'completion-at-point-functions #'cape-dabbrev)
