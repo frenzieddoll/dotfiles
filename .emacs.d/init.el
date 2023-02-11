@@ -1993,7 +1993,17 @@
               (company-dabbrev-downcase      . nil)
               (lsp-prefer-capf . t)
               (company-backends . '(company-capf)))
-    :global-minor-mode global-company-mode)
+    :global-minor-mode global-company-mode
+    :config
+    (leaf company-tabnine
+      :doc "A company-mode backend for TabNine"
+      :req "emacs-25" "company-0.9.3" "cl-lib-0.5" "dash-2.16.0" "s-1.12.0" "unicode-escape-1.1"
+      :tag "convenience" "emacs>=25"
+      :url "https://github.com/TommyX12/company-tabnine/"
+      :added "2022-05-01"
+      :emacs>= 25
+      :ensure t
+      :require t))
   (leaf corfu
     :doc "Completion Overlay Region FUnction"
     :req "emacs-27.1"
@@ -2050,15 +2060,6 @@
              (text-mode-hook . my/set-basic-capf)
              (lsp-completion-mode-hook . my/set-lsp-capf))
       :init
-      (leaf company-tabnine
-        :doc "A company-mode backend for TabNine"
-        :req "emacs-25" "company-0.9.3" "cl-lib-0.5" "dash-2.16.0" "s-1.12.0" "unicode-escape-1.1"
-        :tag "convenience" "emacs>=25"
-        :url "https://github.com/TommyX12/company-tabnine/"
-        :added "2022-05-01"
-        :emacs>= 25
-        :ensure t
-        :require t)
       (defun my/convert-super-capf (arg-capf)
         (list (cape-capf-buster
                (cape-super-capf arg-capf
