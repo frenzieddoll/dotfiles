@@ -1539,6 +1539,14 @@
   :custom ((cua-mode . t)
            (cua-enable-cua-keys . nil)))
 
+(leaf dabbrev
+  :doc "dynamic abbreviation package"
+  :tag "builtin"
+  :added "2021-09-20"
+  :bind (("M-/" . dabbrev-completion)
+         ("C-M-/" . dabbrev-expand))
+  :custom (dabbrev-case-fold-search . nil))
+
 (leaf ddskk
   :doc "Simple Kana to Kanji conversion program."
   :req "ccc-1.43" "cdb-20141201.754"
@@ -1776,7 +1784,8 @@
   :url "https://github.com/Fuco1/smartparens"
   :added "2022-02-25"
   :ensure t
-  :bind (("C-c s" . smartparens-mode)
+  :global-minor-mode (smartparens-strict-mode)
+  :bind (("C-c s" . smartparens-strict-mode)
          (:smartparens-mode-map
           ("C-M-f" . sp-forward-sexp)
           ("C-M-b" . sp-backward-sexp)
@@ -1785,16 +1794,13 @@
           ("C-M-a" . sp-beginning-of-sexp)
           ("C-M-e" . sp-end-of-sexp)
           ("M-["   . sp-backward-unwrap-sexp)
-          ("M-]"   . sp-unwrap-sexp))
-         (:lisp-mode-map
-          :package lisp-mode-map
-          ("C-c s" . smartparens-strict-mode)))
+          ("M-]"   . sp-unwrap-sexp)))
   :config
   (sp-pair "'" "'" :actions :rem)
   (sp-pair "`" "`" :actions :rem)
   (sp-local-pair 'python-mode "'" "'")
   (sp-local-pair 'ein:ipynb-mode "'" "'")
-)
+  (sp-local-pair 'haskell-mode "`" "`"))
 
 (leaf ssh
   :doc "Support for remote logins using ssh."
@@ -1875,14 +1881,15 @@
            ("C-o" . consult-line)
            ("C-c h" . consult-recent-file)
            ("C-x b" . consult-buffer)
-           ("C-c ;" . consult-history))
+           ("C-c H" . consult-history))
+
     :custom `((consult-buffer-sources . '(consult--source-hidden-buffer
                                           consult--source-buffer
                                           consult--source-file
                                           consult--source-bookmark
                                           consult--source-project-buffer
                                           consult--source-project-file))
-              (consult-preview-key . ,(kbd "C-.")))
+              (consult-preview-key . nil))
     :global-minor-mode (recentf-mode)
     :config
     (define-obsolete-variable-alias
@@ -1938,7 +1945,7 @@
     :added "2021-09-17"
     :emacs>= 26.1
     :ensure t
-    :disabled t
+    ;; :disabled t
     :bind (("s-e" . embark-act))
     ;; :custom ((prefix-help-command . #'embark-prefix-help-command))
     :config
@@ -1949,8 +1956,7 @@
       :url "https://github.com/oantolin/embark"
       :added "2022-03-24"
       :emacs>= 26.1
-      :ensure t
-      :after embark consult))
+      :ensure t))
   (leaf savehist
     :doc "Save minibuffer history"
     :tag "builtin"
@@ -2002,7 +2008,10 @@
     :emacs>= 27.1
     :ensure t
     :require t
-    :defvar (corfu-auto)
+    ;; :defvar (corfu-auto)
+    :when (eq window-system 'x)
+    :when (eq system-type 'gnu/linux)
+    :global-minor-mode global-corfu-mode
     ;; :disabled t
     :custom ((tab-always-indent . 'complete)
              (corfu-cycle . t)
@@ -2029,7 +2038,6 @@
         (eshell-send-input)
         ((derived-mode-p 'comint-mode)
          (comint-send-input)))))
-    :global-minor-mode global-corfu-mode
     :hook ((minibuffer-setup-hook . my/corfu-enable-in-minibuffer)
            (eshell-mode-hook . (lambda ()
                                  (setq-local corfu-auto nil)
@@ -2052,12 +2060,6 @@
       (add-to-list 'completion-at-point-functions #'cape-abbrev)
       (add-to-list 'completion-at-point-functions #'cape-ispell)
       (add-to-list 'completion-at-point-functions #'cape-symbol)))
-  (leaf dabbrev
-    :doc "dynamic abbreviation package"
-    :tag "builtin"
-    :added "2021-09-20"
-    :bind (("M-/" . dabbrev-completion)
-           ("C-M-/" . dabbrev-expand)))
   (leaf *emacs
     :preface
     ;; Add prompt indicator to `completing-read-multiple'.
@@ -2206,8 +2208,8 @@
            ("<f5>" . haskell-compile)
            ("<f8>" . haskell-navigate-imports)))
   :hook ((haskell-mode . interactive-haskell-mode)
-         (haskell-mode . haskell-decl-scan-mode)
-         (haskell-mode . haskell-doc-mode)
+         ;; (haskell-mode . haskell-decl-scan-mode)
+         ;; (haskell-mode . haskell-doc-mode)
          (haskell-mode . haskell-indentation-mode))
   :config
   (leaf lsp-haskell
@@ -2220,7 +2222,8 @@
     :ensure t
     ;; :disabled t
     :custom ((lsp-haskell-server-path . "haskell-language-server-wrapper")
-             (lsp-haskell-completion-snippets-on . nil))
+             (lsp-haskell-completion-snippets-on . nil)
+             )
     :hook (;; (lsp-mode-hook . lsp-ui-mode)
            (haskell-mode-hook . lsp)
            (haskell-literate-mode . lsp))))
@@ -2236,26 +2239,25 @@
   ;; :disabled t
   ;; :el-get emacs-lsp/lsp-mode
   ;; :unless (string-match "Raspberrypi" (system-name))
-  :custom ((lsp-keymap-prefix . "s-z")
-           (lsp-idle-delay . 0.500)
-           (lsp-log-io . nil)
-           (lsp-completion-provider . :none)
-           (lsp-prefer-capf . t)
+  :custom ((lsp-keymap-prefix                      . "s-z")
+           ;; (lsp-idle-delay                         . 0.500)
+           (lsp-log-io                             . nil)
+           (lsp-completion-provider                . :none)
+           (lsp-prefer-capf                        . t)
            (lsp-headerline-breadcrumb-icons-enable . nil)
-           (lsp-enable-snippet . nil))
+           (lsp-enable-snippet                     . nil))
   :init
   (defun my/lsp-mode-setup-completion ()
     (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
           '(orderless)))
   :hook (
-         (lsp-mode-hook . lsp-enable-which-key-integration)
-         (lsp-completion-mode-hook . my/lsp-mode-setup-completion)
-         (lsp-mode-hook . lsp-enable-which-key-integration)
-         (haskell-mode-hook . lsp)
-         (haskell-mode-hook . flycheck-mode)
-         (rustic-mode . lsp)
-         (c-mode-hook . lps)
-         (c++-mode-hook . lsp)
+         (lsp-mode-hook            . lsp-enable-which-key-integration)
+         ;; (lsp-completion-mode-hook . my/lsp-mode-setup-completion)
+         (haskell-mode-hook        . lsp)
+         (haskell-mode-hook        . flycheck-mode)
+         (rustic-mode-hook         . lsp)
+         (c-mode-hook              . lps)
+         (c++-mode-hook            . lsp)
          )
   :config
   (leaf lsp-ui
@@ -2266,7 +2268,7 @@
     :added "2021-11-06"
     :emacs>= 26.1
     :ensure t
-    ;; :disabled t
+    :disabled t
     :hook ((lsp-mode-hook . lsp-ui-mode))
     :commands lsp-ui-mode)
   (leaf lsp-treemacs
@@ -2276,7 +2278,7 @@
     :url "https://github.com/emacs-lsp/lsp-treemacs"
     :added "2021-12-21"
     :emacs>= 26.1
-    ;; :disabled t
+    :disabled t
     :ensure t)
   (leaf consult-lsp
     :doc "LSP-mode Consult integration"
