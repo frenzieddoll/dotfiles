@@ -1166,14 +1166,14 @@
          (pdf-view-mode-hook . pdf-links-minor-mode)
          (pdf-view-mode-hook . pdf-isearch-minor-mode)))
 
-(leaf pulseaudio-control
-  :doc "Use `pactl' to manage PulseAudio volumes."
-  :tag "pulseaudio" "sound" "hardware" "multimedia"
-  :url "https://github.com/flexibeast/pulseaudio-control"
-  :added "2021-10-11"
-  :ensure t
-  :config
-  (pulseaudio-control-default-keybindings))
+;; (leaf pulseaudio-control
+;;   :doc "Use `pactl' to manage PulseAudio volumes."
+;;   :tag "pulseaudio" "sound" "hardware" "multimedia"
+;;   :url "https://github.com/flexibeast/pulseaudio-control"
+;;   :added "2021-10-11"
+;;   :ensure t
+;;   :config
+;;   (pulseaudio-control-default-keybindings))
 
 (leaf shackle
   :doc "Enforce rules for popups"
@@ -1754,6 +1754,10 @@
            (show-paren-when-point-inside-paren . t)
            (show-paren-when-point-in-periphery . t)))
 
+(leaf *pulseaudio
+  :require pulseaudio
+  )
+
 (leaf rainbow-delimiters
   :doc "Highlight brackets according to their depth"
   :tag "tools" "lisp" "convenience" "faces"
@@ -1922,6 +1926,10 @@
     :custom ((completion-styles . '(orderless basic))
              (completion-category-defaults . nil)
              (completion-category-overrides . nil)
+             ;; (completion-category-overrides . '((eglot (styles orderless+initialism))
+             ;;                                    (command (styles orderless+initialism))
+             ;;                                    (symbol (styles orderless+initialism))
+             ;;                                    (variable (styles orderless+initialism))))
              ;; (completion-category-overrides . '((file (style . (partial-completion)))))
              )
     :init
@@ -2125,7 +2133,12 @@
   :added "2021-09-05"
   :ensure t
   ;; :disabled t
-  :hook ((emacs-lisp-mode-hook org-mode-hook yatex-mode-hook haskell-mode-hook web-mode-hook) . yas-minor-mode)
+  :hook ((emacs-lisp-mode-hook
+          org-mode-hook
+          yatex-mode-hook
+          haskell-mode-hook
+          web-mode-hook
+          python-mode-hook) . yas-minor-mode)
   :unless (string-match "Raspberrypi" (system-name))
   ;; :custom ((yas-global-mode . t))
   :bind ((yas-minor-mode-map
@@ -2141,14 +2154,30 @@
     :emacs>= 27.1
     :ensure t
     :after yasnippet consult)
-(leaf yasnippet-snippets
-  :doc "Collection of yasnippet snippets"
-  :req "yasnippet-0.8.0"
-  :tag "snippets"
-  :url "https://github.com/AndreaCrotti/yasnippet-snippets"
-  :added "2022-09-04"
-  :ensure t
-  :after yasnippet)
+  (leaf yasnippet-snippets
+    :doc "Collection of yasnippet snippets"
+    :req "yasnippet-0.8.0"
+    :tag "snippets"
+    :url "https://github.com/AndreaCrotti/yasnippet-snippets"
+    :added "2022-09-04"
+    :ensure t
+    :after yasnippet)
+  (leaf haskell-snippets
+    :doc "Yasnippets for Haskell"
+    :req "cl-lib-0.5" "yasnippet-0.8.0"
+    :tag "haskell" "snippets"
+    :url "https://github.com/haskell/haskell-snippets"
+    :added "2023-02-18"
+    :ensure t
+    :after yasnippet)
+  (leaf py-snippets
+    :doc "Collection of advanced Python yasnippet snippets"
+    :req "yasnippet-0.8.0"
+    :tag "snippets" "convenience"
+    :url "https://github.com/Xaldew/py-snippets"
+    :added "2023-02-18"
+    :ensure t
+    :after yasnippet)
   )
 
 
@@ -2449,15 +2478,19 @@
                                           (,(kbd "s-f")     . windmove-right)
                                           (,(kbd "s-b")     . windmove-left)
                                           (,(kbd "s-p")     . windmove-up)
-                                          (,(kbd "s-i")     . output_toggle)
-                                          (,(kbd "s-j")     . lower_volume)
-                                          (,(kbd "s-k")     . upper_volume)
-                                          (,(kbd "s-m")     . mute_toggle)
-                                          (,(kbd "s-i")     . output_toggle)
-                                          (,(kbd "C-s-i")   . output_toggle)
-                                          (,(kbd "C-s-m")   . mute_toggle)
-                                          (,(kbd "C-s-n")   . lower_volume)
-                                          (,(kbd "C-s-p")   . upper_volume)
+                                          ;; (,(kbd "s-i")     . output_toggle)
+                                          ;; (,(kbd "s-j")     . lower_volume)
+                                          ;; (,(kbd "s-k")     . upper_volume)
+                                          ;; (,(kbd "s-m")     . mute_toggle)
+                                          ;; (,(kbd "s-i")     . output_toggle)
+                                          ;; (,(kbd "C-s-i")   . output_toggle)
+                                          ;; (,(kbd "C-s-m")   . mute_toggle)
+                                          ;; (,(kbd "C-s-n")   . lower_volume)
+                                          ;; (,(kbd "C-s-p")   . upper_volume)
+                                          (,(kbd "C-s-i")   . pulseaudio-select-sink-by-name)
+                                          (,(kbd "C-s-m")   . pulseaudio-toggle-sink-mute)
+                                          (,(kbd "C-s-n")   . pulseaudio-decrease-sink-volume)
+                                          (,(kbd "C-s-p")   . pulseaudio-increase-sink-volume)
                                           (,(kbd "s-[")     . lowerLight)
                                           (,(kbd "s-]")     . upperLight)
                                           ;; (,(kbd "s-d")     . counsel-linux-app)
