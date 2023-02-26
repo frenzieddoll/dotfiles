@@ -680,8 +680,7 @@
   (defun window-capcher ()
     "capcher window by imagemagic"
     (interactive)
-    (let ((stringShellCommand (concat "import " "~/Downloads/screenshot_" "20" (format-time-string "%02y%02m%02d%02H%02M%02S" (current-time)) ".png"))
-          )
+    (let ((stringShellCommand (concat "import " "~/Downloads/screenshot_" "20" (format-time-string "%02y%02m%02d%02H%02M%02S" (current-time)) ".png")))
       (shell-command stringShellCommand)))
 
   :config
@@ -735,19 +734,8 @@
            ("s-p" . windmove-up)
            ("s-q" . kill-current-buffer)
            ("s-o" . consult-buffer)
-           ;; ("M-f" . windmove-right)
-           ;; ("M-b" . windmove-left)
-           ;; ("M-n" . windmove-down)
-           ;; ("M-p" . windmove-up)
-           ;; ("M-a" . zoom-window-zoom)
-           ;; ("M-h" . delete-window)
-           ;; ("M-d" . app-launcher-run-app)
            ("M-q" . kill-current-buffer)
            ("M-o" . consult-buffer)
-           ;; ("C-s-i" . output_toggle)
-           ;; ("C-s-m" . mute_toggle)
-           ;; ("C-s-n" . lower_volume)
-           ;; ("C-s-p" . upper_volume)
            ))
 
   (leaf *ForCUI
@@ -770,7 +758,8 @@
     :custom (global-hl-line-mode . t))
 
   (leaf *mySaveFrame
-    :when (or (eq system-type 'darwin) (eq system-type 'windows-nt))
+    :when (or (eq system-type 'darwin)
+              (eq system-type 'windows-nt))
     :hook ((emacs-startup-hook . my-load-frame-size)
            (kill-emacs-hook . my-save-frame-size))
     :defun my-save-frame-size my-load-frame-size
@@ -927,7 +916,7 @@
   :emacs>= 25.1
   :ensure t
   :after parsebib
-  :custom ((ebib-preload-bib-files                . '("~/tex/references.bib"))
+  :custom (
            (bibtex-autokey-name-case-convert      . 'capitalize)
            (bibtex-autokey-titleword-case-convert . 'capitalize)
            (bibtex-autokey-titleword-separator    . "")
@@ -939,9 +928,8 @@
                                                       "on" "the" "Le" "La" "Les"
                                                       "le" "la" "les" "Zur" "zur" "Des" "Dir" "Die"))
            (ebib-keywords-use-only-file           . t)
-           (ebib-keywords-file                    . "~/tex/ebib-keywords.txt")
            (ebib-keywords-file-save-on-exit       . 'always)
-           (ebib-file-search-dirs                 . '("~/tex/pdfs" "~/tex/papers" "~/tex/books")))
+           )
   :config
   (leaf *ebibForMac
     :when (eq system-type 'darwin)
@@ -949,7 +937,11 @@
     )
   (leaf *ebibForLinux
     :when (eq system-type 'gnu/linux)
-    :custom ((ebib-file-associations . '(("pdf" . "zathura") ("ps"  . "zathura"))))))
+    :custom ((ebib-file-associations . '(("pdf" . "zathura") ("ps"  . "zathura")))
+             (ebib-preload-bib-files . '("~/tex/references.bib"))
+             (ebib-keywords-file     . "~/tex/ebib-keywords.txt")
+             (ebib-file-search-dirs  . '("~/tex/pdfs" "~/tex/papers" "~/tex/books"))
+             )))
 
 (leaf ediff
   :doc "a comprehensive visual interface to diff & patch"
@@ -1161,7 +1153,7 @@
   :emacs>= 24.3
   :ensure t
   :after tablist
-  :when (file-exists-p "/usr/bin/epdfinfo")
+  :when (executable-find "epdfinfo")
   :hook ((pdf-view-mode-hook . pdf-misc-size-indication-minor-mode)
          (pdf-view-mode-hook . pdf-links-minor-mode)
          (pdf-view-mode-hook . pdf-isearch-minor-mode)))
@@ -1755,6 +1747,7 @@
            (show-paren-when-point-in-periphery . t)))
 
 (leaf *pulseaudio
+  :when (executable-find "pactl")
   :require pulseaudio
   )
 
@@ -1885,7 +1878,8 @@
            ("C-o" . consult-line)
            ("C-c h" . consult-recent-file)
            ("C-x b" . consult-buffer)
-           ("C-c H" . consult-history))
+           (minibuffer-local-map
+            ("C-c h" . consult-history)))
 
     :custom `((consult-buffer-sources . '(consult--source-hidden-buffer
                                           consult--source-buffer
@@ -2115,6 +2109,23 @@
          ("C-M-r" . vr/isearch-backward)
          ("C-M-s" . vr/isearch-forward))
   :custom `((vr/engine . 'python)))
+
+(leaf vterm
+  :doc "Fully-featured terminal emulator"
+  :req "emacs-25.1"
+  :tag "terminals" "emacs>=25.1"
+  :url "https://github.com/akermu/emacs-libvterm"
+  :added "2023-02-19"
+  :emacs>= 25.1
+  :ensure t
+  :custom ((vterm-max-scrollback . 10000)
+           (vterm-buffer-name-string . "vterm: %s")
+           )
+  :bind (("C-c v" . vterm)
+         (:vterm-mode-map
+          ("C-m" . vterm-send-return)
+          ("C-h" . vterm-send-backspace)
+          ("C-y" . vterm-yank))))
 
 (leaf which-key
   :doc "Display available keybindings in popup"
@@ -2478,22 +2489,12 @@
                                           (,(kbd "s-f")     . windmove-right)
                                           (,(kbd "s-b")     . windmove-left)
                                           (,(kbd "s-p")     . windmove-up)
-                                          ;; (,(kbd "s-i")     . output_toggle)
-                                          ;; (,(kbd "s-j")     . lower_volume)
-                                          ;; (,(kbd "s-k")     . upper_volume)
-                                          ;; (,(kbd "s-m")     . mute_toggle)
-                                          ;; (,(kbd "s-i")     . output_toggle)
-                                          ;; (,(kbd "C-s-i")   . output_toggle)
-                                          ;; (,(kbd "C-s-m")   . mute_toggle)
-                                          ;; (,(kbd "C-s-n")   . lower_volume)
-                                          ;; (,(kbd "C-s-p")   . upper_volume)
                                           (,(kbd "C-s-i")   . pulseaudio-select-sink-by-name)
                                           (,(kbd "C-s-m")   . pulseaudio-toggle-sink-mute)
                                           (,(kbd "C-s-n")   . pulseaudio-decrease-sink-volume)
                                           (,(kbd "C-s-p")   . pulseaudio-increase-sink-volume)
                                           (,(kbd "s-[")     . lowerLight)
                                           (,(kbd "s-]")     . upperLight)
-                                          ;; (,(kbd "s-d")     . counsel-linux-app)
                                           (,(kbd "s-d")     . app-launcher-run-app)
                                           (,(kbd "s-a")     . zoom-window-zoom)
                                           (,(kbd "s-o")     . consult-buffer)
