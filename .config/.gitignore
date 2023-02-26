@@ -1,0 +1,21 @@
+# gitで管理しない
+*
+*/
+
+# gitで管理する
+!/.gitignore
+
+# directory
+!/alacritty/*
+/alacritty/alacritty_local.yml
+!/gtk-3.0/
+!/libskk/
+!/mpv/
+!/zathura/
+
+# file
+!/brave-flags.conf
+!/btermrc
+!/fcitx
+!/fcitx5
+!/mimeapps.list

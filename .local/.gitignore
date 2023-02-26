@@ -1,0 +1,9 @@
+# gitで管理しない
+# *
+# */
+
+# gitで管理する
+# !*
+# !*/
+!/.gitignore
+!/share/fcitx5

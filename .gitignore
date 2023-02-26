@@ -1,10 +1,10 @@
-!/.gitignore
-
 # gitで管理しない
 *
 */
 
 # gitで管理する
+!/.gitignore
+
 # directory
 !/.emacs.d
 !/.config
