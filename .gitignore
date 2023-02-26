@@ -1,49 +1,21 @@
+!/.gitignore
+
 # gitで管理しない
-# .*~
-# *~
-# /.emacs.d/*
-# /.config/*
 *
 */
 
-!*/
-
-/.emacs.d/el-get
-
 # gitで管理する
-# emacs関係
-!/.emacs.d/init.el
-!/.emacs.d/.yatexrc
-!/.emacs.d/conf/*
-!/.emacs.d/elisp/*
-!/.emacs.d/public_repos/*
-!/.emacs.d/script/*
-!/.emacs.d/snippets/*
-!/.emacs.d/ddskk/init
-# .config
-!/.config/alacritty/*
-/.config/alacritty/alacritty_local.yml
-!/.config/brave-flags.conf
-!/.config/fbtermrc
-!/.config/fcitx
-!/.config/fcitx5
-!/.config/gtk-3.0/*
-!/.config/libskk/*
-!/.config/mimeapps.list
-!/.config/mpv/*
-!/.config/qutebrowser/config.py
-!/.config/qutebrowser/autoconfig.yml
-!/.config/termite/*
-!/.config/zathura/*
+# directory
+!/.emacs.d
+!/.config
+!/setting
+!/.xkb
+!/.local
+
 # dotfile
-!/.gitignore
 !/.Xmodmap
 !/.Xresources
 !/.bashrc
 !/.pkglist
 !/.xinitrc
 !/.zshrc
-# setting
-!/setting/*/*
-# xkb
-!/.xkb/*/*
