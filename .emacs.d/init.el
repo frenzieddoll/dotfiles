@@ -725,7 +725,7 @@
   (leaf *ForWsl
     ;; :when (eq system-type 'gnu/linux)
     :when (eq system-type 'gnu/linux)
-    :when (string= (system-name) "sx12_toshiaki")
+    :when (string= (system-name) "sx12toshiaki")
     :bind (("s-f" . windmove-right)
            ("s-b" . windmove-left)
            ("s-a" . zoom-window-zoom)
