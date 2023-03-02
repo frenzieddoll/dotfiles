@@ -236,7 +236,7 @@
     :config
     (set-face-attribute 'default nil
                         :family "HackGen"
-                        :height 110)
+                        :height 140)
     (set-fontset-font t 'japanese-jisx0208 (font-spec :family "HackGen")))
   (leaf *forSX12_wsl
     :when (eq system-type 'gnu/linux)
@@ -1019,6 +1019,14 @@
     :url "https://github.com/abo-abo/ace-link"
     :added "2022-04-30"
     :ensure t)
+  (leaf addressbar
+    :el-get (addressbar
+             :type github
+             :pkgname "lurdan/emacs-addressbar")
+    :custom `((addressbar-persistent-history-directory . "~/.emacs.d/.cache/")
+              (addressbar-ignore-url-regexp . "\\(://duckduckgo\\.com/\\|google\\.com/search\\)")
+              (addressbar-search-command-alist . '("g" . "https://google.com/search?&gws_rd=cr&complete=0&pws=0&tbs=li:1&q="))
+              (addressbar-display-url-max-length . 60)))
 
   :advice
   (:around shr-colorize-region shr-colorize-region--disable)
@@ -1158,15 +1166,6 @@
          (pdf-view-mode-hook . pdf-links-minor-mode)
          (pdf-view-mode-hook . pdf-isearch-minor-mode)))
 
-;; (leaf pulseaudio-control
-;;   :doc "Use `pactl' to manage PulseAudio volumes."
-;;   :tag "pulseaudio" "sound" "hardware" "multimedia"
-;;   :url "https://github.com/flexibeast/pulseaudio-control"
-;;   :added "2021-10-11"
-;;   :ensure t
-;;   :config
-;;   (pulseaudio-control-default-keybindings))
-
 (leaf shackle
   :doc "Enforce rules for popups"
   :req "emacs-24.3" "cl-lib-0.5"
@@ -1187,14 +1186,14 @@
             (shackle-lighter . ""))
   :bind (("C-z" . winner-undo)))
 
-(leaf twittering-mode
-  :doc "Major mode for Twitter"
-  :tag "web" "twitter"
-  :url "http://twmode.sf.net/"
-  :added "2021-09-05"
-  :ensure t
-  :custom ((twittering-allow-insecure-server-cert . t)
-           (twittering-use-master-password . t)))
+;; (leaf twittering-mode
+;;   :doc "Major mode for Twitter"
+;;   :tag "web" "twitter"
+;;   :url "http://twmode.sf.net/"
+;;   :added "2021-09-05"
+;;   :ensure t
+;;   :custom ((twittering-allow-insecure-server-cert . t)
+;;            (twittering-use-master-password . t)))
 
 (leaf view
   :doc "peruse file or buffer without editing"
@@ -1559,37 +1558,38 @@
          (minibuffer-local-map
           ("C-j" . skk-kakutei)
           ("C-l" . skk-latin-mode)))
-  :custom `((skk-user-directory . "~/.emacs.d/ddskk")
-            (skk-initial-search-jisyo . "~/.emacs.d/ddskk/jisyo")
-            (skk-large-jisyo . "~/.emacs.d/skk-get-jisyo/SKK-JISYO.L")
-            (skk-egg-like-newline . t)
-            (skk-delete-implies-kakutei . t)
+  :custom `((skk-user-directory                 . "~/.emacs.d/ddskk")
+            (skk-initial-search-jisyo           . "~/.emacs.d/ddskk/jisyo")
+            (skk-large-jisyo                    . "~/.emacs.d/skk-get-jisyo/SKK-JISYO.L")
+            (skk-egg-like-newline               . t)
+            (skk-delete-implies-kakutei         . t)
             (skk-henkan-strict-okuri-precedence . t)
-            (skk-isearch-start-mode . 'latin)
-            (skk-search-katakana . t))
-  :init (setq skk-user-directory "~/.emacs.d/ddskk")
-  :config
-  (setq skk-rom-kana-rule-list
-        (append skk-rom-kana-rule-list
-                '(("ll" nil "っ")
-                  ("xn" nil "ん")
-                  ("xx" nil "っ")
-                  ("z," nil ",")
-                  ("z." nil ".")
-                  ("z[" nil "[")
-                  ("z]" nil "]")
-                  ("z-" nil "-")
-                  ("!" nil "!")
-                  ("." nil "。")
-                  ("," nil "、")
-                  (":" nil ":")
-                  (";" nil ";")
-                  ("?" nil "?")
-                  ("la" nil "ぁ" )
-                  ("li" nil "ぃ" )
-                  ("lu" nil "ぅ" )
-                  ("le" nil "ぇ" )
-                  ("lo" nil "ぉ" ))))
+            (skk-isearch-start-mode             . 'latin)
+            (skk-search-katakana                . t))
+  :init
+  (setq skk-user-directory "~/.emacs.d/ddskk")
+  ;; :config
+  ;; (setq skk-rom-kana-rule-list
+  ;;       (append skk-rom-kana-rule-list
+  ;;               '(("ll" nil "っ")
+  ;;                 ("xn" nil "ん")
+  ;;                 ("xx" nil "っ")
+  ;;                 ("z," nil ",")
+  ;;                 ("z." nil ".")
+  ;;                 ("z[" nil "[")
+  ;;                 ("z]" nil "]")
+  ;;                 ("z-" nil "-")
+  ;;                 ("!" nil "!")
+  ;;                 ("." nil "。")
+  ;;                 ("," nil "、")
+  ;;                 (":" nil ":")
+  ;;                 (";" nil ";")
+  ;;                 ("?" nil "?")
+  ;;                 ("la" nil "ぁ" )
+  ;;                 ("li" nil "ぃ" )
+  ;;                 ("lu" nil "ぅ" )
+  ;;                 ("le" nil "ぇ" )
+  ;;                 ("lo" nil "ぉ" ))))
   :preface
   (defun skk-hiragana-set nil
     (interactive)
@@ -1771,8 +1771,8 @@
   `((recentf-save-file . "~/.emacs.d/recentf")
     (recentf-max-saved-items . 500)
     (recentf-auto-cleanup . 'mode)
-    (recnetf-exclude . '(".recentf"
-                         ))))
+    (recnetf-exclude . '(".recentf")))
+  )
 
 (leaf smartparens
   :doc "Automatic insertion, wrapping and paredit-like navigation with user defined pairs."
