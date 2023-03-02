@@ -1,0 +1,14 @@
+# gitで管理しない
+*
+*/
+
+# gitで管理する
+# directory
+!/elisp/*.el
+!/script/
+!/snippets/
+
+!/.gitignore
+!/init.el
+!/.yatexrc
+!/ddskk/init
