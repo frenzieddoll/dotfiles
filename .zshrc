@@ -1,7 +1,10 @@
 # Created by newuser for 5.6.2
 
-autoload -Uz compinit
-compinit
+# autoload -Uz compinit
+# compinit
+
+autoload -U promptinit; promptinit
+prompt pure
 
 # plugins
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
@@ -23,10 +26,6 @@ bindkey -e
 
 # cdコマンドの省略
 setopt auto_cd
-
-# コマンドミスを修正
-setopt correct
-
 
 # ヒストリの設定
 HISTFILE=~/.zsh_history
@@ -70,13 +69,6 @@ alias startx='startx -- -dpi 138'
 # alias runhaskell="stack runghc"
 alias pacmanlist="pacman -Qqe > ~/projects/dotfiles/.pkglist"
 
-case $(uname -n) in
-    "ArchLinuxonLaptopPC" ) alias startx='startx' ;;
-    "archlinuxhonda" ) alias startx='startx -- -dpi 138' ;;
-    # "sx12toshiaki" ) xkbcomp -I$HOME/.xkb/ ~/.xkb/keymap/sx12 $DISPLAY $2>1 /dev/null;;
-esac
-
-
 # グローバルエイリアス
 alias -g L='| less'
 alias -g G='| grep'
@@ -88,8 +80,51 @@ alias -s avi=mpv
 alias -s wav=mpv
 alias -s exe=wine
 
-autoload -U promptinit; promptinit
-prompt pure
+
+case $(uname -n) in
+    "ArchLinuxonLaptopPC" ) alias startx='startx' ;;
+    "archlinuxhonda" ) alias startx='startx -- -dpi 138' ;;
+    "sx12toshiaki" )
+        function open() {
+            if [ $# != 1 ]; then
+                explorer.exe .
+            else
+                if [ -e $1 ]; then
+                    cmd.exe /c start $(wslpath -w $1) 2> /dev/null
+                else
+                    echo "open: $1 : No such file or directory"
+                fi
+            fi}
+
+        # PS1='[\u@\h \W]\$ '
+        setxkbmap -layout us > /dev/null 2>&1
+        setxkbmap -option ctrl:swap_rwin_rctl > /dev/null 2>&1
+        export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0;;
+esac
+
+
+
+# settings for wsl
+# case $(uname -n) in
+#     sx12toshiaki)
+#     function open() {
+#     if [ $# != 1 ]; then
+#         explorer.exe .
+#     else
+#         if [ -e $1 ]; then
+#             cmd.exe /c start $(wslpath -w $1) 2> /dev/null
+#         else
+#             echo "open: $1 : No such file or directory"
+#         fi
+#     fi
+#     }
+
+#     PS1='[\u@\h \W]\$ '
+#     setxkbmap -layout us > /dev/null 2>&1
+#     setxkbmap -option ctrl:swap_rwin_rctl > /dev/null 2>&1
+#     export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0;;
+# esac
+
 
 # autoload -Uz promptinit
 # promptinit
