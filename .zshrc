@@ -48,11 +48,8 @@ export PATH="$HOME/.emacs.d/script:$PATH"
 export PATH="$HOME/.ghcup/bin:$PATH"
 export PATH="$HOME/.cabal/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
-# export PATH="$HOME/.ghcup/ghc/8.10.7/bin/:$PATH"
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/home/toshiaki/.local/lib"
 export QT_QPA_PLATFORMTHEME="qt5ct"
-
-# export PATH="/Library/Frameworks/Python.framework/Versions/3.7/bin/:$PATH"
 
 # 言語を英語にする
 export LANG=en_US.utf-8
@@ -62,11 +59,6 @@ alias la='ls -a'
 alias ll='ls -lh'
 alias rm='rm -i'
 alias cp='cp -p'
-alias startx='startx -- -dpi 138'
-# alias ghc="stack ghc"
-# alias ghci="stack ghci"
-# alias runghc="stack runghc"
-# alias runhaskell="stack runghc"
 alias pacmanlist="pacman -Qqe > ~/projects/dotfiles/.pkglist"
 
 # グローバルエイリアス
@@ -79,7 +71,6 @@ alias -s mp4=mpv
 alias -s avi=mpv
 alias -s wav=mpv
 alias -s exe=wine
-
 
 case $(uname -n) in
     "ArchLinuxonLaptopPC" ) alias startx='startx' ;;
@@ -101,52 +92,3 @@ case $(uname -n) in
         setxkbmap -option ctrl:swap_rwin_rctl > /dev/null 2>&1
         export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0;;
 esac
-
-
-
-# settings for wsl
-# case $(uname -n) in
-#     sx12toshiaki)
-#     function open() {
-#     if [ $# != 1 ]; then
-#         explorer.exe .
-#     else
-#         if [ -e $1 ]; then
-#             cmd.exe /c start $(wslpath -w $1) 2> /dev/null
-#         else
-#             echo "open: $1 : No such file or directory"
-#         fi
-#     fi
-#     }
-
-#     PS1='[\u@\h \W]\$ '
-#     setxkbmap -layout us > /dev/null 2>&1
-#     setxkbmap -option ctrl:swap_rwin_rctl > /dev/null 2>&1
-#     export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0;;
-# esac
-
-
-# autoload -Uz promptinit
-# promptinit
-
-# # This will set the default prompt to the walters theme
-# prompt walters
-# # PS1="%{$fg[cyan]%}[${USER}@${HOST%%.*} %1~]%(!.#.$)${reset_color} "
-# PROMPT="%{$fg[cyan]%}[@%m]%(!.#.$)${reset_color}"
-# RPROMPT="%~"
-
-# function mm() {
-#     mpv --no-video --ytdl-format=bestaudio ytdl://ytsearch10:"$@"
-#     }
-
-# case $TERM in
-#   linux)
-#       LANG=C;;
-#   *)
-#       LANG=ja_JP.UTF-8 ;;
-# esac
-
-# case $TERM in
-#     linux) LANG=C ;;
-#     *) LANG=ja_JP.UTF-8 ;;
-# esac
