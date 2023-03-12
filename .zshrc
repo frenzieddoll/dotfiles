@@ -72,9 +72,10 @@ alias -s avi=mpv
 alias -s wav=mpv
 alias -s exe=wine
 
+# stable diffusion
+alias drun='docker run -it --network=host --device=/dev/kfd --device=/dev/dri --group-add=video --ipc=host --cap-add=SYS_PTRACE --security-opt seccomp=unconfined -v $(pwd):/pwd'
+
 case $(uname -n) in
-    "ArchLinuxonLaptopPC" ) alias startx='startx' ;;
-    "archlinuxhonda" ) alias startx='startx -- -dpi 138' ;;
     "sx12toshiaki" )
         function open() {
             if [ $# != 1 ]; then
@@ -92,3 +93,19 @@ case $(uname -n) in
         setxkbmap -option ctrl:swap_rwin_rctl > /dev/null 2>&1
         export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0;;
 esac
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/usr/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/usr/etc/profile.d/conda.sh" ]; then
+        . "/usr/etc/profile.d/conda.sh"
+    else
+        export PATH="/usr/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+

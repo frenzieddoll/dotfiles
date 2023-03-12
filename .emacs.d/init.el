@@ -203,6 +203,7 @@
             ;; byte-compileのエラーを無視する
             (debug-on-error . nil)
             (byte-compile-no-warnings . t)
+            (byte-compile-warnings . '(not cl-functions obsolete))
             ;; キルリングの設定
             (kill-ring-max                . 10000)
             (kill-read-only-ok            . t)
@@ -1166,25 +1167,25 @@
          (pdf-view-mode-hook . pdf-links-minor-mode)
          (pdf-view-mode-hook . pdf-isearch-minor-mode)))
 
-(leaf shackle
-  :doc "Enforce rules for popups"
-  :req "emacs-24.3" "cl-lib-0.5"
-  :tag "convenience" "emacs>=24.3"
-  :url "https://depp.brause.cc/shackle"
-  :added "2021-09-05"
-  :emacs>= 24.3
-  :ensure t
-  :unless (string-match "RaspberryPi" (system-name))
-  :custom `((shackle-rules . '((compilation-mode :align below :ratio 0.2)
-                               ("*Google Translate*" :align right :ratio 0.3)
-                               ("*Help*" :align right)
-                               ("*online-judge*" :align below :ratio 0.5)
-                               ("*haskell-compilation*" :align below :ratio 0.5)
-                               ))
-            (shackle-mode . 1)
-            (winner-mode . 1)
-            (shackle-lighter . ""))
-  :bind (("C-z" . winner-undo)))
+;; (leaf shackle
+;;   :doc "Enforce rules for popups"
+;;   :req "emacs-24.3" "cl-lib-0.5"
+;;   :tag "convenience" "emacs>=24.3"
+;;   :url "https://depp.brause.cc/shackle"
+;;   :added "2021-09-05"
+;;   :emacs>= 24.3
+;;   :ensure t
+;;   :unless (string-match "RaspberryPi" (system-name))
+;;   :custom `((shackle-rules . '((compilation-mode :align below :ratio 0.2)
+;;                                ("*Google Translate*" :align right :ratio 0.3)
+;;                                ("*Help*" :align right)
+;;                                ("*online-judge*" :align below :ratio 0.5)
+;;                                ("*haskell-compilation*" :align below :ratio 0.5)
+;;                                ))
+;;             (shackle-mode . 1)
+;;             (winner-mode . 1)
+;;             (shackle-lighter . ""))
+;;   :bind (("C-z" . winner-undo)))
 
 ;; (leaf twittering-mode
 ;;   :doc "Major mode for Twitter"
@@ -2090,6 +2091,7 @@
     :added "2022-11-26"
     :emacs>= 27.1
     :ensure t
+    :when (eq window-system 'x)
     :pre-setq (kind-icon-defalut-face . 'corfu-default)
     :config
     (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter)))
@@ -2125,7 +2127,14 @@
          (:vterm-mode-map
           ("C-m" . vterm-send-return)
           ("C-h" . vterm-send-backspace)
-          ("C-y" . vterm-yank))))
+          ("C-y" . vterm-yank)
+          ("C-c C-v" . my/vterm-new-buffer-in-current-windows)))
+  :preface
+  (defun my/vterm-new-buffer-in-current-windows()
+    (interactive)
+    (let ((display-buffer-alist nil)
+          (vterm))))
+  )
 
 (leaf which-key
   :doc "Display available keybindings in popup"
@@ -2193,6 +2202,11 @@
 
 
 ;; プログラミング設定
+(leaf *clang
+  :bind (cc-mode-map
+         ("C-c c" . compile))
+  )
+
 (leaf eglot
   :doc "The Emacs Client for LSP servers"
   :req "emacs-26.3" "jsonrpc-1.0.14" "flymake-1.2.1" "project-0.3.0" "xref-1.0.1" "eldoc-1.11.0" "seq-2.23"

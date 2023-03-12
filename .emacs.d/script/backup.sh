@@ -2,9 +2,10 @@
 
 cat <<EOF > exclude-file
 Downloads
-Documents/programing
+Documents
 lost+found
 SteamLibrary
+.Trash-1000
 EOF
 
 BASEDIR="/mnt/HDDforBackup/" #バックアップ先の親ディレクトリ
