@@ -2123,17 +2123,23 @@
   :custom ((vterm-max-scrollback . 10000)
            (vterm-buffer-name-string . "vterm: %s")
            )
-  :bind (("C-c v" . vterm)
+  :bind (("C-c v" . multi-vterm)
+         ("s-v"   . multi-vterm)
          (:vterm-mode-map
           ("C-m" . vterm-send-return)
           ("C-h" . vterm-send-backspace)
           ("C-y" . vterm-yank)
-          ("C-c C-v" . my/vterm-new-buffer-in-current-windows)))
-  :preface
-  (defun my/vterm-new-buffer-in-current-windows()
-    (interactive)
-    (let ((display-buffer-alist nil)
-          (vterm))))
+          ))
+  :config
+  (leaf multi-vterm
+    :doc "Like multi-term.el but for vterm"
+    :req "emacs-26.3" "vterm-0.0" "project-0.3.0"
+    :tag "processes" "terminals" "emacs>=26.3"
+    :url "https://github.com/suonlight/multi-libvterm"
+    :added "2023-03-12"
+    :emacs>= 26.3
+    :ensure t
+    :after vterm project)
   )
 
 (leaf which-key
