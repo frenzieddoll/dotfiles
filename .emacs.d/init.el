@@ -1153,6 +1153,17 @@
     (eldoc-add-command-completions
      "org-table-next-" "org-table-previous" "org-cycle")))
 
+(leaf paradox
+  :doc "A modern Packages Menu. Colored, with package ratings, and customizable."
+  :req "emacs-24.4" "seq-1.7" "let-alist-1.0.3" "spinner-1.7.3" "hydra-0.13.2"
+  :tag "packages" "package" "emacs>=24.4"
+  :url "https://github.com/Malabarba/paradox"
+  :added "2023-03-18"
+  :emacs>= 24.4
+  :ensure t
+  :after spinner hydra
+  :config (paradox-enable))
+
 (leaf pdf-tools
   :doc "Support library for PDF documents"
   :req "emacs-24.3" "tablist-1.0" "let-alist-1.0.4"
@@ -2413,7 +2424,7 @@
   :ensure t
   :mode (("\\.rs\\'" . rust-mode))
   :hook ((rustic-mode-hook . smartparens-mode))
-  :custom ((rustic-format-trigger . 'on-save))
+  ;; :custom ((rustic-format-trigger . 'on-save))
   :bind ((rustic-mode-map
           ("M-j" . lsp-ui-imenu)
           ("M-?" . lsp-find-references)

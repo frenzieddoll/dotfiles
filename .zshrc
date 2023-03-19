@@ -76,6 +76,8 @@ alias -s exe=wine
 alias drun='docker run -it --network=host --device=/dev/kfd --device=/dev/dri --group-add=video --ipc=host --cap-add=SYS_PTRACE --security-opt seccomp=unconfined -v $(pwd):/pwd'
 
 case $(uname -n) in
+    "ArchLinuxonLaptopPC" ) alias startx='startx' ;;
+    "archlinuxhonda" ) alias startx='startx -- -dpi 138' ;;
     "sx12toshiaki" )
         function open() {
             if [ $# != 1 ]; then
@@ -101,4 +103,11 @@ if [[ "$INSIDE_EMACS" = 'vterm' ]] \
     source ${EMACS_VTERM_PATH}/etc/emacs-vterm-zsh.sh
     # Initialize TITLE
     print -Pn "\e]2;%m:%2~\a"
+fi
+
+# private ファイルの読み込み
+if [ -e $HOME/private/API/api.sh ]; then
+    while read line; do
+        eval $line
+    done < $HOME/private/API/api.sh
 fi
