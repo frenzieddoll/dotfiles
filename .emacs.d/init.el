@@ -1870,8 +1870,10 @@
           ("?" . minibuffer-complition-help)
           ("M-RET" . minibuffer-force-complete-and-exit)
           ("M-TAB" . minibuffer-complete)
-          ("C-," . up-to-dir)))
-  :custom ((vertico-count . 15))
+          ("C-," . up-to-dir)
+          ("<mouse-3>" . vertico-exit)))
+  :custom ((vertico-count . 15)
+           (vertico-mouse-mode . t))
   :global-minor-mode t
   :preface
   (defun up-to-dir ()
@@ -2536,6 +2538,9 @@
                                           (,(kbd "s-o")     . consult-buffer)
                                           (,(kbd "M-!")     . shell-command)
                                           (,(kbd "s-S")     . window-capcher)
+                                          (,(kbd "<mouse-10>")   . pulseaudio-increase-sink-volume)
+                                          (,(kbd "<mouse-11>")   . pulseaudio-decrease-sink-volume)
+                                          (,(kbd "<mouse-12>")   . app-launcher-run-app)
                                           ))
               (exwm-input-simulation-keys . '(;; new version
                                               (,(kbd "C-b")           . [left])
@@ -2586,8 +2591,6 @@
                                               ;;
                                               (,(kbd "C-x C-s")       . [C-s])
                                               (,(kbd "C-u C-/")       . [C-y])
-                                              (,(kbd "<mouse-11>")    . [right])
-                                              (,(kbd "<mouse-12>")    . [left])
                                               ;; (,(kbd "C-j")           .,(kbd "C-<"))
                                               ;; (,(kbd "C-l")           .,(kbd "C->"))
                                               (,(kbd "C-c C-c")       . ,(kbd "C-c"))
