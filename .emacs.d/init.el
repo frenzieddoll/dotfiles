@@ -902,6 +902,19 @@
 
 
 ;; メジャーモードの設定
+(leaf *chatGPT
+  :preface
+  (defun chatGPT ()
+    (interactive)
+    (with-current-buffer (eshell 'new)
+      (rename-buffer "chatGPT")
+      (goto-char (point-max))
+      (eshell-kill-input)
+      (insert "chatGPT.py")
+      (eshell-send-input)))
+  :bind (("C-c C-g" . chatGPT))
+  )
+
 (leaf csv
   :doc "Functions for reading and parsing CSV files."
   :tag "csv" "data" "extensions"

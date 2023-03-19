@@ -76,8 +76,6 @@ alias -s exe=wine
 alias drun='docker run -it --network=host --device=/dev/kfd --device=/dev/dri --group-add=video --ipc=host --cap-add=SYS_PTRACE --security-opt seccomp=unconfined -v $(pwd):/pwd'
 
 case $(uname -n) in
-    "ArchLinuxonLaptopPC" ) alias startx='startx' ;;
-    "archlinuxhonda" ) alias startx='startx -- -dpi 138' ;;
     "sx12toshiaki" )
         function open() {
             if [ $# != 1 ]; then

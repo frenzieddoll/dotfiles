@@ -1,5 +1,5 @@
 # gitで管理しない
-*
+/*
 */
 
 # gitで管理する
@@ -11,11 +11,12 @@
 !/setting
 !/.xkb
 !/.local
+!/home
 
 # dotfile
-!/.Xmodmap
-!/.Xresources
-!/.bashrc
-!/.pkglist
-!/.xinitrc
-!/.zshrc
+# !/.Xmodmap
+# !/.Xresources
+# !/.bashrc
+# !/.pkglist
+# !/.xinitrc
+# !/.zshrc

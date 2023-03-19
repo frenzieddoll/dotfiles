@@ -1,0 +1,4 @@
+gtk-icon-theme-name = Breeze
+gtk-theme-name = Breeze
+gtk-font-name = HackGen 11
+gtk-application-prefer-dark-theme = truegtk-modules=appmenu-gtk-modulegtk-modules=appmenu-gtk-modulegtk-modules=appmenu-gtk-module
