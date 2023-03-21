@@ -1174,7 +1174,7 @@
   :added "2023-03-18"
   :emacs>= 24.4
   :ensure t
-  :after spinner hydra
+  :require t
   :config (paradox-enable))
 
 (leaf pdf-tools
