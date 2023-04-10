@@ -1220,6 +1220,27 @@
 ;;   :custom ((twittering-allow-insecure-server-cert . t)
 ;;            (twittering-use-master-password . t)))
 
+(leaf treemacs
+  :doc "A tree style file explorer package"
+  :req "emacs-26.1" "cl-lib-0.5" "dash-2.11.0" "s-1.12.0" "ace-window-0.9.0" "pfuture-1.7" "hydra-0.13.2" "ht-2.2" "cfrs-1.3.2"
+  :tag "emacs>=26.1"
+  :url "https://github.com/Alexander-Miller/treemacs"
+  :added "2023-04-09"
+  :emacs>= 26.1
+  :ensure t
+  :custom ((treemacs-load-theme . "all-the-icons"))
+  :config
+  (leaf treemacs-all-the-icons
+    :doc "all-the-icons integration for treemacs"
+    :req "emacs-26.1" "all-the-icons-4.0.1" "treemacs-0.0"
+    :tag "emacs>=26.1"
+    :url "https://github.com/Alexander-Miller/treemacs"
+    :added "2023-04-09"
+    :emacs>= 26.1
+    :ensure t
+    :after all-the-icons treemacs)
+)
+
 (leaf view
   :doc "peruse file or buffer without editing"
   :tag "builtin"
@@ -2364,8 +2385,9 @@
     :url "https://github.com/emacs-lsp/lsp-treemacs"
     :added "2021-12-21"
     :emacs>= 26.1
-    :disabled t
-    :ensure t)
+    ;; :disabled t
+    :ensure t
+    :custom ((lsp-treemacs-sync-mode . 1)))
   (leaf consult-lsp
     :doc "LSP-mode Consult integration"
     :req "emacs-27.1" "lsp-mode-5.0" "consult-0.9" "f-0.20.0"
@@ -2390,19 +2412,20 @@
     :tag "emacs>=24"
     :added "2022-05-29"
     :emacs>= 24
-    :ensure t)
-  (leaf lsp-jedi
-    :doc "Lsp client plugin for Python Jedi Language Server"
-    :req "emacs-25.1" "lsp-mode-6.0"
-    :tag "ide" "jedi" "python" "tools" "language-server" "emacs>=25.1"
-    :url "http://github.com/fredcamps/lsp-jedi"
-    :added "2021-09-18"
-    :emacs>= 25.1
-    :ensure t
     :when (file-exists-p "/usr/bin/jedi-language-server")
-    :hook (python-mode-hook . (lambda ()
-                                (require 'lsp-jedi)
-                                (lsp)))))
+    :ensure t
+    :config
+    (leaf lsp-jedi
+      :doc "Lsp client plugin for Python Jedi Language Server"
+      :req "emacs-25.1" "lsp-mode-6.0"
+      :tag "ide" "jedi" "python" "tools" "language-server" "emacs>=25.1"
+      :url "http://github.com/fredcamps/lsp-jedi"
+      :added "2021-09-18"
+      :emacs>= 25.1
+      :ensure t
+      :hook (python-mode-hook . (lambda ()
+                                  (require 'lsp-jedi)
+                                  (lsp))))))
 
 (leaf quickrun
   :doc "Run commands quickly"
@@ -2615,10 +2638,10 @@
     (leaf exwm-randr
       :require t
       :when (string= (system-name) "archlinuxhonda")
-      :custom ((exwm-randr-workspace-monitor-plist . '(0 "DP-1" 1 "HDMI-0" 2 "HDMI-0" 3 "HDMI-0" 4 "HDMI-0" 5 "HDMI-0")))
+      :custom ((exwm-randr-workspace-monitor-plist . '(0 "DP-2" 1 "HDMI-0" 2 "HDMI-0" 3 "HDMI-0" 4 "HDMI-0" 5 "HDMI-0")))
       :hook (exwm-randr-screen-change-hook . (lambda ()
                                                 (start-process-shell-command
-                                                 "xrandr" nil "xrandr --output DP-4 --auto --output HDMI-0 --auto --right-of DP-4; xrandr --output HDMI-0 --auto --scale 1.5x1.5")))
+                                                 "xrandr" nil "xrandr --output DP-2 --auto --output HDMI-0 --auto --right-of DP-2; xrandr --output HDMI-0 --auto --scale 1.5x1.5")))
       :config
       (exwm-randr-enable))
     (leaf exwm-enable

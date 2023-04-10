@@ -75,8 +75,19 @@ alias -s exe=wine
 # stable diffusion
 alias drun='docker run -it --network=host --device=/dev/kfd --device=/dev/dri --group-add=video --ipc=host --cap-add=SYS_PTRACE --security-opt seccomp=unconfined -v $(pwd):/pwd'
 
+
+function radeonPro () {
+    export DISABLE_LAYER_AMD_SWITCHABLE_GRAPHICS_1=1
+    export VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.i686.json:/usr/share/vulkan/icd.d/radeon_icd.x86_64.json
+    export RADV_PERFTEST=rt,gpl,nv_ms # Ray Tracing等の有効化
+    export HSA_OVERRIDE_GFX_VERSION=10.3.0
+}
+
+
 case $(uname -n) in
-    "sx12toshiaki" )
+    "archlinuxhonda")
+        radeonPro;;
+    "sx12toshiaki")
         function open() {
             if [ $# != 1 ]; then
                 explorer.exe .
@@ -86,7 +97,8 @@ case $(uname -n) in
                 else
                     echo "open: $1 : No such file or directory"
                 fi
-            fi}
+            fi
+        }
 
         # PS1='[\u@\h \W]\$ '
         setxkbmap -layout us > /dev/null 2>&1
