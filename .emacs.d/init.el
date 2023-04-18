@@ -955,7 +955,17 @@
              (ebib-preload-bib-files . '("~/tex/references.bib"))
              (ebib-keywords-file     . "~/tex/ebib-keywords.txt")
              (ebib-file-search-dirs  . '("~/tex/pdfs" "~/tex/papers" "~/tex/books"))
-             )))
+             ))
+  (leaf biblio
+    :doc "Browse and import bibliographic references from CrossRef, arXiv, DBLP, HAL, Dissemin, and doi.org"
+    :req "emacs-24.3" "biblio-core-0.2"
+    :tag "hypermedia" "convenience" "tex" "bib" "emacs>=24.3"
+    :url "https://github.com/cpitclaudel/biblio.el"
+    :added "2023-04-18"
+    :emacs>= 24.3
+    :ensure t
+    :after biblio-core)
+  )
 
 (leaf ediff
   :doc "a comprehensive visual interface to diff & patch"
@@ -1535,8 +1545,8 @@
              (reftex-bibliography-commands . '("bibliography" "nobibliography" "addbibresorce")))
 
     :bind ((YaTeX-mode-map
-            (">" . YaTeX-comment-region)
-            ("<" . YaTeX-uncomment-region)))))
+            ("C-c >" . YaTeX-comment-region)
+            ("C-c <" . YaTeX-uncomment-region)))))
 
 
 ;; マイナーモードの設定
