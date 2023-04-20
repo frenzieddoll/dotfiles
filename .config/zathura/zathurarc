@@ -24,3 +24,7 @@ map <A-\>> goto bottom
 map <A-v> scroll full-up
 
 map j set page-right-to-left true
+
+set selection-clipboard clipboard
+
+set font "HackGen 14"
