@@ -902,17 +902,29 @@
 
 
 ;; メジャーモードの設定
-(leaf *chatGPT
-  :preface
-  (defun chatGPT ()
-    (interactive)
-    (with-current-buffer (eshell 'new)
-      (rename-buffer "chatGPT")
-      (goto-char (point-max))
-      (eshell-kill-input)
-      (insert "chatGPT.py")
-      (eshell-send-input)))
-  :bind (("C-c C-g" . chatGPT))
+;; (leaf *chatGPT
+;;   :preface
+;;   (defun chatGPT ()
+;;     (interactive)
+;;     (with-current-buffer (eshell 'new)
+;;       (rename-buffer "chatGPT")
+;;       (goto-char (point-max))
+;;       (eshell-kill-input)
+;;       (insert "chatGPT.py")
+;;       (eshell-send-input)))
+;;   :bind (("C-c C-g" . chatGPT))
+;;   )
+
+(leaf chatgpt-shell
+  :doc "Interaction mode for ChatGPT"
+  :req "emacs-27.1" "shell-maker-0.17.1"
+  :tag "emacs>=27.1"
+  :url "https://github.com/xenodium/chatgpt-shell"
+  :added "2023-04-28"
+  :emacs>= 27.1
+  :ensure t
+  :custom
+  `(chatgpt-shell-openai-key . ,(auth-source-pick-first-password :host "api.openai.com"))
   )
 
 (leaf csv
@@ -1772,9 +1784,11 @@
            (calendar-day-name-array array   . ["日" "月" "火" "水" "木" "金" "土"])
            (calendar-month-header . '(propertize
                                       (format "%d年 %s月" year month)
-                                      'font-lock-face 'calendar-month-header)))
-  :config
-  (setq calendar-holidays (append japanese-holidays holiday-local-holidays holiday-other-holidays))
+                                      'font-lock-face 'calendar-month-header))
+           `(calendar-holidays . ,(append japanese-holidays holiday-local-holidays holiday-other-holidays))
+           )
+  ;; :config
+  ;; (setq calendar-holidays (append japanese-holidays holiday-local-holidays holiday-other-holidays))
   )
 
 (leaf online-judge
@@ -2279,9 +2293,12 @@
   :emacs>= 26.3
   :ensure t
   :disabled t
-  :config
-  (setq read-process-output-max (* 1024 1024))
-  (setq completion-category-overrides '((eglot (styles orderless))))
+  :custom `((read-process-output-max . ,(* 1024 1024))
+            (completion-category-overrides . '((eglot (styles orderless))))
+            )
+  ;; :config
+  ;; (setq read-process-output-max (* 1024 1024))
+  ;; (setq completion-category-overrides '((eglot (styles orderless))))
   )
 
 (leaf flycheck
