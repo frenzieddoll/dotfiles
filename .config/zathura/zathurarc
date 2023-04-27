@@ -28,3 +28,31 @@ map j set page-right-to-left true
 set selection-clipboard clipboard
 
 set font "HackGen 14"
+
+# ページの色設定
+set default-fg              "#D8DEE9"
+set default-bg              "#2E3440"
+set recolor true #  デフォルトでドキュメントの色を変更する
+set recolor-darkcolor       "#D8DEE9"
+# set recolor-lightcolor      "#4C566A"
+set recolor-lightcolor      "#2E3440"
+set highlight-color         "#84a0c6"
+set highlight-active-color  "#a093c7"
+
+#  UIの色設定
+set inputbar-fg             "#bcc0d1"
+set inputbar-bg             "#2E3440"
+set notification-fg         "#bcc0d1"
+set notification-bg         "#353a50"
+set notification-error-fg   "#e27878"
+set notification-error-fg   "#161821"
+set notification-warning-fg "#e2a478"
+set notification-warning-fg "#161821"
+set statusbar-fg            "#88C0D0"
+set statusbar-bg            "#2E3440"
+set completion-fg           "#bcc0d1"
+set completion-bg           "#161821"
+set completion-highlight-fg "#161821"
+set completion-highlight-bg "#84a0c6"
+set completion-group-fg     "#bcc0d1"
+set completion-group-bg     "#353a50"
