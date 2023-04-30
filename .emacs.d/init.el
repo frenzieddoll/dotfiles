@@ -925,6 +925,7 @@
   :ensure t
   :custom
   `(chatgpt-shell-openai-key . ,(auth-source-pick-first-password :host "api.openai.com"))
+  :bind ("C-c g" . chatgpt-shell)
   )
 
 (leaf csv
