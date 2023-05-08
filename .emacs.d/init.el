@@ -1470,28 +1470,25 @@
   :added "2021-09-05"
   :ensure t
   :hook ((yatex-mode-hook . (lambda () (auto-fill-mode -1)))
-         (yatex-mode-hook . reftex-mode))
+         (yatex-mode-hook . reftex-mode)
+         (latex-mode-hook . (lambda () (yatex-mode)))
+         )
   ;; :bind (("C-c C-z" . ebib))
-  :mode (("\\.tex\\'" . yatex-mode)
-         ("\\.ltx\\'"     . yatex-mode)
-         ("\\.cls\\'"     . yatex-mode)
-         ("\\.sty\\'"     . yatex-mode)
-         ("\\.clo\\'"     . yatex-mode)
-         ("\\.bbl\\'"     . yatex-mode))
-  :custom `((YaTeX-inhibit-prefix-letter  .   t)
-            (YaTeX-kanji-code                 .   4)
-            (YaTeX-latex-message-code         .   'utf-8)
-            (YaTeX-use-LaTeX2e            .   t)
-            (YaTeX-use-AMS-LaTeX          .   t)
-            (YaTeX-dvi2-command-ext-alist .   '(("TeXworks\\|texworks\\|texstudio\\|mupdf\\|SumatraPDF\\|Preview\\|Skim\\|TeXShop\\|evince\\|atril\\|xreader\\|okular\\|zathura\\|qpdfview\\|Firefox\\|firefox\\|chrome\\|chromium\\|MicrosoftEdge\\|microsoft-edge\\|Adobe\\|Acrobat\\|AcroRd32\\|acroread\\|pdfopen\\|xdg-open\\|open\\|start" . ".pdf")))
-            (tex-command                  .   "uplatex -synctex=1")
+  :mode (("\\ .tex\\'" "\\ .ltx\\'" "\\ .cls\\'" "\\ .sty\\'" "\\ .clo\\'" "\\ .bbl\\'") . yatex-mode)
+  :custom `((YaTeX-inhibit-prefix-letter  . t)
+            (YaTeX-kanji-code             . 4)
+            (YaTeX-latex-message-code     . 'utf-8)
+            (YaTeX-use-LaTeX2e            . t)
+            (YaTeX-use-AMS-LaTeX          . t)
+            (YaTeX-dvi2-command-ext-alist . '(("TeXworks\\|texworks\\|texstudio\\|mupdf\\|SumatraPDF\\|Preview\\|Skim\\|TeXShop\\|evince\\|atril\\|xreader\\|okular\\|zathura\\|qpdfview\\|Firefox\\|firefox\\|chrome\\|chromium\\|MicrosoftEdge\\|microsoft-edge\\|Adobe\\|Acrobat\\|AcroRd32\\|acroread\\|pdfopen\\|xdg-open\\|open\\|start" . ".pdf")))
+            (tex-command                  . "lualatex -synctex=1")
             ;; (tex-command  . "ptex2pdf -u -l -ot '-synctex=1 -file-line-error'")
             ;; (tex-command  . "ptex2pdf -l -ot '-synctex=1")
-            (bibtex-command               .   "upbibtex")
+            (bibtex-command               . "upbibtex")
             ;; (makeindex-command  . "mendex")
-            (dviprint-command-format      .   "open -a \"Adobe Acrobat Reader DC\" `echo %s | gsed -e \"s/\\.[^.]*$/\\.pdf/\"`")
-            (YaTeX-nervous                .   nil)
-            (YaTeX-close-paren-always         .   nil))
+            (dviprint-command-format      . "open -a \"Adobe Acrobat Reader DC\" `echo %s | gsed -e \"s/\\.[^.]*$/\\.pdf/\"`")
+            (YaTeX-nervous                . nil)
+            (YaTeX-close-paren-always     . nil))
   :config
   (leaf *yatexForLinux
     :when (eq system-type 'gnu/linux)
@@ -1567,6 +1564,16 @@
   :doc "align text to a specific column, by regexp"
   :tag "builtin"
   :added "2021-09-05")
+
+(leaf app-launcher
+  :doc "Launch applications from Emacs"
+  :req "emacs-27.1"
+  :tag "out-of-MELPA" "emacs>=27.1"
+  :url "https://github.com/sebastienwae/app-launcher"
+  :added "2021-09-06"
+  :emacs>= 27.1
+  :el-get sebastienwae/app-launcher
+  :require t)
 
 (leaf calfw
   :doc "Calendar view framework on Emacs"
@@ -1919,7 +1926,8 @@
           ("C-," . up-to-dir)
           ("<mouse-3>" . vertico-exit)))
   :custom ((vertico-count . 15)
-           (vertico-mouse-mode . t))
+           (vertico-mouse-mode . t)
+           (vertico-preselect . 'prompt))
   :global-minor-mode t
   :preface
   (defun up-to-dir ()
@@ -1986,9 +1994,10 @@
     :url "https://github.com/oantolin/orderless"
     :added "2021-09-05"
     :emacs>= 26.1
+    ;; :disabled t
     :ensure t
-    :hook ((corfu-mode-hook . my/orderless-for-corfu)
-           (lsp-completion-mode-hook . my/orderless-for-lsp-mode))
+    ;; :hook ((corfu-mode-hook . my/orderless-for-corfu)
+    ;;        (lsp-completion-mode-hook . my/orderless-for-lsp-mode))
     :defvar (orderless-style-dispatchers)
     :custom ((completion-styles . '(orderless basic))
              (completion-category-defaults . nil)
@@ -2008,10 +2017,7 @@
 
     (defun my/orderless-for-lsp-mode ()
       (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-	        '(orderless)))
-    :hook
-    ((corfu-mode-hook . my/orderless-for-corfu)
-     (lsp-completion-mode-hook . my/orderless-for-lsp-mode)))
+	        '(orderless))))
   (leaf embark
     :doc "Conveniently act on minibuffer completions"
     :req "emacs-26.1"
@@ -2037,15 +2043,6 @@
     :tag "builtin"
     :added "2021-09-05"
     :global-minor-mode t)
-  (leaf app-launcher
-    :doc "Launch applications from Emacs"
-    :req "emacs-27.1"
-    :tag "out-of-MELPA" "emacs>=27.1"
-    :url "https://github.com/sebastienwae/app-launcher"
-    :added "2021-09-06"
-    :emacs>= 27.1
-    :el-get sebastienwae/app-launcher
-    :require t)
   (leaf company
     :doc "Modular text completion framework"
     :req "emacs-25.1"
@@ -2129,12 +2126,43 @@
       ;; :disabled t
       :config
       (add-to-list 'completion-at-point-functions #'cape-file)
-      (add-to-list 'completion-at-point-functions #'cape-tex)
+      ;; (add-to-list 'completion-at-point-functions #'cape-tex)
       (add-to-list 'completion-at-point-functions #'cape-dabbrev)
       (add-to-list 'completion-at-point-functions #'cape-keyword)
       (add-to-list 'completion-at-point-functions #'cape-abbrev)
-      (add-to-list 'completion-at-point-functions #'cape-ispell)
-      (add-to-list 'completion-at-point-functions #'cape-symbol)))
+      ;; (add-to-list 'completion-at-point-functions #'cape-ispell)
+      ;; (add-to-list 'completion-at-point-functions #'cape-symbol)
+      ;; (add-to-list 'completion-at-point-functions (cape-company-to-capf #'company-math) t)
+      (add-to-list 'completion-at-point-functions (cape-company-to-capf #'company-tabnine) t)
+      (leaf company-math
+        :doc "Completion backends for unicode math symbols and latex tags"
+        :req "company-0.8.0" "math-symbol-lists-1.3"
+        :tag "completion" "symbols" "unicode"
+        :url "https://github.com/vspinu/company-math"
+        :added "2023-05-09"
+        :ensure t)
+      (leaf company-tabnine
+        :doc "A company-mode backend for TabNine"
+        :req "emacs-25" "company-0.9.3" "cl-lib-0.5" "dash-2.16.0" "s-1.12.0"
+        :tag "convenience" "emacs>=25"
+        :url "https://github.com/TommyX12/company-tabnine/"
+        :added "2023-05-09"
+        :emacs>= 25
+        :ensure t)
+      )
+    (leaf kind-icon
+      :doc "Completion kind icons"
+      :req "emacs-27.1" "svg-lib-0"
+      :tag "completion" "emacs>=27.1"
+      :url "https://github.com/jdtsmith/kind-icon"
+      :added "2022-11-26"
+      :emacs>= 27.1
+      :ensure t
+      :when (eq window-system 'x)
+      :pre-setq (kind-icon-defalut-face . 'corfu-default)
+      :config
+      (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+      )
   (leaf *emacs
     :preface
     ;; Add prompt indicator to `completing-read-multiple'.
@@ -2155,18 +2183,7 @@
 
     ;; Enable recursive minibuffers
     (setq enable-recursive-minibuffers t))
-  (leaf kind-icon
-    :doc "Completion kind icons"
-    :req "emacs-27.1" "svg-lib-0"
-    :tag "completion" "emacs>=27.1"
-    :url "https://github.com/jdtsmith/kind-icon"
-    :added "2022-11-26"
-    :emacs>= 27.1
-    :ensure t
-    :when (eq window-system 'x)
-    :pre-setq (kind-icon-defalut-face . 'corfu-default)
-    :config
-    (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter)))
+  )
 
 (leaf visual-regexp-steroids
   :doc "Extends visual-regexp to support other regexp engines"
