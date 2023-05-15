@@ -1927,7 +1927,8 @@
           ("<mouse-3>" . vertico-exit)))
   :custom ((vertico-count . 15)
            (vertico-mouse-mode . t)
-           (vertico-preselect . 'prompt))
+           ;; (vertico-preselect . 'prompt)
+           )
   :global-minor-mode t
   :preface
   (defun up-to-dir ()
@@ -1996,8 +1997,8 @@
     :emacs>= 26.1
     ;; :disabled t
     :ensure t
-    ;; :hook ((corfu-mode-hook . my/orderless-for-corfu)
-    ;;        (lsp-completion-mode-hook . my/orderless-for-lsp-mode))
+    :hook ((corfu-mode-hook . my/orderless-for-corfu)
+           (lsp-completion-mode-hook . my/orderless-for-lsp-mode))
     :defvar (orderless-style-dispatchers)
     :custom ((completion-styles . '(orderless basic))
              (completion-category-defaults . nil)
@@ -2043,34 +2044,34 @@
     :tag "builtin"
     :added "2021-09-05"
     :global-minor-mode t)
-  (leaf company
-    :doc "Modular text completion framework"
-    :req "emacs-25.1"
-    :tag "matching" "convenience" "abbrev" "emacs>=25.1"
-    :url "http://company-mode.github.io/"
-    :added "2021-10-01"
-    :emacs>= 25.1
-    :ensure t
-    :disabled t
-    :bind ((company-active-map
-            ("M-n" . nil)
-            ("M-p" . nil)
-            ("C-s" . company-filter-candidates)
-            ("C-n" . company-select-next)
-            ("C-p" . company-select-previous)
-            ("<tab>" . company-complete-selection)
-            ("C-h" . nil)
-            ("C-f" . company-complete-selection))
-           (company-search-map
-            ("C-n" . company-select-next)
-            ("C-p" . company-select-previous)))
-    :custom `((company-tooltip-limit         . 12)
-              (company-idle-delay            . 0)
-              (company-minimum-prefix-length . 1)
-              (company-transformers          . '(company-sort-by-occurrence))
-              (company-dabbrev-downcase      . nil)
-              (lsp-prefer-capf . t)
-              (company-backends . '(company-capf))))
+  ;; (leaf company
+  ;;   :doc "Modular text completion framework"
+  ;;   :req "emacs-25.1"
+  ;;   :tag "matching" "convenience" "abbrev" "emacs>=25.1"
+  ;;   :url "http://company-mode.github.io/"
+  ;;   :added "2021-10-01"
+  ;;   :emacs>= 25.1
+  ;;   :ensure t
+  ;;   :disabled t
+  ;;   :bind ((company-active-map
+  ;;           ("M-n" . nil)
+  ;;           ("M-p" . nil)
+  ;;           ("C-s" . company-filter-candidates)
+  ;;           ("C-n" . company-select-next)
+  ;;           ("C-p" . company-select-previous)
+  ;;           ("<tab>" . company-complete-selection)
+  ;;           ("C-h" . nil)
+  ;;           ("C-f" . company-complete-selection))
+  ;;          (company-search-map
+  ;;           ("C-n" . company-select-next)
+  ;;           ("C-p" . company-select-previous)))
+  ;;   :custom `((company-tooltip-limit         . 12)
+  ;;             (company-idle-delay            . 0)
+  ;;             (company-minimum-prefix-length . 1)
+  ;;             (company-transformers          . '(company-sort-by-occurrence))
+  ;;             (company-dabbrev-downcase      . nil)
+  ;;             (lsp-prefer-capf . t)
+  ;;             (company-backends . '(company-capf))))
   (leaf corfu
     :doc "Completion Overlay Region FUnction"
     :req "emacs-27.1"
@@ -2126,29 +2127,13 @@
       ;; :disabled t
       :config
       (add-to-list 'completion-at-point-functions #'cape-file)
+      (add-to-list 'completion-at-point-functions #'cape-dict)
       ;; (add-to-list 'completion-at-point-functions #'cape-tex)
       (add-to-list 'completion-at-point-functions #'cape-dabbrev)
       (add-to-list 'completion-at-point-functions #'cape-keyword)
       (add-to-list 'completion-at-point-functions #'cape-abbrev)
-      ;; (add-to-list 'completion-at-point-functions #'cape-ispell)
-      ;; (add-to-list 'completion-at-point-functions #'cape-symbol)
-      ;; (add-to-list 'completion-at-point-functions (cape-company-to-capf #'company-math) t)
-      (add-to-list 'completion-at-point-functions (cape-company-to-capf #'company-tabnine) t)
-      (leaf company-math
-        :doc "Completion backends for unicode math symbols and latex tags"
-        :req "company-0.8.0" "math-symbol-lists-1.3"
-        :tag "completion" "symbols" "unicode"
-        :url "https://github.com/vspinu/company-math"
-        :added "2023-05-09"
-        :ensure t)
-      (leaf company-tabnine
-        :doc "A company-mode backend for TabNine"
-        :req "emacs-25" "company-0.9.3" "cl-lib-0.5" "dash-2.16.0" "s-1.12.0"
-        :tag "convenience" "emacs>=25"
-        :url "https://github.com/TommyX12/company-tabnine/"
-        :added "2023-05-09"
-        :emacs>= 25
-        :ensure t)
+      (add-to-list 'completion-at-point-functions #'cape-ispell)
+      (add-to-list 'completion-at-point-functions #'cape-symbol)
       )
     (leaf kind-icon
       :doc "Completion kind icons"
