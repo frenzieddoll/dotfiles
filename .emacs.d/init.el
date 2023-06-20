@@ -1157,6 +1157,15 @@
   :emacs>= 24.1
   :ensure t)
 
+(leaf graphviz-dot-mode
+  :doc "Mode for the dot-language used by graphviz (att)."
+  :req "emacs-25.0"
+  :tag "att" "graphs" "graphviz" "dotlanguage" "dot-language" "dot" "mode" "emacs>=25.0"
+  :url "https://ppareit.github.io/graphviz-dot-mode/"
+  :added "2023-06-20"
+  :emacs>= 25.0
+  :ensure t)
+
 (leaf magit
   :doc "A Git porcelain inside Emacs."
   :req "emacs-25.1" "dash-20210330" "git-commit-20210806" "magit-section-20210806" "transient-20210701" "with-editor-20210524"
@@ -2134,6 +2143,7 @@
       (add-to-list 'completion-at-point-functions #'cape-abbrev)
       (add-to-list 'completion-at-point-functions #'cape-ispell)
       (add-to-list 'completion-at-point-functions #'cape-symbol)
+      (add-to-list 'completion-at-point-functions (cape-company-to-capf #'company-jedi) t)
       )
     (leaf kind-icon
       :doc "Completion kind icons"
