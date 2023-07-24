@@ -1853,13 +1853,18 @@
     :tag "files" "convenience"
     :url "http://www.emacswiki.org/cgi-bin/wiki/download/recentf-ext.el"
     :added "2023-02-09"
-    :ensure t)
+    :ensure t
+    )
   :custom
   `((recentf-save-file . "~/.emacs.d/recentf")
-    (recentf-max-saved-items . 500)
-    (recentf-auto-cleanup . 'mode)
-    (recnetf-exclude . '(".recentf")))
+    (recentf-max-saved-items . 2000)
+    (recentf-auto-cleanup . 'never)
+    (recnetf-exclude . '("/recentf" "COMMIT_EDITMSG" "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores" "/\\.emacs\\.d/\\.cask/"))
+    ;; (recentf-auto-cleanup-timer . (run-with-idle-timer 30 t 'recentf-save-list))
+    )
   )
+
+
 
 (leaf smartparens
   :doc "Automatic insertion, wrapping and paredit-like navigation with user defined pairs."
@@ -2135,15 +2140,15 @@
       :ensure t
       ;; :disabled t
       :config
+      (add-to-list 'completion-at-point-functions (cape-company-to-capf #'company-jedi) t)
       (add-to-list 'completion-at-point-functions #'cape-file)
       (add-to-list 'completion-at-point-functions #'cape-dict)
       ;; (add-to-list 'completion-at-point-functions #'cape-tex)
       (add-to-list 'completion-at-point-functions #'cape-dabbrev)
       (add-to-list 'completion-at-point-functions #'cape-keyword)
       (add-to-list 'completion-at-point-functions #'cape-abbrev)
-      (add-to-list 'completion-at-point-functions #'cape-ispell)
+      ;; (add-to-list 'completion-at-point-functions #'cape-ispell)
       (add-to-list 'completion-at-point-functions #'cape-symbol)
-      (add-to-list 'completion-at-point-functions (cape-company-to-capf #'company-jedi) t)
       )
     (leaf kind-icon
       :doc "Completion kind icons"
