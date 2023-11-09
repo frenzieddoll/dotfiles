@@ -2027,8 +2027,20 @@
     (defun my/orderless-dispatch-flex-first (_pattern index _total)
       (and (eq index 0) 'orderless-flex))
 
+    (defun my/orderless-fast-flex (component)
+      "Match a component in flex style.
+       This means the characters in COMPONENT must occur in the
+       candidate in that order, but not necessarily consecutively."
+      (rx-to-string
+       `(seq
+         bol           ; orderless-flexに先頭一致の条件を追加
+         ,@(cdr (cl-loop for char across component
+                         append `((zero-or-more (not ,char)) (group ,char)))))))
+
     (defun my/orderless-for-corfu ()
-      (setq-local orderless-style-dispatchers '(my/orderless-dispatch-flex-first)))
+      (setq-local orderless-style-dispatchers '(my/orderless-dispatch-flex-first))
+      ;; (setq-local orderless-matching-styles '(my/orderless-fast-flex))
+      )
 
     (defun my/orderless-for-lsp-mode ()
       (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
@@ -2139,8 +2151,9 @@
       :emacs>= 27.1
       :ensure t
       ;; :disabled t
+      :hook ((ein:notebook-mode-hook . my/set-ein-capf))
       :config
-      (add-to-list 'completion-at-point-functions (cape-company-to-capf #'company-jedi) t)
+      ;; (add-to-list 'completion-at-point-functions (cape-company-to-capf #'company-jedi) t)
       (add-to-list 'completion-at-point-functions #'cape-file)
       (add-to-list 'completion-at-point-functions #'cape-dict)
       ;; (add-to-list 'completion-at-point-functions #'cape-tex)
@@ -2149,6 +2162,21 @@
       (add-to-list 'completion-at-point-functions #'cape-abbrev)
       ;; (add-to-list 'completion-at-point-functions #'cape-ispell)
       (add-to-list 'completion-at-point-functions #'cape-symbol)
+      :init
+
+      (defun my/convert-super-capf (arg-capf)
+        (list (cape-capf-noninterruptible
+               (cape-capf-accept-all
+                (cape-capf-buster
+                 (cape-super-capf arg-capf
+                                  (cape-company-to-capf #'company-yasnippet)
+                                  #'cape-dabbrev))))
+              #'cape-file))
+
+      (defun my/set-ein-capf ()
+        (interactive)
+        (setq-local completion-at-point-functions (my/convert-super-capf (cape-company-to-capf #'company-jedi)))
+        )
       )
     (leaf kind-icon
       :doc "Completion kind icons"
