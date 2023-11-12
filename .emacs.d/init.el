@@ -1006,7 +1006,23 @@
            (ein:markdown-command . "pandoc --metadata pagetitle=\"markdown preview\" -f markdown -c ~/.pandoc/github-markdown.css -s --self-contained --mathjax=https://raw.githubusercontent.com/ustasb/dotfiles/b54b8f502eb94d6146c2a02bfc62ebda72b91035/pandoc/mathjax.js")
            (jedi:complete-on-dot . t)
            )
-)
+  :config
+  (leaf jedi-core
+    :doc "Common code of jedi.el and company-jedi.el"
+    :req "emacs-24" "epc-0.1.0" "python-environment-0.0.2" "cl-lib-0.5"
+    :tag "emacs>=24"
+    :added "2023-11-12"
+    :emacs>= 24
+    :ensure t)
+  (leaf company-jedi
+    :doc "Company-mode completion back-end for Python JEDI"
+    :req "emacs-24" "cl-lib-0.5" "company-0.8.11" "jedi-core-0.2.7"
+    :tag "emacs>=24"
+    :url "https://github.com/emacsorphanage/company-jedi"
+    :added "2023-11-12"
+    :emacs>= 24
+    :ensure t)
+  )
 
 (leaf eww
   :doc "Emacs Web Wowser"
@@ -2153,7 +2169,6 @@
       ;; :disabled t
       :hook ((ein:notebook-mode-hook . my/set-ein-capf))
       :config
-      ;; (add-to-list 'completion-at-point-functions (cape-company-to-capf #'company-jedi) t)
       (add-to-list 'completion-at-point-functions #'cape-file)
       (add-to-list 'completion-at-point-functions #'cape-dict)
       ;; (add-to-list 'completion-at-point-functions #'cape-tex)
@@ -2163,19 +2178,18 @@
       ;; (add-to-list 'completion-at-point-functions #'cape-ispell)
       (add-to-list 'completion-at-point-functions #'cape-symbol)
       :init
-
       (defun my/convert-super-capf (arg-capf)
         (list (cape-capf-noninterruptible
                (cape-capf-accept-all
                 (cape-capf-buster
                  (cape-super-capf arg-capf
                                   (cape-company-to-capf #'company-yasnippet)
-                                  #'cape-dabbrev))))
+                                  ))))
               #'cape-file))
 
       (defun my/set-ein-capf ()
-        (interactive)
-        (setq-local completion-at-point-functions (my/convert-super-capf (cape-company-to-capf #'company-jedi)))
+        (setq-local completion-at-point-functions
+                    (my/convert-super-capf (cape-company-to-capf #'company-jedi)))
         )
       )
     (leaf kind-icon
@@ -2479,26 +2493,7 @@
   :added "2021-09-11"
   :ensure t
   :config
-  (leaf jedi
-    :doc "a Python auto-completion for Emacs"
-    :req "emacs-24" "jedi-core-0.2.2" "auto-complete-1.4"
-    :tag "emacs>=24"
-    :added "2022-05-29"
-    :emacs>= 24
-    :when (file-exists-p "/usr/bin/jedi-language-server")
-    :ensure t
-    :config
-    (leaf lsp-jedi
-      :doc "Lsp client plugin for Python Jedi Language Server"
-      :req "emacs-25.1" "lsp-mode-6.0"
-      :tag "ide" "jedi" "python" "tools" "language-server" "emacs>=25.1"
-      :url "http://github.com/fredcamps/lsp-jedi"
-      :added "2021-09-18"
-      :emacs>= 25.1
-      :ensure t
-      :hook (python-mode-hook . (lambda ()
-                                  (require 'lsp-jedi)
-                                  (lsp))))))
+  )
 
 (leaf quickrun
   :doc "Run commands quickly"
