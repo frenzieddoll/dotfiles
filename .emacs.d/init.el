@@ -2140,8 +2140,52 @@
     :hook ((minibuffer-setup-hook . my/corfu-enable-in-minibuffer)
            (eshell-mode-hook . (lambda ()
                                  (setq-local corfu-auto nil)
-                                 (corfu-mode))))
+                                 (corfu-mode)))
+           (corfu-mode . corfu-popupinfo-mode))
     :config
+    (leaf kind-icon
+      :doc "Completion kind icons"
+      :req "emacs-27.1" "svg-lib-0"
+      :tag "completion" "emacs>=27.1"
+      :url "https://github.com/jdtsmith/kind-icon"
+      :added "2022-11-26"
+      :emacs>= 27.1
+      :ensure t
+      :when (eq window-system 'x)
+      :pre-setq (kind-icon-defalut-face . 'corfu-default)
+      :config
+      (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+    (leaf tempel
+      :doc "Tempo templates/snippets with in-buffer field editing"
+      :req "emacs-27.1" "compat-29.1.4.0"
+      :tag "wp" "tools" "languages" "abbrev" "emacs>=27.1"
+      :url "https://github.com/minad/tempel"
+      :added "2023-11-10"
+      :emacs>= 27.1
+      :ensure t
+      :bind (("C-+" . tempel-complete)
+             ("C-*" . tempel-insert)
+             (tempel-map
+              ("C-S-n" . tempel-next)
+              ("C-S-p" . tempel-previous)
+              ("C-RET" . tempel-done)
+              )
+             )
+      :config
+      (leaf tempel-collection
+        :doc "Collection of templates for Tempel"
+        :req "tempel-0.5" "emacs-29.1"
+        :tag "tools" "emacs>=29.1"
+        :url "https://github.com/Crandel/tempel-collection"
+        :added "2023-11-10"
+        :emacs>= 29.1
+        :ensure t
+        :after tempel)
+      ;; :init
+      ;; (defun tempel-setup-capf ()
+      ;;   (setq-local completion-ato-point-fucntions
+      ;;               (cons #'byte-compile-inline-expandcompletion-ato-point-functions)))
+      )
     (leaf cape
       :doc "Completion At Point Extensions"
       :req "emacs-27.1"
@@ -2156,12 +2200,13 @@
       ;; (add-to-list 'completion-at-point-functions (cape-company-to-capf #'company-jedi) t)
       (add-to-list 'completion-at-point-functions #'cape-file)
       (add-to-list 'completion-at-point-functions #'cape-dict)
+      (add-to-list 'completion-at-point-functions #'tempel-complete)
       ;; (add-to-list 'completion-at-point-functions #'cape-tex)
       (add-to-list 'completion-at-point-functions #'cape-dabbrev)
       (add-to-list 'completion-at-point-functions #'cape-keyword)
       (add-to-list 'completion-at-point-functions #'cape-abbrev)
       ;; (add-to-list 'completion-at-point-functions #'cape-ispell)
-      (add-to-list 'completion-at-point-functions #'cape-symbol)
+      ;; (add-to-list 'completion-at-point-functions #'cape-symbol)
       :init
 
       (defun my/convert-super-capf (arg-capf)
@@ -2169,28 +2214,19 @@
                (cape-capf-accept-all
                 (cape-capf-buster
                  (cape-super-capf arg-capf
-                                  (cape-company-to-capf #'company-yasnippet)
+                                  ;; (cape-company-to-capf #'company-yasnippet)
                                   #'cape-dabbrev))))
               #'cape-file))
 
       (defun my/set-ein-capf ()
-        (interactive)
         (setq-local completion-at-point-functions (my/convert-super-capf (cape-company-to-capf #'company-jedi)))
         )
+      (defun my/reset-capf ()
+        (interactive)
+        (setq-local completion-at-point-functions #'cape-symbol)
+        )
       )
-    (leaf kind-icon
-      :doc "Completion kind icons"
-      :req "emacs-27.1" "svg-lib-0"
-      :tag "completion" "emacs>=27.1"
-      :url "https://github.com/jdtsmith/kind-icon"
-      :added "2022-11-26"
-      :emacs>= 27.1
-      :ensure t
-      :when (eq window-system 'x)
-      :pre-setq (kind-icon-defalut-face . 'corfu-default)
-      :config
-      (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
-      )
+    )
   (leaf *emacs
     :preface
     ;; Add prompt indicator to `completing-read-multiple'.
@@ -2697,7 +2733,7 @@
     (defun exwm-workspace-toggle ()
       (interactive)
       (if (= exwm-workspace-current-index 0)
-          (exwm-workspace-switch 2)
+          (exwm-workspace-switch 1)
         (exwm-workspace-switch 0)))
 
     :config
@@ -2706,24 +2742,34 @@
     (leaf exwm-systemtray
       :require t
       :defun exwm-systemtray-enable
+      :custom (exwm-systemtray-height . 50)
       :config
       (exwm-systemtray-enable))
     (leaf exwm-randr
       :require t
       :when (string= (system-name) "archlinuxhonda")
-      :custom ((exwm-randr-workspace-monitor-plist . '(0 "DP-2" 1 "HDMI-0" 2 "HDMI-0" 3 "HDMI-0" 4 "HDMI-0" 5 "HDMI-0")))
-      :hook (exwm-randr-screen-change-hook . (lambda ()
+      :custom ((exwm-randr-workspace-monitor-plist . '(0 "DP-2" 1 "DP-2" 2 "DP-2" 3 "DP-2" 4 "DP-2" 5 "DP-2")))
+      :hook ((exwm-randr-screen-change-hook . (lambda ()
                                                 (start-process-shell-command
-                                                 "xrandr" nil "xrandr --output DP-2 --auto --output HDMI-0 --auto --right-of DP-2; xrandr --output HDMI-0 --auto --scale 1.5x1.5")))
+                                                 ;; "xrandr" nil "xrandr --output DP-2 --auto --output HDMI-0 --auto --right-of DP-2; xrandr --output HDMI-0 --auto --scale 1.5x1.5")
+                                                 "xrandr" nil "xrandr --output DP-2")
+                                                )))
       :config
       (exwm-randr-enable))
+    (leaf *fix_ediff
+      :after ediff-wind
+      :custom `((ediff-window-setup-function . 'ediff-setup-windows-plain)))
+    (leaf exwm-cm
+      :require t
+      :config
+      (exwm-cm)
+      )
     (leaf exwm-enable
       :defun (exwm-enable)
       :config
       (exwm-enable))
-    (leaf *fix_ediff
-      :after ediff-wind
-      :custom `((ediff-window-setup-function . 'ediff-setup-windows-plain)))))
+    )
+  )
 
 (provide 'init)
 
