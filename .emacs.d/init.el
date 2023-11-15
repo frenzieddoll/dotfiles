@@ -2742,6 +2742,7 @@
       :config
       (exwm-systemtray-enable))
     (leaf exwm-randr
+      :disabled t
       :require t
       :when (string= (system-name) "archlinuxhonda")
       :custom ((exwm-randr-workspace-monitor-plist . '(0 "DP-2" 1 "DP-2" 2 "DP-2" 3 "DP-2" 4 "DP-2" 5 "DP-2")))
@@ -2752,14 +2753,9 @@
                                                 )))
       :config
       (exwm-randr-enable))
-    (leaf *fix_ediff
-      :after ediff-wind
-      :custom `((ediff-window-setup-function . 'ediff-setup-windows-plain)))
-    (leaf exwm-cm
-      :require t
-      :config
-      (exwm-cm)
-      )
+    ;; (leaf *fix_ediff
+    ;;   :after ediff-wind
+    ;;   :custom `((ediff-window-setup-function . 'ediff-setup-windows-plain)))
     (leaf exwm-enable
       :defun (exwm-enable)
       :config
