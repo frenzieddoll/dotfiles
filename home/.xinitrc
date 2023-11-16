@@ -8,15 +8,7 @@ sysmodmap=/etc/X11/xinit/.Xmodmap
 # merge in defaults and keymaps
 
 if [ -f $sysresources ]; then
-
-
-
-
-
-
-
     xrdb -merge $sysresources
-
 fi
 
 if [ -f $sysmodmap ]; then
@@ -24,15 +16,7 @@ if [ -f $sysmodmap ]; then
 fi
 
 if [ -f "$userresources" ]; then
-
-
-
-
-
-
-
     xrdb -merge "$userresources"
-
 fi
 
 if [ -f "$usermodmap" ]; then
@@ -50,9 +34,6 @@ fi
 
 [[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources
 
-# xhost +SI:localuser:$USER
-export _JAVA_AWT_WM_NONREPARENTING=1
-# xsetroot -cursor_name left_ptr
 
 export DefaultIMModule=fcitx
 export GTK_IM_MODULE=fcitx
@@ -60,7 +41,7 @@ export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
 fcitx5 &
 
-# dropbox &
+dropbox &
 megasync &
 
 # if [ $(hostname) = "archlinuxhonda" ]; then
@@ -76,8 +57,10 @@ case $(uname -n) in
     "sx12toshiaki" ) xkbcomp -I$HOME/.xkb/ ~/.xkb/keymap/sx12 $DISPLAY > /dev/null 2>&1;;
 esac
 
-
 xhost +SI:localuser:$USER
+export _JAVA_AWT_WM_NONREPARENTING=1
+# xsetroot -cursor_name left_ptr
+
 xset r rate 250 40
 exec emacs
 # exec cutefish-session
