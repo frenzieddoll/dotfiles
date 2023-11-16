@@ -1197,22 +1197,16 @@
   :doc "Export Framework for Org Mode"
   :tag "builtin"
   :added "2021-09-05"
-  :custom ((org-agenda-files . '("~/Dropbox/org/todo.org")))
-  :bind (("C-c a" . org-agenda))
-  :config
-  (leaf org-plus-contrib
-    :doc "Outline-based notes management and organizer"
-    :added "2021-09-05"
-    :ensure t
-    :disabled t
-    :hook ((org-mode-hook . eldoc-mode))
-    :config
-    (defadvice org-eldoc-documentation-function (around add-field-info activate)
-      (or
-       (ignore-errors (and (not (org-at-table-hline-p)) (org-table-field-info nil)))
-       ad-do-it))
-    (eldoc-add-command-completions
-     "org-table-next-" "org-table-previous" "org-cycle")))
+  :custom ((org-agenda-files . '("~/Dropbox/org/todo.org"))
+           (org-directory . "~/Dropbox/org"))
+  :bind (("C-c a" . org-agenda)
+         ("C-c c" . org-capture))
+  :custom `((org-capture-templates . '(("n" "Note" entry (file+headline "~/Dropbox/org/notes.org" "Notes") "* %?\nEntered on %U\n %i\n %a")
+                                       ("t" "Todo" entry (file+headline "~/Dropbox/org/todo.org"  "Todo")  "* TODO %?\n %i\n %a")))
+            (org-todo-keywords . '((sequence "TODO(t)" "SOMEDAY(s)" "WATTING(w)" "|" "DONE(d)" "CANCELED(c@)")))
+            (org-enforce-todo-dependencies . t)
+            (org-log-done . t))
+  )
 
 (leaf paradox
   :doc "A modern Packages Menu. Colored, with package ratings, and customizable."
@@ -2197,10 +2191,6 @@
         :emacs>= 29.1
         :ensure t
         :after tempel)
-      ;; :init
-      ;; (defun tempel-setup-capf ()
-      ;;   (setq-local completion-ato-point-fucntions
-      ;;               (cons #'byte-compile-inline-expandcompletion-ato-point-functions)))
       )
     (leaf cape
       :doc "Completion At Point Extensions"
@@ -2214,23 +2204,24 @@
       :hook ((ein:notebook-mode-hook . my/set-ein-capf))
       :config
       (add-to-list 'completion-at-point-functions #'cape-file)
+      (add-to-list 'completion-at-point-functions #'cape-elisp-block)
       (add-to-list 'completion-at-point-functions #'cape-dict)
-      (add-to-list 'completion-at-point-functions #'tempel-complete)
+      ;; (add-to-list 'completion-at-point-functions #'tempel-complete)
       ;; (add-to-list 'completion-at-point-functions #'cape-tex)
-      (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-      (add-to-list 'completion-at-point-functions #'cape-keyword)
       (add-to-list 'completion-at-point-functions #'cape-abbrev)
+      (add-to-list 'completion-at-point-functions #'cape-keyword)
+      (add-to-list 'completion-at-point-functions #'cape-dabbrev)
       ;; (add-to-list 'completion-at-point-functions #'cape-ispell)
-      ;; (add-to-list 'completion-at-point-functions #'cape-symbol)
+      (add-to-list 'completion-at-point-functions #'cape-symbol)
       :init
       (defun my/convert-super-capf (arg-capf)
         (list (cape-capf-noninterruptible
                (cape-capf-accept-all
                 (cape-capf-buster
                  (cape-super-capf arg-capf
-                                  (cape-company-to-capf #'company-yasnippet)
+                                  #'cape-file
                                   ))))
-              #'cape-file))
+              #'cape-keyword))
 
       (defun my/set-ein-capf ()
         (setq-local completion-at-point-functions
@@ -2238,7 +2229,9 @@
         )
       (defun my/reset-capf ()
         (interactive)
-        (setq-local completion-at-point-functions #'cape-symbol)
+        (setq completion-at-point-functions
+              (list (cape-capf-super #'cape-file #'cape-elisp-block))
+              )
         )
       )
     )
@@ -2738,7 +2731,7 @@
     (leaf exwm-systemtray
       :require t
       :defun exwm-systemtray-enable
-      :custom (exwm-systemtray-height . 50)
+      ;; :custom (exwm-systemtray-height . 50)
       :config
       (exwm-systemtray-enable))
     (leaf exwm-randr
