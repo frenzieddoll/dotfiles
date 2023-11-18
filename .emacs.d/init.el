@@ -37,6 +37,20 @@
     (leaf hydra :ensure t)
     (leaf el-get :ensure t)
     (leaf blackout :ensure t)
+    (leaf *straight
+      :config
+      (defvar bootstrap-version)
+      (let ((bootstrap-file
+             (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+            (bootstrap-version 5))
+        (unless (file-exists-p bootstrap-file)
+          (with-current-buffer
+              (url-retrieve-synchronously
+               "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+               'silent 'inhibit-cookies)
+            (goto-char (point-max))
+            (eval-print-last-sexp)))
+        (load bootstrap-file nil 'nomessage)))
 
     :config
     ;; initialize leaf-keywords.el
@@ -1984,6 +1998,7 @@
            ("C-o" . consult-line)
            ("C-c h" . consult-recent-file)
            ("C-x b" . consult-buffer)
+           ("C-x r l" . consult-bookmark)
            (minibuffer-local-map
             ("C-c h" . consult-history)))
 
@@ -2063,7 +2078,7 @@
     :added "2021-09-17"
     :emacs>= 26.1
     :ensure t
-    ;; :disabled t
+    :disabled t
     :bind (("s-e" . embark-act))
     ;; :custom ((prefix-help-command . #'embark-prefix-help-command))
     :config
@@ -2080,34 +2095,7 @@
     :tag "builtin"
     :added "2021-09-05"
     :global-minor-mode t)
-  ;; (leaf company
-  ;;   :doc "Modular text completion framework"
-  ;;   :req "emacs-25.1"
-  ;;   :tag "matching" "convenience" "abbrev" "emacs>=25.1"
-  ;;   :url "http://company-mode.github.io/"
-  ;;   :added "2021-10-01"
-  ;;   :emacs>= 25.1
-  ;;   :ensure t
-  ;;   :disabled t
-  ;;   :bind ((company-active-map
-  ;;           ("M-n" . nil)
-  ;;           ("M-p" . nil)
-  ;;           ("C-s" . company-filter-candidates)
-  ;;           ("C-n" . company-select-next)
-  ;;           ("C-p" . company-select-previous)
-  ;;           ("<tab>" . company-complete-selection)
-  ;;           ("C-h" . nil)
-  ;;           ("C-f" . company-complete-selection))
-  ;;          (company-search-map
-  ;;           ("C-n" . company-select-next)
-  ;;           ("C-p" . company-select-previous)))
-  ;;   :custom `((company-tooltip-limit         . 12)
-  ;;             (company-idle-delay            . 0)
-  ;;             (company-minimum-prefix-length . 1)
-  ;;             (company-transformers          . '(company-sort-by-occurrence))
-  ;;             (company-dabbrev-downcase      . nil)
-  ;;             (lsp-prefer-capf . t)
-  ;;             (company-backends . '(company-capf))))
+
   (leaf corfu
     :doc "Completion Overlay Region FUnction"
     :req "emacs-27.1"
@@ -2116,12 +2104,15 @@
     :added "2021-09-11"
     :emacs>= 27.1
     :ensure t
-    :require t
+    ;; :require t
     ;; :defvar (corfu-auto)
     :when (eq window-system 'x)
-    :when (eq system-type 'gnu/linux)
+    :hook ((minibuffer-setup-hook . my/corfu-enable-in-minibuffer)
+           (eshell-mode-hook . (lambda ()
+                                 (setq-local corfu-auto nil)
+                                 (corfu-mode)))
+           )
     :global-minor-mode global-corfu-mode
-    ;; :disabled t
     :custom ((tab-always-indent . 'complete)
              (corfu-cycle . t)
              (corfu-auto . t)
@@ -2147,13 +2138,8 @@
         (eshell-send-input)
         ((derived-mode-p 'comint-mode)
          (comint-send-input)))))
-    :hook ((minibuffer-setup-hook . my/corfu-enable-in-minibuffer)
-           (eshell-mode-hook . (lambda ()
-                                 (setq-local corfu-auto nil)
-                                 (corfu-mode)))
-           (corfu-mode . corfu-popupinfo-mode))
-    :config
-    (leaf kind-icon
+    )
+  (leaf kind-icon
       :doc "Completion kind icons"
       :req "emacs-27.1" "svg-lib-0"
       :tag "completion" "emacs>=27.1"
@@ -2161,11 +2147,13 @@
       :added "2022-11-26"
       :emacs>= 27.1
       :ensure t
+      :disabled t
       :when (eq window-system 'x)
+      :after corfu
       :pre-setq (kind-icon-defalut-face . 'corfu-default)
       :config
       (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
-    (leaf tempel
+  (leaf tempel
       :doc "Tempo templates/snippets with in-buffer field editing"
       :req "emacs-27.1" "compat-29.1.4.0"
       :tag "wp" "tools" "languages" "abbrev" "emacs>=27.1"
@@ -2173,6 +2161,7 @@
       :added "2023-11-10"
       :emacs>= 27.1
       :ensure t
+      :after corfu
       :bind (("C-+" . tempel-complete)
              ("C-*" . tempel-insert)
              (tempel-map
@@ -2192,7 +2181,7 @@
         :ensure t
         :after tempel)
       )
-    (leaf cape
+  (leaf cape
       :doc "Completion At Point Extensions"
       :req "emacs-27.1"
       :tag "emacs>=27.1"
@@ -2200,19 +2189,19 @@
       :added "2022-03-31"
       :emacs>= 27.1
       :ensure t
+      :after corfu
       ;; :disabled t
       :hook ((ein:notebook-mode-hook . my/set-ein-capf))
       :config
-      (add-to-list 'completion-at-point-functions #'cape-file)
-      (add-to-list 'completion-at-point-functions #'cape-elisp-block)
-      (add-to-list 'completion-at-point-functions #'cape-dict)
-      ;; (add-to-list 'completion-at-point-functions #'tempel-complete)
-      ;; (add-to-list 'completion-at-point-functions #'cape-tex)
-      (add-to-list 'completion-at-point-functions #'cape-abbrev)
-      (add-to-list 'completion-at-point-functions #'cape-keyword)
+      (add-to-list 'completion-at-point-functions #'tempel-complete)
+      (add-to-list 'completion-at-point-functions #'cape-file t)
+      (add-to-list 'completion-at-point-functions #'cape-dict t)
       (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-      ;; (add-to-list 'completion-at-point-functions #'cape-ispell)
-      (add-to-list 'completion-at-point-functions #'cape-symbol)
+      (add-to-list 'completion-at-point-functions #'cape-keyword)
+      ;; (add-to-list 'completion-at-point-functions #'cape-symbol)
+      ;; (add-to-list 'completion-at-point-functions #'cape-abbrev)
+      ;; (add-to-list 'completion-at-point-functions #'cape-elisp-block)
+      ;; (add-to-list 'completion-at-point-functions #'cape-tex)
       :init
       (defun my/convert-super-capf (arg-capf)
         (list (cape-capf-noninterruptible
@@ -2221,20 +2210,38 @@
                  (cape-super-capf arg-capf
                                   #'cape-file
                                   ))))
-              #'cape-keyword))
+              #'cape-dict))
 
       (defun my/set-ein-capf ()
+        (interactive)
+        ;; (setq-local completion-at-point-functions
+        ;;             (my/convert-super-capf (cape-company-to-capf #'company-jedi)))
         (setq-local completion-at-point-functions
-                    (my/convert-super-capf (cape-company-to-capf #'company-jedi)))
+                    (list (cape-capf-noninterruptible
+                           (cape-capf-accept-all
+                            (cape-capf-buster
+                             (cape-super-capf (cape-company-to-capf #'company-jedi)))))))
+        (add-to-list 'completion-at-point-functions #'cape-file t)
+        (add-to-list 'completion-at-point-functions #'cape-dict t)
         )
       (defun my/reset-capf ()
         (interactive)
         (setq completion-at-point-functions
-              (list (cape-capf-super #'cape-file #'cape-elisp-block))
-              )
+              (list (cape-capf-noninterruptible
+                     (cape-capf-accept-all
+                      (cape-capf-buster
+                       (cape-super-capf #'cape-elisp-symbol))))))
         )
+      (defun my/reset-capf ()
+        (interactive)
+        (setq completion-at-point-functions
+              (list (cape-capf-noninterruptible
+                     (cape-capf-accept-all
+                      (cape-capf-buster
+                       (cape-super-capf #'cape-elisp-symbol))))))
+        )
+
       )
-    )
   (leaf *emacs
     :preface
     ;; Add prompt indicator to `completing-read-multiple'.
