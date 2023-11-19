@@ -1857,9 +1857,10 @@
            (show-paren-when-point-inside-paren . t)
            (show-paren-when-point-in-periphery . t)))
 
-(leaf *pulseaudio
+(leaf pulseaudio
   :when (executable-find "pactl")
-  :require pulseaudio
+  :el-get frenzieddoll/pulseaudio
+  :require t
   )
 
 (leaf rainbow-delimiters
@@ -2189,7 +2190,7 @@
       :added "2022-03-31"
       :emacs>= 27.1
       :ensure t
-      :after corfu
+      ;; :after corfu
       ;; :disabled t
       :hook ((ein:notebook-mode-hook . my/set-ein-capf))
       :config
@@ -2232,15 +2233,6 @@
                       (cape-capf-buster
                        (cape-super-capf #'cape-elisp-symbol))))))
         )
-      (defun my/reset-capf ()
-        (interactive)
-        (setq completion-at-point-functions
-              (list (cape-capf-noninterruptible
-                     (cape-capf-accept-all
-                      (cape-capf-buster
-                       (cape-super-capf #'cape-elisp-symbol))))))
-        )
-
       )
   (leaf *emacs
     :preface
