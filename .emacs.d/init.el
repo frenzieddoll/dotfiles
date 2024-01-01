@@ -529,7 +529,7 @@
   ;;systemctlの補完
   (defcustom pcomplete-systemctl-commands
     '("disable" "enable" "status" "start" "restart" "stop" "reenable"
-      "list-units" "list-unit-files")
+      "list-units" "list-unit-files" "suspend")
     "p-completion candidates for `systemctl' main commands"
     :type '(repeat (string :tag "systemctl command"))
     :group 'pcomplete)
@@ -1962,28 +1962,29 @@
           ("?" . minibuffer-complition-help)
           ("M-RET" . minibuffer-force-complete-and-exit)
           ("M-TAB" . minibuffer-complete)
-          ("C-," . up-to-dir)
+          ;; ("C-," . up-to-dir)
+          ("C-," . vertico-directory-up)
           ("<mouse-3>" . vertico-exit)))
   :custom ((vertico-count . 15)
            (vertico-mouse-mode . t)
            ;; (vertico-preselect . 'prompt)
            )
   :global-minor-mode t
-  :preface
-  (defun up-to-dir ()
-    "Move to parent directory like \"cd ..\" in find-file."
-    (interactive)
-    (let ((sep (eval-when-compile (regexp-opt '("/" "\\")))))
-      (save-excursion
-        (left-char 1)
-        (when (looking-at-p sep)
-          (delete-char 1)))
-      (save-match-data
-        (when (search-backward-regexp sep nil t)
-          (right-char 1)
-          (filter-buffer-substring (point)
-                                   (save-excursion (end-of-line) (point))
-                                   #'delete)))))
+  ;; :preface
+  ;; (defun up-to-dir ()
+  ;;   "Move to parent directory like \"cd ..\" in find-file."
+  ;;   (interactive)
+  ;;   (let ((sep (eval-when-compile (regexp-opt '("/" "\\")))))
+  ;;     (save-excursion
+  ;;       (left-char 1)
+  ;;       (when (looking-at-p sep)
+  ;;         (delete-char 1)))
+  ;;     (save-match-data
+  ;;       (when (search-backward-regexp sep nil t)
+  ;;         (right-char 1)
+  ;;         (filter-buffer-substring (point)
+  ;;                                  (save-excursion (end-of-line) (point))
+  ;;                                  #'delete)))))
   :config
   (leaf consult
     :doc "Consulting completing-read"
@@ -1994,30 +1995,34 @@
     :emacs>= 26.1
     :ensure t
     :bind (("M-g g" . consult-goto-line)
+           ("C-x b" . consult-buffer)
            ("C-c i" . consult-imenu)
            ("M-y" . consult-yank-pop)
            ("C-o" . consult-line)
            ("C-c h" . consult-recent-file)
-           ("C-x b" . consult-buffer)
+           ("M-g g" . consult-goto-line)
            ("C-x r l" . consult-bookmark)
            (minibuffer-local-map
             ("C-c h" . consult-history)))
 
-    :custom `((consult-buffer-sources . '(consult--source-hidden-buffer
-                                          consult--source-buffer
-                                          consult--source-file
-                                          consult--source-bookmark
-                                          consult--source-project-buffer
-                                          consult--source-project-file))
-              (consult-preview-key . nil))
+    :custom `(
+              ;; (consult-buffer-sources . '(consult--source-hidden-buffer
+              ;;                             consult--source-buffer
+              ;;                             consult--source-file
+              ;;                             consult--source-bookmark
+              ;;                             consult--source-project-buffer
+              ;;                             consult--source-project-file))
+              (consult-preview-key . nil)
+    )
     :global-minor-mode (recentf-mode)
-    :config
-    (define-obsolete-variable-alias
-      'consult--source-file
-      'consult--source-recent-file "0.14")
-    (define-obsolete-variable-alias
-      'consult--source-project-file
-      'consult--source-project-recent-file "0.14"))
+    ;; :config
+    ;; (define-obsolete-variable-alias
+    ;;   'consult--source-file
+    ;;   'consult--source-recent-file "0.14")
+    ;; (define-obsolete-variable-alias
+    ;;   'consult--source-project-file
+    ;;   'consult--source-project-recent-file "0.14")
+    )
   (leaf marginalia
     :doc "Enrich existing commands with completion annotations"
     :req "emacs-26.1"
@@ -2037,17 +2042,17 @@
     :emacs>= 26.1
     ;; :disabled t
     :ensure t
-    :hook ((corfu-mode-hook . my/orderless-for-corfu)
-           (lsp-completion-mode-hook . my/orderless-for-lsp-mode))
+    ;; :hook ((corfu-mode-hook . my/orderless-for-corfu)
+    ;;        (lsp-completion-mode-hook . my/orderless-for-lsp-mode))
     :defvar (orderless-style-dispatchers)
     :custom ((completion-styles . '(orderless basic))
-             (completion-category-defaults . nil)
+             ;; (completion-category-overrides . '((file (style . (partial-completion)))))
+             ;; (completion-category-defaults . nil)
              (completion-category-overrides . nil)
              ;; (completion-category-overrides . '((eglot (styles orderless+initialism))
              ;;                                    (command (styles orderless+initialism))
              ;;                                    (symbol (styles orderless+initialism))
              ;;                                    (variable (styles orderless+initialism))))
-             ;; (completion-category-overrides . '((file (style . (partial-completion)))))
              )
     :init
     (defun my/orderless-dispatch-flex-first (_pattern index _total)
@@ -2139,6 +2144,7 @@
         (eshell-send-input)
         ((derived-mode-p 'comint-mode)
          (comint-send-input)))))
+    :global-minor-mode global-corfu-mode
     )
   (leaf kind-icon
       :doc "Completion kind icons"
@@ -2284,7 +2290,7 @@
            (vterm-buffer-name-string . "vterm: %s")
            )
   :bind (("C-c v" . multi-vterm)
-         ("s-v"   . multi-vterm)
+         ;; ("s-v"   . multi-vterm)
          (:vterm-mode-map
           ("C-m" . vterm-send-return)
           ("C-h" . vterm-send-backspace)
@@ -2309,7 +2315,11 @@
   :url "https://github.com/justbur/emacs-which-key"
   :added "2021-09-12"
   :emacs>= 24.4
-  :ensure t)
+  :ensure t
+  :custom
+  (which-key-setup-side-window-bottom)
+  :global-minor-mode which-key-mode
+  )
 
 (leaf yasnippet
   :doc "Yet another snippet extension for Emacs"
@@ -2447,8 +2457,8 @@
     :custom ((lsp-haskell-server-path . "haskell-language-server-wrapper")
              (lsp-haskell-completion-snippets-on . nil)
              )
-    :hook (;; (lsp-mode-hook . lsp-ui-mode)
-           (haskell-mode-hook . lsp)
+    :hook ((haskell-mode-hook . lsp)
+           (haskell-mode-hook . flycheck-mode)
            (haskell-literate-mode . lsp))))
 
 (leaf lsp-mode
@@ -2462,11 +2472,11 @@
   ;; :disabled t
   ;; :el-get emacs-lsp/lsp-mode
   ;; :unless (string-match "Raspberrypi" (system-name))
-  :custom ((lsp-keymap-prefix                      . "s-z")
+  :custom ((lsp-keymap-prefix                      . "C-z")
            ;; (lsp-idle-delay                         . 0.500)
            (lsp-log-io                             . nil)
            (lsp-completion-provider                . :none)
-           (lsp-prefer-capf                        . t)
+           ;; (lsp-prefer-capf                        . t)
            (lsp-headerline-breadcrumb-icons-enable . nil)
            (lsp-enable-snippet                     . nil))
   :init
@@ -2491,7 +2501,7 @@
     :added "2021-11-06"
     :emacs>= 26.1
     :ensure t
-    :disabled t
+    ;; :disabled t
     :hook ((lsp-mode-hook . lsp-ui-mode))
     :commands lsp-ui-mode)
   (leaf lsp-treemacs
@@ -2558,7 +2568,8 @@
   :emacs>= 26.1
   :ensure t
   :mode (("\\.rs\\'" . rust-mode))
-  :hook ((rustic-mode-hook . smartparens-mode))
+  :hook ((rustic-mode-hook . smartparens-mode)
+         (rustic-mode-hook . lsp))
   ;; :custom ((rustic-format-trigger . 'on-save))
   :bind ((rustic-mode-map
           ("M-j" . lsp-ui-imenu)
@@ -2590,7 +2601,7 @@
   :emacs>= 23.1
   :ensure t
   :hook (web-mode-hook . smartparens-mode)
-  :mode ((("\\.html\\'" "\\.js\\'") . web-mode))
+  :mode ((("\\.html\\'" "\\.js\\'" "\\.mustache\\'") . web-mode))
   :custom ((web-mode-markup-indent-offset . 4)
            (web-mode-css-indent-offset . 4)
            (web-mode-enable-current-element-highlight . t)
