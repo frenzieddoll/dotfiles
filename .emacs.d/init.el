@@ -1985,54 +1985,30 @@
   ;;         (filter-buffer-substring (point)
   ;;                                  (save-excursion (end-of-line) (point))
   ;;                                  #'delete)))))
-  :config
-  (leaf consult
-    :doc "Consulting completing-read"
-    :req "emacs-26.1"
-    :tag "emacs>=26.1"
-    :url "https://github.com/minad/consult"
-    :added "2021-09-05"
-    :emacs>= 26.1
-    :ensure t
-    :bind (("M-g g" . consult-goto-line)
-           ("C-x b" . consult-buffer)
-           ("C-c i" . consult-imenu)
-           ("M-y" . consult-yank-pop)
-           ("C-o" . consult-line)
-           ("C-c h" . consult-recent-file)
-           ("M-g g" . consult-goto-line)
-           ("C-x r l" . consult-bookmark)
-           (minibuffer-local-map
-            ("C-c h" . consult-history)))
+  )
 
-    :custom `(
-              ;; (consult-buffer-sources . '(consult--source-hidden-buffer
-              ;;                             consult--source-buffer
-              ;;                             consult--source-file
-              ;;                             consult--source-bookmark
-              ;;                             consult--source-project-buffer
-              ;;                             consult--source-project-file))
-              (consult-preview-key . nil)
-    )
-    :global-minor-mode (recentf-mode)
-    ;; :config
-    ;; (define-obsolete-variable-alias
-    ;;   'consult--source-file
-    ;;   'consult--source-recent-file "0.14")
-    ;; (define-obsolete-variable-alias
-    ;;   'consult--source-project-file
-    ;;   'consult--source-project-recent-file "0.14")
-    )
-  (leaf marginalia
-    :doc "Enrich existing commands with completion annotations"
-    :req "emacs-26.1"
-    :tag "emacs>=26.1"
-    :url "https://github.com/minad/marginalia"
-    :added "2021-09-06"
-    :emacs>= 26.1
-    :ensure t
-    :unless (string= (system-name) "RaspberryPi")
-    :config (marginalia-mode 1))
+(leaf consult
+  :doc "Consulting completing-read"
+  :req "emacs-26.1"
+  :tag "emacs>=26.1"
+  :url "https://github.com/minad/consult"
+  :added "2021-09-05"
+  :emacs>= 26.1
+  :ensure t
+  :bind (("M-g g" . consult-goto-line)
+         ("C-x b" . consult-buffer)
+         ("C-c i" . consult-imenu)
+         ("M-y" . consult-yank-pop)
+         ("C-o" . consult-line)
+         ("C-c h" . consult-recent-file)
+         ("M-g g" . consult-goto-line)
+         ("C-x r l" . consult-bookmark)
+         (minibuffer-local-map
+          ("C-c h" . consult-history)))
+
+  :custom `((consult-preview-key . nil))
+  :global-minor-mode (recentf-mode)
+  :config
   (leaf orderless
     :doc "Completion style for matching regexps in any order"
     :req "emacs-26.1"
@@ -2040,227 +2016,263 @@
     :url "https://github.com/oantolin/orderless"
     :added "2021-09-05"
     :emacs>= 26.1
-    ;; :disabled t
+    :after consult
     :ensure t
-    ;; :hook ((corfu-mode-hook . my/orderless-for-corfu)
-    ;;        (lsp-completion-mode-hook . my/orderless-for-lsp-mode))
     :defvar (orderless-style-dispatchers)
-    :custom ((completion-styles . '(orderless basic))
-             ;; (completion-category-overrides . '((file (style . (partial-completion)))))
-             ;; (completion-category-defaults . nil)
+    :custom ((completion-styles . '(basic  orderless))
+             (completion-category-defaults . nil)
              (completion-category-overrides . nil)
-             ;; (completion-category-overrides . '((eglot (styles orderless+initialism))
-             ;;                                    (command (styles orderless+initialism))
-             ;;                                    (symbol (styles orderless+initialism))
-             ;;                                    (variable (styles orderless+initialism))))
              )
-    :init
-    (defun my/orderless-dispatch-flex-first (_pattern index _total)
-      (and (eq index 0) 'orderless-flex))
+    )
+  )
 
-    (defun my/orderless-fast-flex (component)
-      "Match a component in flex style.
-       This means the characters in COMPONENT must occur in the
-       candidate in that order, but not necessarily consecutively."
-      (rx-to-string
-       `(seq
-         bol           ; orderless-flexに先頭一致の条件を追加
-         ,@(cdr (cl-loop for char across component
-                         append `((zero-or-more (not ,char)) (group ,char)))))))
+(leaf marginalia
+  :doc "Enrich existing commands with completion annotations"
+  :req "emacs-26.1"
+  :tag "emacs>=26.1"
+  :url "https://github.com/minad/marginalia"
+  :added "2021-09-06"
+  :emacs>= 26.1
+  :ensure t
+  :unless (string= (system-name) "RaspberryPi")
+  :config (marginalia-mode 1)
+  )
 
-    (defun my/orderless-for-corfu ()
-      (setq-local orderless-style-dispatchers '(my/orderless-dispatch-flex-first))
-      ;; (setq-local orderless-matching-styles '(my/orderless-fast-flex))
-      )
+;; (leaf orderless
+;;   :doc "Completion style for matching regexps in any order"
+;;   :req "emacs-26.1"
+;;   :tag "extensions" "emacs>=26.1"
+;;   :url "https://github.com/oantolin/orderless"
+;;   :added "2021-09-05"
+;;   :emacs>= 26.1
+;;   :after consult
+;;   :disabled t
+;;   :ensure t
+;;   ;; :hook ((corfu-mode-hook . my/orderless-for-corfu)
+;;   ;;        (lsp-completion-mode-hook . my/orderless-for-lsp-mode))
+;;   :defvar (orderless-style-dispatchers)
+;;   :custom (
+;;            (completion-styles . '(basic orderless))
+;;            (completion-category-defaults . nil)
+;;            (completion-category-overrides . nil)
+;;            ;; (completion-category-overrides . '((file (style . (partial-completion)))))
+;;            ;; (completion-category-overrides . '((eglot (styles orderless+initialism))
+;;            ;;                                    (command (styles orderless+initialism))
+;;            ;;                                    (symbol (styles orderless+initialism))
+;;            ;;                                    (variable (styles orderless+initialism))))
+;;            )
+;;   :init
+;;   (defun my/orderless-dispatch-flex-first (_pattern index _total)
+;;     (and (eq index 0) 'orderless-flex))
 
-    (defun my/orderless-for-lsp-mode ()
-      (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-	        '(orderless))))
-  (leaf embark
-    :doc "Conveniently act on minibuffer completions"
-    :req "emacs-26.1"
+;;   (defun my/orderless-fast-flex (component)
+;;     "Match a component in flex style.
+;;        This means the characters in COMPONENT must occur in the
+;;        candidate in that order, but not necessarily consecutively."
+;;     (rx-to-string
+;;      `(seq
+;;        bol           ; orderless-flexに先頭一致の条件を追加
+;;        ,@(cdr (cl-loop for char across component
+;;                        append `((zero-or-more (not ,char)) (group ,char)))))))
+
+;;   (defun my/orderless-for-corfu ()
+;;     (setq-local orderless-style-dispatchers '(my/orderless-dispatch-flex-first))
+;;     ;; (setq-local orderless-matching-styles '(my/orderless-fast-flex))
+;;     )
+
+;;   (defun my/orderless-for-lsp-mode ()
+;;     (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+;; 	      '(orderless)))
+;;   )
+
+(leaf embark
+  :doc "Conveniently act on minibuffer completions"
+  :req "emacs-26.1"
+  :tag "convenience" "emacs>=26.1"
+  :url "https://github.com/oantolin/embark"
+  :added "2021-09-17"
+  :emacs>= 26.1
+  :ensure t
+  :disabled t
+  :bind (("s-e" . embark-act))
+  ;; :custom ((prefix-help-command . #'embark-prefix-help-command))
+  :config
+  (leaf embark-consult
+    :doc "Consult integration for Embark"
+    :req "emacs-26.1" "embark-0.12" "consult-0.10"
     :tag "convenience" "emacs>=26.1"
     :url "https://github.com/oantolin/embark"
-    :added "2021-09-17"
+    :added "2022-03-24"
     :emacs>= 26.1
-    :ensure t
-    :disabled t
-    :bind (("s-e" . embark-act))
-    ;; :custom ((prefix-help-command . #'embark-prefix-help-command))
-    :config
-    (leaf embark-consult
-      :doc "Consult integration for Embark"
-      :req "emacs-26.1" "embark-0.12" "consult-0.10"
-      :tag "convenience" "emacs>=26.1"
-      :url "https://github.com/oantolin/embark"
-      :added "2022-03-24"
-      :emacs>= 26.1
-      :ensure t))
-  (leaf savehist
-    :doc "Save minibuffer history"
-    :tag "builtin"
-    :added "2021-09-05"
-    :global-minor-mode t)
+    :ensure t))
 
-  (leaf corfu
-    :doc "Completion Overlay Region FUnction"
-    :req "emacs-27.1"
-    :tag "emacs>=27.1"
-    :url "https://github.com/minad/corfu"
-    :added "2021-09-11"
-    :emacs>= 27.1
-    :ensure t
-    ;; :require t
-    ;; :defvar (corfu-auto)
-    :when (eq window-system 'x)
-    :hook ((minibuffer-setup-hook . my/corfu-enable-in-minibuffer)
-           (eshell-mode-hook . (lambda ()
-                                 (setq-local corfu-auto nil)
-                                 (corfu-mode)))
+(leaf savehist
+  :doc "Save minibuffer history"
+  :tag "builtin"
+  :added "2021-09-05"
+  :global-minor-mode t)
+
+(leaf corfu
+  :doc "Completion Overlay Region FUnction"
+  :req "emacs-27.1"
+  :tag "emacs>=27.1"
+  :url "https://github.com/minad/corfu"
+  :added "2021-09-11"
+  :emacs>= 27.1
+  :ensure t
+  ;; :require t
+  ;; :defvar (corfu-auto)
+  :when (eq window-system 'x)
+  :hook ((minibuffer-setup-hook . my/corfu-enable-in-minibuffer)
+         (eshell-mode-hook . (lambda ()
+                               (setq-local corfu-auto nil)
+                               (corfu-mode)))
+         (corfu-mode . corfu-popupinfo-mode)
+         )
+  :global-minor-mode global-corfu-mode
+  :custom ((tab-always-indent . 'complete)
+           (corfu-cycle . t)
+           (corfu-auto . t)
+           (corfu-auto-prefix . 3)
+           (corfu-auto-delay . 0.01)
+           ;; (corfu-quit-no-match . 'separator)
+           ;; (corfu-separator . ?\s)
+           ;; (corfu-preselect-first . nil)
            )
-    :global-minor-mode global-corfu-mode
-    :custom ((tab-always-indent . 'complete)
-             (corfu-cycle . t)
-             (corfu-auto . t)
-             (corfu-auto-prefix . 3)
-             (corfu-auto-delay . 0.01)
-             ;; (corfu-quit-no-match . 'separator)
-             ;; (corfu-separator . ?\s)
-             ;; (corfu-preselect-first . nil)
-             )
-    :bind
-    ((corfu-map
-      ("M-SPC" . corfu-insert-separator)))
-    :init
-    (defun my/corfu-enable-in-minibuffer ()
-      (when (where-is-internal #'completion-at-point (list (current-local-map)))
-        (setq-local corfu-auto nil)
-        (corfu-mode 1)))
-    (defun my/corfu-insert-and-send ()
-      (interactive)
-      (corfu-insert)
-      (cond
-       ((and (derived-mode-p 'eshell-mode) (fboundp 'eshell-send-input))
-        (eshell-send-input)
-        ((derived-mode-p 'comint-mode)
-         (comint-send-input)))))
-    :global-minor-mode global-corfu-mode
-    )
-  (leaf kind-icon
-      :doc "Completion kind icons"
-      :req "emacs-27.1" "svg-lib-0"
-      :tag "completion" "emacs>=27.1"
-      :url "https://github.com/jdtsmith/kind-icon"
-      :added "2022-11-26"
-      :emacs>= 27.1
-      :ensure t
-      :disabled t
-      :when (eq window-system 'x)
-      :after corfu
-      :pre-setq (kind-icon-defalut-face . 'corfu-default)
-      :config
-      (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
-  (leaf tempel
-      :doc "Tempo templates/snippets with in-buffer field editing"
-      :req "emacs-27.1" "compat-29.1.4.0"
-      :tag "wp" "tools" "languages" "abbrev" "emacs>=27.1"
-      :url "https://github.com/minad/tempel"
-      :added "2023-11-10"
-      :emacs>= 27.1
-      :ensure t
-      :after corfu
-      :bind (("C-+" . tempel-complete)
-             ("C-*" . tempel-insert)
-             (tempel-map
-              ("C-S-n" . tempel-next)
-              ("C-S-p" . tempel-previous)
-              ("C-RET" . tempel-done)
-              )
-             )
-      :config
-      (leaf tempel-collection
-        :doc "Collection of templates for Tempel"
-        :req "tempel-0.5" "emacs-29.1"
-        :tag "tools" "emacs>=29.1"
-        :url "https://github.com/Crandel/tempel-collection"
-        :added "2023-11-10"
-        :emacs>= 29.1
-        :ensure t
-        :after tempel)
-      )
-  (leaf cape
-      :doc "Completion At Point Extensions"
-      :req "emacs-27.1"
-      :tag "emacs>=27.1"
-      :url "https://github.com/minad/cape"
-      :added "2022-03-31"
-      :emacs>= 27.1
-      :ensure t
-      ;; :after corfu
-      ;; :disabled t
-      :hook ((ein:notebook-mode-hook . my/set-ein-capf))
-      :config
-      (add-to-list 'completion-at-point-functions #'tempel-complete)
-      (add-to-list 'completion-at-point-functions #'cape-file t)
-      (add-to-list 'completion-at-point-functions #'cape-dict t)
-      (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-      (add-to-list 'completion-at-point-functions #'cape-keyword)
-      ;; (add-to-list 'completion-at-point-functions #'cape-symbol)
-      ;; (add-to-list 'completion-at-point-functions #'cape-abbrev)
-      ;; (add-to-list 'completion-at-point-functions #'cape-elisp-block)
-      ;; (add-to-list 'completion-at-point-functions #'cape-tex)
-      :init
-      (defun my/convert-super-capf (arg-capf)
-        (list (cape-capf-noninterruptible
-               (cape-capf-accept-all
-                (cape-capf-buster
-                 (cape-super-capf arg-capf
-                                  #'cape-file
-                                  ))))
-              #'cape-dict))
-
-      (defun my/set-ein-capf ()
-        (interactive)
-        ;; (setq-local completion-at-point-functions
-        ;;             (my/convert-super-capf (cape-company-to-capf #'company-jedi)))
-        (setq-local completion-at-point-functions
-                    (list (cape-capf-noninterruptible
-                           (cape-capf-accept-all
-                            (cape-capf-buster
-                             (cape-super-capf (cape-company-to-capf #'company-jedi)))))))
-        (add-to-list 'completion-at-point-functions #'cape-file t)
-        (add-to-list 'completion-at-point-functions #'cape-dict t)
-        )
-      (defun my/reset-capf ()
-        (interactive)
-        (setq completion-at-point-functions
-              (list (cape-capf-noninterruptible
-                     (cape-capf-accept-all
-                      (cape-capf-buster
-                       (cape-super-capf #'cape-elisp-symbol))))))
-        )
-      )
-  (leaf *emacs
-    :preface
-    ;; Add prompt indicator to `completing-read-multiple'.
-    ;; Alternatively try `consult-completing-read-multiple'.
-    (defun crm-indicator (args)
-      (cons (concat "[CRM] " (car args)) (cdr args)))
-    (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
-
-    ;; Do not allow the cursor in the minibuffer prompt
-    (setq minibuffer-prompt-properties
-          '(read-only t cursor-intangible t face minibuffer-prompt))
-    (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
-
-    ;; Emacs 28: Hide commands in M-x which do not work in the current mode.
-    ;; Vertico commands are hidden in normal buffers.
-    ;; (setq read-extended-command-predicate
-    ;;       #'command-completion-default-include-p)
-
-    ;; Enable recursive minibuffers
-    (setq enable-recursive-minibuffers t))
+  :bind
+  ((corfu-map
+    ("M-SPC" . corfu-insert-separator)))
+  :init
+  (defun my/corfu-enable-in-minibuffer ()
+    (when (where-is-internal #'completion-at-point (list (current-local-map)))
+      (setq-local corfu-auto nil)
+      (corfu-mode 1)))
+  (defun my/corfu-insert-and-send ()
+    (interactive)
+    (corfu-insert)
+    (cond
+     ((and (derived-mode-p 'eshell-mode) (fboundp 'eshell-send-input))
+      (eshell-send-input)
+      ((derived-mode-p 'comint-mode)
+       (comint-send-input)))))
+  :global-minor-mode global-corfu-mode
   )
+
+(leaf kind-icon
+  :doc "Completion kind icons"
+  :req "emacs-27.1" "svg-lib-0"
+  :tag "completion" "emacs>=27.1"
+  :url "https://github.com/jdtsmith/kind-icon"
+  :added "2022-11-26"
+  :emacs>= 27.1
+  :ensure t
+  :disabled t
+  :when (eq window-system 'x)
+  :after corfu
+  :pre-setq (kind-icon-defalut-face . 'corfu-default)
+  :config
+  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+(leaf tempel
+  :doc "Tempo templates/snippets with in-buffer field editing"
+  :req "emacs-27.1" "compat-29.1.4.0"
+  :tag "wp" "tools" "languages" "abbrev" "emacs>=27.1"
+  :url "https://github.com/minad/tempel"
+  :added "2023-11-10"
+  :emacs>= 27.1
+  :ensure t
+  :after corfu
+  :bind (("C-+" . tempel-complete)
+         ("C-*" . tempel-insert)
+         (tempel-map
+          ("C-S-n" . tempel-next)
+          ("C-S-p" . tempel-previous)
+          ("C-RET" . tempel-done)
+          )
+         )
+  :config
+  (leaf tempel-collection
+    :doc "Collection of templates for Tempel"
+    :req "tempel-0.5" "emacs-29.1"
+    :tag "tools" "emacs>=29.1"
+    :url "https://github.com/Crandel/tempel-collection"
+    :added "2023-11-10"
+    :emacs>= 29.1
+    :ensure t
+    :after tempel)
+  )
+(leaf cape
+  :doc "Completion At Point Extensions"
+  :req "emacs-27.1"
+  :tag "emacs>=27.1"
+  :url "https://github.com/minad/cape"
+  :added "2022-03-31"
+  :emacs>= 27.1
+  :ensure t
+  ;; :after corfu
+  ;; :disabled t
+  :hook ((ein:notebook-mode-hook . my/set-ein-capf))
+  :config
+  (add-to-list 'completion-at-point-functions #'tempel-complete)
+  (add-to-list 'completion-at-point-functions #'cape-file t)
+  (add-to-list 'completion-at-point-functions #'cape-dict t)
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+  (add-to-list 'completion-at-point-functions #'cape-keyword)
+  ;; (add-to-list 'completion-at-point-functions #'cape-symbol)
+  ;; (add-to-list 'completion-at-point-functions #'cape-abbrev)
+  ;; (add-to-list 'completion-at-point-functions #'cape-elisp-block)
+  ;; (add-to-list 'completion-at-point-functions #'cape-tex)
+  :init
+  (defun my/convert-super-capf (arg-capf)
+    (list (cape-capf-noninterruptible
+           (cape-capf-accept-all
+            (cape-capf-buster
+             (cape-super-capf arg-capf
+                              #'cape-file
+                              ))))
+          #'cape-dict))
+
+  (defun my/set-ein-capf ()
+    (interactive)
+    ;; (setq-local completion-at-point-functions
+    ;;             (my/convert-super-capf (cape-company-to-capf #'company-jedi)))
+    (setq-local completion-at-point-functions
+                (list (cape-capf-noninterruptible
+                       (cape-capf-accept-all
+                        (cape-capf-buster
+                         (cape-super-capf (cape-company-to-capf #'company-jedi)))))))
+    (add-to-list 'completion-at-point-functions #'cape-file t)
+    (add-to-list 'completion-at-point-functions #'cape-dict t)
+    )
+  (defun my/reset-capf ()
+    (interactive)
+    (setq completion-at-point-functions
+          (list (cape-capf-noninterruptible
+                 (cape-capf-accept-all
+                  (cape-capf-buster
+                   (cape-super-capf #'cape-elisp-symbol))))))
+    )
+  )
+(leaf *emacs
+  :preface
+  ;; Add prompt indicator to `completing-read-multiple'.
+  ;; Alternatively try `consult-completing-read-multiple'.
+  (defun crm-indicator (args)
+    (cons (concat "[CRM] " (car args)) (cdr args)))
+  (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
+
+  ;; Do not allow the cursor in the minibuffer prompt
+  (setq minibuffer-prompt-properties
+        '(read-only t cursor-intangible t face minibuffer-prompt))
+  (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
+
+  ;; Emacs 28: Hide commands in M-x which do not work in the current mode.
+  ;; Vertico commands are hidden in normal buffers.
+  ;; (setq read-extended-command-predicate
+  ;;       #'command-completion-default-include-p)
+
+  ;; Enable recursive minibuffers
+  (setq enable-recursive-minibuffers t))
+
 
 (leaf visual-regexp-steroids
   :doc "Extends visual-regexp to support other regexp engines"
@@ -2667,6 +2679,7 @@
                                           (,(kbd "s-d")     . app-launcher-run-app)
                                           (,(kbd "s-a")     . zoom-window-zoom)
                                           (,(kbd "s-o")     . consult-buffer)
+                                          (,(kbd "C-x r l") . consult-bookmark)
                                           (,(kbd "M-!")     . shell-command)
                                           (,(kbd "s-S")     . window-capcher)
                                           (,(kbd "<mouse-10>")   . pulseaudio-increase-sink-volume)
