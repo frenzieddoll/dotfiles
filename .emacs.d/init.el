@@ -442,7 +442,8 @@
 
   :preface
   (defun kill-current-buffer-and/or-dired-open-file ()
-    "In Dired, dired-open-file for a file. For a directory, dired-find-file and kill previously selected buffer."
+    "In Dired, dired-open-file for a file.
+For a directory, dired-find-file and kill previously selected buffer."
     (interactive)
     (if (file-directory-p (dired-get-file-for-visit))
         (dired-find-alternate-file)
@@ -468,14 +469,32 @@
 
 (leaf *eshell-tools
   :bind (("C-c e" . eshell))
-  :hook (eshell-mode-hook . eshell-alias)
-  :defvar (eshell-command-aliases-list pcomplete-systemctl-commands pcomplete-command-completion-function)
+  :defvar (eshell-command-aliases-list)
   :config
-  (if (not (eq system-type 'windows))
-          (eval-after-load "esh-module"
-            '(defvar eshell-modules-list (delq 'eshell-ls (delq 'eshell-unix eshell-modules-list)))))
+  (append eshell-command-aliases-list (list
+                                       (list "ll" "ls -ltrh")
+                                       (list "la" "ls -a")
+                                       (list "o" "xdg-open")
+                                       (list "emacs" "find-file $1")
+                                       (list "m" "find-file $1")
+                                       (list "mc" "find-file $1")
+                                       (list "d" "dired .")
+                                       (list "l" "eshell/less $1")
+                                       (list "translate" "~/python/translate.py")
+                                       (list "pacmandate" "expac --timefmt='%Y-%m-%d %T' '%l\t%n' | sort | tail -n $1")
+                                       (list "nvidiafix" "nvidia-settings --assign CurrentMetaMode='nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }'")
+                                       (list "usbmount" "sudo mount -t vfat $1 $2 -o rw,umask=000")
+                                       (list "dvd" "mpv dvd:// -dvd-device $1")
+                                       (list "dvdCopy" "dvdbackup -i /dev/sr0 -o ~/Downloads/iso/ -M")
+                                       (list "pkglist" "yay -Qe | cut -f 1 -d " " > ~/.emacs.d/pkglist")
+                                       (list "open" "cmd.exe /c start {wslpath -w $*}")))
+  ;; (if (not (eq system-type 'windows))
+  ;;         (eval-after-load "esh-module"
+  ;;           '(defvar eshell-modules-list (delq 'eshell-ls (delq 'eshell-unix eshell-modules-list)))))
 
 
+  :preface
+  (setenv "GIT_PAGER" "")
   (leaf eshell-prompt-extras
     :doc "Display extra information for your eshell prompt."
     :req "emacs-25"
@@ -484,74 +503,19 @@
     :added "2022-03-19"
     :emacs>= 25
     :ensure t
-    :after esh-opt
+    ;; :after esh-opt
     :commands epe-theme-lambda
     :custom ((eshell-highlight-prompt . nil)
              (eshell-prompt-function . 'epe-theme-lambda))
-    ;; :config
-    ;; (with-eval-after-load "esh-opt"
-    ;;   (autoload 'epe-theme-lambda "eshell-prompt-extras")
-    ;;   (setq eshell-highlight-prompt nil
-    ;;         eshell-prompt-function 'epe-theme-lambda))
     )
-
-  :preface
-  (setenv "GIT_PAGER" "")
-  (defun eshell-alias ()
-    (interactive)
-    "eshell alias set"
-    (setq eshell-command-aliases-list
-          (append
-           (list
-            (list "ll" "ls -ltrh")
-            (list "la" "ls -a")
-            (list "o" "xdg-open")
-            (list "emacs" "find-file $1")
-            (list "m" "find-file $1")
-            (list "mc" "find-file $1")
-            (list "d" "dired .")
-            (list "l" "eshell/less $1")
-            (list "translate" "~/python/translate.py")
-            (list "pacmandate" "expac --timefmt='%Y-%m-%d %T' '%l\t%n' | sort | tail -n $1")
-            (list "nvidiafix" "nvidia-settings --assign CurrentMetaMode='nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }'")
-            (list "usbmount" "sudo mount -t vfat $1 $2 -o rw,umask=000")
-            (list "dvd" "mpv dvd:// -dvd-device $1")
-            (list "dvdCopy" "dvdbackup -i /dev/sr0 -o ~/Downloads/iso/ -M")
-            (list "pkglist" "yay -Qe | cut -f 1 -d " " > ~/.emacs.d/pkglist")
-            (list "open" "cmd.exe /c start {wslpath -w $*}")))))
-
-  (defun pcomplete/sudo ()
-    "Completion rules for the `sudo' command."
-    (let ((pcomplete-ignore-case t))
-      (pcomplete-here (funcall pcomplete-command-completion-function))
-      (while (pcomplete-here (pcomplete-entries)))))
-
-  ;;systemctlの補完
-  (defcustom pcomplete-systemctl-commands
-    '("disable" "enable" "status" "start" "restart" "stop" "reenable"
-      "list-units" "list-unit-files" "suspend")
-    "p-completion candidates for `systemctl' main commands"
-    :type '(repeat (string :tag "systemctl command"))
-    :group 'pcomplete)
-  (defvar pcomplete-systemd-units
-    (split-string
-     (shell-command-to-string
-      "(systemctl list-units --all --full --no-legend;systemctl list-unit-files --full --no-legend)|while read -r a b; do echo \" $a\";done;"))
-    "p-completion candidates for all `systemd' units")
-
-  (defvar pcomplete-systemd-user-units
-    (split-string
-     (shell-command-to-string
-      "(systemctl list-units --user --all --full --no-legend;systemctl list-unit-files --user --full --no-legend)|while read -r a b;do echo \" $a\";done;"))
-    "p-completion candidates for all `systemd' user units")
-
-  (defun pcomplete/systemctl ()
-    "Completion rules for the `systemctl' command."
-    (pcomplete-here (append pcomplete-systemctl-commands '("--user")))
-    (cond ((pcomplete-test "--user")
-           (pcomplete-here pcomplete-systemctl-commands)
-           (pcomplete-here pcomplete-systemd-user-units))
-          (t (pcomplete-here pcomplete-systemd-units)))))
+   ;; (leaf *eshell-modules
+   ;;   :disabled t
+   ;;   :unless (eq system-type 'windows)
+   ;;   :after esh-module
+   ;;   :defvar (eshell-modules-list)
+   ;;   :custom `(eshell-modules-list . ,(delq 'eshell-ls (delq 'eshell-unix eshell-modules-list)))
+   ;; )
+  )
 
 (leaf *globa-keybinding
   :hook (minibuffer-setup-hook . minibuffer-delete-backward-char)
@@ -563,7 +527,7 @@
   :bind (;; C-m : 改行プラスインデント
          ("C-m"           . newline-and-indent)
          ;; ;; exwm用
-         ("C-h" . delete-backward-char)
+         ("C-h"           . delete-backward-char)
          ;; C-x ? : help
          ("C-c ?"         . help-command)
          ;;折り返しトグルコマンド
@@ -586,7 +550,7 @@
          ("C-S-p"         . scroll-down_alt)
          ("<kp-divide>"   . insertBackslash)
          ("<kp-multiply>" . insertPipe)
-         ("M-h" . backward-kill-word))
+         ("M-h"           . backward-kill-word))
 
   :preface
   (defun scroll-up_alt ()
@@ -809,7 +773,7 @@
           ))
         (save-buffer)))
     (defun my-load-frame-size ()
-      "'my-save-fram-file'に保存されたフレームの位置、大きさを復元します"
+      "`my-save-fram-file'に保存されたフレームの位置、大きさを復元します"
       (interactive)
       (let ((file my-save-frame-file))
         (when (file-exists-p file)
@@ -1150,7 +1114,7 @@
   :custom ((google-translate--translation-directions-alist . '(("en" . "ja")
                                                                ("ja" . "en")))
            (google-translate-output-destination . 'popup))
-  :preface
+  :config
   (defun google-translate-enja-or-jaen (&optional string)
     "Translate words in region or current position. Can also specify query with C-u"
     (interactive)
@@ -1170,6 +1134,7 @@
        (if asciip "en" "ja")
        (if asciip "ja" "en")
        string)))
+
   (defun google-translate--search-tkk ()
     "Search TKK."
     (list 430675 2721866130))
@@ -1301,6 +1266,9 @@
   :doc "peruse file or buffer without editing"
   :tag "builtin"
   :added "2021-09-05"
+  :defun (undo-tree-redo
+          undo-tree-undo
+          backward-line)
   :custom ((view-read-only . t))
   :bind (("C-;" . view-mode)
          (view-mode-map
@@ -1596,7 +1564,30 @@
 (leaf align
   :doc "align text to a specific column, by regexp"
   :tag "builtin"
-  :added "2021-09-05")
+  :added "2021-09-05"
+  :require t
+  :config
+  (leaf *align-for-haskell
+    :defvar (align-rules-list)
+    :config
+    (add-to-list 'align-rules-list
+                 '(haskell-types
+                   (regexp . "\\(\\s-+\\)\\(::\\|∷\\)\\s-+")
+                   (modes quote (haskell-mode literate-haskell-mode))))
+    (add-to-list 'align-rules-list
+                 '(haskell-assignment
+                   (regexp . "\\(\\s-+\\)=\\s-+")
+                   (modes quote (haskell-mode literate-haskell-mode))))
+    (add-to-list 'align-rules-list
+                 '(haskell-arrows
+                   (regexp . "\\(\\s-+\\)\\(->\\|→\\)\\s-+")
+                   (modes quote (haskell-mode literate-haskell-mode))))
+    (add-to-list 'align-rules-list
+                 '(haskell-left-arrows
+                   (regexp . "\\(\\s-+\\)\\(<-\\|←\\)\\s-+")
+                   (modes quote (haskell-mode literate-haskell-mode))))
+    )
+  )
 
 (leaf app-launcher
   :doc "Launch applications from Emacs"
@@ -1812,7 +1803,10 @@
   :emacs>= 24.1
   :ensure t
   :after calendar
-  :defvar (calendar-day-header-array calendar-day-name-array calendar-holidays japanese-holidays)
+  :defvar (calendar-day-header-array
+           calendar-day-name-array
+           calendar-holidays)
+
   :require japanese-holidays
   :hook ((calendar-today-visible-hook   . japanese-holiday-mark-weekend)
          (calendar-today-invisible-hook . japanese-holiday-mark-weekend)
@@ -1884,12 +1878,10 @@
   `((recentf-save-file . "~/.emacs.d/recentf")
     (recentf-max-saved-items . 2000)
     (recentf-auto-cleanup . 'never)
-    (recnetf-exclude . '("/recentf" "COMMIT_EDITMSG" "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores" "/\\.emacs\\.d/\\.cask/"))
+    (recnetf-exclude . '("/recentf" "COMMIT_EDITMSG" "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores" "/\\.emacs\\.d/\\.cask/" "~/Videos/Geheimnis/"))
     ;; (recentf-auto-cleanup-timer . (run-with-idle-timer 30 t 'recentf-save-list))
     )
   )
-
-
 
 (leaf smartparens
   :doc "Automatic insertion, wrapping and paredit-like navigation with user defined pairs."
@@ -2016,7 +2008,6 @@
     :url "https://github.com/oantolin/orderless"
     :added "2021-09-05"
     :emacs>= 26.1
-    :after consult
     :ensure t
     :defvar (orderless-style-dispatchers)
     :custom ((completion-styles . '(basic  orderless))
@@ -2025,6 +2016,7 @@
              )
     )
   )
+
 
 (leaf marginalia
   :doc "Enrich existing commands with completion annotations"
@@ -2037,53 +2029,6 @@
   :unless (string= (system-name) "RaspberryPi")
   :config (marginalia-mode 1)
   )
-
-;; (leaf orderless
-;;   :doc "Completion style for matching regexps in any order"
-;;   :req "emacs-26.1"
-;;   :tag "extensions" "emacs>=26.1"
-;;   :url "https://github.com/oantolin/orderless"
-;;   :added "2021-09-05"
-;;   :emacs>= 26.1
-;;   :after consult
-;;   :disabled t
-;;   :ensure t
-;;   ;; :hook ((corfu-mode-hook . my/orderless-for-corfu)
-;;   ;;        (lsp-completion-mode-hook . my/orderless-for-lsp-mode))
-;;   :defvar (orderless-style-dispatchers)
-;;   :custom (
-;;            (completion-styles . '(basic orderless))
-;;            (completion-category-defaults . nil)
-;;            (completion-category-overrides . nil)
-;;            ;; (completion-category-overrides . '((file (style . (partial-completion)))))
-;;            ;; (completion-category-overrides . '((eglot (styles orderless+initialism))
-;;            ;;                                    (command (styles orderless+initialism))
-;;            ;;                                    (symbol (styles orderless+initialism))
-;;            ;;                                    (variable (styles orderless+initialism))))
-;;            )
-;;   :init
-;;   (defun my/orderless-dispatch-flex-first (_pattern index _total)
-;;     (and (eq index 0) 'orderless-flex))
-
-;;   (defun my/orderless-fast-flex (component)
-;;     "Match a component in flex style.
-;;        This means the characters in COMPONENT must occur in the
-;;        candidate in that order, but not necessarily consecutively."
-;;     (rx-to-string
-;;      `(seq
-;;        bol           ; orderless-flexに先頭一致の条件を追加
-;;        ,@(cdr (cl-loop for char across component
-;;                        append `((zero-or-more (not ,char)) (group ,char)))))))
-
-;;   (defun my/orderless-for-corfu ()
-;;     (setq-local orderless-style-dispatchers '(my/orderless-dispatch-flex-first))
-;;     ;; (setq-local orderless-matching-styles '(my/orderless-fast-flex))
-;;     )
-
-;;   (defun my/orderless-for-lsp-mode ()
-;;     (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-;; 	      '(orderless)))
-;;   )
 
 (leaf embark
   :doc "Conveniently act on minibuffer completions"
@@ -2130,13 +2075,13 @@
          (corfu-mode . corfu-popupinfo-mode)
          )
   :global-minor-mode global-corfu-mode
-  :custom ((tab-always-indent . 'complete)
-           (corfu-cycle . t)
-           (corfu-auto . t)
-           (corfu-auto-prefix . 3)
-           (corfu-auto-delay . 0.01)
-           ;; (corfu-quit-no-match . 'separator)
-           ;; (corfu-separator . ?\s)
+  :custom ((tab-always-indent        . 'complete)
+           (corfu-cycle              . t)
+           (corfu-auto               . t)
+           (corfu-auto-prefix        . 3)
+           (corfu-auto-delay         . 0.01)
+           ;; (corfu-quit-no-match   . 'separator)
+           ;; (corfu-separator       . ? \s)
            ;; (corfu-preselect-first . nil)
            )
   :bind
@@ -2172,6 +2117,7 @@
   :pre-setq (kind-icon-defalut-face . 'corfu-default)
   :config
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+
 (leaf tempel
   :doc "Tempo templates/snippets with in-buffer field editing"
   :req "emacs-27.1" "compat-29.1.4.0"
@@ -2200,6 +2146,7 @@
     :ensure t
     :after tempel)
   )
+
 (leaf cape
   :doc "Completion At Point Extensions"
   :req "emacs-27.1"
@@ -2252,6 +2199,7 @@
                    (cape-super-capf #'cape-elisp-symbol))))))
     )
   )
+
 (leaf *emacs
   :preface
   ;; Add prompt indicator to `completing-read-multiple'.
@@ -2272,7 +2220,6 @@
 
   ;; Enable recursive minibuffers
   (setq enable-recursive-minibuffers t))
-
 
 (leaf visual-regexp-steroids
   :doc "Extends visual-regexp to support other regexp engines"
@@ -2404,7 +2351,7 @@
   :emacs>= 26.3
   :ensure t
   :disabled t
-  :custom `((read-process-output-max . ,(* 1024 1024))
+  :custom `((read-process-output-max       . ,(* 1024 1024))
             (completion-category-overrides . '((eglot (styles orderless))))
             )
   ;; :config
@@ -2424,8 +2371,7 @@
               (string= (system-name) "sx12_toshiaki"))
   :disabled t
   :bind (("M-n" . flycheck-next-error)
-         ("M-p" . flycheck-previous-error))
-  :global-minor-mode global-flycheck-mode)
+         ("M-p" . flycheck-previous-error)))
 
 (leaf haskell-mode
   :doc "A Haskell editing mode"
@@ -2440,22 +2386,39 @@
             (haskell-process-type          . 'cabal-repl)
             ;; (haskell-process-path-ghci     . "")
             ;; (haskell-process-args-ghcie    . "ghci")
-            (haskell-indent-after-keywords . '(("where" 4 0) ("of" 4) ("do" 4) ("mdo" 4) ("rec" 4) ("in" 4 0) ("{" 4) "if" "then" "else" "let"))
-            (haskell-indent-offset         . 4)
-            (haskell-indendt-spaces        . 4)
-            (haskell-compile-stack-build-command . t)
-            (haskell-hoogle-command . nil)
-            (haskell-hoogle-url . "https://www.stackage.org/lts/hoogle?q=%s"))
+            (haskell-indent-offset                  . 4)
+            (haskell-indendt-spaces                 . 4)
+            (haskell-compile-stack-build-command    . t)
+            (haskell-process-suggest-hoogle-imports . t)
+            (haskell-indent-after-keywords          . '(("where" 4 0)
+                                                        ("of" 4)
+                                                        ("do" 4)
+                                                        ("mdo" 4)
+                                                        ("rec" 4)
+                                                        ("in" 4 0)
+                                                        ("{" 4)
+                                                        "if"
+                                                        "then"
+                                                        "else"
+                                                        "let"))
+            ;; (haskell-hoogle-command              . nil)
+            ;; (haskell-hoogle-url                  . "https://www.stackage.org/lts/hoogle?q=%s")
+            )
   :bind `((haskell-mode-map
            ("C-c C-z" . haskell-interactive-bring)
            ("C-c C-l" . haskell-process-load-file)
            ("C-c C-," . haskell-mode-format-imports)
-           ("<f5>" . haskell-compile)
-           ("<f8>" . haskell-navigate-imports)))
-  :hook ((haskell-mode . interactive-haskell-mode)
-         ;; (haskell-mode . haskell-decl-scan-mode)
-         ;; (haskell-mode . haskell-doc-mode)
-         (haskell-mode . haskell-indentation-mode))
+           ("<f5>"    . haskell-compile)
+           ("<f8>"    . haskell-navigate-imports)))
+  :hook ((haskell-mode-hook . interactive-haskell-mode)
+         (haskell-mode-hook . haskell-doc-mode)
+         (haskell-mode-hook . haskell-indentation-mode)
+         (haskell-mode-hook . haskell-auto-insert-module-template)
+         (haskell-mode-hook . haskell-decl-scan-mode)
+         (haskell-mode-hook . lsp)
+         ;; (haskell-mode-hook . flycheck-mode)
+         ;; (haskell-literate-mode . lsp)
+         )
   :config
   (leaf lsp-haskell
     :doc "Haskell support for lsp-mode"
@@ -2469,9 +2432,8 @@
     :custom ((lsp-haskell-server-path . "haskell-language-server-wrapper")
              (lsp-haskell-completion-snippets-on . nil)
              )
-    :hook ((haskell-mode-hook . lsp)
-           (haskell-mode-hook . flycheck-mode)
-           (haskell-literate-mode . lsp))))
+    )
+  )
 
 (leaf lsp-mode
   :doc "LSP mode"
@@ -2499,7 +2461,7 @@
          (lsp-mode-hook            . lsp-enable-which-key-integration)
          ;; (lsp-completion-mode-hook . my/lsp-mode-setup-completion)
          (haskell-mode-hook        . lsp)
-         (haskell-mode-hook        . flycheck-mode)
+         ;; (haskell-mode-hook        . flycheck-mode)
          (rustic-mode-hook         . lsp)
          (c-mode-hook              . lps)
          (c++-mode-hook            . lsp)
@@ -2642,11 +2604,11 @@
                                                  (string= exwm-class-name "Alacritty"))
                                         (exwm-input-set-local-simulation-keys nil)))))
 
-    :custom `((use-dialog-box . nil)
+    :custom `((use-dialog-box                     . nil)
               (window-divider-default-right-width . 1)
-              (exwm-workspace-show-all-buffers . t)
-              (exwm-layout-show-all-buffers . t)
-              (exwm-workspace-number . 3)
+              (exwm-workspace-show-all-buffers    . t)
+              (exwm-layout-show-all-buffers       . t)
+              (exwm-workspace-number              . 3)
               (exwm-input-global-keys . '(;; 自前の関数
                                           (,(kbd "s-r")     . exwm-reset)
                                           (,(kbd "s-<tab>") . exwm-workspace-toggle)
@@ -2682,6 +2644,7 @@
                                           (,(kbd "C-x r l") . consult-bookmark)
                                           (,(kbd "M-!")     . shell-command)
                                           (,(kbd "s-S")     . window-capcher)
+                                          ;; (,(kbd "<mouse-8>")    . keyboard-quit)
                                           (,(kbd "<mouse-10>")   . pulseaudio-increase-sink-volume)
                                           (,(kbd "<mouse-11>")   . pulseaudio-decrease-sink-volume)
                                           (,(kbd "<mouse-12>")   . app-launcher-run-app)
