@@ -2413,7 +2413,7 @@ For a directory, dired-find-file and kill previously selected buffer."
   :hook ((haskell-mode-hook . interactive-haskell-mode)
          (haskell-mode-hook . haskell-doc-mode)
          (haskell-mode-hook . haskell-indentation-mode)
-         (haskell-mode-hook . haskell-auto-insert-module-template)
+         ;; (haskell-mode-hook . haskell-auto-insert-module-template)
          (haskell-mode-hook . haskell-decl-scan-mode)
          (haskell-mode-hook . lsp)
          ;; (haskell-mode-hook . flycheck-mode)
