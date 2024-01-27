@@ -3,14 +3,32 @@
 excludeFile () {
     cat <<EOF
 Downloads
-Documents
+Pictures/darktable
+Pictures/camera
+Music
+Videos/Geheimnis
+Videos/reinoare
+
 lost+found
 SteamLibrary
 .Trash-1000
+Documents
+
 EOF
 }
 
-BASEDIR="/mnt/HDDforBackup/" #バックアップ先の親ディレクトリ
-LATESTBKUP=$(ls $BASEDIR | grep backup- | tail -n 1) #直近のバックアップのディレクトリ名
+#バックアップ先の親ディレクトリ
+BASEDIR="/mnt/samba/"
 
-rsync -avh $1 --exclude-from=<(excludeFile) --link-dest="$BASEDIR/$LATESTBKUP" /mnt/HDDforData/ "/mnt/HDDforBackup/backup-$(date +%Y%m%d-%H%M%S)"
+#直近のバックアップのディレクトリ名
+LATESTBKUP=$(ls $BASEDIR | grep backup- | grep -v last | tail -n 1)
+
+#バックアップディレクトリ名
+NEWBKUP=$(date +%Y%m%d-%H%M%S)
+
+# バックアップ
+rsync -avh $1 --exclude-from=<(excludeFile) --link-dest="$BASEDIR/$LATESTBKUP" /mnt/HDDforData/ "$BASEDIR/backup-$NEWBKUP"
+
+# 最新のバックアップのリンク
+cd $BASEDIR
+ln -fs ./backup-$NEWBKUP ./backup-last
