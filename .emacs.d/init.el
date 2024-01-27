@@ -240,11 +240,11 @@
   :config
   (leaf *forArchlinux
     :when (eq system-type 'gnu/linux)
-    :when (string-match (system-name) "archlinuxhonda")
+    :when (string= (system-name) "archlinuxhonda")
     :config
     (set-face-attribute 'default nil
                         :family "HackGen"
-                        :height 140))
+                        :height 130))
   (leaf *forSX12
     :when (eq system-type 'gnu/linux)
     :when (string= (system-name) "sx12toshiaki")
@@ -374,7 +374,7 @@
     :bind ((dired-mode-map
             :package dired
             ("P" . peep-dired))))
-(leaf dired-open
+  (leaf dired-open
     :doc "Open files from dired using using custom actions"
     :req "dash-2.5.0" "dired-hacks-utils-0.0.1"
     :tag "files"
@@ -400,6 +400,7 @@
                                       ("rmvb"     . "~/.emacs.d/script/mpv-rifle.sh")
                                       ("mpeg"     . "~/.emacs.d/script/mpv-rifle.sh")
                                       ("VOB"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                      ("mov"      . "~/.emacs.d/script/mpv-rifle.sh")
                                       ("iso"      . "mpv dvd:// -dvd-device")
                                       ("playlist" . "mpv --playlist")
                                       ("exe"      . "wine")
