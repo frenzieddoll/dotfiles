@@ -2294,7 +2294,8 @@ For a directory, dired-find-file and kill previously selected buffer."
           yatex-mode-hook
           haskell-mode-hook
           web-mode-hook
-          python-mode-hook) . yas-minor-mode)
+          python-mode-hook
+          sh-mode-hook) . yas-minor-mode)
   :unless (string-match "Raspberrypi" (system-name))
   ;; :custom ((yas-global-mode . t))
   :bind ((yas-minor-mode-map
