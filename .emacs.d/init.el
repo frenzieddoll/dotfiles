@@ -885,12 +885,12 @@
   (defun base64ToPng (fileName)
     (interactive "sfile name: ")
     (let ((script (concat user-emacs-directory "script/decodeBase64.py %s")))
-      (shell-command (format
+    (let ((script (concat user-emacs-directory "script/decodeBase64.py %s")))
                       script
                       fileName))))
-  (leaf *my-app
-    :require app-launcher-for-windows
-    :config
+    :after dired
+    :bind ((dired-mode-map
+            :package dired
     (add-to-list 'app-launcher-apps-directories "C:/Users/0145220079/AppData/Roaming/Microsoft/Windows/Start Menu/Programs"))
   )
 
@@ -906,7 +906,7 @@
     (mark-whole-buffer)
     (copy-region-as-kill nil nil t)
     (kill-buffer)
-    )
+      (interactive)
   (defun wsl-paste()
     (interactive)
     (insert (shell-command-to-string "powershell.exe -command 'Get-Clipboard'")))
@@ -971,6 +971,65 @@
         (shell-command split-command)
         (delete-file file-name-gpg)
         )))
+       (mapconcat #'shell-quote-argument
+                  (list "cmd.exe" "/c" "start" url)
+                  " "))))
+  ;; (setopt browse-url-browser-function #'my-browse-url-wsl-host-browser)
+  (defun select-pubkey ()
+    (let ((entries '()))
+      (with-temp-buffer
+        (shell-command "gpg --list-keys" (current-buffer))
+        (goto-char (point-min))
+        (while
+            ;; (re-search-forward "uid +\[\\([^\]]+\\)\] \\([^<]+\\) <\\([^>]+\\)>" nil t)
+            (re-search-forward "uid\\s-*\\[\\s-*\\([^]]+\\)\\s-*\\]\\s-*\\([^<]+\\)\\s-*<\\([^>]+\\)>" nil t)
+          ;; (re-search-forward "uid +\\(.+\\)" nil t)
+          (let ((trust (match-string 1))
+                (name (match-string 2))
+                (addr (match-string 3))
+                )
+            ;; (message trust)
+            (push (cons (format "%s %s %s" trust name addr) addr) entries))))
+      (let* ((choice (completing-read "Select a name" (mapcar #'car entries)))
+             (addr (cdr (assoc choice entries))))
+        addr)))
+  (defun convert-to-number-with-prefix (str)
+    "Convert a string like '10M', '1G' to a number.
+  Recognizes M for Mega (10^6) and G for Giga (10^9)."
+    (let ((prefix (substring str -1))  ;; 最後の文字（接頭辞）を取り出す
+          (value (string-to-number (substring str 0 -1))))  ;; 最後の文字を除いた部分を数値に変換
+      (cond
+       ((string= prefix "M") (* value 1000000))  ;; Mの場合、10^6を掛ける
+       ((string= prefix "G") (* value 1000000000))  ;; Gの場合、10^9を掛ける
+       ((string= prefix "K") (* value 1000))  ;; Kの場合、10^3を掛ける
+       (t (error "Unsupported prefix: %s" prefix)))))  ;; 対応しない接頭辞の場合はエラーを出す
+  (defun encrypt-gpg (arg)
+    (interactive "ssize threshold: ")
+    (let* ((file-path (dired-get-file-for-visit))
+           (file-name (file-name-nondirectory file-path))
+           (file-name-gpg (format "%s.gpg" file-name))
+           (split-threshold-str (if (equal arg nil)
+                                    "10M"
+                                  arg))
+           (split-threshold (convert-to-number-with-prefix split-threshold-str))
+           ;; (split-threshold (* 10 1000 1000))
+           (pubkye (select-pubkey))
+           (gpg-command (format "gpg --encrypt --recipient %s --output %s %s" pubkye file-name-gpg file-name))
+           (split-command (format "split -b %s -d %s %s.part." split-threshold-str file-name-gpg file-name-gpg))
+           ;; (commands '("gpg --encrypt --recipient frenzieddoll@gmail.com --output %s.gpg %s"
+           ;;             "split -b 10M -d %s.gpg %s.gpg.part."))
+           ;; (command (mapconcat (lambda (s) (format s file-name file-name)) commands "; "))
+           )
+      ;; (prin1 command)
+      ;; (shell-command command)
+      (message split-threshold-str)
+      (shell-command gpg-command)
+      (when (>= (nth 7 (file-attributes file-name-gpg)) split-threshold)
+        (shell-command split-command)
+        (delete-file file-name-gpg)
+        )))
+>>>>>>> variant B
+======= end
   )
 
 
@@ -1039,6 +1098,23 @@
 ;;   :bind ("C-c g" . chatgpt-shell)
 ;;   )
 
+<<<<<<< variant A
+>>>>>>> variant B
+(leaf chatgpt-shell
+  :doc "Interaction mode for ChatGPT"
+  :req "emacs-27.1" "shell-maker-0.17.1"
+  :tag "emacs>=27.1"
+  :url "https://github.com/xenodium/chatgpt-shell"
+  :added "2023-04-28"
+  :emacs>= 27.1
+  :ensure t
+  :disabled t
+  :custom
+  `(chatgpt-shell-openai-key . ,(auth-source-pick-first-password :host "api.openai.com"))
+  :bind ("C-c g" . chatgpt-shell)
+  )
+
+======= end
 (leaf csv
   :doc "Functions for reading and parsing CSV files."
   :tag "csv" "data" "extensions"
@@ -1076,8 +1152,13 @@
     )
   (leaf *ebibForLinux
     :when (eq system-type 'gnu/linux)
+<<<<<<< variant A
     :custom ((ebib-preload-bib-files . '("~/Documents/PDF/references.bib"))
+>>>>>>> variant B
+    :custom ((ebib-preload-bib-files . '("~/tex/references.bib"))
+======= end
              (ebib-keywords-file     . "~/tex/ebib-keywords.txt")
+<<<<<<< variant A
              (ebib-file-associations . '(("pdf" . "zathura")
                                          ("ps"  . "zathura")))
              (ebib-file-search-dirs  . '("~/Documents/PDF/ER"
@@ -1107,16 +1188,28 @@
           (kill-buffer))))
     )
 
+>>>>>>> variant B
+             (ebib-file-associations . '(("pdf" . "zathura") ("ps"  . "zathura")))
+             (ebib-file-search-dirs  . '("~/tex/pdfs" "~/tex/papers" "~/tex/books"))
+             ))
+======= end
   (leaf *ebibForSony
     :when (eq system-type 'windows-nt)
     :when (string= (system-name) "JPC20627141")
+<<<<<<< variant A
+>>>>>>> variant B
+    :bind (("C-c b" . ebib))
+======= end
     :custom ((ebib-preload-bib-files . '("~/Documents/PDF/references.bib"))
              (ebib-keywords-file     . "~/Documents/PDF/ebib-keywords.txt")
              (ebib-file-associations . '(("pdf" . "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe")
                                          ("ps"  . "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe")))
              (ebib-file-search-dirs  . '("~/Documents/PDF/ER" "~/Documents/PDF/paper"))
              ))
+<<<<<<< variant A
 
+>>>>>>> variant B
+======= end
   (leaf biblio
     :doc "Browse and import bibliographic references from CrossRef, arXiv, DBLP, HAL, Dissemin, and doi.org"
     :req "emacs-24.3" "biblio-core-0.2"
@@ -1155,7 +1248,11 @@
            (ein:markdown-command . "pandoc --metadata pagetitle=\"markdown preview\" -f markdown -c ~/.pandoc/github-markdown.css -s --self-contained --mathjax=https://raw.githubusercontent.com/ustasb/dotfiles/b54b8f502eb94d6146c2a02bfc62ebda72b91035/pandoc/mathjax.js")
            (jedi:complete-on-dot . t)
            )
+<<<<<<< variant A
   :defer-config
+>>>>>>> variant B
+  :config
+======= end
   (leaf *ein-for-windows
     :when (string= system-type 'windows-nt)
     :hook ((ein:notebook-mode-hook . ac-mode-map-bind))
@@ -1167,6 +1264,7 @@
         (define-key ac-complete-mode-map (kbd "C-p") 'ac-previous))))
   (setq ein:output-type-preference
       '(emacs-lisp svg png jpeg html text latex javascript))
+<<<<<<< variant A
   ;; (leaf jedi-core
   ;;   :doc "Common code of jedi.el and company-jedi.el"
   ;;   :req "emacs-24" "epc-0.1.0" "python-environment-0.0.2" "cl-lib-0.5"
@@ -1239,6 +1337,23 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
           (insert (format "#+ATTR_HTML: :width 300\n[[file:%s]]" relative-path))
           (org-redisplay-inline-images))
       (message "Clipboard content is not a supported image file path. No insertion performed."))))
+>>>>>>> variant B
+  (leaf jedi-core
+    :doc "Common code of jedi.el and company-jedi.el"
+    :req "emacs-24" "epc-0.1.0" "python-environment-0.0.2" "cl-lib-0.5"
+    :tag "emacs>=24"
+    :added "2023-11-12"
+    :emacs>= 24
+    :ensure t)
+  (leaf company-jedi
+    :doc "Company-mode completion back-end for Python JEDI"
+    :req "emacs-24" "cl-lib-0.5" "company-0.8.11" "jedi-core-0.2.7"
+    :tag "emacs>=24"
+    :url "https://github.com/emacsorphanage/company-jedi"
+    :added "2023-11-12"
+    :emacs>= 24
+    :ensure t)
+======= end
   )
 
 (leaf eww
@@ -1291,7 +1406,13 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
     :ensure t)
   (leaf addressbar
     :when (executable-find "git")
+<<<<<<< variant A
     :vc (:url "https://github.com/lurdan/emacs-addressbar")
+>>>>>>> variant B
+    :el-get (addressbar
+             :type github
+             :pkgname "lurdan/emacs-addressbar")
+======= end
     :custom `((addressbar-persistent-history-directory . "~/.emacs.d/.cache/")
               (addressbar-ignore-url-regexp . "\\(://duckduckgo\\.com/\\|google\\.com/search\\)")
               (addressbar-search-command-alist . '("g" . "https://google.com/search?&gws_rd=cr&complete=0&pws=0&tbs=li:1&q="))
@@ -1407,8 +1528,15 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :added "2021-09-05"
   :emacs>= 25.1
   :ensure t
+<<<<<<< variant A
+>>>>>>> variant B
+  :after git-commit magit-section with-editor
+======= end
   :when (executable-find "git")
+<<<<<<< variant A
   :bind (("C-x g" . magit-status))
+>>>>>>> variant B
+======= end
   :config (setenv "GIT_PAGER" ""))
 
 ;; (leaf mew
@@ -1538,6 +1666,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   (org-roam-db-autosync-mode)
   )
 
+<<<<<<< variant A
 ;; (leaf paradox
 ;;   :doc "A modern Packages Menu. Colored, with package ratings, and customizable."
 ;;   :req "emacs-24.4" "seq-1.7" "let-alist-1.0.3" "spinner-1.7.3" "hydra-0.13.2"
@@ -1549,6 +1678,44 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
 ;;   :disabled t
 ;;   :require t
 ;;   :config (paradox-enable))
+>>>>>>> variant B
+(leaf *org
+    :doc "Export Framework for Org Mode"
+    :tag "builtin"
+    :added "2021-09-05"
+    :disabled t
+    :preface
+    (setq orgPath (expand-file-name
+                   (cond ((string= (system-name) "archlinux") "~/Dropbox/org/")
+                         (t "~/.emacs.d/org/"))))
+    (defun concatOrgPath (str) (concat orgPath str))
+    (setq todoFile (concatOrgPath "todo.org"))
+    (setq memoFile (concatOrgPath "memo.org"))
+    (setq glosFile (concatOrgPath "glossary.org"))
+    (setq org-agenda-files (list todoFile))
+
+    :bind (("C-c a" . org-agenda)
+           ("C-c c" . org-capture))
+    :custom `((org-directory    . orgPath)
+              (org-capture-templates . `(("t" "task"     entry (file+headline todoFile "todo") "** TODO %? \n" :empty-lines 1)
+                                         ("m" "memo"     entry (file          memoFile) "* %^t \n" :empty-lines 1)
+                                         ("g" "glossary" entry (file          glosFile) "** %? \n" :empty-lines 1)))
+              (org-todo-keywords . '((sequence "TODO(t)" "SOMEDAY(s)" "WATTING(w)" "|" "DONE(d)" "CANCELED(c@)")))
+              (org-enforce-todo-dependencies . t)
+              (org-log-done . t))
+    )
+
+(leaf paradox
+  :doc "A modern Packages Menu. Colored, with package ratings, and customizable."
+  :req "emacs-24.4" "seq-1.7" "let-alist-1.0.3" "spinner-1.7.3" "hydra-0.13.2"
+  :tag "packages" "package" "emacs>=24.4"
+  :url "https://github.com/Malabarba/paradox"
+  :added "2023-03-18"
+  :emacs>= 24.4
+  :ensure t
+  :require t
+  :config (paradox-enable))
+======= end
 
 ;; (leaf pdf-tools
 ;;   :doc "Support library for PDF documents"
@@ -2011,33 +2178,32 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :after orderless
   ;; :disabled t
   )
-
-;; (leaf calfw
-;;   :doc "Calendar view framework on Emacs"
-;;   :tag "calendar"
-;;   :url "https://github.com/kiwanami/emacs-calfw"
-;;   :added "2021-09-05"
-;;   :ensure t
-;;   :disabled t
-;;   :config
-;;   (leaf calfw-org
-;;     :doc "calendar view for org-agenda"
-;;     :tag "org" "calendar"
-;;     :added "2021-09-05"
-;;     :ensure t
-;;     :require t)
-;;   (leaf calfw-ical
-;;     :doc "calendar view for ical format"
-;;     :tag "calendar"
-;;     :added "2021-09-05"
-;;     :ensure t
-;;     :require t
-;;     :config
-;;     (load "calfw_functions" t)
-;;     (add-hook 'calendar-load-hook (lambda ()
-;;                                     (require 'japanese-holidays)
-;;                                     (setq calendar-holidays
-;;                                           (append japanese-holidays))))))
+(leaf calfw
+  :doc "Calendar view framework on Emacs"
+  :tag "calendar"
+  :url "https://github.com/kiwanami/emacs-calfw"
+  :added "2021-09-05"
+  :ensure t
+  :disabled t
+  :config
+  (leaf calfw-org
+    :doc "calendar view for org-agenda"
+    :tag "org" "calendar"
+    :added "2021-09-05"
+    :ensure t
+    :require t)
+  (leaf calfw-ical
+    :doc "calendar view for ical format"
+    :tag "calendar"
+    :added "2021-09-05"
+    :ensure t
+    :require t
+    :config
+    (load "calfw_functions" t)
+    (add-hook 'calendar-load-hook (lambda ()
+                                    (require 'japanese-holidays)
+                                    (setq calendar-holidays
+                                          (append japanese-holidays))))))
 
 (leaf *cua
   :bind (("C-x SPC" . cua-set-rectangle-mark)
