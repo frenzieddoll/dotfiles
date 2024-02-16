@@ -871,7 +871,7 @@
 ;;   )
 >>>>>>> fafb2d1e (fix global-seggint for each OS)
 
-(leaf *window-tools
+(leaf *global-setting
   :hook (minibuffer-setup-hook . minibuffer-delete-backward-char)
   :init (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char)
   :bind (("C-x x s" . my-xset)
