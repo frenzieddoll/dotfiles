@@ -766,6 +766,78 @@
     )
 
   :preface
+<<<<<<< variant A
+>>>>>>> variant B
+  (defun scroll-up_alt ()
+    (interactive)
+    (scroll-up 1))
+  (defun scroll-down_alt ()
+    (interactive)
+    (scroll-down 1))
+  (defun insertBackslash ()
+    (interactive)
+    (insert "\\"))
+  (defun insertPipe ()
+    (interactive)
+    (insert "|"))
+  (defun output_toggle ()
+    "Exchange output source."
+    (interactive)
+    (start-process-shell-command
+     "output-toggle"
+     nil
+     (format "~/.emacs.d/script/output_toggle.sh")))
+  (defun upper_volume ()
+    "Volume up."
+    (interactive)
+    (start-process-shell-command
+     "upper_volume"
+     nil
+     (format "~/.emacs.d/script/upper_volume.sh")))
+  (defun lower_volume ()
+    "Volume down."
+    (interactive)
+    (start-process-shell-command
+     "lower_volume"
+     nil
+     (format "~/.emacs.d/script/lower_volume.sh")))
+  (defun mute_toggle ()
+    "Volume mute."
+    (interactive)
+    (start-process-shell-command
+     "mute_toggle"
+     nil
+     (format "~/.emacs.d/script/mute_toggle.sh")))
+  (defun upperLight ()
+    (interactive)
+    (start-process-shell-command
+     "upper light"
+     nil
+     (format "xbacklight -inc 10")))
+  (defun lowerLight ()
+    (interactive)
+    (start-process-shell-command
+     "lower light"
+     nil
+     (format "xbacklight -dec 10")))
+  (defun minibuffer-delete-backward-char ()
+    (local-set-key (kbd "C-h") 'delete-backward-char))
+  :init
+  (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char))
+
+(leaf *window-tools
+  :bind (("C-x x s" . my-xset))
+  :custom ((scroll-preserve-screen-position . t)
+           ;; スクロール開始のマージン
+           (scroll-margin                   . 5)
+           (scroll-conservatively           . 100)
+           ;; 1画面スクロール時に重複させる行数
+           (next-screen-context-lines       . 10)
+           ;; 1画面スクロール時にカーソルの画面上の位置をなるべく変えない
+           (scroll-preserve-screen-position . t)
+           (windmove-wrap-around            . t))
+  :preface
+======= end
   ;; ウィンドウのサイズ変更
   (defun window-resizer ()
     "Control window size and position."
@@ -805,37 +877,128 @@
     (start-process-shell-command
      "xset 再設定"
      nil
-     "xset r rate 250 40"))
-  (defun scroll-up_alt ()
-    (interactive)
-    (scroll-up 1))
-  (defun scroll-down_alt ()
-    (interactive)
-    (scroll-down 1))
-  (defun upperLight ()
-    (interactive)
-    (start-process-shell-command
-     "upper light"
-     nil
-     (format "xbacklight -inc 10")))
-  (defun lowerLight ()
-    (interactive)
-    (start-process-shell-command
-     "lower light"
-     nil
-     (format "xbacklight -dec 10")))
-  (defun minibuffer-delete-backward-char ()
-    (local-set-key (kbd "C-h") 'delete-backward-char))
-  (defun base64ToPng (fileName)
-    (interactive "sfile name: ")
-    (let ((script (concat user-emacs-directory "script/decodeBase64.py %s")))
-      (shell-command (format
-                      script
-                      fileName))
-      )
+     (format "xset r rate 250 40")))
+  :config
+  (leaf zoom-window
+    :doc "Zoom window like tmux"
+    :req "emacs-24.3"
+    :tag "emacs>=24.3"
+    :url "https://github.com/syohex/emacs-zoom-window"
+    :added "2021-09-05"
+    :emacs>= 24.3
+    :ensure t
+    :custom (zoom-window-mode-line-color . "RoyalBlue4"))
+
+  (leaf *ForMac
+    :when (eq system-type 'darwin)
+    :bind (("s-n" . windmove-down)
+           ("s-f" . windmove-right)
+           ("s-b" . windmove-left)
+           ("s-p" . windmove-up)
+           ("s-a" . zoom-window-zoom)
+           ("s-q" . kill-current-buffer)
+           ("s-h" . delete-window)
+           ("s-o" . consult-buffer)))
+
+  (leaf *ForWindows
+    :when (eq system-type 'windows-nt)
+    :bind (("M-n" . windmove-down)
+           ("M-f" . windmove-right)
+           ("M-b" . windmove-left)
+           ("M-p" . windmove-up)
+           ("M-a" . zoom-window-zoom)
+           ("M-q" . kill-current-buffer)
+           ("M-h" . delete-window)
+           ("C-M-i" . output_toggle)
+           ("C-M-m" . mute_toggle)
+           ("C-M-n" . lower_volume )
+           ("C-M-p" . upper_volume)
+           ("M-d" . app-launcher-run-app)
+           ("M-o" . consult-buffer)))
+
+  (leaf *ForWsl
+    ;; :when (eq system-type 'gnu/linux)
+    :when (eq system-type 'gnu/linux)
+    :when (string= (system-name) "sx12toshiaki")
+    :bind (("s-f" . windmove-right)
+           ("s-b" . windmove-left)
+           ("s-a" . zoom-window-zoom)
+           ("s-h" . delete-window)
+           ("s-d" . app-launcher-run-app)
+           ("s-n" . windmove-down)
+           ("s-p" . windmove-up)
+           ("s-q" . kill-current-buffer)
+           ("s-o" . consult-buffer)
+           ("M-q" . kill-current-buffer)
+           ("M-o" . consult-buffer)
+           )
+    :config
+    (my-xset)
     )
 
-  )
+  (leaf *ForCUI
+    ;; :unless (string= (system-name) "sx12_toshiaki")
+    :unless (eq window-system 'x)
+    :when (eq system-type 'gnu/linux)
+    :bind (("M-n" . windmove-down)
+           ("M-f" . windmove-right)
+           ("M-b" . windmove-left)
+           ("M-p" . windmove-up)
+           ("M-a" . zoom-window-zoom)
+           ("M-q" . kill-current-buffer)
+           ("M-h" . delete-window)
+           ("C-M-i" . output_toggle)
+           ("C-M-m" . mute_toggle)
+           ("C-M-n" . lower_volume )
+           ("C-M-p" . upper_volume)
+           ("M-d" . app-launcher-run-app)
+           ("M-o" . consult-buffer))
+    :custom (global-hl-line-mode . t))
+
+  (leaf *mySaveFrame
+    :when (or (eq system-type 'darwin)
+              (eq system-type 'windows-nt))
+    :hook ((emacs-startup-hook . my-load-frame-size)
+           (kill-emacs-hook . my-save-frame-size))
+    :defun my-save-frame-size my-load-frame-size
+    :defvar my-save-frame-file
+    :custom ((my-save-frame-file . "~/.emacs.d/.framesize"))
+    :preface
+    (defun my-save-frame-size ()
+      "現在のフレームの位置、大きさを'my-save-frame-file'に保存します"
+      (interactive)
+      (let* ((param (frame-parameters (selected-frame)))
+             (current-height (frame-height))
+             (current-width (frame-width))
+             (current-top-margin (if (integerp (cdr (assoc 'top param)))
+                                     (cdr (assoc 'top param))
+                                   0))
+
+             (current-left-margin (if (integerp (cdr (assoc 'top param)))
+                                      (cdr (assoc 'top param))
+                                    0))
+             (buf nil)
+             (file my-save-frame-file))
+        ;; ファイルと関連付けられてたバッファ作成
+        (unless (setq buf (get-file-buffer (expand-file-name file)))
+          (setq buf (find-file-noselect (expand-file-name file))))
+        (set-buffer buf)
+        (erase-buffer)
+        ;; ファイル読み込み時に直接評価させる内容を記述
+        (insert
+         (concat
+          "(set-frame-size (selected-frame) "(int-to-string current-width)" "(int-to-string current-height)")\n"
+          "(set-frame-position (selected-frame) "(int-to-string current-left-margin)" "(int-to-string current-top-margin)")\n"
+          ))
+        (save-buffer)))
+    (defun my-load-frame-size ()
+      "`my-save-fram-file'に保存されたフレームの位置、大きさを復元します"
+      (interactive)
+      (let ((file my-save-frame-file))
+        (when (file-exists-p file)
+          (load-file file))))
+    :config
+    (run-with-idle-timer 60 t 'my-save-frame-size)))
 
 (leaf info
   ;; info日本語化
@@ -1590,6 +1753,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
 ;;   )
 
 (leaf org
+<<<<<<< HEAD
     :doc "Export Framework for Org Mode"
     :tag "builtin"
     :added "2021-09-05"
@@ -1680,23 +1844,40 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
 ;;   :config (paradox-enable))
 >>>>>>> variant B
 (leaf *org
+=======
+  :doc "Export Framework for Org Mode"
+  :tag "builtin"
+  :added "2021-09-05"
+  :disabled t
+  :custom ((org-agenda-files . '("~/Dropbox/org/todo.org"))
+           (org-directory . "~/Dropbox/org"))
+  :bind (("C-c a" . org-agenda)
+         ("C-c c" . org-capture))
+  :custom `((org-capture-templates . '(("n" "Note" entry (file+headline "~/Dropbox/org/notes.org" "Notes") "* %?\nEntered on %U\n %i\n %a")
+                                       ("t" "Todo" entry (file+headline "~/Dropbox/org/todo.org"  "Todo")  "* TODO %?\n %i\n %a")))
+            (org-todo-keywords . '((sequence "TODO(t)" "SOMEDAY(s)" "WATTING(w)" "|" "DONE(d)" "CANCELED(c@)")))
+            (org-enforce-todo-dependencies . t)
+            (org-log-done . t))
+  )
+
+(leaf org
+>>>>>>> e6aafdd4 (fix org, xset)
     :doc "Export Framework for Org Mode"
     :tag "builtin"
     :added "2021-09-05"
-    :disabled t
     :preface
-    (setq orgPath (expand-file-name
+    (setq org-path (expand-file-name
                    (cond ((string= (system-name) "archlinux") "~/Dropbox/org/")
                          (t "~/.emacs.d/org/"))))
-    (defun concatOrgPath (str) (concat orgPath str))
-    (setq todoFile (concatOrgPath "todo.org"))
-    (setq memoFile (concatOrgPath "memo.org"))
-    (setq glosFile (concatOrgPath "glossary.org"))
+    (defun concat-org-path (str) (concat org-path str))
+    (setq todoFile (concat-org-path "todo.org"))
+    (setq memoFile (concat-org-path "memo.org"))
+    (setq glosFile (concat-org-path "glossary.org"))
     (setq org-agenda-files (list todoFile))
 
     :bind (("C-c a" . org-agenda)
            ("C-c c" . org-capture))
-    :custom `((org-directory    . orgPath)
+    :custom `((org-directory    . org-path)
               (org-capture-templates . `(("t" "task"     entry (file+headline todoFile "todo") "** TODO %? \n" :empty-lines 1)
                                          ("m" "memo"     entry (file          memoFile) "* %^t \n" :empty-lines 1)
                                          ("g" "glossary" entry (file          glosFile) "** %? \n" :empty-lines 1)))
