@@ -872,6 +872,7 @@
 >>>>>>> fafb2d1e (fix global-seggint for each OS)
 
 (leaf *global-setting
+  ;; :disabled t
   :hook (minibuffer-setup-hook . minibuffer-delete-backward-char)
   :init (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char)
   :bind (("C-x x s" . my-xset)
@@ -910,7 +911,6 @@
            ("s-q" . kill-current-buffer)
            ("s-h" . delete-window)
            ("s-o" . consult-buffer)))
-
   (leaf *ForWindows
     :when (eq system-type 'windows-nt)
     :bind (("M-n" . windmove-down)
@@ -926,7 +926,6 @@
            ("C-M-p" . upper_volume)
            ("M-d" . app-launcher-run-app)
            ("M-o" . consult-buffer)))
-
   (leaf *ForLinux
     :when (eq system-type 'gnu/linux)
     :config
@@ -966,6 +965,8 @@
                ("M-o" . consult-buffer))
         :custom (global-hl-line-mode . t))
       )
+    )
+
   :preface
 ======= end
   ;; ウィンドウのサイズ変更
@@ -1028,6 +1029,7 @@
      (format "xbacklight -dec 10")))
   (defun minibuffer-delete-backward-char ()
     (local-set-key (kbd "C-h") 'delete-backward-char))
+
   :config
   (leaf zoom-window
     :doc "Zoom window like tmux"
@@ -1038,12 +1040,6 @@
     :emacs>= 24.3
     :ensure t
     :custom (zoom-window-mode-line-color . "RoyalBlue4"))
-    )
-
-
-
-
-
   (leaf *mySaveFrame
     :when (or (eq system-type 'darwin)
               (eq system-type 'windows-nt))
@@ -1087,7 +1083,10 @@
         (when (file-exists-p file)
           (load-file file))))
     :config
-    (run-with-idle-timer 60 t 'my-save-frame-size)))
+    (run-with-idle-timer 60 t 'my-save-frame-size))
+  )
+
+
 
 
 (leaf info
