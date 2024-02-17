@@ -240,11 +240,11 @@
   :config
   (leaf *forArchlinux
     :when (eq system-type 'gnu/linux)
-    :when (string-match (system-name) "archlinuxhonda")
+    :when (string= (system-name) "archlinuxhonda")
     :config
     (set-face-attribute 'default nil
                         :family "HackGen"
-                        :height 140))
+                        :height 130))
   (leaf *forSX12
     :when (eq system-type 'gnu/linux)
     :when (string= (system-name) "sx12toshiaki")
@@ -374,7 +374,7 @@
     :bind ((dired-mode-map
             :package dired
             ("P" . peep-dired))))
-(leaf dired-open
+  (leaf dired-open
     :doc "Open files from dired using using custom actions"
     :req "dash-2.5.0" "dired-hacks-utils-0.0.1"
     :tag "files"
@@ -400,6 +400,7 @@
                                       ("rmvb"     . "~/.emacs.d/script/mpv-rifle.sh")
                                       ("mpeg"     . "~/.emacs.d/script/mpv-rifle.sh")
                                       ("VOB"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                      ("mov"      . "~/.emacs.d/script/mpv-rifle.sh")
                                       ("iso"      . "mpv dvd:// -dvd-device")
                                       ("playlist" . "mpv --playlist")
                                       ("exe"      . "wine")
@@ -2293,7 +2294,8 @@ For a directory, dired-find-file and kill previously selected buffer."
           yatex-mode-hook
           haskell-mode-hook
           web-mode-hook
-          python-mode-hook) . yas-minor-mode)
+          python-mode-hook
+          sh-mode-hook) . yas-minor-mode)
   :unless (string-match "Raspberrypi" (system-name))
   ;; :custom ((yas-global-mode . t))
   :bind ((yas-minor-mode-map
@@ -2413,7 +2415,7 @@ For a directory, dired-find-file and kill previously selected buffer."
   :hook ((haskell-mode-hook . interactive-haskell-mode)
          (haskell-mode-hook . haskell-doc-mode)
          (haskell-mode-hook . haskell-indentation-mode)
-         (haskell-mode-hook . haskell-auto-insert-module-template)
+         ;; (haskell-mode-hook . haskell-auto-insert-module-template)
          (haskell-mode-hook . haskell-decl-scan-mode)
          (haskell-mode-hook . lsp)
          ;; (haskell-mode-hook . flycheck-mode)
