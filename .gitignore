@@ -20,3 +20,4 @@
 # !/.pkglist
 # !/.xinitrc
 # !/.zshrc
+/.emacs.d/script/*.config
