@@ -1173,6 +1173,37 @@ For a directory, dired-find-file and kill previously selected buffer."
   :after git-commit magit-section with-editor
   :config (setenv "GIT_PAGER" ""))
 
+(leaf mew
+  :doc "Messaging in the Emacs World"
+  :added "2024-02-18"
+  :ensure t
+  :require t
+  :custom ((mew-fcc . "+outbox")
+           (exec-path . (cons "/usr/bin" exec-path))
+           (user-mail-addressuser-mail-address . "frenzieddoll@gmail.com")
+           (user-full-name . "frenzieddoll")
+           (mew-smtp-server . "smtp.gmail.com")
+           (mail-user-agent . 'mew-user-agent)
+           )
+  :init
+  (autoload 'mew "mew" nil t)
+  (autoload 'mew-send "mew" nil t)
+
+  :config
+  ;; (setq mew-fcc "+outbox")
+  ;; (setq exec-path (cons "/usr/bin" exec-path))
+
+  ;; (setq user-mail-address "frenzieddoll@gmail.com")
+  ;; (setq user-full-name "frenzieddoll")
+  ;; (setq mew-smtp-server "smtp.gmail.com")
+  ;; (setq mail-user-agent 'mew-user-agent)
+  (define-mail-user-agent
+    'mew-user-agent
+    'mew-user-agent-compose
+    'mew-draft-send-message
+    'mew-draft-kill
+    'mew-send-hook))
+
 (leaf org
   :doc "Export Framework for Org Mode"
   :tag "builtin"
@@ -1879,7 +1910,13 @@ For a directory, dired-find-file and kill previously selected buffer."
   `((recentf-save-file . "~/.emacs.d/recentf")
     (recentf-max-saved-items . 2000)
     (recentf-auto-cleanup . 'never)
-    (recnetf-exclude . '("/recentf" "COMMIT_EDITMSG" "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores" "/\\.emacs\\.d/\\.cask/" "~/Videos/Geheimnis/"))
+    (recnetf-exclude . '("/recentf"
+                         "COMMIT_EDITMSG"
+                         "/.?TAGS"
+                         "^/sudo:"
+                         "/\\.emacs\\.d/games/*-scores"
+                         "/\\.emacs\\.d/\\.cask/"
+                         "/Videos/Geheimnis/"))
     ;; (recentf-auto-cleanup-timer . (run-with-idle-timer 30 t 'recentf-save-list))
     )
   )
@@ -2173,10 +2210,9 @@ For a directory, dired-find-file and kill previously selected buffer."
   (defun my/convert-super-capf (arg-capf)
     (list (cape-capf-noninterruptible
            (cape-capf-accept-all
-            (cape-capf-buster
-             (cape-super-capf arg-capf
+            (cape-capf-buster arg-capf
                               #'cape-file
-                              ))))
+                              )))
           #'cape-dict))
 
   (defun my/set-ein-capf ()
@@ -2186,8 +2222,7 @@ For a directory, dired-find-file and kill previously selected buffer."
     (setq-local completion-at-point-functions
                 (list (cape-capf-noninterruptible
                        (cape-capf-accept-all
-                        (cape-capf-buster
-                         (cape-super-capf (cape-company-to-capf #'company-jedi)))))))
+                        (cape-capf-buster (cape-company-to-capf #'company-jedi))))))
     (add-to-list 'completion-at-point-functions #'cape-file t)
     (add-to-list 'completion-at-point-functions #'cape-dict t)
     )
@@ -2196,8 +2231,7 @@ For a directory, dired-find-file and kill previously selected buffer."
     (setq completion-at-point-functions
           (list (cape-capf-noninterruptible
                  (cape-capf-accept-all
-                  (cape-capf-buster
-                   (cape-super-capf #'cape-elisp-symbol))))))
+                  (cape-capf-buster #'cape-elisp-symbol)))))
     )
   )
 

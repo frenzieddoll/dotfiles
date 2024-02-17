@@ -75,6 +75,7 @@ alias -s exe=wine
 # stable diffusion
 alias drun='docker run -it --network=host --device=/dev/kfd --device=/dev/dri --group-add=video --ipc=host --cap-add=SYS_PTRACE --security-opt seccomp=unconfined -v $(pwd):/pwd'
 
+eval "$(gh completion -s zsh)"
 
 function radeonPro () {
     export DISABLE_LAYER_AMD_SWITCHABLE_GRAPHICS_1=1
@@ -82,7 +83,6 @@ function radeonPro () {
     export RADV_PERFTEST=rt,gpl,nv_ms # Ray Tracing等の有効化
     export HSA_OVERRIDE_GFX_VERSION=10.3.0
 }
-
 
 case $(uname -n) in
     "archlinuxhonda")
