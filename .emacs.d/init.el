@@ -1178,25 +1178,28 @@ For a directory, dired-find-file and kill previously selected buffer."
   :added "2024-02-18"
   :ensure t
   :require t
-  :custom ((mew-fcc . "+outbox")
-           (exec-path . (cons "/usr/bin" exec-path))
-           (user-mail-addressuser-mail-address . "frenzieddoll@gmail.com")
-           (user-full-name . "frenzieddoll")
-           (mew-smtp-server . "smtp.gmail.com")
-           (mail-user-agent . 'mew-user-agent)
-           )
-  :init
-  (autoload 'mew "mew" nil t)
-  (autoload 'mew-send "mew" nil t)
+  :when (executable-find "stunnel")
+  ;; :custom ((mew-fcc . "+outbox")
+  ;;          (exec-path . (cons "/usr/bin" exec-path))
+  ;;          (user-mail-addressuser-mail-address . "frenzieddoll@gmail.com")
+  ;;          (user-full-name . "frenzieddoll")
+  ;;          (mew-smtp-server . "smtp.gmail.com")
+  ;;          (mail-user-agent . 'mew-user-agent)
+  ;;          )
+  ;; :init
+  ;; (autoload 'mew "mew" nil t)
+  ;; (autoload 'mew-send "mew" nil t)
 
   :config
-  ;; (setq mew-fcc "+outbox")
-  ;; (setq exec-path (cons "/usr/bin" exec-path))
+  (autoload 'mew "mew" nil t)
+  (autoload 'mew-send "mew" nil t)
+  (setq mew-fcc "+outbox")
+  (setq exec-path (cons "/usr/bin" exec-path))
 
-  ;; (setq user-mail-address "frenzieddoll@gmail.com")
-  ;; (setq user-full-name "frenzieddoll")
-  ;; (setq mew-smtp-server "smtp.gmail.com")
-  ;; (setq mail-user-agent 'mew-user-agent)
+  (setq user-mail-address "frenzieddoll@gmail.com")
+  (setq user-full-name "frenzieddoll")
+  (setq mew-smtp-server "smtp.gmail.com")
+  (setq mail-user-agent 'mew-user-agent)
   (define-mail-user-agent
     'mew-user-agent
     'mew-user-agent-compose
