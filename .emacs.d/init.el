@@ -847,6 +847,7 @@ For a directory, dired-find-file and kill previously selected buffer."
   :added "2022-03-30"
   :emacs>= 24
   :ensure t
+  :when (eq (window-system) 'x)
   :config
   (load-theme 'nord t)
   (leaf moody
