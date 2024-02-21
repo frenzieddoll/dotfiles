@@ -876,20 +876,18 @@
   :hook (minibuffer-setup-hook . minibuffer-delete-backward-char)
   :init (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char)
   :bind (("C-x x s" . my-xset)
-         ("C-c r" . window-resizer)
-         ("C-S-n" . scroll-up_alt)
-         ("C-S-p" . scroll-down_alt)
-         ("C-m"           . newline-and-indent)
-         ("C-h"           . delete-backward-char)
-         ("M-h"           . backward-kill-word)
-         ("C-c ?"         . help-command)
-         ("C-c l"         . toggle-truncate-lines)
-         ("C-c t"         . display-line-numbers-mode)
-         ("C-c w"         . whitespace-mode)
-         ("C-c o"         . occur)
-         ("C-c C-j"       . eval-print-last-sexp)
-         ("s-s"           . async-shell-command)
-         ("s-S"           . window-capcher))
+         ("C-c r"   . window-resizer)
+         ("C-S-n"   . scroll-up_alt)
+         ("C-S-p"   . scroll-down_alt)
+         ("C-m"     . newline-and-indent)
+         ("C-h"     . delete-backward-char)
+         ("M-h"     . backward-kill-word)
+         ("C-c ?"   . help-command)
+         ("C-c l"   . toggle-truncate-lines)
+         ("C-c t"   . display-line-numbers-mode)
+         ("C-c w"   . whitespace-mode)
+         ("C-c o"   . occur)
+         ("C-c C-j" . eval-print-last-sexp))
 
   :custom ((scroll-preserve-screen-position . t)
            ;; スクロール開始のマージン
@@ -920,30 +918,29 @@
            ("M-a" . zoom-window-zoom)
            ("M-q" . kill-current-buffer)
            ("M-h" . delete-window)
-           ("C-M-i" . output_toggle)
-           ("C-M-m" . mute_toggle)
-           ("C-M-n" . lower_volume )
-           ("C-M-p" . upper_volume)
            ("M-d" . app-launcher-run-app)
            ("M-o" . consult-buffer)))
   (leaf *ForLinux
     :when (eq system-type 'gnu/linux)
+    :bind (("s-s" . async-shell-command)
+           ("s-S" . window-capcher)
+           ("s-n" . windmove-down)
+           ("s-f" . windmove-right)
+           ("s-b" . windmove-left)
+           ("s-p" . windmove-up)
+           ("s-a" . zoom-window-zoom)
+           ("s-h" . delete-window)
+           ("s-d" . app-launcher-run-app)
+           ("s-n" . windmove-down)
+           ("s-p" . windmove-up)
+           ("s-q" . kill-current-buffer)
+           ("s-o" . consult-buffer))
     :config
     (leaf *ForWsl
       :when (string-match "microsoft" (shell-command-to-string "uname -r"))
       :config
-      (leaf *SX12
-        :when (string= (system-name) "sx12toshiaki")
-        :bind (("s-f" . windmove-right)
-               ("s-b" . windmove-left)
-               ("s-a" . zoom-window-zoom)
-               ("s-h" . delete-window)
-               ("s-d" . app-launcher-run-app)
-               ("s-n" . windmove-down)
-               ("s-p" . windmove-up)
-               ("s-q" . kill-current-buffer)
-               ("s-o" . consult-buffer)
-               ("M-q" . kill-current-buffer)
+      (leaf wslx
+        :bind (("M-q" . kill-current-buffer)
                ("M-o" . consult-buffer))
         :config
         (my-xset))
@@ -1085,9 +1082,6 @@
     :config
     (run-with-idle-timer 60 t 'my-save-frame-size))
   )
-
-
-
 
 (leaf info
   ;; info日本語化
@@ -1336,22 +1330,7 @@
   )
 
 
-;; (leaf chatgpt-shell
-;;   :doc "Interaction mode for ChatGPT"
-;;   :req "emacs-27.1" "shell-maker-0.17.1"
-;;   :tag "emacs>=27.1"
-;;   :url "https://github.com/xenodium/chatgpt-shell"
-;;   :added "2023-04-28"
-;;   :emacs>= 27.1
-;;   :ensure t
-;;   :disabled t
-;;   :custom
-;;   `(chatgpt-shell-openai-key . ,(auth-source-pick-first-password :host "api.openai.com"))
-;;   :bind ("C-c g" . chatgpt-shell)
-;;   )
 
-<<<<<<< variant A
->>>>>>> variant B
 (leaf chatgpt-shell
   :doc "Interaction mode for ChatGPT"
   :req "emacs-27.1" "shell-maker-0.17.1"
@@ -1366,7 +1345,6 @@
   :bind ("C-c g" . chatgpt-shell)
   )
 
-======= end
 (leaf csv
   :doc "Functions for reading and parsing CSV files."
   :tag "csv" "data" "extensions"
