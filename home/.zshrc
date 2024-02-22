@@ -3,12 +3,25 @@
 # autoload -Uz compinit
 # compinit
 
-autoload -U promptinit; promptinit
-prompt pure
+checkExist () {
+    ls $1 > /dev/null 2>&1
+}
 
-# plugins
-source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+autoload -U promptinit; promptinit
+
+temp="/usr/share/zsh/functions/Prompts/prompt_pure_setup"
+checkExist $temp && prompt pure
+
+# # plugins
+temp="/usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
+checkExist $temp && source $temp
+
+temp="/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+checkExist $temp && source $temp
+
+# prompt pure
+# source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+# source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 autoload -Uz colors
 colors
@@ -50,6 +63,8 @@ export PATH="$HOME/.cabal/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/home/toshiaki/.local/lib"
 export QT_QPA_PLATFORMTHEME="qt5ct"
+# miniconda3
+[ -f /opt/miniconda3/etc/profile.d/conda.sh ] && source /opt/miniconda3/etc/profile.d/conda.sh
 
 # 言語を英語にする
 export LANG=en_US.utf-8
@@ -88,7 +103,15 @@ case $(uname -n) in
     "archlinuxhonda")
         radeonPro;;
     "sx12toshiaki")
-        function open() {
+        # PS1='[\u@\h \W]\$ '
+        setxkbmap -layout us > /dev/null 2>&1
+        setxkbmap -option ctrl:swap_rwin_rctl > /dev/null 2>&1
+        export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0;;
+esac
+
+case $(uname -r | grep microsoft > /dev/null 2>&1 && echo wsl || echo not_wsl) in
+    "wsl")
+        open () {
             if [ $# != 1 ]; then
                 explorer.exe .
             else
@@ -99,12 +122,9 @@ case $(uname -n) in
                 fi
             fi
         }
-
-        # PS1='[\u@\h \W]\$ '
-        setxkbmap -layout us > /dev/null 2>&1
-        setxkbmap -option ctrl:swap_rwin_rctl > /dev/null 2>&1
-        export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0;;
+        ;;
 esac
+
 
 # for vterm
 if [[ "$INSIDE_EMACS" = 'vterm' ]] \
