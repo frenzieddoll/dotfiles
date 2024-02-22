@@ -38,6 +38,7 @@
     (leaf el-get :ensure t)
     (leaf blackout :ensure t)
     (leaf *straight
+      :when (executable-find "git")
       :config
       (defvar bootstrap-version)
       (let ((bootstrap-file
@@ -261,6 +262,14 @@
                         :family "HackGen"
                         :height 140)
     (set-fontset-font t 'japanese-jisx0208 (font-spec :family "HackGen")))
+  (leaf *HP_wsl
+    :when (eq system-type 'gnu/linux)
+    :when (string= (system-name) "JPC20627141")
+    :config
+    (set-face-attribute 'default nil
+                        :family "HackGen"
+                        :height 140)
+    (set-fontset-font t 'japanese-jisx0208 (font-spec :family "HackGen")))
   (leaf *forMac
     :when (eq system-type 'darwin)
     :config
@@ -440,6 +449,20 @@
                                       ("pxp"  . "open")
                                       ("bmp"  . "open")
                                       ))))
+  (leaf *dired-wsl
+    :when (string-match "microsoft" (shell-command-to-string "uname -r"))
+    :bind ((dired-mode-map
+            :package dired
+            ("w" . open-file-by-windowsApp)))
+    :preface
+    (defun open-file-by-windowsApp ()
+      (interactive)
+      (let* ((file-path
+              (shell-command-to-string (format "wslpath -w \"%s\"" (dired-get-file-for-visit))))
+             (result (shell-command-to-string (format "cmd.exe /c start \"\" \"%s\" 2> /dev/null" file-path)))
+             )
+        (message (format "start %s" file-path))))
+    )
 
   :preface
   (defun kill-current-buffer-and/or-dired-open-file ()
@@ -518,106 +541,68 @@ For a directory, dired-find-file and kill previously selected buffer."
    ;; )
   )
 
-(leaf *globa-keybinding
+;; (leaf *globa-keybinding
+;;   :disabled t
+;;   :hook (minibuffer-setup-hook . minibuffer-delete-backward-char)
+;;   :config
+;;   :bind (;; C-m : 改行プラスインデント
+;;          ("C-m"           . newline-and-indent)
+;;          ;; ;; exwm用
+;;          ("C-h"           . delete-backward-char)
+;;          ("M-h"           . backward-kill-word)
+;;          ;; C-x ? : help
+;;          ("C-c ?"         . help-command)
+;;          ;;折り返しトグルコマンド
+;;          ("C-c l"         . toggle-truncate-lines)
+;;          ;; 行番号を表示
+;;          ("C-c t"         . display-line-numbers-mode)
+;;          ;;スペース、改行、タブを表示する
+;;          ("C-c w"         . whitespace-mode)
+;;          ;; 検索結果のリストアップ
+;;          ("C-c o"         . occur)
+;;          ;; S式の評価
+;;          ("C-c C-j"       . eval-print-last-sexp)
+;;          ;; async shell command
+;;          ("s-s"           . async-shell-command)
+;;          ("s-S"           . window-capcher)
+;;          )
+
+;;   :preface
+;;   (defun upperLight ()
+;;     (interactive)
+;;     (start-process-shell-command
+;;      "upper light"
+;;      nil
+;;      (format "xbacklight -inc 10")))
+;;   (defun lowerLight ()
+;;     (interactive)
+;;     (start-process-shell-command
+;;      "lower light"
+;;      nil
+;;      (format "xbacklight -dec 10")))
+;;   (defun minibuffer-delete-backward-char ()
+;;     (local-set-key (kbd "C-h") 'delete-backward-char))
+;;   :init (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char)
+;;   )
+
+(leaf *global-setting
+  ;; :disabled t
   :hook (minibuffer-setup-hook . minibuffer-delete-backward-char)
-  :config
-  ;; (leaf *blobal-keybind_wsl
-  ;;   :when (string= (system-name) "sx12_toshiaki")
-  ;;   :bind (("CR-s" . async-shell-command))
-  ;;   )
-  :bind (;; C-m : 改行プラスインデント
-         ("C-m"           . newline-and-indent)
-         ;; ;; exwm用
-         ("C-h"           . delete-backward-char)
-         ;; C-x ? : help
-         ("C-c ?"         . help-command)
-         ;;折り返しトグルコマンド
-         ("C-c l"         . toggle-truncate-lines)
-         ;; ウィンドウサイズの変更のキーバインド
-         ("C-c r"         . window-resizer)
-         ;; 行番号を表示
-         ("C-c t"         . display-line-numbers-mode)
-         ;;スペース、改行、タブを表示する
-         ("C-c w"         . whitespace-mode)
-         ;; 検索結果のリストアップ
-         ("C-c o"         . occur)
-         ;; S式の評価
-         ("C-c C-j"       . eval-print-last-sexp)
-         ;; async shell command
-         ("s-s"           . async-shell-command)
-         ("s-S"           . window-capcher)
-         ("C-x g"         . magit-status)
-         ("C-S-n"         . scroll-up_alt)
-         ("C-S-p"         . scroll-down_alt)
-         ("<kp-divide>"   . insertBackslash)
-         ("<kp-multiply>" . insertPipe)
-         ("M-h"           . backward-kill-word))
+  :init (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char)
+  :bind (("C-x x s" . my-xset)
+         ("C-c r"   . window-resizer)
+         ("C-S-n"   . scroll-up_alt)
+         ("C-S-p"   . scroll-down_alt)
+         ("C-m"     . newline-and-indent)
+         ("C-h"     . delete-backward-char)
+         ("M-h"     . backward-kill-word)
+         ("C-c ?"   . help-command)
+         ("C-c l"   . toggle-truncate-lines)
+         ("C-c t"   . display-line-numbers-mode)
+         ("C-c w"   . whitespace-mode)
+         ("C-c o"   . occur)
+         ("C-c C-j" . eval-print-last-sexp))
 
-  :preface
-  (defun scroll-up_alt ()
-    (interactive)
-    (scroll-up 1))
-  (defun scroll-down_alt ()
-    (interactive)
-    (scroll-down 1))
-  (defun insertBackslash ()
-    (interactive)
-    (insert "\\"))
-  (defun insertPipe ()
-    (interactive)
-    (insert "|"))
-  (defun output_toggle ()
-    "Exchange output source."
-    (interactive)
-    (start-process-shell-command
-     "output-toggle"
-     nil
-     (format "~/.emacs.d/script/output_toggle.sh")))
-  (defun upper_volume ()
-    "Volume up."
-    (interactive)
-    (start-process-shell-command
-     "upper_volume"
-     nil
-     (format "~/.emacs.d/script/upper_volume.sh")))
-  (defun lower_volume ()
-    "Volume down."
-    (interactive)
-    (start-process-shell-command
-     "lower_volume"
-     nil
-     (format "~/.emacs.d/script/lower_volume.sh")))
-  (defun mute_toggle ()
-    "Volume mute."
-    (interactive)
-    (start-process-shell-command
-     "mute_toggle"
-     nil
-     (format "~/.emacs.d/script/mute_toggle.sh")))
-  (defun upperLight ()
-    (interactive)
-    (start-process-shell-command
-     "upper light"
-     nil
-     (format "xbacklight -inc 10")))
-  (defun lowerLight ()
-    (interactive)
-    (start-process-shell-command
-     "lower light"
-     nil
-     (format "xbacklight -dec 10")))
-  (defun minibuffer-delete-backward-char ()
-    (local-set-key (kbd "C-h") 'delete-backward-char))
-  (defun my_xset ()
-    (interactive)
-    (start-process-shell-command
-     "xset 再設定"
-     nil
-     (format "xset r rate 250 40")))
-  :init
-  (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char))
-
-(leaf *window-tools
   :custom ((scroll-preserve-screen-position . t)
            ;; スクロール開始のマージン
            (scroll-margin                   . 5)
@@ -627,6 +612,72 @@ For a directory, dired-find-file and kill previously selected buffer."
            ;; 1画面スクロール時にカーソルの画面上の位置をなるべく変えない
            (scroll-preserve-screen-position . t)
            (windmove-wrap-around            . t))
+  :config
+  (leaf *ForMac
+    :when (eq system-type 'darwin)
+    :bind (("s-n" . windmove-down)
+           ("s-f" . windmove-right)
+           ("s-b" . windmove-left)
+           ("s-p" . windmove-up)
+           ("s-a" . zoom-window-zoom)
+           ("s-q" . kill-current-buffer)
+           ("s-h" . delete-window)
+           ("s-o" . consult-buffer)))
+  (leaf *ForWindows
+    :when (eq system-type 'windows-nt)
+    :bind (("M-n" . windmove-down)
+           ("M-f" . windmove-right)
+           ("M-b" . windmove-left)
+           ("M-p" . windmove-up)
+           ("M-a" . zoom-window-zoom)
+           ("M-q" . kill-current-buffer)
+           ("M-h" . delete-window)
+           ("M-d" . app-launcher-run-app)
+           ("M-o" . consult-buffer)))
+  (leaf *ForLinux
+    :when (eq system-type 'gnu/linux)
+    :bind (("s-s" . async-shell-command)
+           ("s-S" . window-capcher)
+           ("s-n" . windmove-down)
+           ("s-f" . windmove-right)
+           ("s-b" . windmove-left)
+           ("s-p" . windmove-up)
+           ("s-a" . zoom-window-zoom)
+           ("s-h" . delete-window)
+           ("s-d" . app-launcher-run-app)
+           ("s-n" . windmove-down)
+           ("s-p" . windmove-up)
+           ("s-q" . kill-current-buffer)
+           ("s-o" . consult-buffer))
+    :config
+    (leaf *ForWsl
+      :when (string-match "microsoft" (shell-command-to-string "uname -r"))
+      :config
+      (leaf wslx
+        :bind (("M-q" . kill-current-buffer)
+               ("M-o" . consult-buffer))
+        :config
+        (my-xset))
+
+      (leaf *CLI
+        :unless (eq window-system 'x)
+        :bind (("M-n" . windmove-down)
+               ("M-f" . windmove-right)
+               ("M-b" . windmove-left)
+               ("M-p" . windmove-up)
+               ("M-a" . zoom-window-zoom)
+               ("M-q" . kill-current-buffer)
+               ("M-h" . delete-window)
+               ("C-M-i" . output_toggle)
+               ("C-M-m" . mute_toggle)
+               ("C-M-n" . lower_volume )
+               ("C-M-p" . upper_volume)
+               ("M-d" . app-launcher-run-app)
+               ("M-o" . consult-buffer))
+        :custom (global-hl-line-mode . t))
+      )
+    )
+
   :preface
   ;; ウィンドウのサイズ変更
   (defun window-resizer ()
@@ -662,6 +713,32 @@ For a directory, dired-find-file and kill previously selected buffer."
     (interactive)
     (let ((stringShellCommand (concat "import " "~/Downloads/screenshot_" "20" (format-time-string "%02y%02m%02d%02H%02M%02S" (current-time)) ".png")))
       (shell-command stringShellCommand)))
+  (defun my-xset ()
+    (interactive)
+    (start-process-shell-command
+     "xset 再設定"
+     nil
+     (format "xset r rate 250 40")))
+  (defun scroll-up_alt ()
+    (interactive)
+    (scroll-up 1))
+  (defun scroll-down_alt ()
+    (interactive)
+    (scroll-down 1))
+  (defun upperLight ()
+    (interactive)
+    (start-process-shell-command
+     "upper light"
+     nil
+     (format "xbacklight -inc 10")))
+  (defun lowerLight ()
+    (interactive)
+    (start-process-shell-command
+     "lower light"
+     nil
+     (format "xbacklight -dec 10")))
+  (defun minibuffer-delete-backward-char ()
+    (local-set-key (kbd "C-h") 'delete-backward-char))
 
   :config
   (leaf zoom-window
@@ -673,70 +750,6 @@ For a directory, dired-find-file and kill previously selected buffer."
     :emacs>= 24.3
     :ensure t
     :custom (zoom-window-mode-line-color . "RoyalBlue4"))
-
-  (leaf *ForMac
-    :when (eq system-type 'darwin)
-    :bind (("s-n" . windmove-down)
-           ("s-f" . windmove-right)
-           ("s-b" . windmove-left)
-           ("s-p" . windmove-up)
-           ("s-a" . zoom-window-zoom)
-           ("s-q" . kill-current-buffer)
-           ("s-h" . delete-window)
-           ("s-o" . consult-buffer)))
-
-  (leaf *ForWindows
-    :when (eq system-type 'windows-nt)
-    :bind (("M-n" . windmove-down)
-           ("M-f" . windmove-right)
-           ("M-b" . windmove-left)
-           ("M-p" . windmove-up)
-           ("M-a" . zoom-window-zoom)
-           ("M-q" . kill-current-buffer)
-           ("M-h" . delete-window)
-           ("C-M-i" . output_toggle)
-           ("C-M-m" . mute_toggle)
-           ("C-M-n" . lower_volume )
-           ("C-M-p" . upper_volume)
-           ("M-d" . app-launcher-run-app)
-           ("M-o" . consult-buffer)))
-
-  (leaf *ForWsl
-    ;; :when (eq system-type 'gnu/linux)
-    :when (eq system-type 'gnu/linux)
-    :when (string= (system-name) "sx12toshiaki")
-    :bind (("s-f" . windmove-right)
-           ("s-b" . windmove-left)
-           ("s-a" . zoom-window-zoom)
-           ("s-h" . delete-window)
-           ("s-d" . app-launcher-run-app)
-           ("s-n" . windmove-down)
-           ("s-p" . windmove-up)
-           ("s-q" . kill-current-buffer)
-           ("s-o" . consult-buffer)
-           ("M-q" . kill-current-buffer)
-           ("M-o" . consult-buffer)
-           ))
-
-  (leaf *ForCUI
-    ;; :unless (string= (system-name) "sx12_toshiaki")
-    :unless (eq window-system 'x)
-    :when (eq system-type 'gnu/linux)
-    :bind (("M-n" . windmove-down)
-           ("M-f" . windmove-right)
-           ("M-b" . windmove-left)
-           ("M-p" . windmove-up)
-           ("M-a" . zoom-window-zoom)
-           ("M-q" . kill-current-buffer)
-           ("M-h" . delete-window)
-           ("C-M-i" . output_toggle)
-           ("C-M-m" . mute_toggle)
-           ("C-M-n" . lower_volume )
-           ("C-M-p" . upper_volume)
-           ("M-d" . app-launcher-run-app)
-           ("M-o" . consult-buffer))
-    :custom (global-hl-line-mode . t))
-
   (leaf *mySaveFrame
     :when (or (eq system-type 'darwin)
               (eq system-type 'windows-nt))
@@ -780,7 +793,8 @@ For a directory, dired-find-file and kill previously selected buffer."
         (when (file-exists-p file)
           (load-file file))))
     :config
-    (run-with-idle-timer 60 t 'my-save-frame-size)))
+    (run-with-idle-timer 60 t 'my-save-frame-size))
+  )
 
 (leaf info
   ;; info日本語化
@@ -801,44 +815,75 @@ For a directory, dired-find-file and kill previously selected buffer."
            args))
   (advice-add 'Info-find-node :around 'Info-find-node--info-ja))
 
+(leaf *forWindows
+  :when (eq system-type 'windows-nt)
+  :custom ((w32-pass-rwindow-to-system . nil)
+           (w32-rwindow-modifier       . 'super)
+           (w32-shell-execute          . t)
+           ;; (set-default-coding-systems . 'utf-8-dos)
+           ;; (default-file-name-coding-system . 'shift-jis)
+           (prefer-coding-system       . 'utf-8)
+           (coding-system-for-read     . 'utf-8)
+           (coding-system-for-write    . 'utf-8)
+           (default-file-name-coding-system . 'shift_jis)
+           )
+  :config
+  (leaf *diredForWindows
+    :after dired
+    :bind ((dired-mode-map
+            :package dired
+            ("w" . open-file-by-windowsApp)
+            ("z" . unzip)
+            ))
+    :preface
+    (defun shift-jis-to-utf8 (str) (decode-coding-string (encode-coding-string str 'japanese-shift-jis-dos) 'utf-8))
+    (defun utf8-to-shift-jis (str) (decode-coding-string (encode-coding-string str 'utf-8) 'japanese-shift-jis-dos))
+    (defun open-file-by-windowsApp ()
+      (interactive)
+      ;; (let ((file-name (decode-coding-string (encode-coding-string (dired-get-file-for-visit) 'japanese-shift-jis-dos) 'utf-8)))
+      (let ((file-name (shift-jis-to-utf8 (dired-get-file-for-visit))))
+        (shell-command (format "start \"\" \"%s\"" file-name))
+        (message (utf8-to-shift-jis file-name))
+        )
+      )
+    (defun openExplorer()
+      (interactive)
+      (let ((currentDir (shift-jis-to-utf8 default-directory)))
+        (shell-command (format "start \"\" \"%s\"" currentDir))
+        (message (format "open %s" (utf8-to-shift-jis currentDir)))
+        )
+      )
+    (defun genBib ()
+      (interactive)
+      (let ((file-name (shift-jis-to-utf8 (dired-get-file-for-visit))))
+        (shell-command (format
+                        "python c:/Users/0145220079/Documents/programing/python/script/fromHTMLtoBib.py \"%s\""
+                        file-name))
+        )
+      )
+    (defun base64ToPng (fileName)
+      (interactive "sfile name: ")
+      (shell-command (format
+                      "python c:/Users/0145220079/Documents/programing/python/script/decodeBase64.py %s"
+                      fileName))
+      )
+    (defun unzip ()
+      (interactive)
+      (let ((file-name (shift-jis-to-utf8 (dired-get-file-for-visit))))
+        (shell-command (format "call powershell -command \"Expand-Archive %s\"" file-name))
+        (message (format "unzip %s" (utf8-to-shift-jis file-name)))
+        )
+      )
+    )
+  (leaf *my-app
+    :require app-launcher-for-windows
+    :config
+    (add-to-list 'app-launcher-apps-directories "C:/Users/0145220079/AppData/Roaming/Microsoft/Windows/Start Menu/Programs")
+    )
+  )
+
 
 ;; theme
-(leaf doom-themes
-  ;; :disabled t
-  :doc "an opinionated pack of modern color-themes"
-  :req "emacs-25.1" "cl-lib-0.5"
-  :tag "faces" "custom themes" "emacs>=25.1"
-  :url "https://github.com/hlissner/emacs-doom-themes"
-  :added "2021-09-05"
-  :emacs>= 25.1
-  :disabled t
-  :ensure t
-  :when (eq (window-system) 'x)
-  :custom ((doom-themes-enable-italic . t)
-           (doom-themes-enable-bold   . t))
-  :custom-face ((doom-modeline-bar . '((t (:background "#6272a4")))))
-  :config
-  (load-theme 'doom-one t)
-  (leaf doom-modeline
-    :doc "A minimal and modern mode-line"
-    :req "emacs-25.1" "all-the-icons-2.2.0" "shrink-path-0.2.0" "dash-2.11.0"
-    :tag "mode-line" "faces" "emacs>=25.1"
-    :url "https://github.com/seagle0128/doom-modeline"
-    :added "2021-09-05"
-    :emacs>= 25.1
-    :ensure t
-    ;; :after all-the-icons shrink-path
-    :hook (after-init . doom-modeline-mode)
-    :custom `((doom-modeline-buffer-file-name-style . 'truncate-with-project)
-              (doom-modeline-icon                   . nil)
-              (doom-modeline-major-mode-icon        . nil)
-              (doom-modeline-minor-modes            . nil)
-              (line-number-mode                     . 0)
-              (column-number-mode                   . 0)
-              (doom-modeline-mode                   . t)
-              (line-number-mode . 0)
-              (column-number-mode . 0))))
-
 (leaf nord-theme
   :doc "An arctic, north-bluish clean and elegant theme"
   :req "emacs-24"
@@ -847,7 +892,6 @@ For a directory, dired-find-file and kill previously selected buffer."
   :added "2022-03-30"
   :emacs>= 24
   :ensure t
-  :when (eq (window-system) 'x)
   :config
   (load-theme 'nord t)
   (leaf moody
@@ -881,19 +925,6 @@ For a directory, dired-find-file and kill previously selected buffer."
   )
 
 
-;; メジャーモードの設定
-;; (leaf *chatGPT
-;;   :preface
-;;   (defun chatGPT ()
-;;     (interactive)
-;;     (with-current-buffer (eshell 'new)
-;;       (rename-buffer "chatGPT")
-;;       (goto-char (point-max))
-;;       (eshell-kill-input)
-;;       (insert "chatGPT.py")
-;;       (eshell-send-input)))
-;;   :bind (("C-c C-g" . chatGPT))
-;;   )
 
 (leaf chatgpt-shell
   :doc "Interaction mode for ChatGPT"
@@ -903,6 +934,7 @@ For a directory, dired-find-file and kill previously selected buffer."
   :added "2023-04-28"
   :emacs>= 27.1
   :ensure t
+  :disabled t
   :custom
   `(chatgpt-shell-openai-key . ,(auth-source-pick-first-password :host "api.openai.com"))
   :bind ("C-c g" . chatgpt-shell)
@@ -944,10 +976,20 @@ For a directory, dired-find-file and kill previously selected buffer."
     )
   (leaf *ebibForLinux
     :when (eq system-type 'gnu/linux)
-    :custom ((ebib-file-associations . '(("pdf" . "zathura") ("ps"  . "zathura")))
-             (ebib-preload-bib-files . '("~/tex/references.bib"))
+    :custom ((ebib-preload-bib-files . '("~/tex/references.bib"))
              (ebib-keywords-file     . "~/tex/ebib-keywords.txt")
+             (ebib-file-associations . '(("pdf" . "zathura") ("ps"  . "zathura")))
              (ebib-file-search-dirs  . '("~/tex/pdfs" "~/tex/papers" "~/tex/books"))
+             ))
+  (leaf *ebibForSony
+    :when (eq system-type 'windows-nt)
+    :when (string= (system-name) "JPC20627141")
+    :bind (("C-c b" . ebib))
+    :custom ((ebib-preload-bib-files . '("~/Documents/PDF/references.bib"))
+             (ebib-keywords-file     . "~/Documents/PDF/ebib-keywords.txt")
+             (ebib-file-associations . '(("pdf" . "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe")
+                                         ("ps"  . "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe")))
+             (ebib-file-search-dirs  . '("~/Documents/PDF/ER" "~/Documents/PDF/paper"))
              ))
   (leaf biblio
     :doc "Browse and import bibliographic references from CrossRef, arXiv, DBLP, HAL, Dissemin, and doi.org"
@@ -987,6 +1029,17 @@ For a directory, dired-find-file and kill previously selected buffer."
            (jedi:complete-on-dot . t)
            )
   :config
+  (leaf *ein-for-windows
+    :when (string= system-type 'windows-nt)
+    :hook ((ein:notebook-mode-hook . ac-mode-map-bind))
+    :preface
+    (defun ac-mode-map-bind ()
+      (interactive)
+      (progn
+        (define-key ac-complete-mode-map (kbd "C-n") 'ac-next)
+        (define-key ac-complete-mode-map (kbd "C-p") 'ac-previous))))
+  (setq ein:output-type-preference
+      '(emacs-lisp svg png jpeg html text latex javascript))
   (leaf jedi-core
     :doc "Common code of jedi.el and company-jedi.el"
     :req "emacs-24" "epc-0.1.0" "python-environment-0.0.2" "cl-lib-0.5"
@@ -1053,6 +1106,7 @@ For a directory, dired-find-file and kill previously selected buffer."
     :added "2022-04-30"
     :ensure t)
   (leaf addressbar
+    :when (executable-find "git")
     :el-get (addressbar
              :type github
              :pkgname "lurdan/emacs-addressbar")
@@ -1172,6 +1226,8 @@ For a directory, dired-find-file and kill previously selected buffer."
   :emacs>= 25.1
   :ensure t
   :after git-commit magit-section with-editor
+  :when (executable-find "git")
+  :bind (("C-x g" . magit-status))
   :config (setenv "GIT_PAGER" ""))
 
 (leaf mew
@@ -1212,6 +1268,7 @@ For a directory, dired-find-file and kill previously selected buffer."
   :doc "Export Framework for Org Mode"
   :tag "builtin"
   :added "2021-09-05"
+  :disabled t
   :custom ((org-agenda-files . '("~/Dropbox/org/todo.org"))
            (org-directory . "~/Dropbox/org"))
   :bind (("C-c a" . org-agenda)
@@ -1222,6 +1279,31 @@ For a directory, dired-find-file and kill previously selected buffer."
             (org-enforce-todo-dependencies . t)
             (org-log-done . t))
   )
+
+(leaf org
+    :doc "Export Framework for Org Mode"
+    :tag "builtin"
+    :added "2021-09-05"
+    :preface
+    (setq org-path (expand-file-name
+                   (cond ((string= (system-name) "archlinux") "~/Dropbox/org/")
+                         (t "~/.emacs.d/org/"))))
+    (defun concat-org-path (str) (concat org-path str))
+    (setq todoFile (concat-org-path "todo.org"))
+    (setq memoFile (concat-org-path "memo.org"))
+    (setq glosFile (concat-org-path "glossary.org"))
+    (setq org-agenda-files (list todoFile))
+
+    :bind (("C-c a" . org-agenda)
+           ("C-c c" . org-capture))
+    :custom `((org-directory    . org-path)
+              (org-capture-templates . `(("t" "task"     entry (file+headline todoFile "todo") "** TODO %? \n" :empty-lines 1)
+                                         ("m" "memo"     entry (file          memoFile) "* %^t \n" :empty-lines 1)
+                                         ("g" "glossary" entry (file          glosFile) "** %? \n" :empty-lines 1)))
+              (org-todo-keywords . '((sequence "TODO(t)" "SOMEDAY(s)" "WATTING(w)" "|" "DONE(d)" "CANCELED(c@)")))
+              (org-enforce-todo-dependencies . t)
+              (org-log-done . t))
+    )
 
 (leaf paradox
   :doc "A modern Packages Menu. Colored, with package ratings, and customizable."
@@ -1633,6 +1715,7 @@ For a directory, dired-find-file and kill previously selected buffer."
   :added "2021-09-06"
   :emacs>= 27.1
   :el-get sebastienwae/app-launcher
+  :when (executable-find "git")
   :require t)
 
 (leaf calfw
@@ -1641,6 +1724,7 @@ For a directory, dired-find-file and kill previously selected buffer."
   :url "https://github.com/kiwanami/emacs-calfw"
   :added "2021-09-05"
   :ensure t
+  :disabled t
   :config
   (leaf calfw-org
     :doc "calendar view for org-agenda"
@@ -2059,7 +2143,6 @@ For a directory, dired-find-file and kill previously selected buffer."
     )
   )
 
-
 (leaf marginalia
   :doc "Enrich existing commands with completion annotations"
   :req "emacs-26.1"
@@ -2226,7 +2309,8 @@ For a directory, dired-find-file and kill previously selected buffer."
     (setq-local completion-at-point-functions
                 (list (cape-capf-noninterruptible
                        (cape-capf-accept-all
-                        (cape-capf-buster (cape-company-to-capf #'company-jedi))))))
+                        (cape-capf-buster
+                         (cape-company-to-capf #'company-jedi))))))
     (add-to-list 'completion-at-point-functions #'cape-file t)
     (add-to-list 'completion-at-point-functions #'cape-dict t)
     )
@@ -2235,7 +2319,8 @@ For a directory, dired-find-file and kill previously selected buffer."
     (setq completion-at-point-functions
           (list (cape-capf-noninterruptible
                  (cape-capf-accept-all
-                  (cape-capf-buster #'cape-elisp-symbol)))))
+                  (cape-capf-buster
+                   (cape-super-capf #'cape-elisp-symbol))))))
     )
   )
 
@@ -2284,6 +2369,7 @@ For a directory, dired-find-file and kill previously selected buffer."
   :added "2023-02-19"
   :emacs>= 25.1
   :ensure t
+  :when (string= system-type 'gnu/linux)
   :custom ((vterm-max-scrollback . 10000)
            (vterm-buffer-name-string . "vterm: %s")
            )
