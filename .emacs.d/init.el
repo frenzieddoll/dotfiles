@@ -239,37 +239,49 @@
 
 (leaf *fontSetting
   :config
-  (leaf *forArchlinux
+  (leaf *forLinux
     :when (eq system-type 'gnu/linux)
-    :when (string= (system-name) "archlinuxhonda")
-    :config
-    (set-face-attribute 'default nil
-                        :family "HackGen"
-                        :height 130))
-  (leaf *forSX12
-    :when (eq system-type 'gnu/linux)
-    :when (string= (system-name) "sx12toshiaki")
-    :config
-    (set-face-attribute 'default nil
-                        :family "HackGen"
-                        :height 140)
-    (set-fontset-font t 'japanese-jisx0208 (font-spec :family "HackGen")))
-  (leaf *forSX12_wsl
-    :when (eq system-type 'gnu/linux)
-    :when (string= (system-name) "sx12_toshiaki")
-    :config
-    (set-face-attribute 'default nil
-                        :family "HackGen"
-                        :height 140)
-    (set-fontset-font t 'japanese-jisx0208 (font-spec :family "HackGen")))
-  (leaf *HP_wsl
-    :when (eq system-type 'gnu/linux)
-    :when (string= (system-name) "JPC20627141")
-    :config
-    (set-face-attribute 'default nil
-                        :family "HackGen"
-                        :height 140)
-    (set-fontset-font t 'japanese-jisx0208 (font-spec :family "HackGen")))
+    (leaf *forArchlinux
+      :when (string= (system-name) "archlinuxhonda")
+      :config
+      (set-face-attribute 'default nil
+                          :family "HackGen"
+                          :height 130))
+    (leaf *forSX12
+      :when (string= (system-name) "sx12toshiaki")
+      :config
+      (set-face-attribute 'default nil
+                          :family "HackGen"
+                          :height 135)
+      (set-fontset-font t 'japanese-jisx0208 (font-spec :family "HackGen")))
+    (leaf *pi
+      ;; :disabled t
+      :when (string= (system-name) "RaspberryPi")
+      :when (string= (getenv "EXWM") "enable")
+      :config
+      (set-face-attribute 'default nil
+                          :family "HackGen"
+                          :height 120)
+      (set-fontset-font (frame-parameter nil 'font)
+                        'japanese-jisx0208
+                        (font-spec :family "HackGen"
+                                   :height 120)))
+
+    (leaf *forSX12_wsl
+      :when (string= (system-name) "sx12_toshiaki")
+      :config
+      (set-face-attribute 'default nil
+                          :family "HackGen"
+                          :height 140)
+      (set-fontset-font t 'japanese-jisx0208 (font-spec :family "HackGen")))
+    (leaf *HP_wsl
+      :when (string= (system-name) "JPC20627141")
+      :config
+      (set-face-attribute 'default nil
+                          :family "HackGen"
+                          :height 140)
+      (set-fontset-font t 'japanese-jisx0208 (font-spec :family "HackGen")))
+    )
   (leaf *forMac
     :when (eq system-type 'darwin)
     :config
@@ -290,18 +302,7 @@
                       'japanese-jisx0208
                       (font-spec :family "HackGen"
                                  :height 150)))
-  (leaf *pi
-    ;; :disabled t
-    :when (string= (system-name) "RaspberryPi")
-    :when (string= (getenv "EXWM") "enable")
-    :config
-    (set-face-attribute 'default nil
-                        :family "HackGen"
-                        :height 120)
-    (set-fontset-font (frame-parameter nil 'font)
-                      'japanese-jisx0208
-                      (font-spec :family "HackGen"
-                                 :height 120))))
+  )
 
 (leaf *scratch
   :disabled t
