@@ -247,13 +247,6 @@
       (set-face-attribute 'default nil
                           :family "HackGen"
                           :height 130))
-    (leaf *forSX12
-      :when (string= (system-name) "sx12toshiaki")
-      :config
-      (set-face-attribute 'default nil
-                          :family "HackGen"
-                          :height 135)
-      (set-fontset-font t 'japanese-jisx0208 (font-spec :family "HackGen")))
     (leaf *pi
       ;; :disabled t
       :when (string= (system-name) "RaspberryPi")
@@ -274,6 +267,7 @@
                           :family "HackGen"
                           :height 140)
       (set-fontset-font t 'japanese-jisx0208 (font-spec :family "HackGen")))
+
     (leaf *HP_wsl
       :when (string= (system-name) "JPC20627141")
       :config
@@ -654,9 +648,10 @@ For a directory, dired-find-file and kill previously selected buffer."
     (leaf *ForWsl
       :when (string-match "microsoft" (shell-command-to-string "uname -r"))
       :config
-      (leaf wslx
+      (leaf *wslx
         :bind (("M-q" . kill-current-buffer)
-               ("M-o" . consult-buffer))
+               ("M-o" . consult-buffer)
+               ("s-d" . app-launcher-run-app))
         :config
         (my-xset))
 
