@@ -268,7 +268,7 @@
                                    :height 120)))
 
     (leaf *forSX12_wsl
-      :when (string= (system-name) "sx12_toshiaki")
+      :when (string= (system-name) "sx12toshiaki")
       :config
       (set-face-attribute 'default nil
                           :family "HackGen"
