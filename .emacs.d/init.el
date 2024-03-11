@@ -1026,6 +1026,14 @@
      (format "xbacklight -dec 10")))
   (defun minibuffer-delete-backward-char ()
     (local-set-key (kbd "C-h") 'delete-backward-char))
+  (defun base64ToPng (fileName)
+    (interactive "sfile name: ")
+    (let ((script (concat user-emacs-directory "script/decodeBase64.py %s")))
+      (shell-command (format
+                      script
+                      fileName))
+      )
+    )
 
   :config
   (leaf zoom-window
@@ -1153,6 +1161,7 @@
     (copy-region-as-kill nil nil t)
     (kill-buffer)
       (interactive)
+<<<<<<< HEAD
   (defun wsl-paste()
     (interactive)
     (insert (shell-command-to-string "powershell.exe -command 'Get-Clipboard'")))
@@ -1276,6 +1285,50 @@
         )))
 >>>>>>> variant B
 ======= end
+=======
+      ;; (let ((file-name (decode-coding-string (encode-coding-string (dired-get-file-for-visit) 'japanese-shift-jis-dos) 'utf-8)))
+      (let ((file-name (shift-jis-to-utf8 (dired-get-file-for-visit))))
+        (shell-command (format "start \"\" \"%s\"" file-name))
+        (message (utf8-to-shift-jis file-name))
+        )
+      )
+    (defun openExplorer()
+      (interactive)
+      (let ((currentDir (shift-jis-to-utf8 default-directory)))
+        (shell-command (format "start \"\" \"%s\"" currentDir))
+        (message (format "open %s" (utf8-to-shift-jis currentDir)))
+        )
+      )
+    (defun genBib ()
+      (interactive)
+      (let ((file-name (shift-jis-to-utf8 (dired-get-file-for-visit))))
+        (shell-command (format
+                        "python c:/Users/0145220079/Documents/programing/python/script/fromHTMLtoBib.py \"%s\""
+                        file-name))
+        )
+      )
+    (defun base64ToPng (fileName)
+      (interactive "sfile name: ")
+      (let ((script (concat user-emacs-directory "script/decodeBase64.py %s")))
+        (shell-command (format
+                        script
+                        fileName))
+      )
+      )
+    (defun unzip ()
+      (interactive)
+      (let ((file-name (shift-jis-to-utf8 (dired-get-file-for-visit))))
+        (shell-command (format "call powershell -command \"Expand-Archive %s\"" file-name))
+        (message (format "unzip %s" (utf8-to-shift-jis file-name)))
+        )
+      )
+    )
+  (leaf *my-app
+    :require app-launcher-for-windows
+    :config
+    (add-to-list 'app-launcher-apps-directories "C:/Users/0145220079/AppData/Roaming/Microsoft/Windows/Start Menu/Programs")
+    )
+>>>>>>> 3ddef3ae (fix init.el zshrc)
   )
 
 
@@ -3016,6 +3069,12 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   ;; :require t
   ;; :defvar (corfu-auto)
   :when (eq window-system 'x)
+  :hook ((minibuffer-setup-hook . my/corfu-enable-in-minibuffer)
+         (eshell-mode-hook . (lambda ()
+                               (setq-local corfu-auto nil)
+                               (corfu-mode)))
+         ;; (corfu-mode-hook . corfu-popupinfo-mode)
+         )
   :global-minor-mode global-corfu-mode
   :hook ((minibuffer-setup-hook . my/corfu-enable-in-minibuffer)
          ((eshell-mode-hook
