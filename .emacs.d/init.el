@@ -303,35 +303,6 @@
                       (font-spec :family "HackGen"
                                  :height 120))))
 
-(leaf *scratch
-  :disabled t
-  :hook  ((kill-buffer-query-functions . (lambda ()
-                                           (if (string= "*scratch*" (buffer-name))
-                                               (progn (my:make-scratch 0) nil)
-                                             t)))
-          (after-save-hook . (lambda ()
-                               (unless (member "*scratch*" (my:buffer-name-list))
-                                 (my:make-scratch 1)))))
-
-  :preface
-  (defun my:make-scratch (&optional arg)
-    (interactive)
-    (progn
-      ;; "*scratch*" を作成して buffer-list に放り込む
-      (set-buffer (get-buffer-create "*scratch*"))
-      (funcall initial-major-mode)
-      (erase-buffer)
-      (when (and initial-scratch-message (not inhibit-startup-message))
-        (insert initial-scratch-message))
-      (or arg
-          (progn
-            (setq arg 0)
-            (switch-to-buffer "*scratch*")))
-      (cond ((= arg 0) (message "*scratch* is cleared up."))
-            ((= arg 1) (message "another *scratch* is created")))))
-  (defun my:buffer-name-list ()
-    (mapcar (function buffer-name) (buffer-list))))
-
 (leaf *dired
   ;; :disabled t
   :after dired
@@ -495,23 +466,18 @@ For a directory, dired-find-file and kill previously selected buffer."
   :bind (("C-c e" . eshell))
   :defvar (eshell-command-aliases-list)
   :config
-  (append eshell-command-aliases-list (list
-                                       (list "ll" "ls -ltrh")
-                                       (list "la" "ls -a")
-                                       (list "o" "xdg-open")
-                                       (list "emacs" "find-file $1")
-                                       (list "m" "find-file $1")
-                                       (list "mc" "find-file $1")
-                                       (list "d" "dired .")
-                                       (list "l" "eshell/less $1")
-                                       (list "translate" "~/python/translate.py")
-                                       (list "pacmandate" "expac --timefmt='%Y-%m-%d %T' '%l\t%n' | sort | tail -n $1")
-                                       (list "nvidiafix" "nvidia-settings --assign CurrentMetaMode='nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }'")
-                                       (list "usbmount" "sudo mount -t vfat $1 $2 -o rw,umask=000")
-                                       (list "dvd" "mpv dvd:// -dvd-device $1")
-                                       (list "dvdCopy" "dvdbackup -i /dev/sr0 -o ~/Downloads/iso/ -M")
-                                       (list "pkglist" "yay -Qe | cut -f 1 -d " " > ~/.emacs.d/pkglist")
-                                       (list "open" "cmd.exe /c start {wslpath -w $*}")))
+  (setq eshell-command-aliases-list '(("ll" . "ls -ltrh")
+                                      ("la" . "ls -a")
+                                      ("o" . "xdg-open")
+                                      ("emacs" . "find-file $1")
+                                      ("m" . "find-file $1")
+                                      ("mc" . "find-file $1")
+                                      ("d" . "dired .")
+                                      ("l" . "eshell/less $1")
+                                      ("dd" . "dd status=progress")
+                                      ("pacmandate" . "expac --timefmt='%Y-%m-%d %T' '%l\t%n' | sort | tail -n $1")
+                                      ("open" . "cmd.exe /c start {wslpath -w $*}")
+                                      ))
   ;; (if (not (eq system-type 'windows))
   ;;         (eval-after-load "esh-module"
   ;;           '(defvar eshell-modules-list (delq 'eshell-ls (delq 'eshell-unix eshell-modules-list)))))
@@ -541,50 +507,6 @@ For a directory, dired-find-file and kill previously selected buffer."
    ;; )
   )
 
-;; (leaf *globa-keybinding
-;;   :disabled t
-;;   :hook (minibuffer-setup-hook . minibuffer-delete-backward-char)
-;;   :config
-;;   :bind (;; C-m : 改行プラスインデント
-;;          ("C-m"           . newline-and-indent)
-;;          ;; ;; exwm用
-;;          ("C-h"           . delete-backward-char)
-;;          ("M-h"           . backward-kill-word)
-;;          ;; C-x ? : help
-;;          ("C-c ?"         . help-command)
-;;          ;;折り返しトグルコマンド
-;;          ("C-c l"         . toggle-truncate-lines)
-;;          ;; 行番号を表示
-;;          ("C-c t"         . display-line-numbers-mode)
-;;          ;;スペース、改行、タブを表示する
-;;          ("C-c w"         . whitespace-mode)
-;;          ;; 検索結果のリストアップ
-;;          ("C-c o"         . occur)
-;;          ;; S式の評価
-;;          ("C-c C-j"       . eval-print-last-sexp)
-;;          ;; async shell command
-;;          ("s-s"           . async-shell-command)
-;;          ("s-S"           . window-capcher)
-;;          )
-
-;;   :preface
-;;   (defun upperLight ()
-;;     (interactive)
-;;     (start-process-shell-command
-;;      "upper light"
-;;      nil
-;;      (format "xbacklight -inc 10")))
-;;   (defun lowerLight ()
-;;     (interactive)
-;;     (start-process-shell-command
-;;      "lower light"
-;;      nil
-;;      (format "xbacklight -dec 10")))
-;;   (defun minibuffer-delete-backward-char ()
-;;     (local-set-key (kbd "C-h") 'delete-backward-char))
-;;   :init (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char)
-;;   )
-
 (leaf *global-setting
   ;; :disabled t
   :hook (minibuffer-setup-hook . minibuffer-delete-backward-char)
@@ -602,7 +524,6 @@ For a directory, dired-find-file and kill previously selected buffer."
          ("C-c w"   . whitespace-mode)
          ("C-c o"   . occur)
          ("C-c C-j" . eval-print-last-sexp))
-
   :custom ((scroll-preserve-screen-position . t)
            ;; スクロール開始のマージン
            (scroll-margin                   . 5)
@@ -612,6 +533,7 @@ For a directory, dired-find-file and kill previously selected buffer."
            ;; 1画面スクロール時にカーソルの画面上の位置をなるべく変えない
            (scroll-preserve-screen-position . t)
            (windmove-wrap-around            . t))
+
   :config
   (leaf *ForMac
     :when (eq system-type 'darwin)
@@ -739,61 +661,6 @@ For a directory, dired-find-file and kill previously selected buffer."
      (format "xbacklight -dec 10")))
   (defun minibuffer-delete-backward-char ()
     (local-set-key (kbd "C-h") 'delete-backward-char))
-
-  :config
-  (leaf zoom-window
-    :doc "Zoom window like tmux"
-    :req "emacs-24.3"
-    :tag "emacs>=24.3"
-    :url "https://github.com/syohex/emacs-zoom-window"
-    :added "2021-09-05"
-    :emacs>= 24.3
-    :ensure t
-    :custom (zoom-window-mode-line-color . "RoyalBlue4"))
-  (leaf *mySaveFrame
-    :when (or (eq system-type 'darwin)
-              (eq system-type 'windows-nt))
-    :hook ((emacs-startup-hook . my-load-frame-size)
-           (kill-emacs-hook . my-save-frame-size))
-    :defun my-save-frame-size my-load-frame-size
-    :defvar my-save-frame-file
-    :custom ((my-save-frame-file . "~/.emacs.d/.framesize"))
-    :preface
-    (defun my-save-frame-size ()
-      "現在のフレームの位置、大きさを'my-save-frame-file'に保存します"
-      (interactive)
-      (let* ((param (frame-parameters (selected-frame)))
-             (current-height (frame-height))
-             (current-width (frame-width))
-             (current-top-margin (if (integerp (cdr (assoc 'top param)))
-                                     (cdr (assoc 'top param))
-                                   0))
-
-             (current-left-margin (if (integerp (cdr (assoc 'top param)))
-                                      (cdr (assoc 'top param))
-                                    0))
-             (buf nil)
-             (file my-save-frame-file))
-        ;; ファイルと関連付けられてたバッファ作成
-        (unless (setq buf (get-file-buffer (expand-file-name file)))
-          (setq buf (find-file-noselect (expand-file-name file))))
-        (set-buffer buf)
-        (erase-buffer)
-        ;; ファイル読み込み時に直接評価させる内容を記述
-        (insert
-         (concat
-          "(set-frame-size (selected-frame) "(int-to-string current-width)" "(int-to-string current-height)")\n"
-          "(set-frame-position (selected-frame) "(int-to-string current-left-margin)" "(int-to-string current-top-margin)")\n"
-          ))
-        (save-buffer)))
-    (defun my-load-frame-size ()
-      "`my-save-fram-file'に保存されたフレームの位置、大きさを復元します"
-      (interactive)
-      (let ((file my-save-frame-file))
-        (when (file-exists-p file)
-          (load-file file))))
-    :config
-    (run-with-idle-timer 60 t 'my-save-frame-size))
   )
 
 (leaf info
@@ -925,7 +792,6 @@ For a directory, dired-find-file and kill previously selected buffer."
   )
 
 
-
 (leaf chatgpt-shell
   :doc "Interaction mode for ChatGPT"
   :req "emacs-27.1" "shell-maker-0.17.1"
@@ -1572,8 +1438,7 @@ For a directory, dired-find-file and kill previously selected buffer."
   :url "https://github.com/m00natic/vlfi"
   :added "2021-09-05"
   ;; :require vlf-setup
-  :ensure t
-  :disabled t)
+  :ensure t)
 
 (leaf yaml
   :doc "YAML parser for Elisp"
@@ -1716,7 +1581,10 @@ For a directory, dired-find-file and kill previously selected buffer."
   :emacs>= 27.1
   :el-get sebastienwae/app-launcher
   :when (executable-find "git")
-  :require t)
+  :require t
+  :after orderless
+  )
+
 
 (leaf calfw
   :doc "Calendar view framework on Emacs"
@@ -2004,7 +1872,7 @@ For a directory, dired-find-file and kill previously selected buffer."
                          "^/sudo:"
                          "/\\.emacs\\.d/games/*-scores"
                          "/\\.emacs\\.d/\\.cask/"
-                         "/Videos/Geheimnis/"))
+                         "~/Videos/Geheimnis/"))
     ;; (recentf-auto-cleanup-timer . (run-with-idle-timer 30 t 'recentf-save-list))
     )
   )
@@ -2181,6 +2049,52 @@ For a directory, dired-find-file and kill previously selected buffer."
   :tag "builtin"
   :added "2021-09-05"
   :global-minor-mode t)
+
+(leaf *mySaveFrame
+    :when (or (eq system-type 'darwin)
+              (eq system-type 'windows-nt))
+    :hook ((emacs-startup-hook . my-load-frame-size)
+           (kill-emacs-hook . my-save-frame-size))
+    :defun my-save-frame-size my-load-frame-size
+    :defvar my-save-frame-file
+    :custom ((my-save-frame-file . "~/.emacs.d/.framesize"))
+    :preface
+    (defun my-save-frame-size ()
+      "現在のフレームの位置、大きさを'my-save-frame-file'に保存します"
+      (interactive)
+      (let* ((param (frame-parameters (selected-frame)))
+             (current-height (frame-height))
+             (current-width (frame-width))
+             (current-top-margin (if (integerp (cdr (assoc 'top param)))
+                                     (cdr (assoc 'top param))
+                                   0))
+
+             (current-left-margin (if (integerp (cdr (assoc 'top param)))
+                                      (cdr (assoc 'top param))
+                                    0))
+             (buf nil)
+             (file my-save-frame-file))
+        ;; ファイルと関連付けられてたバッファ作成
+        (unless (setq buf (get-file-buffer (expand-file-name file)))
+          (setq buf (find-file-noselect (expand-file-name file))))
+        (set-buffer buf)
+        (erase-buffer)
+        ;; ファイル読み込み時に直接評価させる内容を記述
+        (insert
+         (concat
+          "(set-frame-size (selected-frame) "(int-to-string current-width)" "(int-to-string current-height)")\n"
+          "(set-frame-position (selected-frame) "(int-to-string current-left-margin)" "(int-to-string current-top-margin)")\n"
+          ))
+        (save-buffer)))
+    (defun my-load-frame-size ()
+      "`my-save-fram-file'に保存されたフレームの位置、大きさを復元します"
+      (interactive)
+      (let ((file my-save-frame-file))
+        (when (file-exists-p file)
+          (load-file file))))
+    :config
+    (run-with-idle-timer 60 t 'my-save-frame-size)
+    )
 
 (leaf corfu
   :doc "Completion Overlay Region FUnction"
@@ -2459,6 +2373,17 @@ For a directory, dired-find-file and kill previously selected buffer."
     :added "2023-02-18"
     :ensure t
     :after yasnippet)
+  )
+
+(leaf zoom-window
+  :doc "Zoom window like tmux"
+  :req "emacs-24.3"
+  :tag "emacs>=24.3"
+  :url "https://github.com/syohex/emacs-zoom-window"
+  :added "2021-09-05"
+  :emacs>= 24.3
+  :ensure t
+  :custom (zoom-window-mode-line-color . "#5E81AC")
   )
 
 
