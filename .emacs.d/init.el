@@ -404,6 +404,7 @@
     :added "2021-09-05"
     :ensure t
     :require t
+    :when (eq system-type 'gnu/linux)
     :unless (string-match "microsoft" (shell-command-to-string "uname -r"))
     :custom ((dired-open-extensions .
                                     '(("mkv"      . "~/.emacs.d/script/mpv-rifle.sh")
