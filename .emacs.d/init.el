@@ -1994,22 +1994,22 @@ For a directory, dired-find-file and kill previously selected buffer."
 
   :custom `((consult-preview-key . nil))
   :global-minor-mode (recentf-mode)
-  :config
-  (leaf orderless
-    :doc "Completion style for matching regexps in any order"
-    :req "emacs-26.1"
-    :tag "extensions" "emacs>=26.1"
-    :url "https://github.com/oantolin/orderless"
-    :added "2021-09-05"
-    :emacs>= 26.1
-    :ensure t
-    :defvar (orderless-style-dispatchers)
-    :custom ((completion-styles . '(basic  orderless))
-             (completion-category-defaults . nil)
-             (completion-category-overrides . nil)
-             )
-    )
   )
+(leaf orderless
+  :doc "Completion style for matching regexps in any order"
+  :req "emacs-26.1"
+  :tag "extensions" "emacs>=26.1"
+  :url "https://github.com/oantolin/orderless"
+  :added "2021-09-05"
+  :emacs>= 26.1
+  :ensure t
+  :defvar (orderless-style-dispatchers)
+  :custom ((completion-styles . '(basic  orderless))
+           (completion-category-defaults . nil)
+           (completion-category-overrides . nil)
+           )
+  )
+
 
 (leaf marginalia
   :doc "Enrich existing commands with completion annotations"
