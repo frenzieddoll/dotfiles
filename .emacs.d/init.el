@@ -1998,7 +1998,6 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
     (setq todoFile (concat-org-path "todo.org"))
     (setq memoFile (concat-org-path "memo.org"))
     (setq glosFile (concat-org-path "glossary.org"))
-    (setq org-agenda-files (list todoFile))
 
     :bind (("C-c a" . org-agenda)
            ("C-c c" . org-capture))
@@ -2009,6 +2008,8 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
               (org-todo-keywords . '((sequence "TODO(t)" "SOMEDAY(s)" "WATTING(w)" "|" "DONE(d)" "CANCELED(c@)")))
               (org-enforce-todo-dependencies . t)
               (org-log-done . t))
+    :config
+    (setq org-agenda-files (list todoFile))
     )
 
 (leaf paradox
@@ -2719,7 +2720,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :added "2021-09-05"
   :emacs>= 24.1
   :ensure t
-  :after calendar
+  ;; :after calendar
   :defvar (calendar-day-header-array
            calendar-day-name-array
            calendar-holidays)
