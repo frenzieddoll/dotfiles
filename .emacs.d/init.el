@@ -239,6 +239,9 @@
 
 (leaf *fontSetting
   :config
+  (set-face-attribute 'default nil
+                          :family "HackGen"
+                          :height 130)
   (leaf *forLinux
     :when (eq system-type 'gnu/linux)
     (leaf *forArchlinux
@@ -2455,6 +2458,7 @@ For a directory, dired-find-file and kill previously selected buffer."
            ("C-c C-z" . haskell-interactive-bring)
            ("C-c C-l" . haskell-process-load-file)
            ("C-c C-," . haskell-mode-format-imports)
+           ("C-c C-a" . haskell-command-insert-language-pragma)
            ("<f5>"    . haskell-compile)
            ("<f8>"    . haskell-navigate-imports)))
   :hook ((haskell-mode-hook . interactive-haskell-mode)
