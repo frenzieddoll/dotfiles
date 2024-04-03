@@ -1006,7 +1006,7 @@
     (start-process-shell-command
      "xset 再設定"
      nil
-     (format "xset r rate 250 40")))
+     "xset r rate 250 40"))
   (defun scroll-up_alt ()
     (interactive)
     (scroll-up 1))
@@ -1877,6 +1877,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
 ;;             (org-log-done . t))
 ;;   )
 
+<<<<<<< HEAD
 (leaf org
 <<<<<<< HEAD
     :doc "Export Framework for Org Mode"
@@ -1984,32 +1985,73 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
             (org-enforce-todo-dependencies . t)
             (org-log-done . t))
   )
+=======
+;; (leaf org
+;;   :doc "Export Framework for Org Mode"
+;;   :tag "builtin"
+;;   :added "2021-09-05"
+;;   :disabled t
+;;   :custom ((org-agenda-files . '("~/Dropbox/org/todo.org"))
+;;            (org-directory . "~/Dropbox/org"))
+;;   :bind (("C-c a" . org-agenda)
+;;          ("C-c c" . org-capture))
+;;   :custom `((org-capture-templates . '(("n" "Note" entry (file+headline "~/Dropbox/org/notes.org" "Notes") "* %?\nEntered on %U\n %i\n %a")
+;;                                        ("t" "Todo" entry (file+headline "~/Dropbox/org/todo.org"  "Todo")  "* TODO %?\n %i\n %a")))
+;;             (org-todo-keywords . '((sequence "TODO(t)" "SOMEDAY(s)" "WATTING(w)" "|" "DONE(d)" "CANCELED(c@)")))
+;;             (org-enforce-todo-dependencies . t)
+;;             (org-log-done . t))
+;;   )
+>>>>>>> 2c71eb6b (fix init.el)
 
 (leaf org
 >>>>>>> e6aafdd4 (fix org, xset)
     :doc "Export Framework for Org Mode"
     :tag "builtin"
     :added "2021-09-05"
-    :preface
-    (setq org-path (expand-file-name
-                   (cond ((string= (system-name) "archlinux") "~/Dropbox/org/")
-                         (t "~/.emacs.d/org/"))))
-    (defun concat-org-path (str) (concat org-path str))
-    (setq todoFile (concat-org-path "todo.org"))
-    (setq memoFile (concat-org-path "memo.org"))
-    (setq glosFile (concat-org-path "glossary.org"))
-
     :bind (("C-c a" . org-agenda)
-           ("C-c c" . org-capture))
+           ("C-c c" . org-capture)
+           (org-mode-map
+            ("C-M-y" . org-insert-clipboard-image)))
     :custom `((org-directory    . org-path)
               (org-capture-templates . `(("t" "task"     entry (file+headline todoFile "todo") "** TODO %? \n" :empty-lines 1)
                                          ("m" "memo"     entry (file          memoFile) "* %^t \n" :empty-lines 1)
                                          ("g" "glossary" entry (file          glosFile) "** %? \n" :empty-lines 1)))
               (org-todo-keywords . '((sequence "TODO(t)" "SOMEDAY(s)" "WATTING(w)" "|" "DONE(d)" "CANCELED(c@)")))
               (org-enforce-todo-dependencies . t)
-              (org-log-done . t))
+              (org-log-done . t)
+              (org-image-actual-width . nil))
     :config
     (setq org-agenda-files (list todoFile))
+    :preface
+    (setq org-path (expand-file-name
+                    (cond ((string= (system-name) "archlinux") "~/Dropbox/org/")
+                          (t "~/.emacs.d/org/"))))
+    (defun concat-org-path (str) (concat org-path str))
+    (setq todoFile (concat-org-path "todo.org"))
+    (setq memoFile (concat-org-path "memo.org"))
+    (setq glosFile (concat-org-path "glossary.org"))
+    (defun org-insert-clipboard-image ()
+      (interactive)
+      (let* (
+             (image-dir "./image/")
+             (filename (format "%s%s.png" image-dir (format-time-string "%Y%m%d%H%M%S")))
+             (fullpath (expand-file-name filename))
+             (path "$HOME/Documentswin/script/import.ps1")
+             (path-win (shell-command-to-string (format "wslpath -w \"%s\"" path)))
+             (path-wsl (replace-regexp-in-string
+                        "\\wsl" "\\\\wsl"
+                        path-win))
+             (script (replace-regexp-in-string
+                      "\n" "" path-win))
+             (call-string (format "powershell.exe -ExecutionPolicy RemoteSigned -windowstyle hidden -File \"%s\" -FileName %s" script filename))
+             )
+
+        (unless (file-directory-p image-dir)
+          (make-directory image-dir))
+        (call-process "powershell.exe" nil nil nil call-string)
+        (when (file-exists-p fullpath)
+          (insert (format "#+ATTR_ORG: :width 1000\n[[file:%s]]" fullpath)))
+        (org-display-inline-images)))
     )
 
 (leaf paradox
@@ -2274,7 +2316,6 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
       (view-mode 1)
       (message "backward-kill-line"))))
 
-<<<<<<< HEAD
 ;; (leaf vlf
 ;;   :doc "View Large Files"
 ;;   :tag "utilities" "large files"
@@ -2283,16 +2324,6 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
 ;;   ;; :require vlf-setup
 ;;   :disabled t
 ;;   :ensure t)
-=======
-(leaf vlf
-  :doc "View Large Files"
-  :tag "utilities" "large files"
-  :url "https://github.com/m00natic/vlfi"
-  :added "2021-09-05"
-  ;; :require vlf-setup
-  :disabled t
-  :ensure t)
->>>>>>> 61bb3c4e (fix init.el)
 
 (leaf yaml
   :doc "YAML parser for Elisp"
@@ -2496,10 +2527,6 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :after orderless
   ;; :disabled t
   )
-<<<<<<< HEAD
-=======
-
->>>>>>> 61bb3c4e (fix init.el)
 (leaf calfw
   :doc "Calendar view framework on Emacs"
   :tag "calendar"
@@ -3560,7 +3587,6 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
             (haskell-hoogle-command . nil)
             (haskell-hoogle-url . "https://www.stackage.org/lts/hoogle?q=%s")
             )
-<<<<<<< HEAD
   :bind ((haskell-mode-map
           ("C-c C-z" . haskell-interactive-bring)
           ("C-c C-l" . haskell-process-load-file)
@@ -3655,104 +3681,6 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
 ;;     ;; :disabled t
 ;;     :ensure t)
 ;;   )
-=======
-  :bind `((haskell-mode-map
-           ("C-c C-z" . haskell-interactive-bring)
-           ("C-c C-l" . haskell-process-load-file)
-           ("C-c C-," . haskell-mode-format-imports)
-           ("<f5>"    . haskell-compile)
-           ("<f8>"    . haskell-navigate-imports)))
-  :hook ((haskell-mode-hook . interactive-haskell-mode)
-         (haskell-mode-hook . haskell-doc-mode)
-         (haskell-mode-hook . haskell-indentation-mode)
-         ;; (haskell-mode-hook . haskell-auto-insert-module-template)
-         (haskell-mode-hook . haskell-decl-scan-mode)
-         ;; (haskell-mode-hook . lsp)
-         ;; (haskell-mode-hook . flycheck-mode)
-         ;; (haskell-literate-mode . lsp)
-         )
-  :config
-  (leaf lsp-haskell
-    :doc "Haskell support for lsp-mode"
-    :req "emacs-24.3" "lsp-mode-3.0" "haskell-mode-16.1"
-    :tag "haskell" "emacs>=24.3"
-    :url "https://github.com/emacs-lsp/lsp-haskell"
-    :added "2023-02-10"
-    :emacs>= 24.3
-    :ensure t
-    ;; :disabled t
-    :custom ((lsp-haskell-server-path . "haskell-language-server-wrapper")
-             (lsp-haskell-completion-snippets-on . nil)
-             )
-    )
-  )
-
-(leaf lsp-mode
-  :doc "LSP mode"
-  :req "emacs-26.1" "dash-2.18.0" "f-0.20.0" "ht-2.3" "spinner-1.7.3" "markdown-mode-2.3" "lv-0"
-  :tag "languages" "emacs>=26.1"
-  :url "https://github.com/emacs-lsp/lsp-mode"
-  :added "2021-11-06"
-  :emacs>= 26.1
-  :ensure t
-  ;; :disabled t
-  ;; :el-get emacs-lsp/lsp-mode
-  ;; :unless (string-match "Raspberrypi" (system-name))
-  :custom ((lsp-keymap-prefix                      . "C-z")
-           ;; (lsp-idle-delay                         . 0.500)
-           (lsp-log-io                             . nil)
-           (lsp-completion-provider                . :none)
-           ;; (lsp-prefer-capf                        . t)
-           (lsp-headerline-breadcrumb-icons-enable . nil)
-           (lsp-enable-snippet                     . nil)
-           )
-  :init
-  (defun my/lsp-mode-setup-completion ()
-    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-          '(orderless)))
-  :hook (
-         (lsp-mode-hook        . lsp-enable-which-key-integration)
-         ;; (lsp-completion-mode-hook . my/lsp-mode-setup-completion)
-         (haskell-mode-hook    . lsp)
-         (rustic-mode-hook     . lsp)
-         (c-mode-hook          . lps)
-         (c++-mode-hook        . lsp)
-         (sh-mode              . lsp)
-         (purescript-mode-hook . lsp)
-         )
-  :config
-  (leaf lsp-ui
-    :doc "UI modules for lsp-mode"
-    :req "emacs-26.1" "dash-2.18.0" "lsp-mode-6.0" "markdown-mode-2.3"
-    :tag "tools" "languages" "emacs>=26.1"
-    :url "https://github.com/emacs-lsp/lsp-ui"
-    :added "2021-11-06"
-    :emacs>= 26.1
-    :ensure t
-    ;; :disabled t
-    :hook ((lsp-mode-hook . lsp-ui-mode))
-    :commands lsp-ui-mode)
-  (leaf lsp-treemacs
-    :doc "LSP treemacs"
-    :req "emacs-26.1" "dash-2.18.0" "f-0.20.0" "ht-2.0" "treemacs-2.5" "lsp-mode-6.0"
-    :tag "languages" "emacs>=26.1"
-    :url "https://github.com/emacs-lsp/lsp-treemacs"
-    :added "2021-12-21"
-    :emacs>= 26.1
-    ;; :disabled t
-    :ensure t
-    :custom ((lsp-treemacs-sync-mode . 1)))
-  (leaf consult-lsp
-    :doc "LSP-mode Consult integration"
-    :req "emacs-27.1" "lsp-mode-5.0" "consult-0.9" "f-0.20.0"
-    :tag "lsp" "completion" "tools" "emacs>=27.1"
-    :url "https://github.com/gagbo/consult-lsp"
-    :added "2021-11-08"
-    :emacs>= 27.1
-    ;; :disabled t
-    :ensure t)
-  )
->>>>>>> 61bb3c4e (fix init.el)
 
 (leaf python-mode
   :doc "Python major mode"
