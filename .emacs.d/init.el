@@ -523,6 +523,13 @@
              (result (shell-command-to-string (format "cmd.exe /c start \"\" \"%s\" 2> /dev/null" file-path)))
              )
         (message (format "start %s" file-path))))
+    (defun copy-temp-file ()
+      (interactive)
+      (find-file "~/Desktop/temp.txt")
+      (mark-whole-buffer)
+      (copy-region-as-kill nil nil t)
+      (kill-buffer)
+      )
     )
   (leaf dired-open
     :when (eq system-type 'windows-nt)
