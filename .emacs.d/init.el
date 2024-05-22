@@ -2057,7 +2057,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
           (make-directory image-dir))
         (call-process "powershell.exe" nil nil nil call-string)
         (when (file-exists-p fullpath)
-          (insert (format "#+ATTR_ORG: :width 1000\n[[file:%s]]" fullpath)))
+          (insert (format "#+ATTR_ORG: :width 500\n[[file:%s]]" fullpath)))
         (org-display-inline-images)))
     )
 
