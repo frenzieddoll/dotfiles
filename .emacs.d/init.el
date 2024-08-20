@@ -404,7 +404,6 @@
     :added "2021-09-05"
     :ensure t
     :require t
-    :when (eq system-type 'gnu/linux)
     :unless (string-match "microsoft" (shell-command-to-string "uname -r"))
     :custom ((dired-open-extensions .
                                     '(("mkv"      . "~/.emacs.d/script/mpv-rifle.sh")
@@ -523,13 +522,67 @@
              (result (shell-command-to-string (format "cmd.exe /c start \"\" \"%s\" 2> /dev/null" file-path)))
              )
         (message (format "start %s" file-path))))
-    (defun copy-temp-file ()
+    )
+  (leaf dired-open
+    :when (eq system-type 'windows-nt)
+    :bind ((dired-mode-map
+            :package dired
+            ("w" . open-file-by-windowsApp)
+            ("z" . unzip)
+            ))
+    :custom ((dired-open-extensions . '(
+                                        ;; ("mkv"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ;; ("mp4"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ;; ("avi"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ;; ("wmv"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ;; ("webm"     . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ;; ("mpg"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ;; ("flv"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ;; ("m4v"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ;; ("mp3"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ;; ("flac"     . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ;; ("wav"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ;; ("m4a"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ;; ("3gp"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ;; ("rm"       . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ;; ("rmvb"     . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ;; ("mpeg"     . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ;; ("VOB"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ;; ("mov"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ;; ("iso"      . "mpv dvd:// -dvd-device")
+                                        ;; ("playlist" . "mpv --playlist")
+                                        ;; ("exe"      . "wine")
+                                        ("pdf"      . "zathura")
+                                        ;; ("zip"      . "zathura")
+                                        ;; ("rar"      . "zathura")
+                                        ;; ("tar"      . "zathura")
+                                        ("zip"      . "YACReader")
+                                        ("rar"      . "YACReader")
+                                        ("tar"      . "YACReader")
+                                        ;; ("zip"      . "mcomix")
+                                        ;; ("rar"       . "mcomix")
+                                        ;; ("tar"       . "mcomix")
+                                        ("xls"      . "open")
+                                        ("xlsx"     . "open")
+                                        ("jpg"      . "open")
+                                        ("png"      . "open")
+                                        ("jpeg"     . "open")
+                                        ("gif"      . "open")
+                                        ("png"      . "open")
+                                        ("webp"     . "open")
+                                        )))
+    :preface
+    (defun open-file-by-windowsApp ()
       (interactive)
-      (find-file "~/Desktop/temp.txt")
-      (mark-whole-buffer)
-      (copy-region-as-kill nil nil t)
-      (kill-buffer)
-      )
+      ;; (let ((file-name (decode-coding-string (encode-coding-string (dired-get-file-for-visit) 'japanese-shift-jis-dos) 'utf-8)))
+      (let ((file-name (shift-jis-to-utf8 (dired-get-file-for-visit))))
+        (shell-command (format "start \"\" \"%s\"" file-name))
+        (message (utf8-to-shift-jis file-name))))
+    (defun unzip ()
+      (interactive)
+      (let ((file-name (shift-jis-to-utf8 (dired-get-file-for-visit))))
+        (shell-command (format "call powershell -command \"Expand-Archive %s\"" file-name))
+        (message (format "unzip %s" (utf8-to-shift-jis file-name)))))
     )
   (leaf dired-open
     :when (eq system-type 'windows-nt)
@@ -907,7 +960,7 @@
            (scroll-preserve-screen-position . t)
            (windmove-wrap-around            . t))
   :config
-  (leaf *ForMac
+  (leaf *forMac
     :when (eq system-type 'darwin)
     :bind (("s-n" . windmove-down)
            ("s-f" . windmove-right)
@@ -917,7 +970,7 @@
            ("s-q" . kill-current-buffer)
            ("s-h" . delete-window)
            ("s-o" . consult-buffer)))
-  (leaf *ForWindows
+  (leaf *forWindows
     :when (eq system-type 'windows-nt)
     :bind (("M-n" . windmove-down)
            ("M-f" . windmove-right)
@@ -928,7 +981,7 @@
            ("M-h" . delete-window)
            ("M-d" . app-launcher-run-app)
            ("M-o" . consult-buffer)))
-  (leaf *ForLinux
+  (leaf *forLinux
     :when (eq system-type 'gnu/linux)
     :bind (("s-s" . async-shell-command)
            ("s-S" . window-capcher)
@@ -944,16 +997,16 @@
            ("s-q" . kill-current-buffer)
            ("s-o" . consult-buffer))
     :config
-    (leaf *ForWsl
+    (leaf *forWSL
       :when (string-match "microsoft" (shell-command-to-string "uname -r"))
       :config
-      (leaf wslx
+      (leaf *wsl
         :bind (("M-q" . kill-current-buffer)
                ("M-o" . consult-buffer))
         :config
         (my-xset))
 
-      (leaf *CLI
+      (leaf *forCLI
         :unless (eq window-system 'x)
         :bind (("M-n" . windmove-down)
                ("M-f" . windmove-right)
@@ -1147,6 +1200,7 @@
   (defun base64ToPng (fileName)
     (interactive "sfile name: ")
     (let ((script (concat user-emacs-directory "script/decodeBase64.py %s")))
+<<<<<<< HEAD
     (let ((script (concat user-emacs-directory "script/decodeBase64.py %s")))
                       script
                       fileName))))
@@ -1331,12 +1385,34 @@
         )
       )
     )
+=======
+      (shell-command (format
+                      script
+                      fileName))))
+>>>>>>> da445c90 (fix init.el wsl用にlatexの設定を修正)
   (leaf *my-app
     :require app-launcher-for-windows
     :config
-    (add-to-list 'app-launcher-apps-directories "C:/Users/0145220079/AppData/Roaming/Microsoft/Windows/Start Menu/Programs")
+    (add-to-list 'app-launcher-apps-directories "C:/Users/0145220079/AppData/Roaming/Microsoft/Windows/Start Menu/Programs"))
+  )
+
+(leaf *forWSL
+  :when (string-match "microsoft" (shell-command-to-string "uname -r"))
+  :config
+  (defun copy-temp-file ()
+    (interactive)
+    (find-file "~/Desktop/temp.txt")
+    (mark-whole-buffer)
+    (copy-region-as-kill nil nil t)
+    (kill-buffer)
     )
+<<<<<<< HEAD
 >>>>>>> 3ddef3ae (fix init.el zshrc)
+=======
+  (defun wsl-paste()
+    (interactive)
+    (insert (shell-command-to-string "powershell.exe -command 'Get-Clipboard'")))
+>>>>>>> da445c90 (fix init.el wsl用にlatexの設定を修正)
   )
 
 
@@ -1443,11 +1519,15 @@
     )
   (leaf *ebibForLinux
     :when (eq system-type 'gnu/linux)
+<<<<<<< HEAD
 <<<<<<< variant A
     :custom ((ebib-preload-bib-files . '("~/Documents/PDF/references.bib"))
 >>>>>>> variant B
     :custom ((ebib-preload-bib-files . '("~/tex/references.bib"))
 ======= end
+=======
+    :custom ((ebib-preload-bib-files . '("~/Documents/PDF/references.bib"))
+>>>>>>> da445c90 (fix init.el wsl用にlatexの設定を修正)
              (ebib-keywords-file     . "~/tex/ebib-keywords.txt")
 <<<<<<< variant A
              (ebib-file-associations . '(("pdf" . "zathura")
@@ -1481,9 +1561,9 @@
 
 >>>>>>> variant B
              (ebib-file-associations . '(("pdf" . "zathura") ("ps"  . "zathura")))
-             (ebib-file-search-dirs  . '("~/tex/pdfs" "~/tex/papers" "~/tex/books"))
+             (ebib-file-search-dirs  . '("~/tex/pdfs" "~/tex/papers" "~/tex/books" "~/Documents/PDF/ER"))
              ))
-======= end
+
   (leaf *ebibForSony
     :when (eq system-type 'windows-nt)
     :when (string= (system-name) "JPC20627141")
@@ -1497,10 +1577,14 @@
                                          ("ps"  . "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe")))
              (ebib-file-search-dirs  . '("~/Documents/PDF/ER" "~/Documents/PDF/paper"))
              ))
+<<<<<<< HEAD
 <<<<<<< variant A
 
 >>>>>>> variant B
 ======= end
+=======
+
+>>>>>>> da445c90 (fix init.el wsl用にlatexの設定を修正)
   (leaf biblio
     :doc "Browse and import bibliographic references from CrossRef, arXiv, DBLP, HAL, Dissemin, and doi.org"
     :req "emacs-24.3" "biblio-core-0.2"
@@ -2018,7 +2102,9 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
     :bind (("C-c a" . org-agenda)
            ("C-c c" . org-capture)
            (org-mode-map
-            ("C-M-y" . org-insert-clipboard-image)))
+            ("C-M-y" . org-insert-clipboard-image)
+            ("C-," . org-table-transpose-table-at-point))
+           )
     :custom `((org-directory    . org-path)
               (org-capture-templates . `(("t" "task"     entry (file+headline todoFile "todo") "** TODO %? \n" :empty-lines 1)
                                          ("m" "memo"     entry (file          memoFile) "* %^t \n" :empty-lines 1)
@@ -3121,9 +3207,10 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   ;; :defvar (corfu-auto)
   :when (eq window-system 'x)
   :hook ((minibuffer-setup-hook . my/corfu-enable-in-minibuffer)
-         (eshell-mode-hook . (lambda ()
-                               (setq-local corfu-auto nil)
-                               (corfu-mode)))
+         ((eshell-mode-hook
+           ein:notebook-mode-hook) . (lambda ()
+                                       (setq-local corfu-auto nil)
+                                       (corfu-mode)))
          ;; (corfu-mode-hook . corfu-popupinfo-mode)
          )
   :global-minor-mode global-corfu-mode
