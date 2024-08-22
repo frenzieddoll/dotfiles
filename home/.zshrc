@@ -61,6 +61,9 @@ export PATH="$HOME/.emacs.d/script:$PATH"
 export PATH="$HOME/.ghcup/bin:$PATH"
 export PATH="$HOME/.cabal/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
+
+export PYTHONPATH="$HOME/Document/python/modules:$PYTHONPATH"
+
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/home/toshiaki/.local/lib"
 # 環境変数の設定
 export QT_QPA_PLATFORMTHEME="qt5ct"
