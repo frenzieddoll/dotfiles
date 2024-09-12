@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #! python
 # -*- coding: utf-8 -*-
 
@@ -93,3 +94,63 @@ def result(xs):
 print(c(result,
         makeBib,
         readSoup)(htmlFile))
+=======
+#! python
+# -*- coding: utf-8 -*-
+
+from bs4 import BeautifulSoup
+import re
+import sys
+import shutil
+import os
+import functools
+
+
+# htmlFile = "./test.html"
+htmlFile = sys.argv[1]
+pdfPath = "/home/toshiaki/Documents/PDF/ER"
+
+def stringShaping(string):
+    return "{" + re.sub(" +$", "", re.sub("^ +", "", string)) + "}"
+
+def stringFeed(feed, string):
+    return "\t{0} = {1},\n".format(feed, stringShaping(string))
+
+with open(htmlFile, "r", encoding="utf-8") as html:
+    soup = BeautifulSoup(html, "html.parser")
+
+    title = soup.find_all("div", class_="document-title")[0].string
+    authorInstitutionAddress = soup.find_all("div", class_="item-box box-03 mgb5")[0].string
+    l = re.split(r"[\[\]/]", authorInstitutionAddress)
+    author = re.sub(" ", ", ", re.sub(" +$", "", re.sub("^ +", "", l[0])))
+    institution = l[1]
+    address = l[2]
+    abstract = re.sub("<[^>]+>", "", "{}".format(soup.find_all("div", class_="item-box box-03 mgt5 mgb5")[0]))
+    year = soup.find_all("div", class_="item-box box-01 txtCenter mgt5")[0].string.split("/")[0]
+    url = soup.find_all(class_="topagetop")[0].a["href"]
+    reportID = soup.title.string.split()[0]
+    fileName = reportID + ".pdf"
+    filePath = os.path.join("./", fileName)
+    print(filePath)
+    keywordsExtract = soup.find_all(class_="item-box box-05")
+    keywords = functools.reduce(lambda acc,x: acc + x + ", ",
+                                map(lambda x: re.sub("\n? *<[^>]+>\n? *", "","{}".format(x)),
+                                    keywordsExtract)) if len(keywordsExtract) != 0 else ""
+
+    feedList = [("title", title), ("author", author), ("institution", institution), ("address", address),
+                ("abstract", abstract), ("year", year), ("url",url),("file",fileName),("keywords",keywords)]
+
+    feed = functools.reduce(lambda acc,x: acc + stringFeed(x[0],x[1]), feedList, "") if len(feedList) != 0 else ""
+    string = "@TechReport{,\n" + feed + "}"
+
+    if os.path.exists(filePath):
+        print("exist pdf file")
+        newFilePath = os.path.join(pdfPath, fileName)
+        # os.replace(filePath, newFilePath)
+        shutil.move(filePath, newFilePath)
+    else:
+        print("nothing pdf file")
+
+    with open(reportID + ".bib", "w", encoding="utf_8") as of:
+        of.write(string)
+>>>>>>> 73c52a19 (add/fix ERを取り込むebib用スクリプトの追加と、設定の修正)

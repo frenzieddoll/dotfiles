@@ -1529,7 +1529,7 @@
     :custom ((ebib-preload-bib-files . '("~/Documents/PDF/references.bib"))
 >>>>>>> da445c90 (fix init.el wsl用にlatexの設定を修正)
              (ebib-keywords-file     . "~/tex/ebib-keywords.txt")
-<<<<<<< variant A
+<<<<<<< HEAD
              (ebib-file-associations . '(("pdf" . "zathura")
                                          ("ps"  . "zathura")))
              (ebib-file-search-dirs  . '("~/Documents/PDF/ER"
@@ -1538,6 +1538,7 @@
     :config
     (defun genBib ()
       (interactive)
+<<<<<<< HEAD
       (let* ((file-path (dired-get-file-for-visit))
              (file-name (file-name-nondirectory file-path))
              (repotID (car (split-string file-name)))
@@ -1563,14 +1564,25 @@
              (ebib-file-associations . '(("pdf" . "zathura") ("ps"  . "zathura")))
              (ebib-file-search-dirs  . '("~/tex/pdfs" "~/tex/papers" "~/tex/books" "~/Documents/PDF/ER"))
              ))
+=======
+      (let ((file-name (dired-get-file-for-visit))
+            )
+        (shell-command (format
+                        "python $HOME/.emacs.d/script/fromHTMLtoBib.py \"%s\""
+                        file-name))))
+    )
+>>>>>>> 73c52a19 (add/fix ERを取り込むebib用スクリプトの追加と、設定の修正)
 
   (leaf *ebibForSony
     :when (eq system-type 'windows-nt)
     :when (string= (system-name) "JPC20627141")
+<<<<<<< HEAD
 <<<<<<< variant A
 >>>>>>> variant B
     :bind (("C-c b" . ebib))
 ======= end
+=======
+>>>>>>> 73c52a19 (add/fix ERを取り込むebib用スクリプトの追加と、設定の修正)
     :custom ((ebib-preload-bib-files . '("~/Documents/PDF/references.bib"))
              (ebib-keywords-file     . "~/Documents/PDF/ebib-keywords.txt")
              (ebib-file-associations . '(("pdf" . "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe")
