@@ -1013,16 +1013,26 @@
                ("M-b" . windmove-left)
                ("M-p" . windmove-up)
                ("M-a" . zoom-window-zoom)
-               ("M-q" . kill-current-buffer)
-               ("M-h" . delete-window)
-               ("C-M-i" . output_toggle)
-               ("C-M-m" . mute_toggle)
-               ("C-M-n" . lower_volume )
-               ("C-M-p" . upper_volume)
-               ("M-d" . app-launcher-run-app)
-               ("M-o" . consult-buffer))
-        :custom (global-hl-line-mode . t))
-      )
+               ("s-a" . zoom-window-zoom))
+        :config
+        (my-xset)))
+
+    (leaf *forCLI
+      :unless (eq window-system 'x)
+      :bind (("M-n" . windmove-down)
+             ("M-f" . windmove-right)
+             ("M-b" . windmove-left)
+             ("M-p" . windmove-up)
+             ("M-a" . zoom-window-zoom)
+             ("M-q" . kill-current-buffer)
+             ("M-h" . delete-window)
+             ("C-M-i" . output_toggle)
+             ("C-M-m" . mute_toggle)
+             ("C-M-n" . lower_volume )
+             ("C-M-p" . upper_volume)
+             ("M-d" . app-launcher-run-app)
+             ("M-o" . consult-buffer))
+      :custom (global-hl-line-mode . t))
     )
 
   :preface
@@ -1397,8 +1407,10 @@
   )
 
 (leaf *forWSL
+  :when (eq system-type 'gnu/linux)
   :when (string-match "microsoft" (shell-command-to-string "uname -r"))
-  :config
+  :custom ((browse-url-browser-function . #'my-browse-url-wsl-host-browser))
+  :preface
   (defun copy-temp-file ()
     (interactive)
     (find-file "~/Desktop/temp.txt")
@@ -1412,7 +1424,18 @@
   (defun wsl-paste()
     (interactive)
     (insert (shell-command-to-string "powershell.exe -command 'Get-Clipboard'")))
+<<<<<<< HEAD
 >>>>>>> da445c90 (fix init.el wsl用にlatexの設定を修正)
+=======
+  (defun my-browse-url-wsl-host-browser (url &rest _args)
+    "Browse URL with WSL host web browser."
+    (prog1 (message "Open %s" url)
+      (shell-command-to-string
+       (mapconcat #'shell-quote-argument
+                  (list "cmd.exe" "/c" "start" url)
+                  " "))))
+  ;; (setopt browse-url-browser-function #'my-browse-url-wsl-host-browser)
+>>>>>>> b0544229 (add vundo | fix paradox, key-bind, cua)
   )
 
 
@@ -2167,6 +2190,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :added "2023-03-18"
   :emacs>= 24.4
   :ensure t
+  :disabled t
   :require t
   :config (paradox-enable))
 ======= end
