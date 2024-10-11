@@ -1938,19 +1938,9 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :added "2021-09-05"
   :emacs>= 25.1
   :ensure t
-<<<<<<< variant A
->>>>>>> variant B
   :after git-commit magit-section with-editor
-======= end
   :when (executable-find "git")
-<<<<<<< HEAD
-<<<<<<< variant A
   :bind (("C-x g" . magit-status))
->>>>>>> variant B
-======= end
-=======
-  :bind (("C-x g" . magit-status))
->>>>>>> fafb2d1e (fix global-seggint for each OS)
   :config (setenv "GIT_PAGER" ""))
 
 ;; (leaf mew
