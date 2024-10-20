@@ -791,19 +791,19 @@ For a directory, dired-find-file and kill previously selected buffer."
   )
 
 
-(leaf chatgpt-shell
-  :doc "Interaction mode for ChatGPT"
-  :req "emacs-27.1" "shell-maker-0.17.1"
-  :tag "emacs>=27.1"
-  :url "https://github.com/xenodium/chatgpt-shell"
-  :added "2023-04-28"
-  :emacs>= 27.1
-  :ensure t
-  :disabled t
-  :custom
-  `(chatgpt-shell-openai-key . ,(auth-source-pick-first-password :host "api.openai.com"))
-  :bind ("C-c g" . chatgpt-shell)
-  )
+;; (leaf chatgpt-shell
+;;   :doc "Interaction mode for ChatGPT"
+;;   :req "emacs-27.1" "shell-maker-0.17.1"
+;;   :tag "emacs>=27.1"
+;;   :url "https://github.com/xenodium/chatgpt-shell"
+;;   :added "2023-04-28"
+;;   :emacs>= 27.1
+;;   :ensure t
+;;   :disabled t
+;;   :custom
+;;   `(chatgpt-shell-openai-key . ,(auth-source-pick-first-password :host "api.openai.com"))
+;;   :bind ("C-c g" . chatgpt-shell)
+;;   )
 
 (leaf csv
   :doc "Functions for reading and parsing CSV files."
@@ -1865,15 +1865,16 @@ For a directory, dired-find-file and kill previously selected buffer."
   `((recentf-save-file . "~/.emacs.d/recentf")
     (recentf-max-saved-items . 2000)
     (recentf-auto-cleanup . 'never)
-    (recnetf-exclude . '("/recentf"
+    (recentf-exclude . '("recentf"
                          "COMMIT_EDITMSG"
                          "/.?TAGS"
                          "^/sudo:"
                          "/\\.emacs\\.d/games/*-scores"
                          "/\\.emacs\\.d/\\.cask/"
-                         "~/Videos/Geheimnis/"))
+                         "Geheimnis"))
     ;; (recentf-auto-cleanup-timer . (run-with-idle-timer 30 t 'recentf-save-list))
     )
+  :global-minor-mode (recentf-mode)
   )
 
 (leaf smartparens
@@ -1992,7 +1993,6 @@ For a directory, dired-find-file and kill previously selected buffer."
           ("C-c h" . consult-history)))
 
   :custom `((consult-preview-key . nil))
-  :global-minor-mode (recentf-mode)
   )
 (leaf orderless
   :doc "Completion style for matching regexps in any order"
@@ -2636,6 +2636,9 @@ For a directory, dired-find-file and kill previously selected buffer."
 ;; window managr
 (leaf *exwm-config
   ;; :disabled t
+  ;; ワークスペースを切り替えたとき、braveがフォーカスから外れるときは、exwm-layout.elの
+  ;; (cl-pushnew xcb:Atom:_NET_WM_STATE_HIDDEN exwm--ewmh-state)
+  ;; をコメントアウトする
   :when (string= (getenv "EXWM") "enable")
   :when (eq system-type 'gnu/linux)
   ;; :when (string= "archlinuxhonda" (system-name))
