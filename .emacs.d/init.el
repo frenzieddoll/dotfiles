@@ -244,6 +244,7 @@
                           :height 130)
   (leaf *forLinux
     :when (eq system-type 'gnu/linux)
+    :config
     (leaf *forArchlinux
       :when (string= (system-name) "archlinuxhonda")
       :config
@@ -268,7 +269,7 @@
       :config
       (set-face-attribute 'default nil
                           :family "HackGen"
-                          :height 140)
+                          :height 130)
       (set-fontset-font t 'japanese-jisx0208 (font-spec :family "HackGen")))
 
     (leaf *HP_wsl
