@@ -1410,6 +1410,7 @@
   :when (eq system-type 'gnu/linux)
   :when (string-match "microsoft" (shell-command-to-string "uname -r"))
   :custom ((browse-url-browser-function . #'my-browse-url-wsl-host-browser))
+  :bind (("C-M-w" . copy-temp-file))
   :preface
   (defun copy-temp-file ()
     (interactive)
@@ -2881,7 +2882,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :added "2021-09-05"
   :emacs>= 24.1
   :ensure t
-  ;; :after calendar
+  :after calendar
   :defvar (calendar-day-header-array
            calendar-day-name-array
            calendar-holidays)
