@@ -263,7 +263,6 @@
                         'japanese-jisx0208
                         (font-spec :family "HackGen"
                                    :height 120)))
-
     (leaf *forSX12_wsl
       :when (string= (system-name) "sx12toshiaki")
       :config
@@ -271,7 +270,6 @@
                           :family "HackGen"
                           :height 130)
       (set-fontset-font t 'japanese-jisx0208 (font-spec :family "HackGen")))
-
     (leaf *HP_wsl
       :when (string= (system-name) "JPC20627141")
       :config
@@ -476,6 +474,7 @@ For a directory, dired-find-file and kill previously selected buffer."
                                       ("dd" . "dd status=progress")
                                       ("pacmandate" . "expac --timefmt='%Y-%m-%d %T' '%l\t%n' | sort | tail -n $1")
                                       ("open" . "cmd.exe /c start {wslpath -w $*}")
+                                      ("gdrive" . "sudo mount -t drvfs G: /mnt/googleDrive/")
                                       ))
   ;; (if (not (eq system-type 'windows))
   ;;         (eval-after-load "esh-module"
@@ -508,32 +507,34 @@ For a directory, dired-find-file and kill previously selected buffer."
 
 (leaf *global-setting
   ;; :disabled t
-  :hook (minibuffer-setup-hook . minibuffer-delete-backward-char)
-  :init (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char)
-  :bind (("C-x x s" . my-xset)
-         ("C-c r"   . window-resizer)
-         ("C-S-n"   . scroll-up_alt)
-         ("C-S-p"   . scroll-down_alt)
-         ("C-m"     . newline-and-indent)
-         ("C-h"     . delete-backward-char)
-         ("M-h"     . backward-kill-word)
-         ("C-c ?"   . help-command)
-         ("C-c l"   . toggle-truncate-lines)
-         ("C-c t"   . display-line-numbers-mode)
-         ("C-c w"   . whitespace-mode)
-         ("C-c o"   . occur)
-         ("C-c C-j" . eval-print-last-sexp))
-  :custom ((scroll-preserve-screen-position . t)
-           ;; スクロール開始のマージン
-           (scroll-margin                   . 5)
-           (scroll-conservatively           . 100)
-           ;; 1画面スクロール時に重複させる行数
-           (next-screen-context-lines       . 10)
-           ;; 1画面スクロール時にカーソルの画面上の位置をなるべく変えない
-           (scroll-preserve-screen-position . t)
-           (windmove-wrap-around            . t))
-
   :config
+  (leaf *global
+    :hook (minibuffer-setup-hook . minibuffer-delete-backward-char)
+    :bind (("C-x x s" . my-xset)
+           ("C-c r"   . window-resizer)
+           ("C-S-n"   . scroll-up_alt)
+           ("C-S-p"   . scroll-down_alt)
+           ("C-m"     . newline-and-indent)
+           ("C-h"     . delete-backward-char)
+           ("M-h"     . backward-kill-word)
+           ("C-c ?"   . help-command)
+           ("C-c l"   . toggle-truncate-lines)
+           ("C-c t"   . display-line-numbers-mode)
+           ("C-c w"   . whitespace-mode)
+           ("C-c o"   . occur)
+           ("C-c C-j" . eval-print-last-sexp)
+           (isearch-mode-map
+            ("C-h" . isearch-delete-char)
+            ))
+    :custom ((scroll-preserve-screen-position . t)
+             ;; スクロール開始のマージン
+             (scroll-margin                   . 5)
+             (scroll-conservatively           . 100)
+             ;; 1画面スクロール時に重複させる行数
+             (next-screen-context-lines       . 10)
+             ;; 1画面スクロール時にカーソルの画面上の位置をなるべく変えない
+             (scroll-preserve-screen-position . t)
+             (windmove-wrap-around            . t)))
   (leaf *ForMac
     :when (eq system-type 'darwin)
     :bind (("s-n" . windmove-down)
@@ -557,31 +558,31 @@ For a directory, dired-find-file and kill previously selected buffer."
            ("M-o" . consult-buffer)))
   (leaf *ForLinux
     :when (eq system-type 'gnu/linux)
-    :bind (("s-s" . async-shell-command)
-           ("s-S" . window-capcher)
-           ("s-n" . windmove-down)
-           ("s-f" . windmove-right)
-           ("s-b" . windmove-left)
-           ("s-p" . windmove-up)
-           ("s-a" . zoom-window-zoom)
-           ("s-h" . delete-window)
-           ("s-d" . app-launcher-run-app)
-           ("s-n" . windmove-down)
-           ("s-p" . windmove-up)
-           ("s-q" . kill-current-buffer)
-           ("s-o" . consult-buffer))
     :config
-    (leaf *ForWsl
+    (leaf *Linux
+      :bind (("s-s" . async-shell-command)
+             ("s-S" . window-capcher)
+             ("s-n" . windmove-down)
+             ("s-f" . windmove-right)
+             ("s-b" . windmove-left)
+             ("s-p" . windmove-up)
+             ("s-a" . zoom-window-zoom)
+             ("s-h" . delete-window)
+             ("s-d" . app-launcher-run-app)
+             ("s-n" . windmove-down)
+             ("s-p" . windmove-up)
+             ("s-q" . kill-current-buffer)
+             ("s-o" . consult-buffer))
+      )
+    (leaf *WSL
       :when (string-match "microsoft" (shell-command-to-string "uname -r"))
-      :config
-      (leaf *wslx
-        :bind (("M-q" . kill-current-buffer)
-               ("M-o" . consult-buffer)
-               ("s-d" . app-launcher-run-app))
+      :bind (("M-o" . consult-buffer))
+      )
+    (leaf *GUI
+        :when (eq window-system 'x)
         :config
         (my-xset))
-
-      (leaf *CLI
+    (leaf *CLI
         :unless (eq window-system 'x)
         :bind (("M-n" . windmove-down)
                ("M-f" . windmove-right)
@@ -597,7 +598,6 @@ For a directory, dired-find-file and kill previously selected buffer."
                ("M-d" . app-launcher-run-app)
                ("M-o" . consult-buffer))
         :custom (global-hl-line-mode . t))
-      )
     )
 
   :preface
