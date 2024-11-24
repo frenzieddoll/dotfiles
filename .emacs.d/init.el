@@ -2292,6 +2292,8 @@ For a directory, dired-find-file and kill previously selected buffer."
           ("C-m" . vterm-send-return)
           ("C-h" . vterm-send-backspace)
           ("C-y" . vterm-yank)
+          ;; ("C-l" . skk-latin-mode)
+          ;; ("C-j" . skk-hiragana-set)
           ))
   :config
   (leaf multi-vterm
