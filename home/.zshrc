@@ -106,7 +106,7 @@ case $(uname -n) in
         # PS1='[\u@\h \W]\$ '
         setxkbmap -layout us > /dev/null 2>&1
         setxkbmap -option ctrl:swap_rwin_rctl > /dev/null 2>&1
-        # export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0;;
+        export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0.0;;
 esac
 
 case $(uname -r | grep microsoft > /dev/null 2>&1 && echo wsl || echo not_wsl) in
