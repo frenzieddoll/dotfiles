@@ -1562,11 +1562,11 @@
     :config
     (defun genBib ()
       (interactive)
-<<<<<<< HEAD
       (let* ((file-path (dired-get-file-for-visit))
              (file-name (file-name-nondirectory file-path))
              (repotID (car (split-string file-name)))
              (bib-file (concat repotID ".bib"))
+<<<<<<< HEAD
             )
         (shell-command (format
                         "python $HOME/.emacs.d/script/fromHTMLtoBib.py \"%s\""
@@ -1584,18 +1584,28 @@
           (kill-buffer))))
     )
 
->>>>>>> variant B
              (ebib-file-associations . '(("pdf" . "zathura") ("ps"  . "zathura")))
              (ebib-file-search-dirs  . '("~/tex/pdfs" "~/tex/papers" "~/tex/books" "~/Documents/PDF/ER"))
              ))
-=======
       (let ((file-name (dired-get-file-for-visit))
+=======
+>>>>>>> 89d9de0f (fix genBibをebib-import-entryまで自動化)
             )
         (shell-command (format
                         "python $HOME/.emacs.d/script/fromHTMLtoBib.py \"%s\""
-                        file-name))))
+                        file-path))
+        ;; (message bibFile)
+        (my/ebib-import-entries bib-file)
+        ))
+    (defun my/ebib-import-entries (file-path)
+      (interactive "fSelect file: ")
+      (let ((buffer (find-file-noselect file-path)))
+        (with-current-buffer buffer
+          (goto-char (point-min))
+          (push-mark (point-max) nil t)
+          (ebib-import-entries)
+          (kill-buffer))))
     )
->>>>>>> 73c52a19 (add/fix ERを取り込むebib用スクリプトの追加と、設定の修正)
 
   (leaf *ebibForSony
     :when (eq system-type 'windows-nt)
