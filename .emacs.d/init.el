@@ -576,7 +576,8 @@ For a directory, dired-find-file and kill previously selected buffer."
       )
     (leaf *WSL
       :when (string-match "microsoft" (shell-command-to-string "uname -r"))
-      :bind (("M-o" . consult-buffer))
+      :bind (("M-o" . consult-buffer)
+             ("M-q" . kill-current-buffer))
       )
     (leaf *GUI
         :when (eq window-system 'x)
