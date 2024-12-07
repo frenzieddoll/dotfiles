@@ -136,8 +136,8 @@ if [[ "$INSIDE_EMACS" = 'vterm' ]] \
 fi
 
 # private ファイルの読み込み
-if [ -e $HOME/private/API/api.sh ]; then
-    while read line; do
-        eval $line
-    done < $HOME/private/API/api.sh
-fi
+# if [ -e $HOME/private/API/api.sh ]; then
+#     while read line; do
+#         eval $line
+#     done < $HOME/private/API/api.sh
+# fi
