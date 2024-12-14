@@ -1541,7 +1541,18 @@ For a directory, dired-find-file and kill previously selected buffer."
 
     :bind ((YaTeX-mode-map
             ("C-c >" . YaTeX-comment-region)
-            ("C-c <" . YaTeX-uncomment-region)))))
+            ("C-c <" . YaTeX-uncomment-region))))
+
+  (leaf tikz
+    :doc "A minor mode to edit TikZ pictures. yatexで使う時はコードの一部を編集"
+    :req "emacs-24.1"
+    :tag "tex" "emacs>=24.1"
+    :url "https://github.com/emiliotorres/tikz"
+    :added "2024-12-15"
+    :emacs>= 24.1
+    :ensure t
+    )
+  )
 
 
 ;; マイナーモードの設定
