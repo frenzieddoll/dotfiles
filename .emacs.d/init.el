@@ -3268,9 +3268,13 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
            ;; (corfu-preselect-first . nil)
            )
   :bind
+<<<<<<< HEAD
   ((corfu-map
     ("C-s" . corfu-insert-separator)
     ("C-SPC" . corfu-insert-separator)
+=======
+  ((corfu-mode-map
+>>>>>>> 26b31456 (fix yatex-mode setting)
     ("C-c SPC" . corfu-insert-separator)
     ("M-SPC" . corfu-insert-separator))) ;SPCにするとSKKのへんかんできなくなる
   :init
@@ -3347,8 +3351,13 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :ensure t
   ;; :after corfu
   ;; :disabled t
+<<<<<<< HEAD
   ;; :hook ((ein:notebook-mode-hook . my/set-ein-capf)
   ;;        (lsp-completion-mode . corfu-setup-lsp))
+=======
+  :hook ((ein:notebook-mode-hook . my/set-ein-capf)
+         (lsp-completion-mode . corfu-setup-lsp))
+>>>>>>> 26b31456 (fix yatex-mode setting)
   :config
   ;; (add-to-list 'completion-at-point-functions #'tempel-complete)
   (add-to-list 'completion-at-point-functions #'cape-file)
@@ -3739,6 +3748,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
     (other-window 1))
   )
 
+<<<<<<< HEAD
 ;; (leaf lsp-mode
 ;;   :doc "LSP mode"
 ;;   :req "emacs-26.1" "dash-2.18.0" "f-0.20.0" "ht-2.3" "spinner-1.7.3" "markdown-mode-2.3" "lv-0"
@@ -3812,6 +3822,81 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
 ;;     ;; :disabled t
 ;;     :ensure t)
 ;;   )
+=======
+(leaf lsp-mode
+  :doc "LSP mode"
+  :req "emacs-26.1" "dash-2.18.0" "f-0.20.0" "ht-2.3" "spinner-1.7.3" "markdown-mode-2.3" "lv-0"
+  :tag "languages" "emacs>=26.1"
+  :url "https://github.com/emacs-lsp/lsp-mode"
+  :added "2021-11-06"
+  :emacs>= 26.1
+  :ensure t
+  ;; :disabled t
+  ;; :el-get emacs-lsp/lsp-mode
+  ;; :unless (string-match "Raspberrypi" (system-name))
+  :custom ((lsp-keymap-prefix                      . "C-z")
+           ;; (lsp-idle-delay                         . 0.500)
+           (lsp-log-io                             . nil)
+           (lsp-completion-provider                . :none)
+           ;; (lsp-prefer-capf                        . t)
+           (lsp-headerline-breadcrumb-icons-enable . nil)
+           (lsp-enable-file-wathers                . nil)
+           (lsp-enable-folding                     . nil)
+           (lsp-enable-symbol-highlighting         . nil)
+           (lsp-enable-text-document-color         . nil)
+           (lsp-enable-indentation                 . nil)
+           (lsp-enable-on-type-formatting          . nil)
+           (lsp-auto-execute-action                . nil)
+           (lsp-before-save-edits                  . nil)
+           (lsp-enable-snippet                     . nil)
+           )
+  :init
+  (defun my/lsp-mode-setup-completion ()
+    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+          '(orderless)))
+  :hook (
+         (lsp-mode-hook        . lsp-enable-which-key-integration)
+         ;; (lsp-completion-mode-hook . my/lsp-mode-setup-completion)
+         (haskell-mode-hook    . lsp)
+         (rustic-mode-hook     . lsp)
+         (c-mode-hook          . lps)
+         (c++-mode-hook        . lsp)
+         (sh-mode              . lsp)
+         (purescript-mode-hook . lsp)
+         )
+  :config
+  (leaf lsp-ui
+    :doc "UI modules for lsp-mode"
+    :req "emacs-26.1" "dash-2.18.0" "lsp-mode-6.0" "markdown-mode-2.3"
+    :tag "tools" "languages" "emacs>=26.1"
+    :url "https://github.com/emacs-lsp/lsp-ui"
+    :added "2021-11-06"
+    :emacs>= 26.1
+    :ensure t
+    ;; :disabled t
+    :hook ((lsp-mode-hook . lsp-ui-mode))
+    :commands lsp-ui-mode)
+  (leaf lsp-treemacs
+    :doc "LSP treemacs"
+    :req "emacs-26.1" "dash-2.18.0" "f-0.20.0" "ht-2.0" "treemacs-2.5" "lsp-mode-6.0"
+    :tag "languages" "emacs>=26.1"
+    :url "https://github.com/emacs-lsp/lsp-treemacs"
+    :added "2021-12-21"
+    :emacs>= 26.1
+    ;; :disabled t
+    :ensure t
+    :custom ((lsp-treemacs-sync-mode . 1)))
+  (leaf consult-lsp
+    :doc "LSP-mode Consult integration"
+    :req "emacs-27.1" "lsp-mode-5.0" "consult-0.9" "f-0.20.0"
+    :tag "lsp" "completion" "tools" "emacs>=27.1"
+    :url "https://github.com/gagbo/consult-lsp"
+    :added "2021-11-08"
+    :emacs>= 27.1
+    ;; :disabled t
+    :ensure t)
+  )
+>>>>>>> 26b31456 (fix yatex-mode setting)
 
 (leaf python-mode
   :doc "Python major mode"
