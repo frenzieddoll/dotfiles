@@ -1716,6 +1716,7 @@ For a directory, dired-find-file and kill previously selected buffer."
              (executable-find "yt-dlp"))
   :el-get frenzieddoll/etv
   :require t
+  :custom ((default-m3u8-url . "https://raw.githubusercontent.com/luongz/iptv-jp/refs/heads/main/jp.m3u"))
 )
 
 (leaf git-gutter
