@@ -1599,7 +1599,6 @@ For a directory, dired-find-file and kill previously selected buffer."
   :after orderless
   )
 
-
 (leaf calfw
   :doc "Calendar view framework on Emacs"
   :tag "calendar"
@@ -1710,6 +1709,14 @@ For a directory, dired-find-file and kill previously selected buffer."
   (defun my/always-enable-skk-latin-mode-hook ()
     (skk-latin-mode 1))
   )
+
+(leaf etv
+  :when (and (executable-find "mpv")
+             (executable-find "ffmpeg")
+             (executable-find "yt-dlp"))
+  :el-get frenzieddoll/etv
+  :require t
+)
 
 (leaf git-gutter
   :doc "Port of Sublime Text plugin GitGutter"
@@ -2009,6 +2016,7 @@ For a directory, dired-find-file and kill previously selected buffer."
 
   :custom `((consult-preview-key . nil))
   )
+
 (leaf orderless
   :doc "Completion style for matching regexps in any order"
   :req "emacs-26.1"
@@ -2023,7 +2031,6 @@ For a directory, dired-find-file and kill previously selected buffer."
            (completion-category-overrides . nil)
            )
   )
-
 
 (leaf marginalia
   :doc "Enrich existing commands with completion annotations"
