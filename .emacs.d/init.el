@@ -378,6 +378,8 @@
                                       ("mpeg"     . "~/.emacs.d/script/mpv-rifle.sh")
                                       ("VOB"      . "~/.emacs.d/script/mpv-rifle.sh")
                                       ("mov"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                      ("m3u8"      . "mpv")
+                                      ("m3u"      . "mpv")
                                       ("iso"      . "mpv dvd:// -dvd-device")
                                       ("playlist" . "mpv --playlist")
                                       ("exe"      . "wine")
