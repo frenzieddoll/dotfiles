@@ -1712,8 +1712,7 @@ For a directory, dired-find-file and kill previously selected buffer."
 
 (leaf etv
   :when (and (executable-find "mpv")
-             (executable-find "ffmpeg")
-             (executable-find "yt-dlp"))
+             (executable-find "ffmpeg"))
   :el-get frenzieddoll/etv
   :require t
   :custom ((default-m3u8-url . "https://raw.githubusercontent.com/luongz/iptv-jp/refs/heads/main/jp.m3u"))
