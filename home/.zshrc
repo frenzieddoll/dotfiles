@@ -1,13 +1,13 @@
 # Created by newuser for 5.6.2
 
-# autoload -Uz compinit
-# compinit
+autoload -Uz compinit
+compinit
 
 checkExist () {
     ls $1 > /dev/null 2>&1
 }
 
-autoload -U promptinit; promptinit
+autoload -Uz promptinit; promptinit
 
 temp="/usr/share/zsh/functions/Prompts/prompt_pure_setup"
 checkExist $temp && prompt pure
