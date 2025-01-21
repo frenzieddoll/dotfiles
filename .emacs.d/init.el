@@ -14,6 +14,7 @@
 ;;   (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
 ;; setup.el より
 
+<<<<<<< HEAD
 (defconst my/saved-file-name-handler-alist file-name-handler-alist)
 (setq file-name-handler-alist nil)
 
@@ -59,6 +60,46 @@
 ;;     (setq user-emacs-directory
 ;;           (expand-file-name
 ;;            (file-name-directory (or load-file-name byte-compile-current-file))))))
+=======
+(defvar setup-tracker--level 0)
+(defvar setup-tracker--parents nil)
+(defvar setup-tracker--times nil)
+
+(when load-file-name
+  (push load-file-name setup-tracker--parents)
+  (push (current-time) setup-tracker--times)
+  (setq setup-tracker--level (1+ setup-tracker--level)))
+
+(add-variable-watcher
+ 'load-file-name
+ (lambda (_ v &rest __)
+   (cond ((equal v (car setup-tracker--parents))
+          nil)
+         ((equal v (cadr setup-tracker--parents))
+          (setq setup-tracker--level (1- setup-tracker--level))
+          (let* ((now (current-time))
+                 (start (pop setup-tracker--times))
+                 (elapsed (+ (* (- (nth 1 now) (nth 1 start)) 1000)
+                             (/ (- (nth 2 now) (nth 2 start)) 1000))))
+            (with-current-buffer (get-buffer-create "*setup-tracker*")
+              (save-excursion
+                (goto-char (point-min))
+                (dotimes (_ setup-tracker--level) (insert "> "))
+                (insert
+                 (file-name-nondirectory (pop setup-tracker--parents))
+                 " (" (number-to-string elapsed) " msec)\n")))))
+         (t
+          (push v setup-tracker--parents)
+          (push (current-time) setup-tracker--times)
+          (setq setup-tracker--level (1+ setup-tracker--level))))))
+;; this enables this running method
+;;   emacs -q -l ~/.debug.emacs.d/init.el
+(eval-and-compile
+  (when (or load-file-name byte-compile-current-file)
+    (setq user-emacs-directory
+          (expand-file-name
+           (file-name-directory (or load-file-name byte-compile-current-file))))))
+>>>>>>> 53bc2fc7 (fix emacs 起動高速化)
 
 (eval-and-compile
   (customize-set-variable
@@ -1669,11 +1710,15 @@
            (ein:markdown-command . "pandoc --metadata pagetitle=\"markdown preview\" -f markdown -c ~/.pandoc/github-markdown.css -s --self-contained --mathjax=https://raw.githubusercontent.com/ustasb/dotfiles/b54b8f502eb94d6146c2a02bfc62ebda72b91035/pandoc/mathjax.js")
            (jedi:complete-on-dot . t)
            )
+<<<<<<< HEAD
 <<<<<<< variant A
   :defer-config
 >>>>>>> variant B
   :config
 ======= end
+=======
+  :defer-config
+>>>>>>> 53bc2fc7 (fix emacs 起動高速化)
   (leaf *ein-for-windows
     :when (string= system-type 'windows-nt)
     :hook ((ein:notebook-mode-hook . ac-mode-map-bind))
@@ -1954,6 +1999,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :bind (("C-x g" . magit-status))
   :config (setenv "GIT_PAGER" ""))
 
+<<<<<<< HEAD
 ;; (leaf mew
 ;;   :doc "Messaging in the Emacs World"
 ;;   :added "2024-02-18"
@@ -1970,6 +2016,24 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
 ;;   ;; :init
 ;;   ;; (autoload 'mew "mew" nil t)
 ;;   ;; (autoload 'mew-send "mew" nil t)
+=======
+(leaf mew
+  :doc "Messaging in the Emacs World"
+  :added "2024-02-18"
+  :ensure t
+  ;; :require t
+  :when (executable-find "stunnel")
+  ;; :custom ((mew-fcc . "+outbox")
+  ;;          (exec-path . (cons "/usr/bin" exec-path))
+  ;;          (user-mail-addressuser-mail-address . "frenzieddoll@gmail.com")
+  ;;          (user-full-name . "frenzieddoll")
+  ;;          (mew-smtp-server . "smtp.gmail.com")
+  ;;          (mail-user-agent . 'mew-user-agent)
+  ;;          )
+  ;; :init
+  ;; (autoload 'mew "mew" nil t)
+  ;; (autoload 'mew-send "mew" nil t)
+>>>>>>> 53bc2fc7 (fix emacs 起動高速化)
 
 ;;   :config
 ;;   (autoload 'mew "mew" nil t)
@@ -2004,9 +2068,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
 ;;             (org-log-done . t))
 ;;   )
 
-<<<<<<< HEAD
 (leaf org
-<<<<<<< HEAD
     :doc "Export Framework for Org Mode"
     :tag "builtin"
     :added "2021-09-05"
@@ -2083,21 +2145,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   (org-roam-db-autosync-mode)
   )
 
-<<<<<<< variant A
-;; (leaf paradox
-;;   :doc "A modern Packages Menu. Colored, with package ratings, and customizable."
-;;   :req "emacs-24.4" "seq-1.7" "let-alist-1.0.3" "spinner-1.7.3" "hydra-0.13.2"
-;;   :tag "packages" "package" "emacs>=24.4"
-;;   :url "https://github.com/Malabarba/paradox"
-;;   :added "2023-03-18"
-;;   :emacs>= 24.4
-;;   :ensure t
-;;   :disabled t
-;;   :require t
-;;   :config (paradox-enable))
->>>>>>> variant B
 (leaf *org
-=======
   :doc "Export Framework for Org Mode"
   :tag "builtin"
   :added "2021-09-05"
@@ -2112,26 +2160,8 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
             (org-enforce-todo-dependencies . t)
             (org-log-done . t))
   )
-=======
-;; (leaf org
-;;   :doc "Export Framework for Org Mode"
-;;   :tag "builtin"
-;;   :added "2021-09-05"
-;;   :disabled t
-;;   :custom ((org-agenda-files . '("~/Dropbox/org/todo.org"))
-;;            (org-directory . "~/Dropbox/org"))
-;;   :bind (("C-c a" . org-agenda)
-;;          ("C-c c" . org-capture))
-;;   :custom `((org-capture-templates . '(("n" "Note" entry (file+headline "~/Dropbox/org/notes.org" "Notes") "* %?\nEntered on %U\n %i\n %a")
-;;                                        ("t" "Todo" entry (file+headline "~/Dropbox/org/todo.org"  "Todo")  "* TODO %?\n %i\n %a")))
-;;             (org-todo-keywords . '((sequence "TODO(t)" "SOMEDAY(s)" "WATTING(w)" "|" "DONE(d)" "CANCELED(c@)")))
-;;             (org-enforce-todo-dependencies . t)
-;;             (org-log-done . t))
-;;   )
->>>>>>> 2c71eb6b (fix init.el)
 
 (leaf org
->>>>>>> e6aafdd4 (fix org, xset)
     :doc "Export Framework for Org Mode"
     :tag "builtin"
     :added "2021-09-05"
@@ -2194,7 +2224,6 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :disabled t
   :require t
   :config (paradox-enable))
-======= end
 
 ;; (leaf pdf-tools
 ;;   :doc "Support library for PDF documents"
@@ -2655,7 +2684,11 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :when (executable-find "git")
   :require t
   :after orderless
+<<<<<<< HEAD
   ;; :disabled t
+=======
+  :disabled t
+>>>>>>> 53bc2fc7 (fix emacs 起動高速化)
   )
 (leaf calfw
   :doc "Calendar view framework on Emacs"
@@ -2705,7 +2738,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :added "2021-09-05"
   :ensure t
   ;; :after ccc cdb
-  :require skk skk-study
+  ;; :require skk skk-study
   :defvar (skk-user-directory skk-rom-kana-rule-list skk-katakana skk-j-mode skk-latin-mode)
   :defun skk-toggle-kana skk-hiragana-set skk-katakana-set
   :hook ((isearch-mode-hook . skk-isearch-mode-setup)
