@@ -116,7 +116,7 @@
     :init
     ;; optional packages if you want to use :hydra, :el-get, :blackout,,,
     (leaf hydra :ensure t)
-    ;; (leaf el-get :ensure t)
+    (leaf el-get :ensure t)
     (leaf blackout :ensure t)
     ;; (leaf *straight
     ;;   :when (executable-find "git")
@@ -769,7 +769,6 @@
      :after vterm)
   )
 
-<<<<<<< HEAD
 (leaf *global-setting
   ;; :disabled t
   :config
@@ -869,8 +868,6 @@
     )
 
   :preface
-<<<<<<< variant A
->>>>>>> variant B
   (defun scroll-up_alt ()
     (interactive)
     (scroll-up 1))
@@ -1251,7 +1248,6 @@
   (defun base64ToPng (fileName)
     (interactive "sfile name: ")
     (let ((script (concat user-emacs-directory "script/decodeBase64.py %s")))
-<<<<<<< HEAD
     (let ((script (concat user-emacs-directory "script/decodeBase64.py %s")))
                       script
                       fileName))))
@@ -1274,7 +1270,6 @@
     (copy-region-as-kill nil nil t)
     (kill-buffer)
       (interactive)
-<<<<<<< HEAD
   (defun wsl-paste()
     (interactive)
     (insert (shell-command-to-string "powershell.exe -command 'Get-Clipboard'")))
@@ -1460,15 +1455,9 @@
     (copy-region-as-kill nil nil t)
     (kill-buffer)
     )
-<<<<<<< HEAD
->>>>>>> 3ddef3ae (fix init.el zshrc)
-=======
   (defun wsl-paste()
     (interactive)
     (insert (shell-command-to-string "powershell.exe -command 'Get-Clipboard'")))
-<<<<<<< HEAD
->>>>>>> da445c90 (fix init.el wsl用にlatexの設定を修正)
-=======
   (defun my-browse-url-wsl-host-browser (url &rest _args)
     "Browse URL with WSL host web browser."
     (prog1 (message "Open %s" url)
@@ -1477,7 +1466,6 @@
                   (list "cmd.exe" "/c" "start" url)
                   " "))))
   ;; (setopt browse-url-browser-function #'my-browse-url-wsl-host-browser)
->>>>>>> b0544229 (add vundo | fix paradox, key-bind, cua)
   )
 
 
@@ -1584,17 +1572,8 @@
     )
   (leaf *ebibForLinux
     :when (eq system-type 'gnu/linux)
-<<<<<<< HEAD
-<<<<<<< variant A
     :custom ((ebib-preload-bib-files . '("~/Documents/PDF/references.bib"))
->>>>>>> variant B
-    :custom ((ebib-preload-bib-files . '("~/tex/references.bib"))
-======= end
-=======
-    :custom ((ebib-preload-bib-files . '("~/Documents/PDF/references.bib"))
->>>>>>> da445c90 (fix init.el wsl用にlatexの設定を修正)
              (ebib-keywords-file     . "~/tex/ebib-keywords.txt")
-<<<<<<< HEAD
              (ebib-file-associations . '(("pdf" . "zathura")
                                          ("ps"  . "zathura")))
              (ebib-file-search-dirs  . '("~/Documents/PDF/ER"
@@ -1607,7 +1586,6 @@
              (file-name (file-name-nondirectory file-path))
              (repotID (car (split-string file-name)))
              (bib-file (concat repotID ".bib"))
-<<<<<<< HEAD
             )
         (shell-command (format
                         "python $HOME/.emacs.d/script/fromHTMLtoBib.py \"%s\""
@@ -1629,8 +1607,6 @@
              (ebib-file-search-dirs  . '("~/tex/pdfs" "~/tex/papers" "~/tex/books" "~/Documents/PDF/ER"))
              ))
       (let ((file-name (dired-get-file-for-visit))
-=======
->>>>>>> 89d9de0f (fix genBibをebib-import-entryまで自動化)
             )
         (shell-command (format
                         "python $HOME/.emacs.d/script/fromHTMLtoBib.py \"%s\""
@@ -1651,27 +1627,13 @@
   (leaf *ebibForSony
     :when (eq system-type 'windows-nt)
     :when (string= (system-name) "JPC20627141")
-<<<<<<< HEAD
-<<<<<<< variant A
->>>>>>> variant B
     :bind (("C-c b" . ebib))
-======= end
-=======
->>>>>>> 73c52a19 (add/fix ERを取り込むebib用スクリプトの追加と、設定の修正)
     :custom ((ebib-preload-bib-files . '("~/Documents/PDF/references.bib"))
              (ebib-keywords-file     . "~/Documents/PDF/ebib-keywords.txt")
              (ebib-file-associations . '(("pdf" . "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe")
                                          ("ps"  . "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe")))
              (ebib-file-search-dirs  . '("~/Documents/PDF/ER" "~/Documents/PDF/paper"))
              ))
-<<<<<<< HEAD
-<<<<<<< variant A
-
->>>>>>> variant B
-======= end
-=======
-
->>>>>>> da445c90 (fix init.el wsl用にlatexの設定を修正)
   (leaf biblio
     :doc "Browse and import bibliographic references from CrossRef, arXiv, DBLP, HAL, Dissemin, and doi.org"
     :req "emacs-24.3" "biblio-core-0.2"
@@ -1710,15 +1672,9 @@
            (ein:markdown-command . "pandoc --metadata pagetitle=\"markdown preview\" -f markdown -c ~/.pandoc/github-markdown.css -s --self-contained --mathjax=https://raw.githubusercontent.com/ustasb/dotfiles/b54b8f502eb94d6146c2a02bfc62ebda72b91035/pandoc/mathjax.js")
            (jedi:complete-on-dot . t)
            )
-<<<<<<< HEAD
-<<<<<<< variant A
   :defer-config
->>>>>>> variant B
   :config
-======= end
-=======
   :defer-config
->>>>>>> 53bc2fc7 (fix emacs 起動高速化)
   (leaf *ein-for-windows
     :when (string= system-type 'windows-nt)
     :hook ((ein:notebook-mode-hook . ac-mode-map-bind))
@@ -1730,7 +1686,6 @@
         (define-key ac-complete-mode-map (kbd "C-p") 'ac-previous))))
   (setq ein:output-type-preference
       '(emacs-lisp svg png jpeg html text latex javascript))
-<<<<<<< variant A
   ;; (leaf jedi-core
   ;;   :doc "Common code of jedi.el and company-jedi.el"
   ;;   :req "emacs-24" "epc-0.1.0" "python-environment-0.0.2" "cl-lib-0.5"
@@ -1803,7 +1758,6 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
           (insert (format "#+ATTR_HTML: :width 300\n[[file:%s]]" relative-path))
           (org-redisplay-inline-images))
       (message "Clipboard content is not a supported image file path. No insertion performed."))))
->>>>>>> variant B
   (leaf jedi-core
     :doc "Common code of jedi.el and company-jedi.el"
     :req "emacs-24" "epc-0.1.0" "python-environment-0.0.2" "cl-lib-0.5"
@@ -1819,7 +1773,63 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
     :added "2023-11-12"
     :emacs>= 24
     :ensure t)
-======= end
+  )
+
+(leaf jupyter
+  :ensure t
+  :defvar jupyter-repl-echo-eval-p
+  :custom ((jupyter-repl-echo-eval-p . t))
+  ;; :config
+  ;; (leaf zmq :ensure t)
+  :preface
+  (defun my-image-save ()
+  "Save the image under point to the '.fig' directory with a timestamp filename.
+Creates the '.fig' directory if it doesn't exist.
+Copies the full path of the saved image to the clipboard."
+  (interactive)
+  (let* ((fig-dir "figures")
+         (out-f (format-time-string (concat fig-dir "/%Y%m%d-%H%M%S.png")))
+         (full-path (expand-file-name out-f)))
+    ;; Create '.fig' directory if it doesn't exist
+    (unless (file-exists-p fig-dir)
+      (make-directory fig-dir t)
+      (message "Created directory: %s" (expand-file-name fig-dir)))
+    ;; Save the image
+    (image-save-with-arg out-f)
+    ;; Copy the full path to clipboard
+    (kill-new full-path)
+    ;; Message to inform user
+    (message "Image saved and full path copied to clipboard: %s" full-path)
+    ;; Return the full path of the saved image
+    full-path))
+  (defun image-save-with-arg (&optional file)
+  "Save the image under point.
+This writes the original image data to a file.  Rotating or
+changing the displayed image size does not affect the saved image.
+If FILE is provided, save to that file. Otherwise, prompt for a filename."
+  (interactive)
+  (let ((image (image--get-image)))
+    (with-temp-buffer
+      (let ((image-file (plist-get (cdr image) :file)))
+        (if image-file
+            (if (not (file-exists-p image-file))
+                (error "File %s no longer exists" image-file)
+              (insert-file-contents-literally image-file))
+          (insert (plist-get (cdr image) :data))))
+      (let ((save-file (or file
+                           (read-file-name "Write image to file: "))))
+        (write-region (point-min) (point-max) save-file)
+        (message "Image saved to %s" save-file)))))
+  (defun my-image-yank ()
+  "Insert an Org mode file link for the image path in the clipboard at the current cursor position.
+Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
+  (interactive)
+  (let ((file-path (substring-no-properties (current-kill 0))))
+    (if (string-match-p "\\.\\(png\\|jpe?g\\|gif\\|svg\\)$" file-path)
+        (let ((relative-path (file-relative-name file-path)))
+          (insert (format "#+ATTR_HTML: :width 300\n[[file:%s]]" relative-path))
+          (org-redisplay-inline-images))
+      (message "Clipboard content is not a supported image file path. No insertion performed."))))
   )
 
 (leaf eww
@@ -1872,13 +1882,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
     :ensure t)
   (leaf addressbar
     :when (executable-find "git")
-<<<<<<< variant A
     :vc (:url "https://github.com/lurdan/emacs-addressbar")
->>>>>>> variant B
-    :el-get (addressbar
-             :type github
-             :pkgname "lurdan/emacs-addressbar")
-======= end
     :custom `((addressbar-persistent-history-directory . "~/.emacs.d/.cache/")
               (addressbar-ignore-url-regexp . "\\(://duckduckgo\\.com/\\|google\\.com/search\\)")
               (addressbar-search-command-alist . '("g" . "https://google.com/search?&gws_rd=cr&complete=0&pws=0&tbs=li:1&q="))
@@ -1999,7 +2003,6 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :bind (("C-x g" . magit-status))
   :config (setenv "GIT_PAGER" ""))
 
-<<<<<<< HEAD
 ;; (leaf mew
 ;;   :doc "Messaging in the Emacs World"
 ;;   :added "2024-02-18"
@@ -2016,24 +2019,6 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
 ;;   ;; :init
 ;;   ;; (autoload 'mew "mew" nil t)
 ;;   ;; (autoload 'mew-send "mew" nil t)
-=======
-(leaf mew
-  :doc "Messaging in the Emacs World"
-  :added "2024-02-18"
-  :ensure t
-  ;; :require t
-  :when (executable-find "stunnel")
-  ;; :custom ((mew-fcc . "+outbox")
-  ;;          (exec-path . (cons "/usr/bin" exec-path))
-  ;;          (user-mail-addressuser-mail-address . "frenzieddoll@gmail.com")
-  ;;          (user-full-name . "frenzieddoll")
-  ;;          (mew-smtp-server . "smtp.gmail.com")
-  ;;          (mail-user-agent . 'mew-user-agent)
-  ;;          )
-  ;; :init
-  ;; (autoload 'mew "mew" nil t)
-  ;; (autoload 'mew-send "mew" nil t)
->>>>>>> 53bc2fc7 (fix emacs 起動高速化)
 
 ;;   :config
 ;;   (autoload 'mew "mew" nil t)
@@ -2192,9 +2177,10 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
     (defun org-insert-clipboard-image ()
       (interactive)
       (let* (
-             (image-dir "./image/")
-             (filename (format "%s%s.png" image-dir (format-time-string "%Y%m%d%H%M%S")))
-             (fullpath (expand-file-name filename))
+             (buf-name (file-name-sans-extension (file-name-nondirectory buffer-file-name)))
+             (figures-dir (format "./%s_figures/" buf-name))
+             (figure-name (format "%s%s_%s.png" figures-dir buf-name (format-time-string "%Y%m%d%H%M%S")))
+             (figure-path (expand-file-name figure-name))
              (path "$HOME/Documentswin/script/import.ps1")
              (path-win (shell-command-to-string (format "wslpath -w \"%s\"" path)))
              (path-wsl (replace-regexp-in-string
@@ -2202,14 +2188,15 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
                         path-win))
              (script (replace-regexp-in-string
                       "\n" "" path-win))
-             (call-string (format "powershell.exe -ExecutionPolicy RemoteSigned -windowstyle hidden -File \"%s\" -FileName %s" script filename))
+             ;; powershellのスクリプトはwslのパスを認識できないので相対パスfigure-nameを引数とする
+             (call-string (format "powershell.exe -ExecutionPolicy RemoteSigned -windowstyle hidden -File \"%s\" -FileName %s" script figure-name))
              )
 
-        (unless (file-directory-p image-dir)
-          (make-directory image-dir))
+        (unless (file-directory-p figures-dir)
+          (make-directory figures-dir))
         (call-process "powershell.exe" nil nil nil call-string)
-        (when (file-exists-p fullpath)
-          (insert (format "#+ATTR_ORG: :width 500\n[[file:%s]]" fullpath)))
+        (when (file-exists-p figure-path)
+          (insert (format "#+ATTR_ORG: :width 500\n[[file:%s]]" figure-path)))
         (org-display-inline-images)))
     )
 
@@ -2684,11 +2671,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :when (executable-find "git")
   :require t
   :after orderless
-<<<<<<< HEAD
   ;; :disabled t
-=======
-  :disabled t
->>>>>>> 53bc2fc7 (fix emacs 起動高速化)
   )
 (leaf calfw
   :doc "Calendar view framework on Emacs"
@@ -3265,6 +3248,25 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   (corfu-terminal-mode +1)
   )
 
+(leaf affe
+  :doc "Asynchronous Fuzzy Finder for Emacs"
+  :req "emacs-28.1" "consult-1.7"
+  :tag "completion" "files" "matching" "emacs>=28.1"
+  :url "https://github.com/minad/affe"
+  :added "2025-01-21"
+  :emacs>= 28.1
+  :ensure t
+  :custom ((affe-highlight-function . 'orderless-highlight-matches)
+           (affe-regexp-function . 'orderless-pattern-compiler))
+  )
+
+(leaf *corfu-terminal
+  :unless (display-graphic-p)
+  :el-get
+  (corfu-terminal :url "https://codeberg.org/akib/emacs-corfu-terminal.git"
+                  (corfu-terminal-mode +1))
+  )
+
 (leaf corfu
   :doc "Completion Overlay Region FUnction"
   :req "emacs-27.1"
@@ -3306,8 +3308,9 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
     ("C-s" . corfu-insert-separator)
     ("C-SPC" . corfu-insert-separator)
 =======
-  ((corfu-mode-map
->>>>>>> 26b31456 (fix yatex-mode setting)
+  ((corfu-map
+    ("C-SPC" . corfu-insert-separator)
+>>>>>>> fd1a26a8 (fix いろいろ修正)
     ("C-c SPC" . corfu-insert-separator)
     ("M-SPC" . corfu-insert-separator))) ;SPCにするとSKKのへんかんできなくなる
   :init
@@ -3388,9 +3391,9 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   ;; :hook ((ein:notebook-mode-hook . my/set-ein-capf)
   ;;        (lsp-completion-mode . corfu-setup-lsp))
 =======
-  :hook ((ein:notebook-mode-hook . my/set-ein-capf)
-         (lsp-completion-mode . corfu-setup-lsp))
->>>>>>> 26b31456 (fix yatex-mode setting)
+  ;; :hook ((ein:notebook-mode-hook . my/set-ein-capf)
+  ;;        (lsp-completion-mode . corfu-setup-lsp))
+>>>>>>> fd1a26a8 (fix いろいろ修正)
   :config
   ;; (add-to-list 'completion-at-point-functions #'tempel-complete)
   (add-to-list 'completion-at-point-functions #'cape-file)
@@ -3781,7 +3784,6 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
     (other-window 1))
   )
 
-<<<<<<< HEAD
 ;; (leaf lsp-mode
 ;;   :doc "LSP mode"
 ;;   :req "emacs-26.1" "dash-2.18.0" "f-0.20.0" "ht-2.3" "spinner-1.7.3" "markdown-mode-2.3" "lv-0"
@@ -3855,81 +3857,6 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
 ;;     ;; :disabled t
 ;;     :ensure t)
 ;;   )
-=======
-(leaf lsp-mode
-  :doc "LSP mode"
-  :req "emacs-26.1" "dash-2.18.0" "f-0.20.0" "ht-2.3" "spinner-1.7.3" "markdown-mode-2.3" "lv-0"
-  :tag "languages" "emacs>=26.1"
-  :url "https://github.com/emacs-lsp/lsp-mode"
-  :added "2021-11-06"
-  :emacs>= 26.1
-  :ensure t
-  ;; :disabled t
-  ;; :el-get emacs-lsp/lsp-mode
-  ;; :unless (string-match "Raspberrypi" (system-name))
-  :custom ((lsp-keymap-prefix                      . "C-z")
-           ;; (lsp-idle-delay                         . 0.500)
-           (lsp-log-io                             . nil)
-           (lsp-completion-provider                . :none)
-           ;; (lsp-prefer-capf                        . t)
-           (lsp-headerline-breadcrumb-icons-enable . nil)
-           (lsp-enable-file-wathers                . nil)
-           (lsp-enable-folding                     . nil)
-           (lsp-enable-symbol-highlighting         . nil)
-           (lsp-enable-text-document-color         . nil)
-           (lsp-enable-indentation                 . nil)
-           (lsp-enable-on-type-formatting          . nil)
-           (lsp-auto-execute-action                . nil)
-           (lsp-before-save-edits                  . nil)
-           (lsp-enable-snippet                     . nil)
-           )
-  :init
-  (defun my/lsp-mode-setup-completion ()
-    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-          '(orderless)))
-  :hook (
-         (lsp-mode-hook        . lsp-enable-which-key-integration)
-         ;; (lsp-completion-mode-hook . my/lsp-mode-setup-completion)
-         (haskell-mode-hook    . lsp)
-         (rustic-mode-hook     . lsp)
-         (c-mode-hook          . lps)
-         (c++-mode-hook        . lsp)
-         (sh-mode              . lsp)
-         (purescript-mode-hook . lsp)
-         )
-  :config
-  (leaf lsp-ui
-    :doc "UI modules for lsp-mode"
-    :req "emacs-26.1" "dash-2.18.0" "lsp-mode-6.0" "markdown-mode-2.3"
-    :tag "tools" "languages" "emacs>=26.1"
-    :url "https://github.com/emacs-lsp/lsp-ui"
-    :added "2021-11-06"
-    :emacs>= 26.1
-    :ensure t
-    ;; :disabled t
-    :hook ((lsp-mode-hook . lsp-ui-mode))
-    :commands lsp-ui-mode)
-  (leaf lsp-treemacs
-    :doc "LSP treemacs"
-    :req "emacs-26.1" "dash-2.18.0" "f-0.20.0" "ht-2.0" "treemacs-2.5" "lsp-mode-6.0"
-    :tag "languages" "emacs>=26.1"
-    :url "https://github.com/emacs-lsp/lsp-treemacs"
-    :added "2021-12-21"
-    :emacs>= 26.1
-    ;; :disabled t
-    :ensure t
-    :custom ((lsp-treemacs-sync-mode . 1)))
-  (leaf consult-lsp
-    :doc "LSP-mode Consult integration"
-    :req "emacs-27.1" "lsp-mode-5.0" "consult-0.9" "f-0.20.0"
-    :tag "lsp" "completion" "tools" "emacs>=27.1"
-    :url "https://github.com/gagbo/consult-lsp"
-    :added "2021-11-08"
-    :emacs>= 27.1
-    ;; :disabled t
-    :ensure t)
-  )
->>>>>>> 26b31456 (fix yatex-mode setting)
 
 (leaf python-mode
   :doc "Python major mode"
