@@ -11,5 +11,6 @@
 # file
 !/.gitignore
 !/init.el
+!/early-init.el
 !/.yatexrc
 !/ddskk/init
