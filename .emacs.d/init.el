@@ -2532,12 +2532,12 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
            (affe-regexp-function . 'orderless-pattern-compiler))
   )
 
-(leaf *corfu-terminal
-  :unless (display-graphic-p)
-  :el-get
-  (corfu-terminal :url "https://codeberg.org/akib/emacs-corfu-terminal.git"
-                  (corfu-terminal-mode +1))
-  )
+;; (leaf *corfu-terminal
+;;   :unless (display-graphic-p)
+;;   :el-get
+;;   (corfu-terminal :url "https://codeberg.org/akib/emacs-corfu-terminal.git"
+;;                   (corfu-terminal-mode +1))
+;;   )
 
 (leaf corfu
   :doc "Completion Overlay Region FUnction"
