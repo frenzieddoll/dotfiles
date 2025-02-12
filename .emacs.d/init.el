@@ -1150,21 +1150,21 @@
         (define-key ac-complete-mode-map (kbd "C-p") 'ac-previous))))
   (setq ein:output-type-preference
       '(emacs-lisp svg png jpeg html text latex javascript))
-  (leaf jedi-core
-    :doc "Common code of jedi.el and company-jedi.el"
-    :req "emacs-24" "epc-0.1.0" "python-environment-0.0.2" "cl-lib-0.5"
-    :tag "emacs>=24"
-    :added "2023-11-12"
-    :emacs>= 24
-    :ensure t)
-  (leaf company-jedi
-    :doc "Company-mode completion back-end for Python JEDI"
-    :req "emacs-24" "cl-lib-0.5" "company-0.8.11" "jedi-core-0.2.7"
-    :tag "emacs>=24"
-    :url "https://github.com/emacsorphanage/company-jedi"
-    :added "2023-11-12"
-    :emacs>= 24
-    :ensure t)
+  ;; (leaf jedi-core
+  ;;   :doc "Common code of jedi.el and company-jedi.el"
+  ;;   :req "emacs-24" "epc-0.1.0" "python-environment-0.0.2" "cl-lib-0.5"
+  ;;   :tag "emacs>=24"
+  ;;   :added "2023-11-12"
+  ;;   :emacs>= 24
+  ;;   :ensure t)
+  ;; (leaf company-jedi
+  ;;   :doc "Company-mode completion back-end for Python JEDI"
+  ;;   :req "emacs-24" "cl-lib-0.5" "company-0.8.11" "jedi-core-0.2.7"
+  ;;   :tag "emacs>=24"
+  ;;   :url "https://github.com/emacsorphanage/company-jedi"
+  ;;   :added "2023-11-12"
+  ;;   :emacs>= 24
+  ;;   :ensure t)
   )
 
 (leaf jupyter
@@ -2552,6 +2552,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   ;; :require t
   ;; :defvar (corfu-auto)
   :when (eq window-system 'x)
+  :global-minor-mode global-corfu-mode
   :hook ((minibuffer-setup-hook . my/corfu-enable-in-minibuffer)
          ((eshell-mode-hook
            ein:notebook-mode-hook) . (lambda ()
@@ -2559,18 +2560,18 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
                                        (corfu-mode)))
          ;; (corfu-mode-hook . corfu-popupinfo-mode)
          )
-  :global-minor-mode global-corfu-mode
   :custom ((tab-always-indent        . 'complete)
            (corfu-cycle              . t)
            (corfu-auto               . t)
-           (corfu-auto-prefix        . 3)
-           (corfu-auto-delay         . 0.01)
+           (corfu-auto-prefix        . 1)
+           (corfu-auto-delay         . 0)
            ;; (corfu-quit-no-match   . 'separator)
            ;; (corfu-separator       . ? \s)
            ;; (corfu-preselect-first . nil)
            )
   :bind
   ((corfu-map
+    ("C-s" . corfu-insert-separator)
     ("C-SPC" . corfu-insert-separator)
     ("C-c SPC" . corfu-insert-separator)
     ("M-SPC" . corfu-insert-separator))) ;SPCにするとSKKのへんかんできなくなる
@@ -2587,7 +2588,6 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
       (eshell-send-input)
       ((derived-mode-p 'comint-mode)
        (comint-send-input)))))
-  :global-minor-mode global-corfu-mode
   )
 
 (leaf kind-icon
@@ -2879,7 +2879,12 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :emacs>= 26.3
   :ensure t
   ;; :disabled t
-  ;; :hook ((python-mode . eglot-ensure))
+  :hook (((python-mode
+           haskell-mode
+           yatex-mode) . eglot-ensure)
+         )
+  :custom ((eldoc-echo-area-use-multiline-p . nil)
+           (eglot-connect-timeout . 600))
   ;; :custom `((read-process-output-max       . ,(* 1024 1024))
   ;;           (completion-category-overrides . '((eglot (styles orderless))))
   ;;           )
@@ -2901,6 +2906,13 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   ;; :config
   ;; (setq read-process-output-max (* 1024 1024))
   ;; (setq completion-category-overrides '((eglot (styles orderless))))
+  :config
+  (add-to-list 'eglot-server-programs
+               '((yatex-mode) . ("latexlab")))
+  (leaf eglot-booster
+    :when (executable-find "emacs-lsp-booster")
+    :vc (:url "https://github.com/jdtsmith/eglot-booster")
+    :global-minor-mode t)
   )
 
 (leaf flycheck
