@@ -2042,9 +2042,9 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :added "2021-09-05"
   :ensure t
   ;; :after ccc cdb
-  ;; :require skk skk-study
-  ;; :defvar (skk-user-directory skk-rom-kana-rule-list skk-katakana skk-j-mode skk-latin-mode)
-  ;; :defun skk-toggle-kana skk-hiragana-set skk-katakana-set
+  :require skk skk-study
+  :defvar (skk-user-directory skk-rom-kana-rule-list skk-katakana skk-j-mode skk-latin-mode)
+  :defun skk-toggle-kana skk-hiragana-set skk-katakana-set
   :hook ((isearch-mode-hook . skk-isearch-mode-setup)
          (isearch-mode-end-hook . skk-isearch-mode-cleanup)
          (find-file-hooks . my/always-enable-skk-latin-mode-hook))
@@ -2063,8 +2063,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
             (skk-delete-implies-kakutei         . t)
             (skk-henkan-strict-okuri-precedence . t)
             (skk-isearch-start-mode             . 'latin)
-            (skk-search-katakana                . t)
-            (skk-jisyo-code                     . 'utf-8))
+            (skk-search-katakana                . t))
   :config
   (defun skk-hiragana-set nil
     (interactive)
@@ -2082,6 +2081,11 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
            (dolist (skk-kakutei (skk-toggle-kana nil))))))
   (defun my/always-enable-skk-latin-mode-hook ()
     (skk-latin-mode 1))
+
+  (when
+      (and (eq system-type 'gnu/linux)
+           (string-match "microsoft" (shell-command-to-string "uname -r")))
+      (setq skk-jisyo-code 'utf-8))
   )
 
 ;; (leaf etv
