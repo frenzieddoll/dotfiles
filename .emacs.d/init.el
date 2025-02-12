@@ -72,7 +72,7 @@
     :init
     ;; optional packages if you want to use :hydra, :el-get, :blackout,,,
     (leaf hydra :ensure t)
-    (leaf el-get :ensure t)
+    ;; (leaf el-get :ensure t)
     (leaf blackout :ensure t)
     ;; (leaf *straight
     ;;   :when (executable-find "git")
@@ -1274,9 +1274,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
     :ensure t)
   (leaf addressbar
     :when (executable-find "git")
-    :el-get (addressbar
-             :type github
-             :pkgname "lurdan/emacs-addressbar")
+    :vc (:url "https://github.com/lurdan/emacs-addressbar")
     :custom `((addressbar-persistent-history-directory . "~/.emacs.d/.cache/")
               (addressbar-ignore-url-regexp . "\\(://duckduckgo\\.com/\\|google\\.com/search\\)")
               (addressbar-search-command-alist . '("g" . "https://google.com/search?&gws_rd=cr&complete=0&pws=0&tbs=li:1&q="))
@@ -1989,11 +1987,11 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :url "https://github.com/sebastienwae/app-launcher"
   :added "2021-09-06"
   :emacs>= 27.1
-  :el-get sebastienwae/app-launcher
+  :vc (:url "https://github.com/sebastienwae/app-launcher")
   :when (executable-find "git")
   :require t
   :after orderless
-  :disabled t
+  ;; :disabled t
   )
 
 (leaf calfw
@@ -2086,13 +2084,13 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
     (skk-latin-mode 1))
   )
 
-(leaf etv
-  :when (and (executable-find "mpv")
-             (executable-find "ffmpeg"))
-  :el-get frenzieddoll/etv
-  :require t
-  :custom ((default-m3u8-url . "https://raw.githubusercontent.com/luongz/iptv-jp/refs/heads/main/jp.m3u"))
-)
+;; (leaf etv
+;;   :when (and (executable-find "mpv")
+;;              (executable-find "ffmpeg"))
+;;   :require t
+;;   :vc (:url "https://github.com/frenzieddoll/etv")
+;;   :custom ((default-m3u8-url . "https://raw.githubusercontent.com/luongz/iptv-jp/refs/heads/main/jp.m3u"))
+;; )
 
 (leaf git-gutter
   :doc "Port of Sublime Text plugin GitGutter"
@@ -2239,7 +2237,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
 
 (leaf online-judge
   :when (executable-find "oj")
-  :el-get ROCKTAKEY/emacs-online-judge
+  :vc (:url :url "https://github.com/ROCKTAKEY/emacs-online-judge")
   :require t
   :custom ((online-judge-directories . '("~/Dropbox/atcoder/"))
            (online-judge-command-name . nil)))
@@ -2264,7 +2262,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
 
 (leaf pulseaudio
   :when (executable-find "pactl")
-  :el-get frenzieddoll/pulseaudio
+  :vc (:url "https://github.com/frenzieddoll/pulseaudio")
   :unless (string-match "microsoft" (shell-command-to-string "uname -r"))
   :require t
   )
@@ -2532,12 +2530,12 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
            (affe-regexp-function . 'orderless-pattern-compiler))
   )
 
-;; (leaf *corfu-terminal
-;;   :unless (display-graphic-p)
-;;   :el-get
-;;   (corfu-terminal :url "https://codeberg.org/akib/emacs-corfu-terminal.git"
-;;                   (corfu-terminal-mode +1))
-;;   )
+(leaf corfu-terminal
+  :unless (display-graphic-p)
+  :vc (:url "https://codeberg.org/akib/emacs-corfu-terminal.git")
+  :config
+  (corfu-terminal-mode +1)
+  )
 
 (leaf corfu
   :doc "Completion Overlay Region FUnction"
@@ -3345,6 +3343,10 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
                                               )))
     :bind (("C-\\" . skk-latin-mode)
            ("C-l" . skk-latin-mode))
+    :global-minor-mode
+    (exwm-systemtray-mode
+     ;; exwm-randr-mode
+     )
     :init
     (defun exwm-workspace-toggle ()
       (interactive)
@@ -3353,14 +3355,6 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
         (exwm-workspace-switch 0)))
 
     :config
-    ;; (exwmx-floating-smart-hide)
-    ;; (exwmx-button-enable)
-    (leaf exwm-systemtray
-      :require t
-      :defun exwm-systemtray-enable
-      ;; :custom (exwm-systemtray-height . 50)
-      :config
-      (exwm-systemtray-enable))
     (leaf exwm-randr
       :disabled t
       :require t
@@ -3373,13 +3367,12 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
                                                 )))
       :config
       (exwm-randr-enable))
+    (exwm-enable)
+    ;; (exwmx-floating-smart-hide)
+    ;; (exwmx-button-enable)
     ;; (leaf *fix_ediff
     ;;   :after ediff-wind
     ;;   :custom `((ediff-window-setup-function . 'ediff-setup-windows-plain)))
-    (leaf exwm-enable
-      :defun (exwm-enable)
-      :config
-      (exwm-enable))
     )
   )
 
