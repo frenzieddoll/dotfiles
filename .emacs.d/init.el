@@ -1425,6 +1425,59 @@
                   (list "cmd.exe" "/c" "start" url)
                   " "))))
   ;; (setopt browse-url-browser-function #'my-browse-url-wsl-host-browser)
+  (defun select-pubkey ()
+    (let ((entries '()))
+      (with-temp-buffer
+        (shell-command "gpg --list-keys" (current-buffer))
+        (goto-char (point-min))
+        (while
+            ;; (re-search-forward "uid +\[\\([^\]]+\\)\] \\([^<]+\\) <\\([^>]+\\)>" nil t)
+            (re-search-forward "uid\\s-*\\[\\s-*\\([^]]+\\)\\s-*\\]\\s-*\\([^<]+\\)\\s-*<\\([^>]+\\)>" nil t)
+          ;; (re-search-forward "uid +\\(.+\\)" nil t)
+          (let ((trust (match-string 1))
+                (name (match-string 2))
+                (addr (match-string 3))
+                )
+            ;; (message trust)
+            (push (cons (format "%s %s %s" trust name addr) addr) entries))))
+      (let* ((choice (completing-read "Select a name" (mapcar #'car entries)))
+             (addr (cdr (assoc choice entries))))
+        addr)))
+  (defun convert-to-number-with-prefix (str)
+    "Convert a string like '10M', '1G' to a number.
+  Recognizes M for Mega (10^6) and G for Giga (10^9)."
+    (let ((prefix (substring str -1))  ;; 最後の文字（接頭辞）を取り出す
+          (value (string-to-number (substring str 0 -1))))  ;; 最後の文字を除いた部分を数値に変換
+      (cond
+       ((string= prefix "M") (* value 1000000))  ;; Mの場合、10^6を掛ける
+       ((string= prefix "G") (* value 1000000000))  ;; Gの場合、10^9を掛ける
+       ((string= prefix "K") (* value 1000))  ;; Kの場合、10^3を掛ける
+       (t (error "Unsupported prefix: %s" prefix)))))  ;; 対応しない接頭辞の場合はエラーを出す
+  (defun encrypt-gpg (arg)
+    (interactive "ssize threshold: ")
+    (let* ((file-path (dired-get-file-for-visit))
+           (file-name (file-name-nondirectory file-path))
+           (file-name-gpg (format "%s.gpg" file-name))
+           (split-threshold-str (if (equal arg nil)
+                                    "10M"
+                                  arg))
+           (split-threshold (convert-to-number-with-prefix split-threshold-str))
+           ;; (split-threshold (* 10 1000 1000))
+           (pubkye (select-pubkey))
+           (gpg-command (format "gpg --encrypt --recipient %s --output %s %s" pubkye file-name-gpg file-name))
+           (split-command (format "split -b %s -d %s %s.part." split-threshold-str file-name-gpg file-name-gpg))
+           ;; (commands '("gpg --encrypt --recipient frenzieddoll@gmail.com --output %s.gpg %s"
+           ;;             "split -b 10M -d %s.gpg %s.gpg.part."))
+           ;; (command (mapconcat (lambda (s) (format s file-name file-name)) commands "; "))
+           )
+      ;; (prin1 command)
+      ;; (shell-command command)
+      (message split-threshold-str)
+      (shell-command gpg-command)
+      (when (>= (nth 7 (file-attributes file-name-gpg)) split-threshold)
+        (shell-command split-command)
+        (delete-file file-name-gpg)
+        )))
   )
 
 
