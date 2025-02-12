@@ -14,7 +14,6 @@
 ;;   (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
 ;; setup.el より
 
-<<<<<<< HEAD
 (defconst my/saved-file-name-handler-alist file-name-handler-alist)
 (setq file-name-handler-alist nil)
 
@@ -60,46 +59,6 @@
 ;;     (setq user-emacs-directory
 ;;           (expand-file-name
 ;;            (file-name-directory (or load-file-name byte-compile-current-file))))))
-=======
-(defvar setup-tracker--level 0)
-(defvar setup-tracker--parents nil)
-(defvar setup-tracker--times nil)
-
-(when load-file-name
-  (push load-file-name setup-tracker--parents)
-  (push (current-time) setup-tracker--times)
-  (setq setup-tracker--level (1+ setup-tracker--level)))
-
-(add-variable-watcher
- 'load-file-name
- (lambda (_ v &rest __)
-   (cond ((equal v (car setup-tracker--parents))
-          nil)
-         ((equal v (cadr setup-tracker--parents))
-          (setq setup-tracker--level (1- setup-tracker--level))
-          (let* ((now (current-time))
-                 (start (pop setup-tracker--times))
-                 (elapsed (+ (* (- (nth 1 now) (nth 1 start)) 1000)
-                             (/ (- (nth 2 now) (nth 2 start)) 1000))))
-            (with-current-buffer (get-buffer-create "*setup-tracker*")
-              (save-excursion
-                (goto-char (point-min))
-                (dotimes (_ setup-tracker--level) (insert "> "))
-                (insert
-                 (file-name-nondirectory (pop setup-tracker--parents))
-                 " (" (number-to-string elapsed) " msec)\n")))))
-         (t
-          (push v setup-tracker--parents)
-          (push (current-time) setup-tracker--times)
-          (setq setup-tracker--level (1+ setup-tracker--level))))))
-;; this enables this running method
-;;   emacs -q -l ~/.debug.emacs.d/init.el
-(eval-and-compile
-  (when (or load-file-name byte-compile-current-file)
-    (setq user-emacs-directory
-          (expand-file-name
-           (file-name-directory (or load-file-name byte-compile-current-file))))))
->>>>>>> 53bc2fc7 (fix emacs 起動高速化)
 
 (eval-and-compile
   (customize-set-variable
@@ -2198,6 +2157,29 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
         (when (file-exists-p figure-path)
           (insert (format "#+ATTR_ORG: :width 500\n[[file:%s]]" figure-path)))
         (org-display-inline-images)))
+
+    (leaf org-roam
+      :doc "A database abstraction layer for Org-mode"
+      :req "emacs-26.1" "dash-2.13" "org-9.4" "emacsql-4.0.0" "magit-section-3.0.0"
+      :tag "convenience" "roam" "org-mode" "emacs>=26.1"
+      :url "https://github.com/org-roam/org-roam"
+      :added "2025-02-07"
+      :emacs>= 26.1
+      :ensure t
+      ;; :after org emacsql magit-section
+      :custom ((org-roam-directory   . "~/.emacs.d/org-roam")
+               (org-roam-db-location . "~/.emacs.d/org-roam/database.db")
+               (org-roam-index-file  . "~/.emacs.d/org-roam/Index.org")
+               )
+      :bind (("C-c n f" . org-roam-node-find)
+             ("C-c n i" . org-roam-node-insert)
+             ("C-c n c" . org-roam-capture)
+             ("C-c n t" . org-roam-buffer-toggle)
+             ("C-c n a" . org-roam-alias-add)
+             ("C-c n g" . org-roam-graph)
+             )
+      :config
+      (org-roam-db-autosync-mode))
     )
 
 (leaf paradox
@@ -2722,8 +2704,8 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :ensure t
   ;; :after ccc cdb
   ;; :require skk skk-study
-  :defvar (skk-user-directory skk-rom-kana-rule-list skk-katakana skk-j-mode skk-latin-mode)
-  :defun skk-toggle-kana skk-hiragana-set skk-katakana-set
+  ;; :defvar (skk-user-directory skk-rom-kana-rule-list skk-katakana skk-j-mode skk-latin-mode)
+  ;; :defun skk-toggle-kana skk-hiragana-set skk-katakana-set
   :hook ((isearch-mode-hook . skk-isearch-mode-setup)
          (isearch-mode-end-hook . skk-isearch-mode-cleanup)
          (find-file-hooks . my/always-enable-skk-latin-mode-hook))
@@ -3303,14 +3285,9 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
            ;; (corfu-preselect-first . nil)
            )
   :bind
-<<<<<<< HEAD
   ((corfu-map
     ("C-s" . corfu-insert-separator)
     ("C-SPC" . corfu-insert-separator)
-=======
-  ((corfu-map
-    ("C-SPC" . corfu-insert-separator)
->>>>>>> fd1a26a8 (fix いろいろ修正)
     ("C-c SPC" . corfu-insert-separator)
     ("M-SPC" . corfu-insert-separator))) ;SPCにするとSKKのへんかんできなくなる
   :init
@@ -3387,13 +3364,8 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :ensure t
   ;; :after corfu
   ;; :disabled t
-<<<<<<< HEAD
   ;; :hook ((ein:notebook-mode-hook . my/set-ein-capf)
   ;;        (lsp-completion-mode . corfu-setup-lsp))
-=======
-  ;; :hook ((ein:notebook-mode-hook . my/set-ein-capf)
-  ;;        (lsp-completion-mode . corfu-setup-lsp))
->>>>>>> fd1a26a8 (fix いろいろ修正)
   :config
   ;; (add-to-list 'completion-at-point-functions #'tempel-complete)
   (add-to-list 'completion-at-point-functions #'cape-file)
