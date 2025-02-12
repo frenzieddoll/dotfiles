@@ -63,8 +63,6 @@ export PATH="$HOME/.cabal/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/home/toshiaki/.local/lib"
 export QT_QPA_PLATFORMTHEME="qt5ct"
-# miniconda3
-[ -f /opt/miniconda3/etc/profile.d/conda.sh ] && source /opt/miniconda3/etc/profile.d/conda.sh
 
 # 言語を英語にする
 export LANG=en_US.utf-8
@@ -85,12 +83,12 @@ alias -s mkv=mpv
 alias -s mp4=mpv
 alias -s avi=mpv
 alias -s wav=mpv
-alias -s exe=wine
+# alias -s exe=wine
 
 # stable diffusion
 alias drun='docker run -it --network=host --device=/dev/kfd --device=/dev/dri --group-add=video --ipc=host --cap-add=SYS_PTRACE --security-opt seccomp=unconfined -v $(pwd):/pwd'
 
-eval "$(gh completion -s zsh)"
+which gh > /dev/null 2>&1 && eval "$(gh completion -s zsh)"
 
 function radeonPro () {
     export DISABLE_LAYER_AMD_SWITCHABLE_GRAPHICS_1=1
@@ -107,6 +105,10 @@ case $(uname -n) in
         setxkbmap -layout us > /dev/null 2>&1
         setxkbmap -option ctrl:swap_rwin_rctl > /dev/null 2>&1
         export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0.0;;
+    "JPC20627141")
+        export LIBGL_ALWAYS_INDIRECT=1
+        export PYTHONPATH="$HOME/Document/python/modules:$PYTHONPATH"
+        ;;
 esac
 
 case $(uname -r | grep microsoft > /dev/null 2>&1 && echo wsl || echo not_wsl) in
@@ -131,6 +133,15 @@ if [[ "$INSIDE_EMACS" = 'vterm' ]] \
     && [[ -n ${EMACS_VTERM_PATH} ]] \
     && [[ -f ${EMACS_VTERM_PATH}/etc/emacs-vterm-zsh.sh ]]; then
     source ${EMACS_VTERM_PATH}/etc/emacs-vterm-zsh.sh
+
+    if which hostname > /dev/null 1>&2; then
+        echo $(hostname)
+    else
+        vterm_prompt_end(){
+            vterm_printf "51;A$(whoami)@${HOSTNAME}:$(pwd)"
+        }
+    fi
+
     # Initialize TITLE
     print -Pn "\e]2;%m:%2~\a"
 fi
