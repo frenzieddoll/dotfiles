@@ -1852,7 +1852,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :hook ((eww-mode-hook . eww-mode-hook-disable-image))
   :defun eww-reload
   :defvar (shr-put-image-function eww-disable-colorize)
-  :custom ((eww-search-prefix . "https://www.google.co.jp/search?btnl&q=")
+  :custom ((eww-searc-prefix . "https://duckduckgo.com/html/?kl=jp-jp&k1=-1&kc=1&kf=-1&q=")
            (eww-browse-with-external-link . t)
            (eww-disable-colorize . t))
   :bind (("C-c m"  . browse-url-with-eww)
@@ -3046,30 +3046,61 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :global-minor-mode (recentf-mode)
   )
 
-;; (leaf smartparens
-;;   :doc "Automatic insertion, wrapping and paredit-like navigation with user defined pairs."
-;;   :req "dash-2.13.0" "cl-lib-0.3"
-;;   :tag "editing" "convenience" "abbrev"
-;;   :url "https://github.com/Fuco1/smartparens"
-;;   :added "2022-02-25"
-;;   :ensure t
-;;   :global-minor-mode (smartparens-strict-mode)
-;;   :bind (("C-c s" . smartparens-strict-mode)
-;;          (:smartparens-mode-map
-;;           ("C-M-f" . sp-forward-sexp)
-;;           ("C-M-b" . sp-backward-sexp)
-;;           ("C-M-n" . sp-next-sexp)
-;;           ("C-M-p" . sp-previous-sexp)
-;;           ("C-M-a" . sp-beginning-of-sexp)
-;;           ("C-M-e" . sp-end-of-sexp)
-;;           ("M-["   . sp-backward-unwrap-sexp)
-;;           ("M-]"   . sp-unwrap-sexp)))
-;;   :config
-;;   (sp-pair "'" "'" :actions :rem)
-;;   (sp-pair "`" "`" :actions :rem)
-;;   (sp-local-pair 'python-mode "'" "'")
-;;   (sp-local-pair 'ein:ipynb-mode "'" "'")
-;;   (sp-local-pair 'haskell-mode "`" "`"))
+(leaf smartparens
+  :doc "Automatic insertion, wrapping and paredit-like navigation with user defined pairs."
+  :req "dash-2.13.0" "cl-lib-0.3"
+  :tag "editing" "convenience" "abbrev"
+  :url "https://github.com/Fuco1/smartparens"
+  :added "2022-02-25"
+  :ensure t
+  :disabled t
+  :global-minor-mode (smartparens-strict-mode)
+  :bind (("C-c s" . smartparens-strict-mode)
+         (:smartparens-mode-map
+          ("C-M-f" . sp-forward-sexp)
+          ("C-M-b" . sp-backward-sexp)
+          ("C-M-n" . sp-next-sexp)
+          ("C-M-p" . sp-previous-sexp)
+          ("C-M-a" . sp-beginning-of-sexp)
+          ("C-M-e" . sp-end-of-sexp)
+          ("M-["   . sp-backward-unwrap-sexp)
+          ("M-]"   . sp-unwrap-sexp)))
+  :config
+  (sp-pair "'" "'" :actions :rem)
+  (sp-pair "`" "`" :actions :rem)
+  (sp-local-pair 'python-mode "'" "'")
+  (sp-local-pair 'ein:ipynb-mode "'" "'")
+  (sp-local-pair 'haskell-mode "`" "`"))
+
+(leaf puni
+  :doc "Parentheses Universalistic"
+  :req "emacs-26.1"
+  :tag "tools" "lisp" "convenience" "emacs>=26.1"
+  :url "https://github.com/AmaiKinono/puni"
+  :added "2025-02-13"
+  :emacs>= 26.1
+  :ensure t
+  :global-minor-mode puni-global-mode
+  :bind (puni-mode-map
+         ;; default mapping
+         ;; ("C-M-f" . puni-forward-sexp)
+         ;; ("C-M-b" . puni-backward-sexp)
+         ;; ("C-M-a" . puni-beginning-of-sexp)
+         ;; ("C-M-e" . puni-end-of-sexp)
+         ;; ("M-)" . puni-syntactic-forward-punct)
+         ;; ("C-M-u" . backward-up-list)
+         ;; ("C-M-d" . backward-down-list)
+         ("C-)" . puni-slurp-forward)
+         ("C-}" . puni-barf-forward)
+         ("M-(" . puni-wrap-round)
+         ("M-s" . puni-splice)
+         ("M-r" . puni-raise)
+         ("M-U" . puni-splice-killing-backward)
+         ("M-z" . puni-squeeze))
+  :config
+  (leaf elec-pair
+    :doc "Automatic parenthesis pairing"
+    :global-minor-mode electric-pair-mode))
 
 (leaf ssh
   :doc "Support for remote logins using ssh."
@@ -3086,14 +3117,15 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :emacs>= 24
   :ensure t)
 
-;; (leaf undo-tree
-;;   :doc "Treat undo history as a tree"
-;;   :tag "tree" "history" "redo" "undo" "files" "convenience"
-;;   :url "http://www.dr-qubit.org/emacs.php"
-;;   :added "2021-09-05"
-;;   :ensure t
-;;   :unless (string-match "RaspberryPi" (system-name))
-;;   :global-minor-mode t)
+(leaf undo-tree
+  :doc "Treat undo history as a tree"
+  :tag "tree" "history" "redo" "undo" "files" "convenience"
+  :url "http://www.dr-qubit.org/emacs.php"
+  :added "2021-09-05"
+  :ensure t
+  :disabled t
+  :unless (string-match "RaspberryPi" (system-name))
+  :global-minor-mode t)
 
 (leaf uniquify
   :doc "unique buffer names dependent on file name"
@@ -3125,21 +3157,6 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
            ;; (vertico-preselect . 'prompt)
            )
   :global-minor-mode t
-  ;; :preface
-  ;; (defun up-to-dir ()
-  ;;   "Move to parent directory like \"cd ..\" in find-file."
-  ;;   (interactive)
-  ;;   (let ((sep (eval-when-compile (regexp-opt '("/" "\\")))))
-  ;;     (save-excursion
-  ;;       (left-char 1)
-  ;;       (when (looking-at-p sep)
-  ;;         (delete-char 1)))
-  ;;     (save-match-data
-  ;;       (when (search-backward-regexp sep nil t)
-  ;;         (right-char 1)
-  ;;         (filter-buffer-substring (point)
-  ;;                                  (save-excursion (end-of-line) (point))
-  ;;                                  #'delete)))))
   )
 
 (leaf consult
@@ -3161,7 +3178,10 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
          (minibuffer-local-map
           ("C-c h" . consult-history)))
 
-  :custom `((consult-preview-key . nil))
+  :custom `((consult-preview-key . nil)
+            (consult-line-start-from-top . t)
+            (xref-show-xrefs-function . #'consult-xref)
+            (xref-show-definitions-function . #'consult-xref))
   )
 
 (leaf orderless
@@ -3188,7 +3208,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :emacs>= 26.1
   :ensure t
   :unless (string= (system-name) "RaspberryPi")
-  :config (marginalia-mode 1)
+  :global-minor-mode t
   )
 
 (leaf embark
@@ -3199,8 +3219,11 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :added "2021-09-17"
   :emacs>= 26.1
   :ensure t
-  :disabled t
-  :bind (("s-e" . embark-act))
+  ;; :disabled t
+  :bind ((minibuffer-mode-map
+          :package emacs
+          ("M-." . embark-dwim)
+          ("C-." . embark-act)))
   ;; :custom ((prefix-help-command . #'embark-prefix-help-command))
   :config
   (leaf embark-consult
