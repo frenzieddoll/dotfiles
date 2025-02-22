@@ -2064,15 +2064,16 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
             (skk-henkan-strict-okuri-precedence . t)
             (skk-isearch-start-mode             . 'latin)
             (skk-search-katakana                . t)
-            (skk-jisyo-code . ,(lambda ()
-                                 (let* ((file-path "~/.emacs.d/ddskk/jisyo")
-                                        (coding
-                                         (with-temp-buffer
-                                           (insert-file-contents file-path)
-                                           (symbol-name buffer-file-coding-system)))
-                                        (chk-utf8 (string-search "utf-8" coding)))
-                                   (cond (chk-utf8 "utf-8")
-                                         (t "euc-jp")))))
+            (skk-jisyo-code                     . 'utf-8)
+            ;; (skk-jisyo-code . ,(lambda ()
+            ;;                      (let* ((file-path "~/.emacs.d/ddskk/jisyo")
+            ;;                             (coding
+            ;;                              (with-temp-buffer
+            ;;                                (insert-file-contents file-path)
+            ;;                                (symbol-name buffer-file-coding-system)))
+            ;;                             (chk-utf8 (string-search "utf-8" coding)))
+            ;;                        (cond (chk-utf8 "utf-8")
+            ;;                              (t "euc-jp")))))
             )
   :config
   (defun skk-hiragana-set nil
