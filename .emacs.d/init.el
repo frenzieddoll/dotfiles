@@ -17,45 +17,48 @@
 (defconst my/saved-file-name-handler-alist file-name-handler-alist)
 (setq file-name-handler-alist nil)
 
+;; (require 'profiler)
+;; (profiler-start 'cpu)
+
 ;; 起動速度計測
-(defvar setup-tracker--level 0)
-(defvar setup-tracker--parents nil)
-(defvar setup-tracker--times nil)
+;; (defvar setup-tracker--level 0)
+;; (defvar setup-tracker--parents nil)
+;; (defvar setup-tracker--times nil)
 
-(when load-file-name
-  (push load-file-name setup-tracker--parents)
-  (push (current-time) setup-tracker--times)
-  (setq setup-tracker--level (1+ setup-tracker--level)))
+;; (when load-file-name
+;;   (push load-file-name setup-tracker--parents)
+;;   (push (current-time) setup-tracker--times)
+;;   (setq setup-tracker--level (1+ setup-tracker--level)))
 
-(add-variable-watcher
- 'load-file-name
- (lambda (_ v &rest __)
-   (cond ((equal v (car setup-tracker--parents))
-          nil)
-         ((equal v (cadr setup-tracker--parents))
-          (setq setup-tracker--level (1- setup-tracker--level))
-          (let* ((now (current-time))
-                 (start (pop setup-tracker--times))
-                 (elapsed (+ (* (- (nth 1 now) (nth 1 start)) 1000)
-                             (/ (- (nth 2 now) (nth 2 start)) 1000))))
-            (with-current-buffer (get-buffer-create "*setup-tracker*")
-              (save-excursion
-                (goto-char (point-min))
-                (dotimes (_ setup-tracker--level) (insert "> "))
-                (insert
-                 (file-name-nondirectory (pop setup-tracker--parents))
-                 " (" (number-to-string elapsed) " msec)\n")))))
-         (t
-          (push v setup-tracker--parents)
-          (push (current-time) setup-tracker--times)
-          (setq setup-tracker--level (1+ setup-tracker--level))))))
-;; this enables this running method
-;;   emacs -q -l ~/.debug.emacs.d/init.el
-(eval-and-compile
-  (when (or load-file-name byte-compile-current-file)
-    (setq user-emacs-directory
-          (expand-file-name
-           (file-name-directory (or load-file-name byte-compile-current-file))))))
+;; (add-variable-watcher
+;;  'load-file-name
+;;  (lambda (_ v &rest __)
+;;    (cond ((equal v (car setup-tracker--parents))
+;;           nil)
+;;          ((equal v (cadr setup-tracker--parents))
+;;           (setq setup-tracker--level (1- setup-tracker--level))
+;;           (let* ((now (current-time))
+;;                  (start (pop setup-tracker--times))
+;;                  (elapsed (+ (* (- (nth 1 now) (nth 1 start)) 1000)
+;;                              (/ (- (nth 2 now) (nth 2 start)) 1000))))
+;;             (with-current-buffer (get-buffer-create "*setup-tracker*")
+;;               (save-excursion
+;;                 (goto-char (point-min))
+;;                 (dotimes (_ setup-tracker--level) (insert "> "))
+;;                 (insert
+;;                  (file-name-nondirectory (pop setup-tracker--parents))
+;;                  " (" (number-to-string elapsed) " msec)\n")))))
+;;          (t
+;;           (push v setup-tracker--parents)
+;;           (push (current-time) setup-tracker--times)
+;;           (setq setup-tracker--level (1+ setup-tracker--level))))))
+;; ;; this enables this running method
+;; ;;   emacs -q -l ~/.debug.emacs.d/init.el
+;; (eval-and-compile
+;;   (when (or load-file-name byte-compile-current-file)
+;;     (setq user-emacs-directory
+;;           (expand-file-name
+;;            (file-name-directory (or load-file-name byte-compile-current-file))))))
 
 (eval-and-compile
   (customize-set-variable
@@ -1364,14 +1367,14 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   ;;   (list 427110 1469889687))
   )
 
-(leaf google-this
-  :doc "A set of functions and bindings to google under point."
-  :req "emacs-24.1"
-  :tag "hypermedia" "convenience" "emacs>=24.1"
-  :url "http://github.com/Malabarba/emacs-google-this"
-  :added "2022-12-30"
-  :emacs>= 24.1
-  :ensure t)
+;; (leaf google-this
+;;   :doc "A set of functions and bindings to google under point."
+;;   :req "emacs-24.1"
+;;   :tag "hypermedia" "convenience" "emacs>=24.1"
+;;   :url "http://github.com/Malabarba/emacs-google-this"
+;;   :added "2022-12-30"
+;;   :emacs>= 24.1
+;;   :ensure t)
 
 (leaf graphviz-dot-mode
   :doc "Mode for the dot-language used by graphviz (att)."
@@ -1394,39 +1397,39 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :bind (("C-x g" . magit-status))
   :config (setenv "GIT_PAGER" ""))
 
-(leaf mew
-  :doc "Messaging in the Emacs World"
-  :added "2024-02-18"
-  :ensure t
-  ;; :require t
-  :when (executable-find "stunnel")
-  ;; :custom ((mew-fcc . "+outbox")
-  ;;          (exec-path . (cons "/usr/bin" exec-path))
-  ;;          (user-mail-addressuser-mail-address . "frenzieddoll@gmail.com")
-  ;;          (user-full-name . "frenzieddoll")
-  ;;          (mew-smtp-server . "smtp.gmail.com")
-  ;;          (mail-user-agent . 'mew-user-agent)
-  ;;          )
-  ;; :init
-  ;; (autoload 'mew "mew" nil t)
-  ;; (autoload 'mew-send "mew" nil t)
+;; (leaf mew
+;;   :doc "Messaging in the Emacs World"
+;;   :added "2024-02-18"
+;;   :ensure t
+;;   ;; :require t
+;;   :when (executable-find "stunnel")
+;;   ;; :custom ((mew-fcc . "+outbox")
+;;   ;;          (exec-path . (cons "/usr/bin" exec-path))
+;;   ;;          (user-mail-addressuser-mail-address . "frenzieddoll@gmail.com")
+;;   ;;          (user-full-name . "frenzieddoll")
+;;   ;;          (mew-smtp-server . "smtp.gmail.com")
+;;   ;;          (mail-user-agent . 'mew-user-agent)
+;;   ;;          )
+;;   ;; :init
+;;   ;; (autoload 'mew "mew" nil t)
+;;   ;; (autoload 'mew-send "mew" nil t)
 
-  :config
-  (autoload 'mew "mew" nil t)
-  (autoload 'mew-send "mew" nil t)
-  (setq mew-fcc "+outbox")
-  (setq exec-path (cons "/usr/bin" exec-path))
+;;   :config
+;;   (autoload 'mew "mew" nil t)
+;;   (autoload 'mew-send "mew" nil t)
+;;   (setq mew-fcc "+outbox")
+;;   (setq exec-path (cons "/usr/bin" exec-path))
 
-  (setq user-mail-address "frenzieddoll@gmail.com")
-  (setq user-full-name "frenzieddoll")
-  (setq mew-smtp-server "smtp.gmail.com")
-  (setq mail-user-agent 'mew-user-agent)
-  (define-mail-user-agent
-    'mew-user-agent
-    'mew-user-agent-compose
-    'mew-draft-send-message
-    'mew-draft-kill
-    'mew-send-hook))
+;;   (setq user-mail-address "frenzieddoll@gmail.com")
+;;   (setq user-full-name "frenzieddoll")
+;;   (setq mew-smtp-server "smtp.gmail.com")
+;;   (setq mail-user-agent 'mew-user-agent)
+;;   (define-mail-user-agent
+;;     'mew-user-agent
+;;     'mew-user-agent-compose
+;;     'mew-draft-send-message
+;;     'mew-draft-kill
+;;     'mew-send-hook))
 
 ;; (leaf org
 ;;   :doc "Export Framework for Org Mode"
@@ -1521,31 +1524,31 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
       (org-roam-db-autosync-mode))
     )
 
-(leaf paradox
-  :doc "A modern Packages Menu. Colored, with package ratings, and customizable."
-  :req "emacs-24.4" "seq-1.7" "let-alist-1.0.3" "spinner-1.7.3" "hydra-0.13.2"
-  :tag "packages" "package" "emacs>=24.4"
-  :url "https://github.com/Malabarba/paradox"
-  :added "2023-03-18"
-  :emacs>= 24.4
-  :ensure t
-  :disabled t
-  :require t
-  :config (paradox-enable))
+;; (leaf paradox
+;;   :doc "A modern Packages Menu. Colored, with package ratings, and customizable."
+;;   :req "emacs-24.4" "seq-1.7" "let-alist-1.0.3" "spinner-1.7.3" "hydra-0.13.2"
+;;   :tag "packages" "package" "emacs>=24.4"
+;;   :url "https://github.com/Malabarba/paradox"
+;;   :added "2023-03-18"
+;;   :emacs>= 24.4
+;;   :ensure t
+;;   :disabled t
+;;   :require t
+;;   :config (paradox-enable))
 
-(leaf pdf-tools
-  :doc "Support library for PDF documents"
-  :req "emacs-24.3" "tablist-1.0" "let-alist-1.0.4"
-  :tag "multimedia" "files" "emacs>=24.3"
-  :url "http://github.com/vedang/pdf-tools/"
-  :added "2021-09-05"
-  :emacs>= 24.3
-  :ensure t
-  :after tablist
-  :when (executable-find "epdfinfo")
-  :hook ((pdf-view-mode-hook . pdf-misc-size-indication-minor-mode)
-         (pdf-view-mode-hook . pdf-links-minor-mode)
-         (pdf-view-mode-hook . pdf-isearch-minor-mode)))
+;; (leaf pdf-tools
+;;   :doc "Support library for PDF documents"
+;;   :req "emacs-24.3" "tablist-1.0" "let-alist-1.0.4"
+;;   :tag "multimedia" "files" "emacs>=24.3"
+;;   :url "http://github.com/vedang/pdf-tools/"
+;;   :added "2021-09-05"
+;;   :emacs>= 24.3
+;;   :ensure t
+;;   :after tablist
+;;   :when (executable-find "epdfinfo")
+;;   :hook ((pdf-view-mode-hook . pdf-misc-size-indication-minor-mode)
+;;          (pdf-view-mode-hook . pdf-links-minor-mode)
+;;          (pdf-view-mode-hook . pdf-isearch-minor-mode)))
 
 ;; (leaf shackle
 ;;   :doc "Enforce rules for popups"
@@ -1576,26 +1579,26 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
 ;;   :custom ((twittering-allow-insecure-server-cert . t)
 ;;            (twittering-use-master-password . t)))
 
-(leaf treemacs
-  :doc "A tree style file explorer package"
-  :req "emacs-26.1" "cl-lib-0.5" "dash-2.11.0" "s-1.12.0" "ace-window-0.9.0" "pfuture-1.7" "hydra-0.13.2" "ht-2.2" "cfrs-1.3.2"
-  :tag "emacs>=26.1"
-  :url "https://github.com/Alexander-Miller/treemacs"
-  :added "2023-04-09"
-  :emacs>= 26.1
-  :ensure t
-  :custom ((treemacs-load-theme . "all-the-icons"))
-  :config
-  (leaf treemacs-all-the-icons
-    :doc "all-the-icons integration for treemacs"
-    :req "emacs-26.1" "all-the-icons-4.0.1" "treemacs-0.0"
-    :tag "emacs>=26.1"
-    :url "https://github.com/Alexander-Miller/treemacs"
-    :added "2023-04-09"
-    :emacs>= 26.1
-    :ensure t
-    :after all-the-icons treemacs)
-)
+;; (leaf treemacs
+;;   :doc "A tree style file explorer package"
+;;   :req "emacs-26.1" "cl-lib-0.5" "dash-2.11.0" "s-1.12.0" "ace-window-0.9.0" "pfuture-1.7" "hydra-0.13.2" "ht-2.2" "cfrs-1.3.2"
+;;   :tag "emacs>=26.1"
+;;   :url "https://github.com/Alexander-Miller/treemacs"
+;;   :added "2023-04-09"
+;;   :emacs>= 26.1
+;;   :ensure t
+;;   :custom ((treemacs-load-theme . "all-the-icons"))
+;;   :config
+;;   (leaf treemacs-all-the-icons
+;;     :doc "all-the-icons integration for treemacs"
+;;     :req "emacs-26.1" "all-the-icons-4.0.1" "treemacs-0.0"
+;;     :tag "emacs>=26.1"
+;;     :url "https://github.com/Alexander-Miller/treemacs"
+;;     :added "2023-04-09"
+;;     :emacs>= 26.1
+;;     :ensure t
+;;     :after all-the-icons treemacs)
+;; )
 
 (leaf view
   :doc "peruse file or buffer without editing"
@@ -1783,14 +1786,14 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
       (view-mode 1)
       (message "backward-kill-line"))))
 
-(leaf vlf
-  :doc "View Large Files"
-  :tag "utilities" "large files"
-  :url "https://github.com/m00natic/vlfi"
-  :added "2021-09-05"
-  ;; :require vlf-setup
-  :disabled t
-  :ensure t)
+;; (leaf vlf
+;;   :doc "View Large Files"
+;;   :tag "utilities" "large files"
+;;   :url "https://github.com/m00natic/vlfi"
+;;   :added "2021-09-05"
+;;   ;; :require vlf-setup
+;;   :disabled t
+;;   :ensure t)
 
 (leaf yaml
   :doc "YAML parser for Elisp"
@@ -1994,32 +1997,32 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   ;; :disabled t
   )
 
-(leaf calfw
-  :doc "Calendar view framework on Emacs"
-  :tag "calendar"
-  :url "https://github.com/kiwanami/emacs-calfw"
-  :added "2021-09-05"
-  :ensure t
-  :disabled t
-  :config
-  (leaf calfw-org
-    :doc "calendar view for org-agenda"
-    :tag "org" "calendar"
-    :added "2021-09-05"
-    :ensure t
-    :require t)
-  (leaf calfw-ical
-    :doc "calendar view for ical format"
-    :tag "calendar"
-    :added "2021-09-05"
-    :ensure t
-    :require t
-    :config
-    (load "calfw_functions" t)
-    (add-hook 'calendar-load-hook (lambda ()
-                                    (require 'japanese-holidays)
-                                    (setq calendar-holidays
-                                          (append japanese-holidays))))))
+;; (leaf calfw
+;;   :doc "Calendar view framework on Emacs"
+;;   :tag "calendar"
+;;   :url "https://github.com/kiwanami/emacs-calfw"
+;;   :added "2021-09-05"
+;;   :ensure t
+;;   :disabled t
+;;   :config
+;;   (leaf calfw-org
+;;     :doc "calendar view for org-agenda"
+;;     :tag "org" "calendar"
+;;     :added "2021-09-05"
+;;     :ensure t
+;;     :require t)
+;;   (leaf calfw-ical
+;;     :doc "calendar view for ical format"
+;;     :tag "calendar"
+;;     :added "2021-09-05"
+;;     :ensure t
+;;     :require t
+;;     :config
+;;     (load "calfw_functions" t)
+;;     (add-hook 'calendar-load-hook (lambda ()
+;;                                     (require 'japanese-holidays)
+;;                                     (setq calendar-holidays
+;;                                           (append japanese-holidays))))))
 
 (leaf *cua
   :bind (("C-x SPC" . cua-set-rectangle-mark)
@@ -2250,12 +2253,12 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   ;; (setq calendar-holidays (append japanese-holidays holiday-local-holidays holiday-other-holidays))
   )
 
-(leaf online-judge
-  :when (executable-find "oj")
-  :vc (:url :url "https://github.com/ROCKTAKEY/emacs-online-judge")
-  :require t
-  :custom ((online-judge-directories . '("~/Dropbox/atcoder/"))
-           (online-judge-command-name . nil)))
+;; (leaf online-judge
+;;   :when (executable-find "oj")
+;;   :vc (:url :url "https://github.com/ROCKTAKEY/emacs-online-judge")
+;;   :require t
+;;   :custom ((online-judge-directories . '("~/Dropbox/atcoder/"))
+;;            (online-judge-command-name . nil)))
 
 (leaf page-ext
   :doc "extended page handling commands"
@@ -2315,30 +2318,30 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :global-minor-mode (recentf-mode)
   )
 
-(leaf smartparens
-  :doc "Automatic insertion, wrapping and paredit-like navigation with user defined pairs."
-  :req "dash-2.13.0" "cl-lib-0.3"
-  :tag "editing" "convenience" "abbrev"
-  :url "https://github.com/Fuco1/smartparens"
-  :added "2022-02-25"
-  :ensure t
-  :global-minor-mode (smartparens-strict-mode)
-  :bind (("C-c s" . smartparens-strict-mode)
-         (:smartparens-mode-map
-          ("C-M-f" . sp-forward-sexp)
-          ("C-M-b" . sp-backward-sexp)
-          ("C-M-n" . sp-next-sexp)
-          ("C-M-p" . sp-previous-sexp)
-          ("C-M-a" . sp-beginning-of-sexp)
-          ("C-M-e" . sp-end-of-sexp)
-          ("M-["   . sp-backward-unwrap-sexp)
-          ("M-]"   . sp-unwrap-sexp)))
-  :config
-  (sp-pair "'" "'" :actions :rem)
-  (sp-pair "`" "`" :actions :rem)
-  (sp-local-pair 'python-mode "'" "'")
-  (sp-local-pair 'ein:ipynb-mode "'" "'")
-  (sp-local-pair 'haskell-mode "`" "`"))
+;; (leaf smartparens
+;;   :doc "Automatic insertion, wrapping and paredit-like navigation with user defined pairs."
+;;   :req "dash-2.13.0" "cl-lib-0.3"
+;;   :tag "editing" "convenience" "abbrev"
+;;   :url "https://github.com/Fuco1/smartparens"
+;;   :added "2022-02-25"
+;;   :ensure t
+;;   :global-minor-mode (smartparens-strict-mode)
+;;   :bind (("C-c s" . smartparens-strict-mode)
+;;          (:smartparens-mode-map
+;;           ("C-M-f" . sp-forward-sexp)
+;;           ("C-M-b" . sp-backward-sexp)
+;;           ("C-M-n" . sp-next-sexp)
+;;           ("C-M-p" . sp-previous-sexp)
+;;           ("C-M-a" . sp-beginning-of-sexp)
+;;           ("C-M-e" . sp-end-of-sexp)
+;;           ("M-["   . sp-backward-unwrap-sexp)
+;;           ("M-]"   . sp-unwrap-sexp)))
+;;   :config
+;;   (sp-pair "'" "'" :actions :rem)
+;;   (sp-pair "`" "`" :actions :rem)
+;;   (sp-local-pair 'python-mode "'" "'")
+;;   (sp-local-pair 'ein:ipynb-mode "'" "'")
+;;   (sp-local-pair 'haskell-mode "`" "`"))
 
 (leaf ssh
   :doc "Support for remote logins using ssh."
@@ -2487,51 +2490,51 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :added "2021-09-05"
   :global-minor-mode t)
 
-(leaf *mySaveFrame
-    :when (or (eq system-type 'darwin)
-              (eq system-type 'windows-nt))
-    :hook ((emacs-startup-hook . my-load-frame-size)
-           (kill-emacs-hook . my-save-frame-size))
-    :defun my-save-frame-size my-load-frame-size
-    :defvar my-save-frame-file
-    :custom ((my-save-frame-file . "~/.emacs.d/.framesize"))
-    :preface
-    (defun my-save-frame-size ()
-      "現在のフレームの位置、大きさを'my-save-frame-file'に保存します"
-      (interactive)
-      (let* ((param (frame-parameters (selected-frame)))
-             (current-height (frame-height))
-             (current-width (frame-width))
-             (current-top-margin (if (integerp (cdr (assoc 'top param)))
-                                     (cdr (assoc 'top param))
-                                   0))
+;; (leaf *mySaveFrame
+;;     :when (or (eq system-type 'darwin)
+;;               (eq system-type 'windows-nt))
+;;     :hook ((emacs-startup-hook . my-load-frame-size)
+;;            (kill-emacs-hook . my-save-frame-size))
+;;     :defun my-save-frame-size my-load-frame-size
+;;     :defvar my-save-frame-file
+;;     :custom ((my-save-frame-file . "~/.emacs.d/.framesize"))
+;;     :preface
+;;     (defun my-save-frame-size ()
+;;       "現在のフレームの位置、大きさを'my-save-frame-file'に保存します"
+;;       (interactive)
+;;       (let* ((param (frame-parameters (selected-frame)))
+;;              (current-height (frame-height))
+;;              (current-width (frame-width))
+;;              (current-top-margin (if (integerp (cdr (assoc 'top param)))
+;;                                      (cdr (assoc 'top param))
+;;                                    0))
 
-             (current-left-margin (if (integerp (cdr (assoc 'top param)))
-                                      (cdr (assoc 'top param))
-                                    0))
-             (buf nil)
-             (file my-save-frame-file))
-        ;; ファイルと関連付けられてたバッファ作成
-        (unless (setq buf (get-file-buffer (expand-file-name file)))
-          (setq buf (find-file-noselect (expand-file-name file))))
-        (set-buffer buf)
-        (erase-buffer)
-        ;; ファイル読み込み時に直接評価させる内容を記述
-        (insert
-         (concat
-          "(set-frame-size (selected-frame) "(int-to-string current-width)" "(int-to-string current-height)")\n"
-          "(set-frame-position (selected-frame) "(int-to-string current-left-margin)" "(int-to-string current-top-margin)")\n"
-          ))
-        (save-buffer)))
-    (defun my-load-frame-size ()
-      "`my-save-fram-file'に保存されたフレームの位置、大きさを復元します"
-      (interactive)
-      (let ((file my-save-frame-file))
-        (when (file-exists-p file)
-          (load-file file))))
-    :config
-    (run-with-idle-timer 60 t 'my-save-frame-size)
-    )
+;;              (current-left-margin (if (integerp (cdr (assoc 'top param)))
+;;                                       (cdr (assoc 'top param))
+;;                                     0))
+;;              (buf nil)
+;;              (file my-save-frame-file))
+;;         ;; ファイルと関連付けられてたバッファ作成
+;;         (unless (setq buf (get-file-buffer (expand-file-name file)))
+;;           (setq buf (find-file-noselect (expand-file-name file))))
+;;         (set-buffer buf)
+;;         (erase-buffer)
+;;         ;; ファイル読み込み時に直接評価させる内容を記述
+;;         (insert
+;;          (concat
+;;           "(set-frame-size (selected-frame) "(int-to-string current-width)" "(int-to-string current-height)")\n"
+;;           "(set-frame-position (selected-frame) "(int-to-string current-left-margin)" "(int-to-string current-top-margin)")\n"
+;;           ))
+;;         (save-buffer)))
+;;     (defun my-load-frame-size ()
+;;       "`my-save-fram-file'に保存されたフレームの位置、大きさを復元します"
+;;       (interactive)
+;;       (let ((file my-save-frame-file))
+;;         (when (file-exists-p file)
+;;           (load-file file))))
+;;     :config
+;;     (run-with-idle-timer 60 t 'my-save-frame-size)
+;;     )
 
 (leaf affe
   :doc "Asynchronous Fuzzy Finder for Emacs"
@@ -2940,29 +2943,29 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :bind (("M-n" . flycheck-next-error)
          ("M-p" . flycheck-previous-error)))
 
-(leaf flymake
-  :doc "A universal on-the-fly syntax checker"
-  :tag "builtin"
-  :added "2025-02-06"
-  :bind (flymake-mode-map
-         ("C-c C-p" . flymake-goto-prev-error)
-         ("C-c C-n" . flymake-goto-next-error))
-  :config
-  (set-face-background 'flymake-errline "red4")
-  (set-face-background 'flymake-warnline "DarkOrange")
-  (leaf flymake-diagnostic-at-point
-    :doc "Display flymake diagnostics at point"
-    :req "emacs-26.1" "popup-0.5.3"
-    :tag "tools" "languages" "convenience" "emacs>=26.1"
-    :url "https://github.com/meqif/flymake-diagnostic-at-point"
-    :added "2025-02-06"
-    :emacs>= 26.1
-    :ensure t
-    :after flymake
-    ;; :config
-    (remove-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode)
-    (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake))
-  )
+;; (leaf flymake
+;;   :doc "A universal on-the-fly syntax checker"
+;;   :tag "builtin"
+;;   :added "2025-02-06"
+;;   :bind (flymake-mode-map
+;;          ("C-c C-p" . flymake-goto-prev-error)
+;;          ("C-c C-n" . flymake-goto-next-error))
+;;   :config
+;;   (set-face-background 'flymake-errline "red4")
+;;   (set-face-background 'flymake-warnline "DarkOrange")
+;;   (leaf flymake-diagnostic-at-point
+;;     :doc "Display flymake diagnostics at point"
+;;     :req "emacs-26.1" "popup-0.5.3"
+;;     :tag "tools" "languages" "convenience" "emacs>=26.1"
+;;     :url "https://github.com/meqif/flymake-diagnostic-at-point"
+;;     :added "2025-02-06"
+;;     :emacs>= 26.1
+;;     :ensure t
+;;     :after flymake
+;;     ;; :config
+;;     (remove-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode)
+;;     (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake))
+;;   )
 
 (leaf haskell-mode
   :doc "A Haskell editing mode"
@@ -3012,94 +3015,94 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
          ;; (haskell-literate-mode . lsp)
          )
   :config
-  (leaf lsp-haskell
-    :doc "Haskell support for lsp-mode"
-    :req "emacs-24.3" "lsp-mode-3.0" "haskell-mode-16.1"
-    :tag "haskell" "emacs>=24.3"
-    :url "https://github.com/emacs-lsp/lsp-haskell"
-    :added "2023-02-10"
-    :emacs>= 24.3
-    :ensure t
-    ;; :disabled t
-    :custom ((lsp-haskell-server-path . "haskell-language-server-wrapper")
-             (lsp-haskell-completion-snippets-on . nil)
-             )
-    )
+  ;; (leaf lsp-haskell
+  ;;   :doc "Haskell support for lsp-mode"
+  ;;   :req "emacs-24.3" "lsp-mode-3.0" "haskell-mode-16.1"
+  ;;   :tag "haskell" "emacs>=24.3"
+  ;;   :url "https://github.com/emacs-lsp/lsp-haskell"
+  ;;   :added "2023-02-10"
+  ;;   :emacs>= 24.3
+  ;;   :ensure t
+  ;;   ;; :disabled t
+  ;;   :custom ((lsp-haskell-server-path . "haskell-language-server-wrapper")
+  ;;            (lsp-haskell-completion-snippets-on . nil)
+  ;;            )
+  ;;   )
   )
 
-(leaf lsp-mode
-  :doc "LSP mode"
-  :req "emacs-26.1" "dash-2.18.0" "f-0.20.0" "ht-2.3" "spinner-1.7.3" "markdown-mode-2.3" "lv-0"
-  :tag "languages" "emacs>=26.1"
-  :url "https://github.com/emacs-lsp/lsp-mode"
-  :added "2021-11-06"
-  :emacs>= 26.1
-  :ensure t
-  :disabled t
-  ;; :el-get emacs-lsp/lsp-mode
-  ;; :unless (string-match "Raspberrypi" (system-name))
-  :custom ((lsp-keymap-prefix                      . "C-z")
-           ;; (lsp-idle-delay                         . 0.500)
-           (lsp-log-io                             . nil)
-           (lsp-completion-provider                . :none)
-           ;; (lsp-prefer-capf                        . t)
-           (lsp-headerline-breadcrumb-icons-enable . nil)
-           (lsp-enable-file-wathers                . nil)
-           (lsp-enable-folding                     . nil)
-           (lsp-enable-symbol-highlighting         . nil)
-           (lsp-enable-text-document-color         . nil)
-           (lsp-enable-indentation                 . nil)
-           (lsp-enable-on-type-formatting          . nil)
-           (lsp-auto-execute-action                . nil)
-           (lsp-before-save-edits                  . nil)
-           (lsp-enable-snippet                     . nil)
-           )
-  :init
-  (defun my/lsp-mode-setup-completion ()
-    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-          '(orderless)))
-  :hook (
-         (lsp-mode-hook        . lsp-enable-which-key-integration)
-         ;; (lsp-completion-mode-hook . my/lsp-mode-setup-completion)
-         (haskell-mode-hook    . lsp)
-         (rustic-mode-hook     . lsp)
-         (c-mode-hook          . lps)
-         (c++-mode-hook        . lsp)
-         (sh-mode              . lsp)
-         (purescript-mode-hook . lsp)
-         )
-  :config
-  (leaf lsp-ui
-    :doc "UI modules for lsp-mode"
-    :req "emacs-26.1" "dash-2.18.0" "lsp-mode-6.0" "markdown-mode-2.3"
-    :tag "tools" "languages" "emacs>=26.1"
-    :url "https://github.com/emacs-lsp/lsp-ui"
-    :added "2021-11-06"
-    :emacs>= 26.1
-    :ensure t
-    ;; :disabled t
-    :hook ((lsp-mode-hook . lsp-ui-mode))
-    :commands lsp-ui-mode)
-  (leaf lsp-treemacs
-    :doc "LSP treemacs"
-    :req "emacs-26.1" "dash-2.18.0" "f-0.20.0" "ht-2.0" "treemacs-2.5" "lsp-mode-6.0"
-    :tag "languages" "emacs>=26.1"
-    :url "https://github.com/emacs-lsp/lsp-treemacs"
-    :added "2021-12-21"
-    :emacs>= 26.1
-    ;; :disabled t
-    :ensure t
-    :custom ((lsp-treemacs-sync-mode . 1)))
-  (leaf consult-lsp
-    :doc "LSP-mode Consult integration"
-    :req "emacs-27.1" "lsp-mode-5.0" "consult-0.9" "f-0.20.0"
-    :tag "lsp" "completion" "tools" "emacs>=27.1"
-    :url "https://github.com/gagbo/consult-lsp"
-    :added "2021-11-08"
-    :emacs>= 27.1
-    ;; :disabled t
-    :ensure t)
-  )
+;; (leaf lsp-mode
+;;   :doc "LSP mode"
+;;   :req "emacs-26.1" "dash-2.18.0" "f-0.20.0" "ht-2.3" "spinner-1.7.3" "markdown-mode-2.3" "lv-0"
+;;   :tag "languages" "emacs>=26.1"
+;;   :url "https://github.com/emacs-lsp/lsp-mode"
+;;   :added "2021-11-06"
+;;   :emacs>= 26.1
+;;   :ensure t
+;;   :disabled t
+;;   ;; :el-get emacs-lsp/lsp-mode
+;;   ;; :unless (string-match "Raspberrypi" (system-name))
+;;   :custom ((lsp-keymap-prefix                      . "C-z")
+;;            ;; (lsp-idle-delay                         . 0.500)
+;;            (lsp-log-io                             . nil)
+;;            (lsp-completion-provider                . :none)
+;;            ;; (lsp-prefer-capf                        . t)
+;;            (lsp-headerline-breadcrumb-icons-enable . nil)
+;;            (lsp-enable-file-wathers                . nil)
+;;            (lsp-enable-folding                     . nil)
+;;            (lsp-enable-symbol-highlighting         . nil)
+;;            (lsp-enable-text-document-color         . nil)
+;;            (lsp-enable-indentation                 . nil)
+;;            (lsp-enable-on-type-formatting          . nil)
+;;            (lsp-auto-execute-action                . nil)
+;;            (lsp-before-save-edits                  . nil)
+;;            (lsp-enable-snippet                     . nil)
+;;            )
+;;   :init
+;;   (defun my/lsp-mode-setup-completion ()
+;;     (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+;;           '(orderless)))
+;;   :hook (
+;;          (lsp-mode-hook        . lsp-enable-which-key-integration)
+;;          ;; (lsp-completion-mode-hook . my/lsp-mode-setup-completion)
+;;          (haskell-mode-hook    . lsp)
+;;          (rustic-mode-hook     . lsp)
+;;          (c-mode-hook          . lps)
+;;          (c++-mode-hook        . lsp)
+;;          (sh-mode              . lsp)
+;;          (purescript-mode-hook . lsp)
+;;          )
+;;   :config
+;;   (leaf lsp-ui
+;;     :doc "UI modules for lsp-mode"
+;;     :req "emacs-26.1" "dash-2.18.0" "lsp-mode-6.0" "markdown-mode-2.3"
+;;     :tag "tools" "languages" "emacs>=26.1"
+;;     :url "https://github.com/emacs-lsp/lsp-ui"
+;;     :added "2021-11-06"
+;;     :emacs>= 26.1
+;;     :ensure t
+;;     ;; :disabled t
+;;     :hook ((lsp-mode-hook . lsp-ui-mode))
+;;     :commands lsp-ui-mode)
+;;   (leaf lsp-treemacs
+;;     :doc "LSP treemacs"
+;;     :req "emacs-26.1" "dash-2.18.0" "f-0.20.0" "ht-2.0" "treemacs-2.5" "lsp-mode-6.0"
+;;     :tag "languages" "emacs>=26.1"
+;;     :url "https://github.com/emacs-lsp/lsp-treemacs"
+;;     :added "2021-12-21"
+;;     :emacs>= 26.1
+;;     ;; :disabled t
+;;     :ensure t
+;;     :custom ((lsp-treemacs-sync-mode . 1)))
+;;   (leaf consult-lsp
+;;     :doc "LSP-mode Consult integration"
+;;     :req "emacs-27.1" "lsp-mode-5.0" "consult-0.9" "f-0.20.0"
+;;     :tag "lsp" "completion" "tools" "emacs>=27.1"
+;;     :url "https://github.com/gagbo/consult-lsp"
+;;     :added "2021-11-08"
+;;     :emacs>= 27.1
+;;     ;; :disabled t
+;;     :ensure t)
+;;   )
 
 (leaf python-mode
   :doc "Python major mode"
@@ -3171,14 +3174,14 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :custom `((pyvenv-default-virtual-env-name . ,(expand-file-name "~/.virtualenvs/")))
   )
 
-(leaf quickrun
-  :doc "Run commands quickly"
-  :req "emacs-24.3"
-  :tag "emacs>=24.3"
-  :url "https://github.com/syohex/emacs-quickrun"
-  :added "2021-11-06"
-  :emacs>= 24.3
-  :ensure t)
+;; (leaf quickrun
+;;   :doc "Run commands quickly"
+;;   :req "emacs-24.3"
+;;   :tag "emacs>=24.3"
+;;   :url "https://github.com/syohex/emacs-quickrun"
+;;   :added "2021-11-06"
+;;   :emacs>= 24.3
+;;   :ensure t)
 
 (leaf purescript-mode
   :doc "A PureScript editing mode"
@@ -3402,6 +3405,9 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
     ;;   :custom `((ediff-window-setup-function . 'ediff-setup-windows-plain)))
     )
   )
+
+;; (profiler-report)
+;; (profiler-stop)
 
 (setq file-name-handler-alist my/saved-file-name-handler-alist)
 
