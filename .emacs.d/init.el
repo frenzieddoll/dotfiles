@@ -971,16 +971,23 @@
 (leaf *theme-settings
   :config
   (leaf nord-theme
-    :doc "An arctic, north-bluish clean and elegant theme"
-    :req "emacs-24"
-    :tag "emacs>=24"
-    :url "https://github.com/arcticicestudio/nord-emacs"
-    :added "2022-03-30"
-    :emacs>= 24
-    :ensure t
-    ;; :disabled t
+    :doc "emacs30以降に対応するためのフォーク"
+    :vc (:url "https://github.com/frenzieddoll/emacs-nord-theme")
     :config
-    (load-theme 'nord t))
+    (load-theme 'nord t)
+    )
+  (leaf modus-themes
+    :doc "Elegant, highly legible and customizable themes"
+    :req "emacs-28.1"
+    :tag "accessibility" "theme" "faces" "emacs>=28.1"
+    :url "https://github.com/protesilaos/modus-themes"
+    :added "2025-03-01"
+    :emacs>= 28.1
+    :ensure t
+    :disabled t
+    :config
+    (load-theme 'modus-vivendi)
+    )
   (leaf moody
     ;; :disabled t
     :doc "Tabs and ribbons for the mode line"
