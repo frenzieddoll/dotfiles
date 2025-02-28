@@ -968,16 +968,19 @@
 
 
 ;; theme
-(leaf nord-theme
-  :doc "An arctic, north-bluish clean and elegant theme"
-  :req "emacs-24"
-  :tag "emacs>=24"
-  :url "https://github.com/arcticicestudio/nord-emacs"
-  :added "2022-03-30"
-  :emacs>= 24
-  :ensure t
+(leaf *theme-settings
   :config
-  (load-theme 'nord t)
+  (leaf nord-theme
+    :doc "An arctic, north-bluish clean and elegant theme"
+    :req "emacs-24"
+    :tag "emacs>=24"
+    :url "https://github.com/arcticicestudio/nord-emacs"
+    :added "2022-03-30"
+    :emacs>= 24
+    :ensure t
+    ;; :disabled t
+    :config
+    (load-theme 'nord t))
   (leaf moody
     ;; :disabled t
     :doc "Tabs and ribbons for the mode line"
@@ -994,8 +997,8 @@
     (moody-replace-eldoc-minibuffer-message-function)
     (column-number-mode)
     (set-face-foreground 'mode-line-inactive "SlateGray")
-    (set-face-background 'mode-line-inactive "gray20")
-    (leaf minions
+    (set-face-background 'mode-line-inactive "gray20"))
+  (leaf minions
       :doc "A minor-mode menu for the mode line"
       :req "emacs-25.2"
       :tag "emacs>=25.2"
@@ -1005,7 +1008,6 @@
       :ensure t
       :custom ((minions-mode-line-lighter . "[+]"))
       :global-minor-mode (minions-mode))
-    )
   )
 
 
@@ -1908,6 +1910,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
     :emacs>= 27.1
     :ensure t
     :require t
+    :disabled t
     ;; :after lsp-mode consult yatex
     :hook (yatex-mode-hook . lsp)
     :custom ((lsp-tex-server . 'texlab)
@@ -2890,12 +2893,14 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :emacs>= 26.3
   :ensure t
   ;; :disabled t
-  :hook (((python-mode
-           haskell-mode
-           yatex-mode) . eglot-ensure)
+  :hook (((python-mode-hook
+           haskell-mode-hook
+           yatex-mode-hook) . eglot-ensure)
          )
   :custom ((eldoc-echo-area-use-multiline-p . nil)
-           (eglot-connect-timeout . 600))
+           (eglot-connect-timeout . 600)
+           (eglot-autoshutdown . t)
+           (eglot-confirm-server-initiated-edits . nil))
   ;; :custom `((read-process-output-max       . ,(* 1024 1024))
   ;;           (completion-category-overrides . '((eglot (styles orderless))))
   ;;           )
@@ -2914,12 +2919,11 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
                         #'cape-keyword
                         #'cape-file)))))
 
-  ;; :config
-  ;; (setq read-process-output-max (* 1024 1024))
-  ;; (setq completion-category-overrides '((eglot (styles orderless))))
   :config
   (add-to-list 'eglot-server-programs
-               '((yatex-mode) . ("latexlab")))
+               '(yatex-mode . ("latexlab")))
+  (add-to-list 'eglot-server-programs
+               '(haskell-mode . ("haskell-language-server-wrapper" "--lsp")))
   (leaf eglot-booster
     :when (executable-find "emacs-lsp-booster")
     :vc (:url "https://github.com/jdtsmith/eglot-booster")
@@ -3002,14 +3006,10 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
            ("C-c C-a" . haskell-command-insert-language-pragma)
            ("<f5>"    . haskell-compile)
            ("<f8>"    . haskell-navigate-imports)))
-  :hook ((haskell-mode-hook . interactive-haskell-mode)
-         (haskell-mode-hook . haskell-doc-mode)
-         (haskell-mode-hook . haskell-indentation-mode)
-         ;; (haskell-mode-hook . haskell-auto-insert-module-template)
-         (haskell-mode-hook . haskell-decl-scan-mode)
-         ;; (haskell-mode-hook . lsp)
-         ;; (haskell-mode-hook . flycheck-mode)
-         ;; (haskell-literate-mode . lsp)
+  :hook ((haskell-mode-hook . (interactive-haskell-mode
+                               haskell-doc-mode
+                               haskell-indentation-mode
+                               haskell-decl-scan-mode))
          )
   :config
   (leaf lsp-haskell
@@ -3020,7 +3020,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
     :added "2023-02-10"
     :emacs>= 24.3
     :ensure t
-    ;; :disabled t
+    :disabled t
     :custom ((lsp-haskell-server-path . "haskell-language-server-wrapper")
              (lsp-haskell-completion-snippets-on . nil)
              )
