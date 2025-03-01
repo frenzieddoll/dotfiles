@@ -971,16 +971,26 @@
 
 
 ;; theme
-(leaf nord-theme
-  :doc "An arctic, north-bluish clean and elegant theme"
-  :req "emacs-24"
-  :tag "emacs>=24"
-  :url "https://github.com/arcticicestudio/nord-emacs"
-  :added "2022-03-30"
-  :emacs>= 24
-  :ensure t
+(leaf *theme-settings
   :config
-  (load-theme 'nord t)
+  (leaf nord-theme
+    :doc "emacs30以降に対応するためのフォーク"
+    :vc (:url "https://github.com/frenzieddoll/emacs-nord-theme")
+    :config
+    (load-theme 'nord t)
+    )
+  (leaf modus-themes
+    :doc "Elegant, highly legible and customizable themes"
+    :req "emacs-28.1"
+    :tag "accessibility" "theme" "faces" "emacs>=28.1"
+    :url "https://github.com/protesilaos/modus-themes"
+    :added "2025-03-01"
+    :emacs>= 28.1
+    :ensure t
+    :disabled t
+    :config
+    (load-theme 'modus-vivendi)
+    )
   (leaf moody
     ;; :disabled t
     :doc "Tabs and ribbons for the mode line"
@@ -997,8 +1007,8 @@
     (moody-replace-eldoc-minibuffer-message-function)
     (column-number-mode)
     (set-face-foreground 'mode-line-inactive "SlateGray")
-    (set-face-background 'mode-line-inactive "gray20")
-    (leaf minions
+    (set-face-background 'mode-line-inactive "gray20"))
+  (leaf minions
       :doc "A minor-mode menu for the mode line"
       :req "emacs-25.2"
       :tag "emacs>=25.2"
@@ -1008,7 +1018,6 @@
       :ensure t
       :custom ((minions-mode-line-lighter . "[+]"))
       :global-minor-mode (minions-mode))
-    )
   )
 
 
@@ -1911,6 +1920,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
     :emacs>= 27.1
     :ensure t
     :require t
+    :disabled t
     ;; :after lsp-mode consult yatex
     :hook (yatex-mode-hook . lsp)
     :custom ((lsp-tex-server . 'texlab)
@@ -2067,16 +2077,20 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
             (skk-henkan-strict-okuri-precedence . t)
             (skk-isearch-start-mode             . 'latin)
             (skk-search-katakana                . t)
-            (skk-jisyo-code                     . 'utf-8)
-            ;; (skk-jisyo-code . ,(lambda ()
-            ;;                      (let* ((file-path "~/.emacs.d/ddskk/jisyo")
-            ;;                             (coding
-            ;;                              (with-temp-buffer
-            ;;                                (insert-file-contents file-path)
-            ;;                                (symbol-name buffer-file-coding-system)))
-            ;;                             (chk-utf8 (string-search "utf-8" coding)))
-            ;;                        (cond (chk-utf8 "utf-8")
-            ;;                              (t "euc-jp")))))
+            ;; (skk-jisyo-code                     . 'utf-8)
+            (skk-jisyo-code . ,(lambda ()
+                                 (let* ((file-path "~/.emacs.d/ddskk/jisyo")
+                                        (coding
+                                         (with-temp-buffer
+                                           (insert-file-contents file-path)
+                                           (symbol-name buffer-file-coding-system)))
+                                        (jisyo-code
+                                         (cl-case coding
+                                           ("japanese-iso-8bit-unix" "ecu-jp")
+                                           (t "ecu-jp"))))
+                                   (print jisyo-code)
+                                   jisyo-code
+                                   )))
             )
   :config
   (defun skk-hiragana-set nil
@@ -2893,12 +2907,14 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :emacs>= 26.3
   :ensure t
   ;; :disabled t
-  :hook (((python-mode
-           haskell-mode
-           yatex-mode) . eglot-ensure)
+  :hook (((python-mode-hook
+           haskell-mode-hook
+           yatex-mode-hook) . eglot-ensure)
          )
   :custom ((eldoc-echo-area-use-multiline-p . nil)
-           (eglot-connect-timeout . 600))
+           (eglot-connect-timeout . 600)
+           (eglot-autoshutdown . t)
+           (eglot-confirm-server-initiated-edits . nil))
   ;; :custom `((read-process-output-max       . ,(* 1024 1024))
   ;;           (completion-category-overrides . '((eglot (styles orderless))))
   ;;           )
@@ -2917,12 +2933,11 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
                         #'cape-keyword
                         #'cape-file)))))
 
-  ;; :config
-  ;; (setq read-process-output-max (* 1024 1024))
-  ;; (setq completion-category-overrides '((eglot (styles orderless))))
   :config
   (add-to-list 'eglot-server-programs
-               '((yatex-mode) . ("latexlab")))
+               '(yatex-mode . ("latexlab")))
+  (add-to-list 'eglot-server-programs
+               '(haskell-mode . ("haskell-language-server-wrapper" "--lsp")))
   (leaf eglot-booster
     :when (executable-find "emacs-lsp-booster")
     :vc (:url "https://github.com/jdtsmith/eglot-booster")
@@ -3005,14 +3020,10 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
            ("C-c C-a" . haskell-command-insert-language-pragma)
            ("<f5>"    . haskell-compile)
            ("<f8>"    . haskell-navigate-imports)))
-  :hook ((haskell-mode-hook . interactive-haskell-mode)
-         (haskell-mode-hook . haskell-doc-mode)
-         (haskell-mode-hook . haskell-indentation-mode)
-         ;; (haskell-mode-hook . haskell-auto-insert-module-template)
-         (haskell-mode-hook . haskell-decl-scan-mode)
-         ;; (haskell-mode-hook . lsp)
-         ;; (haskell-mode-hook . flycheck-mode)
-         ;; (haskell-literate-mode . lsp)
+  :hook ((haskell-mode-hook . (interactive-haskell-mode
+                               haskell-doc-mode
+                               haskell-indentation-mode
+                               haskell-decl-scan-mode))
          )
   :config
   ;; (leaf lsp-haskell
