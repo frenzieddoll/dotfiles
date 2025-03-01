@@ -2358,14 +2358,14 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :emacs>= 24
   :ensure t)
 
-(leaf undo-tree
-  :doc "Treat undo history as a tree"
-  :tag "tree" "history" "redo" "undo" "files" "convenience"
-  :url "http://www.dr-qubit.org/emacs.php"
-  :added "2021-09-05"
-  :ensure t
-  :unless (string-match "RaspberryPi" (system-name))
-  :global-minor-mode t)
+;; (leaf undo-tree
+;;   :doc "Treat undo history as a tree"
+;;   :tag "tree" "history" "redo" "undo" "files" "convenience"
+;;   :url "http://www.dr-qubit.org/emacs.php"
+;;   :added "2021-09-05"
+;;   :ensure t
+;;   :unless (string-match "RaspberryPi" (system-name))
+;;   :global-minor-mode t)
 
 (leaf uniquify
   :doc "unique buffer names dependent on file name"
