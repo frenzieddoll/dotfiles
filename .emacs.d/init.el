@@ -630,6 +630,7 @@
                                       ("usbmount" "sudo mount -t vfat $1 $2 -o rw,umask=000")
                                       ("open" . "cmd.exe /c start {wslpath -w $*}")
                                       ("gdrive" . "sudo mount -t drvfs G: /mnt/googleDrive/")
+                                      ("reflectorjp" . "sudo reflector --country \"Japan\" --age 24 --protocol https --sort rate --save /etc/pacman.d/mirrorlist")
                                       ))
 
   (setenv "GIT_PAGER" "")

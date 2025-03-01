@@ -78,6 +78,8 @@ alias ll='ls -lh'
 alias rm='rm -i'
 alias cp='cp -p'
 alias pacmanlist="pacman -Qqe > ~/projects/dotfiles/.pkglist"
+alias reflectorjp="sudo reflector --country \"Japan\" --age 24 --protocol https --sort rate --save /etc/pacman.d/mirrorlist"
+
 
 # グローバルエイリアス
 alias -g L='| less'
