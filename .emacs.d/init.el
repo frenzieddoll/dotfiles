@@ -2753,6 +2753,41 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   ;; Enable recursive minibuffers
   (setq enable-recursive-minibuffers t))
 
+(leaf puni
+  :doc "Parentheses Universalistic"
+  :ensure t
+  :global-minor-mode puni-global-mode
+  :bind (puni-mode-map
+         ;; default mapping
+         ("C-c C-SPC" . puni-mark-list-around-point)
+         ("C-c M-SPC" . puni-mark-sexp-around-point)
+         ("C-M-SPC" . puni-expand-region)
+         ("C-(" . puni-wrap-round)
+         ;; ("C-[" . puni-wrap-square)
+         ("C-{" . puni-wrap-curly)
+         ("C-<" . puni-wrap-angle)
+         ("C-." . puni-slurp-forward)
+         ("C->" . puni-barf-forward)
+         ("C-]" . puni-slurp-backward)
+         ("C-}" . puni-barf-backward)
+         ("M-s" . puni-splice)
+         ("M-r" . puni-raise)
+         ("M-U" . puni-splice-killing-backward)
+         ("M-z" . puni-squeeze))
+  :preface
+  (define-key input-decode-map (kbd "C-[") [control-bracket])
+  (global-set-key [control-bracket] 'puni-wrap-square)
+  :config
+  (leaf elec-pair
+    :doc "Automatic parenthesis pairing"
+    :global-minor-mode electric-pair-mode)
+  :defer-config
+  (define-key puni-mode-map (kbd "C-d") nil)
+  (define-key puni-mode-map (kbd "C-k") nil)
+  (define-key puni-mode-map (kbd "C-w") nil)
+  (define-key puni-mode-map (kbd "M-DEL") nil)
+)
+
 (leaf visual-regexp-steroids
   :doc "Extends visual-regexp to support other regexp engines"
   :req "visual-regexp-1.1"
