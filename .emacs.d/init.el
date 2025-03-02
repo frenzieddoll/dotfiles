@@ -615,22 +615,7 @@
 (leaf *eshell-tools
   :bind (("C-c e" . eshell))
   :defvar (eshell-command-aliases-list)
-  :setq ((eshell-command-aliases-list . '(("ll" . "ls -ltrh")
-                                          ("la" . "ls -a")
-                                          ("lla" "ls -ltrha")
-                                          ("o" . "xdg-open")
-                                          ("emacs" . "find-file $1")
-                                          ("m" . "find-file $1")
-                                          ("mc" . "find-file $1")
-                                          ("d" . "dired .")
-                                          ("l" . "eshell/less $1")
-                                          ("dd" . "dd status=progress")
-                                          ("pacmandate" . "expac --timefmt='%Y-%m-%d %T' '%l\t%n' | sort | tail -n $1")
-                                          ("usbmount" "sudo mount -t vfat $1 $2 -o rw,umask=000")
-                                          ("open" . "cmd.exe /c start {wslpath -w $*}")
-                                          ("gdrive" . "sudo mount -t drvfs G: /mnt/googleDrive/")
-                                          ("reflectorjp" . "sudo reflector --country \"Japan\" --age 24 --protocol https --sort rate --save /etc/pacman.d/mirrorlist")))
-         (eshell-modules-list . (delq 'eshell-unix eshell-modules-list)))
+  :setq ((eshell-modules-list . (delq 'eshell-unix eshell-modules-list)))
   :init
   (leaf eshell-prompt-extras
     :doc "Display extra information for your eshell prompt."
@@ -651,6 +636,24 @@
   ;;    :after esh-module
   ;;    :config (setq eshell-modules-list (delq 'eshell-unix eshell-modules-list))
   ;;  )
+  (setq eshell-command-aliases-list
+        (append
+         (list
+          (list "ll" "ls -ltrh")
+          (list "la" "ls -a")
+          (list "lla" "ls -ltrha")
+          (list "o" "xdg-open")
+          (list "emacs" "find-file $1")
+          (list "m" "find-file $1")
+          (list "mc" "find-file $1")
+          (list "d" "dired .")
+          (list "l" "eshell/less $1")
+          (list "dd" "dd status=progress")
+          (list "pacmandate" "expac --timefmt='%Y-%m-%d %T' '%l\t%n' | sort | tail -n $1")
+          (list "usbmount" "sudo mount -t vfat $1 $2 -o rw,umask=000")
+          (list "open" "cmd.exe /c start {wslpath -w $*}")
+          (list "gdrive" "sudo mount -t drvfs G: /mnt/googleDrive/")
+          (list "reflectorjp" "sudo reflector --country \"Japan\" --age 24 --protocol https --sort rate --save /etc/pacman.d/mirrorlist"))))
   :config
   (setenv "GIT_PAGER" "")
   (leaf eshell-vterm
