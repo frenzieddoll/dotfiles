@@ -2994,29 +2994,29 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :bind (("M-n" . flycheck-next-error)
          ("M-p" . flycheck-previous-error)))
 
-;; (leaf flymake
-;;   :doc "A universal on-the-fly syntax checker"
-;;   :tag "builtin"
-;;   :added "2025-02-06"
-;;   :bind (flymake-mode-map
-;;          ("C-c C-p" . flymake-goto-prev-error)
-;;          ("C-c C-n" . flymake-goto-next-error))
-;;   :config
-;;   (set-face-background 'flymake-errline "red4")
-;;   (set-face-background 'flymake-warnline "DarkOrange")
-;;   (leaf flymake-diagnostic-at-point
-;;     :doc "Display flymake diagnostics at point"
-;;     :req "emacs-26.1" "popup-0.5.3"
-;;     :tag "tools" "languages" "convenience" "emacs>=26.1"
-;;     :url "https://github.com/meqif/flymake-diagnostic-at-point"
-;;     :added "2025-02-06"
-;;     :emacs>= 26.1
-;;     :ensure t
-;;     :after flymake
-;;     ;; :config
-;;     (remove-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode)
-;;     (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake))
-;;   )
+(leaf flymake
+  :doc "A universal on-the-fly syntax checker"
+  :tag "builtin"
+  :added "2025-02-06"
+  :bind (flymake-mode-map
+         ("C-c C-p" . flymake-goto-prev-error)
+         ("C-c C-n" . flymake-goto-next-error))
+  :config
+  (set-face-background 'flymake-errline "red4")
+  (set-face-background 'flymake-warnline "DarkOrange")
+  (leaf flymake-diagnostic-at-point
+    :doc "Display flymake diagnostics at point"
+    :req "emacs-26.1" "popup-0.5.3"
+    :tag "tools" "languages" "convenience" "emacs>=26.1"
+    :url "https://github.com/meqif/flymake-diagnostic-at-point"
+    :added "2025-02-06"
+    :emacs>= 26.1
+    :ensure t
+    :after flymake
+    ;; :config
+    (remove-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode)
+    (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake))
+  )
 
 (leaf haskell-mode
   :doc "A Haskell editing mode"
