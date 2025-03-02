@@ -615,25 +615,22 @@
 (leaf *eshell-tools
   :bind (("C-c e" . eshell))
   :defvar (eshell-command-aliases-list)
-  :config
-  (setq eshell-command-aliases-list '(("ll" . "ls -ltrh")
-                                      ("la" . "ls -a")
-                                      ("lla" "ls -ltrha")
-                                      ("o" . "xdg-open")
-                                      ("emacs" . "find-file $1")
-                                      ("m" . "find-file $1")
-                                      ("mc" . "find-file $1")
-                                      ("d" . "dired .")
-                                      ("l" . "eshell/less $1")
-                                      ("dd" . "dd status=progress")
-                                      ("pacmandate" . "expac --timefmt='%Y-%m-%d %T' '%l\t%n' | sort | tail -n $1")
-                                      ("usbmount" "sudo mount -t vfat $1 $2 -o rw,umask=000")
-                                      ("open" . "cmd.exe /c start {wslpath -w $*}")
-                                      ("gdrive" . "sudo mount -t drvfs G: /mnt/googleDrive/")
-                                      ("reflectorjp" . "sudo reflector --country \"Japan\" --age 24 --protocol https --sort rate --save /etc/pacman.d/mirrorlist")
-                                      ))
-
-  (setenv "GIT_PAGER" "")
+  :setq ((eshell-command-aliases-list . '(("ll" . "ls -ltrh")
+                                          ("la" . "ls -a")
+                                          ("lla" "ls -ltrha")
+                                          ("o" . "xdg-open")
+                                          ("emacs" . "find-file $1")
+                                          ("m" . "find-file $1")
+                                          ("mc" . "find-file $1")
+                                          ("d" . "dired .")
+                                          ("l" . "eshell/less $1")
+                                          ("dd" . "dd status=progress")
+                                          ("pacmandate" . "expac --timefmt='%Y-%m-%d %T' '%l\t%n' | sort | tail -n $1")
+                                          ("usbmount" "sudo mount -t vfat $1 $2 -o rw,umask=000")
+                                          ("open" . "cmd.exe /c start {wslpath -w $*}")
+                                          ("gdrive" . "sudo mount -t drvfs G: /mnt/googleDrive/")
+                                          ("reflectorjp" . "sudo reflector --country \"Japan\" --age 24 --protocol https --sort rate --save /etc/pacman.d/mirrorlist")))
+         (eshell-modules-list . (delq 'eshell-unix eshell-modules-list)))
   :init
   (leaf eshell-prompt-extras
     :doc "Display extra information for your eshell prompt."
@@ -648,12 +645,14 @@
     :custom ((eshell-highlight-prompt . nil)
              (eshell-prompt-function . 'epe-theme-lambda))
     )
-  (leaf *eshell-modules
-     ;; :disabled t
-     :unless (eq system-type 'windows)
-     :after esh-module
-     :config (setq eshell-modules-list (delq 'eshell-unix eshell-modules-list))
-   )
+  ;; (leaf *eshell-modules
+  ;;    ;; :disabled t
+  ;;    :unless (eq system-type 'windows)
+  ;;    :after esh-module
+  ;;    :config (setq eshell-modules-list (delq 'eshell-unix eshell-modules-list))
+  ;;  )
+  :config
+  (setenv "GIT_PAGER" "")
   (leaf eshell-vterm
      :doc "Vterm for visual commands in eshell"
      :req "emacs-27.1" "vterm-0.0.1"
@@ -675,7 +674,7 @@
            ("C-S-n"   . scroll-up_alt)
            ("C-S-p"   . scroll-down_alt)
            ("C-m"     . newline-and-indent)
-           ("C-h"     . delete-backward-char)
+           ("C-h"     . delete-backward-char) ;; remapだとexwmがおかしくなる
            ("M-h"     . backward-kill-word)
            ("C-c ?"   . help-command)
            ("C-c l"   . toggle-truncate-lines)
@@ -683,7 +682,8 @@
            ("C-c w"   . whitespace-mode)
            ("C-c o"   . occur)
            ("C-c C-j" . eval-print-last-sexp)
-           (isearch-mode-map
+           (:isearch-mode-map
+            :package isearch ;; isearchでもbackspaceが聞くため
             ("C-h" . isearch-delete-char)
             ))
     :custom ((scroll-preserve-screen-position . t)
@@ -2592,7 +2592,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :custom ((tab-always-indent        . 'complete)
            (corfu-cycle              . t)
            (corfu-auto               . t)
-           (corfu-auto-prefix        . 1)
+           (corfu-auto-prefix        . 3)
            (corfu-auto-delay         . 0)
            ;; (corfu-quit-no-match   . 'separator)
            ;; (corfu-separator       . ? \s)
@@ -3046,35 +3046,28 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
                                                         "then"
                                                         "else"
                                                         "let"))
-            ;; (haskell-hoogle-command              . nil)
-            ;; (haskell-hoogle-url                  . "https://www.stackage.org/lts/hoogle?q=%s")
+            (haskell-hoogle-command . nil)
+            (haskell-hoogle-url . "https://www.stackage.org/lts/hoogle?q=%s")
             )
-  :bind `((haskell-mode-map
-           ("C-c C-z" . haskell-interactive-bring)
-           ("C-c C-l" . haskell-process-load-file)
-           ("C-c C-," . haskell-mode-format-imports)
-           ("C-c C-a" . haskell-command-insert-language-pragma)
-           ("<f5>"    . haskell-compile)
-           ("<f8>"    . haskell-navigate-imports)))
-  :hook ((haskell-mode-hook . (interactive-haskell-mode
-                               haskell-doc-mode
-                               haskell-indentation-mode
-                               haskell-decl-scan-mode))
-         )
-  :config
-  ;; (leaf lsp-haskell
-  ;;   :doc "Haskell support for lsp-mode"
-  ;;   :req "emacs-24.3" "lsp-mode-3.0" "haskell-mode-16.1"
-  ;;   :tag "haskell" "emacs>=24.3"
-  ;;   :url "https://github.com/emacs-lsp/lsp-haskell"
-  ;;   :added "2023-02-10"
-  ;;   :emacs>= 24.3
-  ;;   :ensure t
-  ;;   ;; :disabled t
-  ;;   :custom ((lsp-haskell-server-path . "haskell-language-server-wrapper")
-  ;;            (lsp-haskell-completion-snippets-on . nil)
-  ;;            )
-  ;;   )
+  :bind ((haskell-mode-map
+          ("C-c C-z" . haskell-interactive-bring)
+          ("C-c C-l" . haskell-process-load-file)
+          ("C-c C-," . haskell-mode-format-imports)
+          ("C-c C-a" . haskell-command-insert-language-pragma)
+          ("<f5>"    . haskell-compile)
+          ("<f8>"    . haskell-navigate-imports)))
+  :preface
+  (defun haskell-interactive-repl-flycheck ()
+    "左ウィンドウにコード画面を残し、右ウィンドウを上下に分割してREPLとFlycheckを開く。"
+    (interactive)
+    (delete-other-windows)
+    ;; (flycheck-list-errors)
+    (haskell-process-load-file)
+    (haskell-interactive-switch)
+    (split-window-below)
+    (other-window 1)
+    (switch-to-buffer flycheck-error-list-buffer)
+    (other-window 1))
   )
 
 ;; (leaf lsp-mode
@@ -3278,6 +3271,34 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
     :hook (rust-mode . cargo-minor-mode)
     )
   )
+
+;; (leaf tree-sitter
+;;   :doc "Incremental parsing system"
+;;   :req "emacs-25.1" "tsc-0.18.0"
+;;   :tag "tree-sitter" "parsers" "tools" "languages" "emacs>=25.1"
+;;   :url "https://github.com/emacs-tree-sitter/elisp-tree-sitter"
+;;   :added "2025-03-02"
+;;   :emacs>= 25.1
+;;   :ensure t
+;;   :require t
+;;   ;; :disabled t
+;;   :hook (tree-sitter-after-on-hook . tree-sitter-hl-mode)
+;;   :config
+;;   (global-tree-sitter-mode)
+;;   (add-to-list 'tree-sitter-major-mode-language-alist '(haskell python))
+;;   (leaf treesit-auto
+;;     :doc "Automatically use tree-sitter enhanced major modes"
+;;     :req "emacs-29.0"
+;;     :tag "convenience" "fallback" "mode" "major" "automatic" "auto" "treesitter" "emacs>=29.0"
+;;     :url "https://github.com/renzmann/treesit-auto.git"
+;;     :added "2025-03-02"
+;;     :emacs>= 29.0
+;;     :ensure t
+;;     :custom ((treesit-auto-install . t))
+;;     ;; :config
+;;     ;; (global-treesit-auto-mode)
+;;     )
+;;   )
 
 (leaf web-mode
   :doc "major mode for editing web templates"
