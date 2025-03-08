@@ -1143,6 +1143,7 @@
   :added "2021-09-05"
   :emacs>= 25
   :ensure t
+  :disabled t
   ;; :require ein ein-notebook
   ;; :el-get millejoh/emacs-ipython-notebook
   :hook (
