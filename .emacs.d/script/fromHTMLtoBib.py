@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 8803a6e8 (fix setting file)
 #! python
 # -*- coding: utf-8 -*-
 
@@ -56,7 +59,7 @@ def makeBib(soup):
     fileName = reportID + ".pdf"
 
     makeKeywords = c(lambda ls: foldl1(lambda acc,x: f"{acc},{x}", ls),
-                     lambda ls: map(lambda x: re.sub("\n? *<[^>]+>\n? *", "", x.get_text()), ls))
+                     lambda ls: map(lambda x: x.get_text().replace(" ","").replace("\n", ""), ls))
 
     keywords = makeKeywords(ks) if (ks:=soup.find_all(class_="item-box box-05")) else \
                ""
@@ -94,6 +97,7 @@ def result(xs):
 print(c(result,
         makeBib,
         readSoup)(htmlFile))
+<<<<<<< HEAD
 =======
 #! python
 # -*- coding: utf-8 -*-
@@ -196,3 +200,5 @@ print(c(result,
         makeBib,
         readSoup)(htmlFile))
 >>>>>>> 24570f11 (fix コードを整理)
+=======
+>>>>>>> 8803a6e8 (fix setting file)

@@ -159,9 +159,15 @@
   :added "2021-09-18"
   :emacs>= 24
   :ensure t
+  :disabled t
   :global-minor-mode t
   :custom `((read-process-output-max . ,(* 64 1024 1024))
             (garbage-collection-messages           . t)))
+
+(leaf *gc-conc
+  :hook ((forcus-out-hook . garbage-collect))
+  :custom `((gc-conc-percentage . 0.2)
+            (gc-conc-threshold . ,(* 64 1024 1024))))
 
 (leaf async
     :doc "Asynchronous processing in Emacs"
@@ -272,7 +278,17 @@
             (eval-expression-print-length . nil)
             (eval-expression-print-level  . nil)
             (auto-revert-interval . 0.1)
-            (global-auto-revert-mode . t))
+            (global-auto-revert-mode . t)
+            (native-comp-async-repot-warning-errors . 'silent)
+            ;; パフォーマンスの向上
+            (process-adaptive-read-buffering . t)
+            (auto-mode-case-fold . nil)
+            (bidi-inhibit-bpa . t)
+            (fast-but-imprecise-scrolling . t)
+            (ffap-machine-at-point . 'reject)
+            (idle-update-delay . 1.0)
+            (redisplay-skip-fontification-on-input . t)
+            )
   :init
   (set-face-background 'region "#555")
   (run-with-idle-timer 60.0 t #'garbage-collect)
@@ -1099,6 +1115,7 @@
     (let ((script (concat user-emacs-directory "script/decodeBase64.py %s")))
       (shell-command (format
                       script
+<<<<<<< variant A
                       fileName))
       )
     )
@@ -1157,6 +1174,15 @@
           (load-file file))))
     :config
     (run-with-idle-timer 60 t 'my-save-frame-size))
+>>>>>>> variant B
+                      fileName))))
+  (defun get-full-path-interactive ()
+    "Prompt user to select a file and return its absolute path."
+    (interactive)
+    (let ((file (read-file-name "Select file: ")))
+      (kill-new file)
+      (message "Full path: %s" (expand-file-name file))))
+======= end
   )
 
 (leaf info
@@ -1719,6 +1745,9 @@
   :ensure t
   :defvar jupyter-repl-echo-eval-p
   :custom ((jupyter-repl-echo-eval-p . t))
+  :hook (jupyter-repl-interaction-mode-hook . (lambda ()
+                                                (setq-local completion-at-point-functions
+                                                            (remove 'jupyter-completion-at-point completion-at-point-functions))))
   ;; :config
   ;; (leaf zmq :ensure t)
   :preface
@@ -1856,7 +1885,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
            (eww-browse-with-external-link . t)
            (eww-disable-colorize . t))
   :bind (("C-c m"  . browse-url-with-eww)
-         (eww-mode-map
+         (:eww-mode-map
           ("f"     . ace-link-eww)
           ("s-l"   . eww-search-words)
           ("M"     . eww-open-in-new-buffer)
@@ -2169,15 +2198,11 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
             ("C-," . org-table-transpose-table-at-point))
            )
     :custom `((org-directory    . org-path)
-              (org-capture-templates . `(("t" "task"     entry (file+headline todoFile "todo") "** TODO %? \n" :empty-lines 1)
-                                         ("m" "memo"     entry (file          memoFile) "* %^t \n" :empty-lines 1)
-                                         ("g" "glossary" entry (file          glosFile) "** %? \n" :empty-lines 1)))
+              (org-capture-templates . `(("t" "task"     entry (file+headline todoFile "todo") "** TODO %? \n" :empty-lines 1)))
               (org-todo-keywords . '((sequence "TODO(t)" "SOMEDAY(s)" "WATTING(w)" "|" "DONE(d)" "CANCELED(c@)")))
               (org-enforce-todo-dependencies . t)
               (org-log-done . t)
               (org-image-actual-width . nil))
-    :config
-    (setq org-agenda-files (list todoFile))
     :preface
     (setq org-path (expand-file-name
                     (cond ((string= (system-name) "archlinux") "~/Dropbox/org/")
@@ -2210,6 +2235,45 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
         (when (file-exists-p figure-path)
           (insert (format "#+ATTR_ORG: :width 500\n[[file:%s]]" figure-path)))
         (org-display-inline-images)))
+    (defun org-delete-image-under-cursor ()
+      "カーソルの位置が画像のリンクにある場合、その画像ファイルを削除します。"
+      (interactive)
+      (let ((cursor-pos (point))
+            (image-path nil)
+            (in-image nil))
+        ;; 画像リンクの位置をチェック
+        (save-excursion
+          (beginning-of-line)
+          (while (re-search-forward org-link-any-re (line-end-position) t)
+            (let ((link-start (match-beginning 0))
+                  (link-end (match-end 0)))
+              ;; カーソル位置が画像リンク内にあるかを確認
+              (if (and (>= cursor-pos link-start) (< cursor-pos link-end))
+                  (setq in-image t
+                        image-path (match-string-no-properties 0)))))
+
+          (if in-image
+              (progn
+                ;; 画像リンクからパス部分だけを抽出
+                (setq image-path (replace-regexp-in-string "^\\[\\[file:" "" image-path))
+                (setq image-path (replace-regexp-in-string "\\]\\]$" "" image-path))
+                (if (and image-path (file-exists-p image-path))
+                    (progn
+                      ;; 画像ファイルを削除
+                      (delete-file image-path)
+                      (message "Deleted image file: %s" image-path)
+                      ;; (message image-path)
+                      )
+                  (message "No image file found at: %s" image-path)))
+            (message "No image under cursor.")))))
+
+    :config
+    (setq org-agenda-files (list todoFile))
+    ;; org-preview-latexの修正
+    (let ((png (cdr (assoc 'dvipng org-preview-latex-process-alist))))
+      (plist-put png :latex-compiler '("latex -interaction nonstopmode -output-directory %o %F"))
+      (plist-put png :image-converter '("dvipng -D %D -T tight -o %O %F"))
+      (plist-put png :transparent-image-converter '("dvipng -D %D -T tight -bg Transparent -o %O %F")))
 
     (leaf org-roam
       :doc "A database abstraction layer for Org-mode"
@@ -2223,6 +2287,15 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
       :custom ((org-roam-directory   . "~/.emacs.d/org-roam")
                (org-roam-db-location . "~/.emacs.d/org-roam/database.db")
                (org-roam-index-file  . "~/.emacs.d/org-roam/Index.org")
+               (org-roam-capture-templates . '(("p" "plain" plain "%?"
+                                                :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+                                                :unnarrowed t)
+                                               ("d" "Diary" plain "%?"
+                                                :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title:%<%Y%m%d>\n#+roam_tags: diary\n")
+                                                :unnarrowed t)
+                                               ("g" "Glossary" plain "%?"
+                                                :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+roam_tags: 用語")
+                                                :unnarrowed t)))
                )
       :bind (("C-c n f" . org-roam-node-find)
              ("C-c n i" . org-roam-node-insert)
@@ -2230,9 +2303,28 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
              ("C-c n t" . org-roam-buffer-toggle)
              ("C-c n a" . org-roam-alias-add)
              ("C-c n g" . org-roam-graph)
+             ("C-c n l" . org-roam-buffer-toggle)
              )
       :config
-      (org-roam-db-autosync-mode))
+      (org-roam-db-autosync-mode)
+      (leaf org-roam-ui
+        :doc "User Interface for Org-roam."
+        :req "emacs-27.1" "org-roam-2.0.0" "simple-httpd-20191103.1446" "websocket-1.13"
+        :tag "outlines" "files" "emacs>=27.1"
+        :url "https://github.com/org-roam/org-roam-ui"
+        :added "2025-02-18"
+        :emacs>= 27.1
+        :ensure t
+        :after org-roam websocket
+        :custom ((org-roam-ui-sync-theme . t)
+                 (org-roam-ui-follow . t)
+                 (org-roam-ui-update-on-save . t)
+                 (org-roam-ui-open-on-start . nil)))
+      )
+    (leaf *org-babel-settings
+      :custom ((org-src-fontify-natively . t)
+               org-confirm-babel-evaluate . nil)
+      )
     )
 
 (leaf paradox
@@ -2624,6 +2716,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
     :require t
     :disabled t
     ;; :after lsp-mode consult yatex
+    :disabled t
     :hook (yatex-mode-hook . lsp)
     :custom ((lsp-tex-server . 'texlab)
              (lsp-latex-forward-search-executable . "zathura")
@@ -2749,6 +2842,30 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :bind (("M-/" . dabbrev-completion)
          ("C-M-/" . dabbrev-expand))
   :custom (dabbrev-case-fold-search . nil))
+
+(leaf dape
+  :doc "Debug Adapter Protocol for Emacs"
+  :req "emacs-29.1" "jsonrpc-1.0.25"
+  :tag "emacs>=29.1"
+  :url "https://github.com/svaante/dape"
+  :added "2025-02-18"
+  :emacs>= 29.1
+  :ensure t
+  :after jsonrpc
+  :hook ((kill-emacs . dape-breakpoint-save))
+  :custom `((dape-buffer-window-arrangemnt . 'right)
+           (dape-inlay-hints . t)
+           (read-process-output-max . ,(* 1024 1024))
+           )
+  :bind (dape-mode-map
+         ("C-x C-a" . dape-global-map))
+  :config
+  (leaf repeat
+    :doc "convenient way to repeat the previous command"
+    :tag "builtin"
+    :added "2025-02-18"
+    :config (repeat-mode))
+  )
 
 (leaf ddskk
   :doc "Simple Kana to Kanji conversion program."
@@ -2897,36 +3014,36 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   (hydra-pinky
    (global-map "s-j p")
    "pinky"
-   ("n" next-line)
-   ("p" previous-line)
-   ("f" forward-char)
-   ("b" backward-char)
-   ("a" beginning-of-line)
-   ("e" move-end-of-line)
-   ("v" scroll-up-command)
-   ("V" scroll-down-command)
-   ("g" keyboard-quit)
-   ("j" next-line)
-   ("k" previous-line)
-   ("l" forward-char)
-   ("h" backward-char)
-   ("o" other-window)
-   ("r" avy-goto-word-1)
-   ("s" consult-line)
-   ("S" window-swap-states)
-   ("q" kill-buffer)
-   ("w" clipboard-kill-ring-save)
-   ("," beginning-of-buffer)
-   ("." end-of-buffer)
-   ("SPC" set-mark-command)
-   ("1" delete-other-windows)
-   ("2" split-window-below)
-   ("3" split-window-right)
-   ("0" delete-window)
-   ("x" delete-window)
-   (";" consult-buffer)
-   ("M-n" next-buffer)
-   ("M-p" previous-buffer))
+   ("n" next-line           "next-line")
+   ("p" previous-line       "prev-line")
+   ("f" forward-char        "forward-char")
+   ("b" backward-char       "backward-char")
+   ("a" beginning-of-line   "begining-line")
+   ("e" move-end-of-line    "end-line")
+   ("v" scroll-up-command   "scroll-up")
+   ("V" scroll-down-command "scroll-up")
+   ("g" keyboard-quit       "guit")
+   ("j" next-line           "next-line")
+   ("k" previous-line       "prev-line")
+   ("l" forward-char        "forward-char")
+   ("h" backward-char       "backward-char")
+   ("o" other-window        "other-window")
+   ("r" avy-goto-word-1     "goto-word")
+   ("s" consult-line        "consult-line")
+   ("S" window-swap-states  "window-swap")
+   ("q" kill-buffer         "kill-buffer")
+   ("w" clipboard-kill-ring-save "kill-ring-save")
+   ("," beginning-of-buffer      "biginning-buffer")
+   ("." end-of-buffer            "end-buffer")
+   ("SPC" set-mark-command       "set-mark")
+   ("1" delete-other-windows     "del-other-window")
+   ("2" split-window-below       "split-below")
+   ("3" split-window-right       "split-right")
+   ("0" delete-window            "del-window")
+   ("x" delete-window            "del-window")
+   (";" consult-buffer           "consult-buffer")
+   ("M-n" next-buffer            "next-buffer")
+   ("M-p" previous-buffer        "prev-buffer"))
   (hydra-zoom
    (global-map "<f2>")
    "zoom"
@@ -3013,6 +3130,36 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :require t
   )
 
+(leaf puni
+  :doc "Parentheses Universalistic"
+  :req "emacs-26.1"
+  :tag "tools" "lisp" "convenience" "emacs>=26.1"
+  :url "https://github.com/AmaiKinono/puni"
+  :added "2025-02-13"
+  :emacs>= 26.1
+  :ensure t
+  :global-minor-mode puni-global-mode
+  :bind (puni-mode-map
+         ;; default mapping
+         ;; ("C-M-f" . puni-forward-sexp)
+         ;; ("C-M-b" . puni-backward-sexp)
+         ;; ("C-M-a" . puni-beginning-of-sexp)
+         ;; ("C-M-e" . puni-end-of-sexp)
+         ;; ("M-)" . puni-syntactic-forward-punct)
+         ;; ("C-M-u" . backward-up-list)
+         ;; ("C-M-d" . backward-down-list)
+         ("C-)" . puni-slurp-forward)
+         ("C-}" . puni-barf-forward)
+         ("M-(" . puni-wrap-round)
+         ("M-s" . puni-splice)
+         ("M-r" . puni-raise)
+         ("M-U" . puni-splice-killing-backward)
+         ("M-z" . puni-squeeze))
+  :config
+  (leaf elec-pair
+    :doc "Automatic parenthesis pairing"
+    :global-minor-mode electric-pair-mode))
+
 (leaf rainbow-delimiters
   :doc "Highlight brackets according to their depth"
   :tag "tools" "lisp" "convenience" "faces"
@@ -3072,41 +3219,16 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   (sp-local-pair 'ein:ipynb-mode "'" "'")
   (sp-local-pair 'haskell-mode "`" "`"))
 
-(leaf puni
-  :doc "Parentheses Universalistic"
-  :req "emacs-26.1"
-  :tag "tools" "lisp" "convenience" "emacs>=26.1"
-  :url "https://github.com/AmaiKinono/puni"
-  :added "2025-02-13"
-  :emacs>= 26.1
-  :ensure t
-  :global-minor-mode puni-global-mode
-  :bind (puni-mode-map
-         ;; default mapping
-         ;; ("C-M-f" . puni-forward-sexp)
-         ;; ("C-M-b" . puni-backward-sexp)
-         ;; ("C-M-a" . puni-beginning-of-sexp)
-         ;; ("C-M-e" . puni-end-of-sexp)
-         ;; ("M-)" . puni-syntactic-forward-punct)
-         ;; ("C-M-u" . backward-up-list)
-         ;; ("C-M-d" . backward-down-list)
-         ("C-)" . puni-slurp-forward)
-         ("C-}" . puni-barf-forward)
-         ("M-(" . puni-wrap-round)
-         ("M-s" . puni-splice)
-         ("M-r" . puni-raise)
-         ("M-U" . puni-splice-killing-backward)
-         ("M-z" . puni-squeeze))
-  :config
-  (leaf elec-pair
-    :doc "Automatic parenthesis pairing"
-    :global-minor-mode electric-pair-mode))
-
 (leaf ssh
   :doc "Support for remote logins using ssh."
   :tag "comm" "unix"
   :added "2021-11-03"
   :ensure t)
+
+(leaf subword
+  :doc "Handling capitalized subwords in a nomenclature"
+  :tag "builtin"
+  :added "2025-03-06")
 
 (leaf sudo-edit
   :doc "Open files as another user"
@@ -3343,7 +3465,8 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
                                        (corfu-mode)))
          ;; (corfu-mode-hook . corfu-popupinfo-mode)
          )
-  :global-minor-mode global-corfu-mode
+  :global-minor-mode (global-corfu-mode
+                      corfu-popupinfo-mode)
   :hook ((minibuffer-setup-hook . my/corfu-enable-in-minibuffer)
          ((eshell-mode-hook
            ein:notebook-mode-hook) . (lambda ()
