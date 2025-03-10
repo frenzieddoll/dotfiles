@@ -2284,6 +2284,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
       :emacs>= 26.1
       :ensure t
       ;; :after org emacsql magit-section
+      :hook ((after-init-hook . org-roam-mode))
       :custom ((org-roam-directory   . "~/.emacs.d/org-roam")
                (org-roam-db-location . "~/.emacs.d/org-roam/database.db")
                (org-roam-index-file  . "~/.emacs.d/org-roam/Index.org")
@@ -2896,8 +2897,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
             (skk-isearch-start-mode             . 'latin)
             (skk-search-katakana                . t)
             ;; (skk-jisyo-code                     . 'utf-8)
-            (skk-jisyo-code . ,(lambda ()
-                                 (let* ((file-path "~/.emacs.d/ddskk/jisyo")
+            (skk-jisyo-code . ,(let* ((file-path "~/.emacs.d/ddskk/jisyo")
                                         (coding
                                          (with-temp-buffer
                                            (insert-file-contents file-path)
@@ -2905,10 +2905,10 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
                                         (jisyo-code
                                          (cl-case coding
                                            ("japanese-iso-8bit-unix" "ecu-jp")
-                                           (t "ecu-jp"))))
-                                   (print jisyo-code)
+                                           (t "utf-8"))))
+                                   (print coding)
                                    jisyo-code
-                                   )))
+                                   ))
             )
   :config
   (defun skk-hiragana-set nil
@@ -3856,7 +3856,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
 
   :config
   (add-to-list 'eglot-server-programs
-               '(yatex-mode . ("latexlab")))
+               '(yatex-mode . ("texlab")))
   (add-to-list 'eglot-server-programs
                '(haskell-mode . ("haskell-language-server-wrapper" "--lsp")))
   (leaf eglot-booster
