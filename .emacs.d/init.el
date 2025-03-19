@@ -615,24 +615,24 @@
 (leaf *eshell-tools
   :bind (("C-c e" . eshell))
   :defvar (eshell-command-aliases-list)
-  :config
-  (setq eshell-command-aliases-list '(("ll" . "ls -ltrh")
-                                      ("la" . "ls -a")
-                                      ("lla" "ls -ltrha")
-                                      ("o" . "xdg-open")
-                                      ("emacs" . "find-file $1")
-                                      ("m" . "find-file $1")
-                                      ("mc" . "find-file $1")
-                                      ("d" . "dired .")
-                                      ("l" . "eshell/less $1")
-                                      ("dd" . "dd status=progress")
-                                      ("pacmandate" . "expac --timefmt='%Y-%m-%d %T' '%l\t%n' | sort | tail -n $1")
-                                      ("usbmount" "sudo mount -t vfat $1 $2 -o rw,umask=000")
-                                      ("open" . "cmd.exe /c start {wslpath -w $*}")
-                                      ("gdrive" . "sudo mount -t drvfs G: /mnt/googleDrive/")
-                                      ("reflectorjp" . "sudo reflector --country \"Japan\" --age 24 --protocol https --sort rate --save /etc/pacman.d/mirrorlist")
-                                      ))
+  :setq
+  (eshell-command-aliases-list . '(("ll" . "ls -ltrh")
+                                   ("la" . "ls -a")
+                                   ("lla" "ls -ltrha")
+                                   ("o" . "xdg-open")
+                                   ("emacs" . "find-file $1")
+                                   ("m" . "find-file $1")
+                                   ("mc" . "find-file $1")
+                                   ("d" . "dired .")
+                                   ("l" . "eshell/less $1")
+                                   ("dd" . "dd status=progress")
+                                   ("pacmandate" . "expac --timefmt='%Y-%m-%d %T' '%l\t%n' | sort | tail -n $1")
+                                   ("usbmount" "sudo mount -t vfat $1 $2 -o rw,umask=000")
+                                   ("open" . "cmd.exe /c start {wslpath -w $*}")
+                                   ("gdrive" . "sudo mount -t drvfs G: /mnt/googleDrive/")
+                                   ("reflectorjp" . "sudo reflector --country \"Japan\" --age 24 --protocol https --sort rate --save /etc/pacman.d/mirrorlist")))
 
+  :config
   (setenv "GIT_PAGER" "")
   :init
   (leaf eshell-prompt-extras
@@ -653,7 +653,7 @@
      :unless (eq system-type 'windows)
      :after esh-module
      :config (setq eshell-modules-list (delq 'eshell-unix eshell-modules-list))
-   )
+     )
   (leaf eshell-vterm
      :doc "Vterm for visual commands in eshell"
      :req "emacs-27.1" "vterm-0.0.1"
@@ -1140,6 +1140,7 @@
   :added "2021-09-05"
   :emacs>= 25
   :ensure t
+  :disabled t
   ;; :require ein ein-notebook
   ;; :el-get millejoh/emacs-ipython-notebook
   :hook (
@@ -1461,30 +1462,21 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
     :doc "Export Framework for Org Mode"
     :tag "builtin"
     :added "2021-09-05"
+    :defun expand-org-path
     :bind (("C-c a" . org-agenda)
            ("C-c c" . org-capture)
            (org-mode-map
             ("C-M-y" . org-insert-clipboard-image)
             ("C-," . org-table-transpose-table-at-point))
            )
-    :custom `((org-directory    . org-path)
-              (org-capture-templates . `(("t" "task"     entry (file+headline todoFile "todo") "** TODO %? \n" :empty-lines 1)
-                                         ("m" "memo"     entry (file          memoFile) "* %^t \n" :empty-lines 1)
-                                         ("g" "glossary" entry (file          glosFile) "** %? \n" :empty-lines 1)))
+    :custom `((org-directory . ,(concat user-emacs-directory "org/"))
+              (org-capture-templates . `(("t" "task"     entry (file+headline "todo.org" "todo") "** TODO %? \n" :empty-lines 1)
+                                         ("m" "memo"     entry (file          "memo.org") "* %^t \n" :empty-lines 1)))
               (org-todo-keywords . '((sequence "TODO(t)" "SOMEDAY(s)" "WATTING(w)" "|" "DONE(d)" "CANCELED(c@)")))
               (org-enforce-todo-dependencies . t)
               (org-log-done . t)
               (org-image-actual-width . nil))
-    :config
-    (setq org-agenda-files (list todoFile))
     :preface
-    (setq org-path (expand-file-name
-                    (cond ((string= (system-name) "archlinux") "~/Dropbox/org/")
-                          (t "~/.emacs.d/org/"))))
-    (defun concat-org-path (str) (concat org-path str))
-    (setq todoFile (concat-org-path "todo.org"))
-    (setq memoFile (concat-org-path "memo.org"))
-    (setq glosFile (concat-org-path "glossary.org"))
     (defun org-insert-clipboard-image ()
       (interactive)
       (let* (
@@ -1509,30 +1501,31 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
         (when (file-exists-p figure-path)
           (insert (format "#+ATTR_ORG: :width 500\n[[file:%s]]" figure-path)))
         (org-display-inline-images)))
-
-    (leaf org-roam
-      :doc "A database abstraction layer for Org-mode"
-      :req "emacs-26.1" "dash-2.13" "org-9.4" "emacsql-4.0.0" "magit-section-3.0.0"
-      :tag "convenience" "roam" "org-mode" "emacs>=26.1"
-      :url "https://github.com/org-roam/org-roam"
-      :added "2025-02-07"
-      :emacs>= 26.1
-      :ensure t
-      ;; :after org emacsql magit-section
-      :custom ((org-roam-directory   . "~/.emacs.d/org-roam")
-               (org-roam-db-location . "~/.emacs.d/org-roam/database.db")
-               (org-roam-index-file  . "~/.emacs.d/org-roam/Index.org")
-               )
-      :bind (("C-c n f" . org-roam-node-find)
-             ("C-c n i" . org-roam-node-insert)
-             ("C-c n c" . org-roam-capture)
-             ("C-c n t" . org-roam-buffer-toggle)
-             ("C-c n a" . org-roam-alias-add)
-             ("C-c n g" . org-roam-graph)
-             )
-      :config
-      (org-roam-db-autosync-mode))
     )
+
+(leaf org-roam
+  :doc "A database abstraction layer for Org-mode"
+  :req "emacs-26.1" "dash-2.13" "org-9.4" "emacsql-4.0.0" "magit-section-3.0.0"
+  :tag "convenience" "roam" "org-mode" "emacs>=26.1"
+  :url "https://github.com/org-roam/org-roam"
+  :added "2025-02-07"
+  :emacs>= 26.1
+  :ensure t
+  ;; :after org emacsql magit-section
+  :custom ((org-roam-directory   . "~/.emacs.d/org-roam")
+           (org-roam-db-location . "~/.emacs.d/org-roam/database.db")
+           (org-roam-index-file  . "~/.emacs.d/org-roam/Index.org")
+           )
+  :bind (("C-c n f" . org-roam-node-find)
+         ("C-c n i" . org-roam-node-insert)
+         ("C-c n c" . org-roam-capture)
+         ("C-c n t" . org-roam-buffer-toggle)
+         ("C-c n a" . org-roam-alias-add)
+         ("C-c n g" . org-roam-graph)
+         )
+  :config
+  (org-roam-db-autosync-mode)
+  )
 
 ;; (leaf paradox
 ;;   :doc "A modern Packages Menu. Colored, with package ratings, and customizable."
@@ -2111,10 +2104,10 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   (defun my/always-enable-skk-latin-mode-hook ()
     (skk-latin-mode 1))
 
-  (when
-      (and (eq system-type 'gnu/linux)
-           (string-match "microsoft" (shell-command-to-string "uname -r")))
-      (setq skk-jisyo-code 'utf-8))
+  ;; (when
+  ;;     (and (eq system-type 'gnu/linux)
+  ;;          (string-match "microsoft" (shell-command-to-string "uname -r")))
+  ;;     (setq skk-jisyo-code 'utf-8))
   )
 
 ;; (leaf etv
@@ -2252,8 +2245,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :hook ((calendar-today-visible-hook   . japanese-holiday-mark-weekend)
          (calendar-today-invisible-hook . japanese-holiday-mark-weekend)
          (calendar-today-visible-hook   . calendar-mark-today))
-  :custom ((calendar-mark-holidays-flag     . t)
-           (japanese-holiday-weekend        . '(0 6))
+  :custom ((japanese-holiday-weekend        . '(0 6))
            (japanese-holiday-weekend-marker . '(holiday nil nil nil nil nil japanese-holiday-saturday))
            (org-agenda-include-diary        . t)
            (calendar-day-header-array       . ["日" "月" "火" "水" "木" "金" "土"])
@@ -2263,6 +2255,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
                                       'font-lock-face 'calendar-month-header))
            ;; (calendar-holidays . nil)
            `(calendar-holidays . ,(append japanese-holidays holiday-local-holidays holiday-other-holidays))
+           (calendar-mark-holidays-flag . t)
            )
   ;; :config
   ;; (setq calendar-holidays (append japanese-holidays holiday-local-holidays holiday-other-holidays))
@@ -3227,11 +3220,12 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
           ("M-j" . lsp-ui-imenu)
           ("M-?" . lsp-find-references)
           ("C-c C-c l" . flycheck-list-errors)
-          ("C-c C-c a" . lsp-execute-code-action)
-          ("C-c C-c r" . lsp-rename)
-          ("C-c C-c q" . lsp-workspace-restart)
-          ("C-c C-c Q" . lsp-workspace-shutdown)
-          ("C-c C-c s" . lsp-rust-analyzer-status)))
+          ;; ("C-c C-c a" . lsp-execute-code-action)
+          ;; ("C-c C-c r" . lsp-rename)
+          ;; ("C-c C-c q" . lsp-workspace-restart)
+          ;; ("C-c C-c Q" . lsp-workspace-shutdown)
+          ;; ("C-c C-c s" . lsp-rust-analyzer-status)
+          ))
   :config
   (leaf cargo
     :doc "Emacs Minor Mode for Cargo, Rust's Package Manager."
