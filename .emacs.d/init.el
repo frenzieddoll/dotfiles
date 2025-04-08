@@ -1750,6 +1750,9 @@
                                                             (remove 'jupyter-completion-at-point completion-at-point-functions))))
   ;; :config
   ;; (leaf zmq :ensure t)
+  :bind (:python-mode-map
+         ("C-c s" . my-split-python-and-jupyter)
+         )
   :preface
   (defun my-image-save ()
   "Save the image under point to the '.fig' directory with a timestamp filename.
@@ -2627,7 +2630,8 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
             (tex-command                  . "lualatex -synctex=1")
             ;; (tex-command  . "ptex2pdf -u -l -ot '-synctex=1 -file-line-error'")
             ;; (tex-command  . "ptex2pdf -l -ot '-synctex=1")
-            (bibtex-command               . "upbibtex")
+            ;; (bibtex-command               . "upbibtex")
+            (bibtex-command               . "biber")
             ;; (makeindex-command  . "mendex")
             (dviprint-command-format      . "open -a \"Adobe Acrobat Reader DC\" `echo %s | gsed -e \"s/\\.[^.]*$/\\.pdf/\"`")
             (YaTeX-nervous                . nil)
@@ -3839,9 +3843,9 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   ;; :custom `((read-process-output-max       . ,(* 1024 1024))
   ;;           (completion-category-overrides . '((eglot (styles orderless))))
   ;;           )
-  ;; :bind (eglot-mode-map
-  ;;        ("C-c C-s" . eglot-code-actions)
-  ;;        )
+  :bind (eglot-mode-map
+         ("C-c s" . eglot-code-actions)
+         )
   :preface
   (defun my/eglot-capf ()
     (interactive)
