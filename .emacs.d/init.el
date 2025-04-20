@@ -2950,9 +2950,9 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   ;; :custom `((read-process-output-max       . ,(* 1024 1024))
   ;;           (completion-category-overrides . '((eglot (styles orderless))))
   ;;           )
-  :bind (eglot-mode-map
-         ("C-c C-s" . eglot-code-actions)
-         )
+  ;; :bind (eglot-mode-map
+  ;;        ("C-c C-s" . eglot-code-actions)
+  ;;        )
   :preface
   (defun my/eglot-capf ()
     (interactive)
