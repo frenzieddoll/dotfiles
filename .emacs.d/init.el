@@ -2806,13 +2806,14 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :after orderless
   ;; :disabled t
   )
+
 (leaf calfw
   :doc "Calendar view framework on Emacs"
   :tag "calendar"
   :url "https://github.com/kiwanami/emacs-calfw"
   :added "2021-09-05"
   :ensure t
-  :disabled t
+  ;; :disabled t
   :config
   (leaf calfw-org
     :doc "calendar view for org-agenda"
@@ -2826,12 +2827,23 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
     :added "2021-09-05"
     :ensure t
     :require t
-    :config
-    (load "calfw_functions" t)
-    (add-hook 'calendar-load-hook (lambda ()
-                                    (require 'japanese-holidays)
-                                    (setq calendar-holidays
-                                          (append japanese-holidays))))))
+    )
+  (defun my-open-calendar ()
+    (interactive)
+    (let* ((org-src (cfw:org-create-source "Seagreen4"))
+           (icls-src-dir "/home/toshiaki/Documents/calendar/")
+           (get-files (lambda (directory) (seq-filter #'file-regular-p (directory-files directory t "\\`[^.]"))))
+           (file-paths (funcall get-files icls-src-dir))
+           (to-name (lambda (path) (file-name-sans-extension (file-name-nondirectory path))))
+           (to-icls-src  (lambda (path) (cfw:ical-create-source (funcall to-name path) path "Pink" )))
+           (icls-srcs (mapcar to-icls-src file-paths))
+           )
+      (cfw:open-calendar-buffer
+       :view 'month
+       :contents-sources
+       (cons org-src icls-srcs)))
+    )
+  )
 
 (leaf *cua
   :bind (("C-x SPC" . cua-set-rectangle-mark)
@@ -3081,31 +3093,19 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
            (calendar-month-header . '(propertize
                                       (format "%d年 %s月" year month)
                                       'font-lock-face 'calendar-month-header))
-           ;; (calendar-holidays . nil)
-           `(calendar-holidays . ,(append japanese-holidays holiday-local-holidays holiday-other-holidays))
-           (calendar-mark-holidays-flag . t)
+           ;; (calendar-holidays . ,(append japanese-holidays holiday-local-holidays holiday-other-holidays))
            )
-  ;; :config
-  ;; (setq calendar-holidays (append japanese-holidays holiday-local-holidays holiday-other-holidays))
+  ;; :setq
+  ;; `((calendar-holidays . ,(append japanese-holidays holiday-local-holidays holiday-other-holidays)))
+  :config
+  (setq calendar-holidays (append japanese-holidays holiday-local-holidays holiday-other-holidays))
   )
-
 ;; (leaf online-judge
 ;;   :when (executable-find "oj")
 ;;   :vc (:url :url "https://github.com/ROCKTAKEY/emacs-online-judge")
 ;;   :require t
 ;;   :custom ((online-judge-directories . '("~/Dropbox/atcoder/"))
 ;;            (online-judge-command-name . nil)))
-
-(leaf oj
-  :doc "Competitive programming tools client for AtCoder, Codeforces"
-  :req "emacs-26.1" "quickrun-2.2"
-  :tag "convenience" "emacs>=26.1"
-  :url "https://github.com/conao3/oj.el"
-  :added "2025-03-23"
-  :emacs>= 26.1
-  :ensure t
-  :after quickrun
-  :custom ((oj-defalut-online-judge . 'atcoder)))
 
 
 
