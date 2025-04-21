@@ -1489,8 +1489,8 @@
                                   arg))
            (split-threshold (convert-to-number-with-prefix split-threshold-str))
            ;; (split-threshold (* 10 1000 1000))
-           (pubkye (select-pubkey))
-           (gpg-command (format "gpg --encrypt --recipient %s --output %s %s" pubkye file-name-gpg file-name))
+           (pubkey (select-pubkey))
+           (gpg-command (format "gpg --encrypt --recipient %s --output %s %s" pubkey file-name-gpg file-name))
            (split-command (format "split -b %s -d %s %s.part." split-threshold-str file-name-gpg file-name-gpg))
            ;; (commands '("gpg --encrypt --recipient frenzieddoll@gmail.com --output %s.gpg %s"
            ;;             "split -b 10M -d %s.gpg %s.gpg.part."))
