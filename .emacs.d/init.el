@@ -300,6 +300,7 @@
 )
 
 (leaf *fontSetting
+  :disabled t
   :config
   (set-face-attribute 'default nil
                           :family "HackGen"
@@ -330,7 +331,7 @@
       :config
       (set-face-attribute 'default nil
                           :family "HackGen"
-                          :height 130)
+                          :height 140)
       (set-fontset-font t 'japanese-jisx0208 (font-spec :family "HackGen")))
     (leaf *HP_wsl
       :when (string= (system-name) "JPC20627141")
@@ -360,6 +361,32 @@
                       'japanese-jisx0208
                       (font-spec :family "HackGen"
                                  :height 150)))
+  )
+
+(leaf *fontSetting
+  :config
+  (set-font-size)
+  :preface
+  (defun set-font-size ()
+    (interactive)
+    (let* ((HD   (* 1280 720))
+           (FHD  (* 1920 1080))
+           (WFHD (* 2560 1440))
+           (QFHD (* 3840 2160))
+           (res (* (x-display-pixel-width) (x-display-pixel-height)))
+           (size (cond ((>= res QFHD) 150)
+                       ((>= res WFHD) 140)
+                       ((>= res  FHD) 130)
+                       ((>= res   HD) 120)))
+           )
+      (set-face-attribute 'default nil
+                          :family "HackGen"
+                          :height size)
+      (set-fontset-font t
+                        'japanese-jisx0208
+                        (font-spec :family "HackGen"))
+      (message (format "Set font height: %s" size)))
+    )
   )
 
 (leaf dired
