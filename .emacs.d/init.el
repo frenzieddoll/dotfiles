@@ -1752,7 +1752,14 @@
   ;; (leaf zmq :ensure t)
   :bind (:python-mode-map
          ("C-c s" . my-split-python-and-jupyter)
+         ;; :jupyter-org-interaction-mode-map
+         ;; ("C-c h" . nil)
+         ;; ("C-c j" . jupyter-org-hydra/body)
          )
+  :config
+  (with-eval-after-load 'jupyter-org-client
+    (define-key jupyter-org-interaction-mode-map (kbd "C-c h") nil))
+
   :preface
   (defun my-image-save ()
   "Save the image under point to the '.fig' directory with a timestamp filename.
@@ -2327,8 +2334,26 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
       )
     (leaf *org-babel-settings
       :custom ((org-src-fontify-natively . t)
-               org-confirm-babel-evaluate . nil)
+               (org-confirm-babel-evaluate . nil))
+      :config
+      (org-babel-do-load-languages
+       'org-babel-load-languages
+       '((emacs-lisp . t)
+         (dot . t)
+         (julia . t)
+         (python . t)
+         (jupyter . t)))
+      (defun load-org-babel-jupyter ()
+        (interactive)
+        (org-babel-jupyter-aliases-from-kernelspecs)
+        )
       )
+    (leaf org-flyimage
+      :doc "orgの画像を再読み込みするパッケージ"
+      :vc (:url "https://github.com/misohena/org-inline-image-fix.git")
+      :require 'org-datauri-image
+    )
+
     )
 
 (leaf paradox
