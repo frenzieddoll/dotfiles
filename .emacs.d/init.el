@@ -2132,268 +2132,173 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
 ;;   )
 
 (leaf org
-    :doc "Export Framework for Org Mode"
-    :tag "builtin"
-    :added "2021-09-05"
-    :defun expand-org-path
-    :bind (("C-c a" . org-agenda)
-           ("C-c c" . org-capture)
-           (org-mode-map
-            ("C-M-y" . org-insert-clipboard-image)
-            ("C-," . org-table-transpose-table-at-point))
-           )
-    :custom `((org-directory . ,(concat user-emacs-directory "org/"))
-              (org-capture-templates . `(("t" "task"     entry (file+headline "todo.org" "todo") "** TODO %? \n" :empty-lines 1)
-                                         ("m" "memo"     entry (file          "memo.org") "* %^t \n" :empty-lines 1)))
-              (org-todo-keywords . '((sequence "TODO(t)" "SOMEDAY(s)" "WATTING(w)" "|" "DONE(d)" "CANCELED(c@)")))
-              (org-enforce-todo-dependencies . t)
-              (org-log-done . t)
-              (org-image-actual-width . nil))
-    :preface
-    (defun org-insert-clipboard-image ()
-      (interactive)
-      (let* (
-             (buf-name (file-name-sans-extension (file-name-nondirectory buffer-file-name)))
-             (figures-dir (format "./%s_figures/" buf-name))
-             (figure-name (format "%s%s_%s.png" figures-dir buf-name (format-time-string "%Y%m%d%H%M%S")))
-             (figure-path (expand-file-name figure-name))
-             (path "$HOME/Documentswin/script/import.ps1")
-             (path-win (shell-command-to-string (format "wslpath -w \"%s\"" path)))
-             (path-wsl (replace-regexp-in-string
-                        "\\wsl" "\\\\wsl"
-                        path-win))
-             (script (replace-regexp-in-string
-                      "\n" "" path-win))
-             ;; powershellのスクリプトはwslのパスを認識できないので相対パスfigure-nameを引数とする
-             (call-string (format "powershell.exe -ExecutionPolicy RemoteSigned -windowstyle hidden -File \"%s\" -FileName %s" script figure-name))
-             )
-
-        (unless (file-directory-p figures-dir)
-          (make-directory figures-dir))
-        (call-process "powershell.exe" nil nil nil call-string)
-        (when (file-exists-p figure-path)
-          (insert (format "#+ATTR_ORG: :width 500\n[[file:%s]]" figure-path)))
-        (org-display-inline-images)))
-    )
-(leaf *org-eldoc
-  :hook ((org-mode-hook . eldoc-mode))
-  :config
-  (defadvice org-eldoc-documentation-function (around add-field-info activate)
-    (or
-     (ignore-errors (and (not (org-at-table-hline-p)) (org-table-field-info nil)))
-     ad-do-it))
-  (eldoc-add-command-completions "org-table-next-" "org-table-previous", "org-cycle")
-  )
-(leaf org-roam
-  :doc "A database abstraction layer for Org-mode"
-  :req "emacs-26.1" "dash-2.13" "org-9.4" "emacsql-4.0.0" "magit-section-3.0.0"
-  :tag "convenience" "roam" "org-mode" "emacs>=26.1"
-  :url "https://github.com/org-roam/org-roam"
-  :added "2025-02-07"
-  :emacs>= 26.1
-  :ensure t
-  ;; :after org emacsql magit-section
-  :custom ((org-roam-directory   . "~/.emacs.d/org-roam")
-           (org-roam-db-location . "~/.emacs.d/org-roam/database.db")
-           (org-roam-index-file  . "~/.emacs.d/org-roam/Index.org")
-           )
-  :bind (("C-c n f" . org-roam-node-find)
-         ("C-c n i" . org-roam-node-insert)
-         ("C-c n c" . org-roam-capture)
-         ("C-c n t" . org-roam-buffer-toggle)
-         ("C-c n a" . org-roam-alias-add)
-         ("C-c n g" . org-roam-graph)
-         )
-  :config
-  (org-roam-db-autosync-mode)
-  )
-
-(leaf *org
   :doc "Export Framework for Org Mode"
   :tag "builtin"
   :added "2021-09-05"
-  :disabled t
-  :custom ((org-agenda-files . '("~/Dropbox/org/todo.org"))
-           (org-directory . "~/Dropbox/org"))
+  :defun expand-org-path
   :bind (("C-c a" . org-agenda)
-         ("C-c c" . org-capture))
-  :custom `((org-capture-templates . '(("n" "Note" entry (file+headline "~/Dropbox/org/notes.org" "Notes") "* %?\nEntered on %U\n %i\n %a")
-                                       ("t" "Todo" entry (file+headline "~/Dropbox/org/todo.org"  "Todo")  "* TODO %?\n %i\n %a")))
+         ("C-c c" . org-capture)
+         (org-mode-map
+          ("C-M-y" . org-insert-clipboard-image)
+          ("C-," . org-table-transpose-table-at-point)
+          ("C-c h" . nil))
+         )
+  :custom `((org-directory . ,(concat user-emacs-directory "org/"))
+            (org-capture-templates . `(("t" "todo"     entry (file+headline "todo.org" "todo") "* TODO %? \n" :empty-lines 1)
+                                       ("m" "memo"     entry (file          "memo.org") "* %^t \n" :empty-lines 1)))
             (org-todo-keywords . '((sequence "TODO(t)" "SOMEDAY(s)" "WATTING(w)" "|" "DONE(d)" "CANCELED(c@)")))
             (org-enforce-todo-dependencies . t)
-            (org-log-done . t))
-  )
-
-(leaf org
-    :doc "Export Framework for Org Mode"
-    :tag "builtin"
-    :added "2021-09-05"
-    :bind (("C-c a" . org-agenda)
-           ("C-c c" . org-capture)
-           (org-mode-map
-            ("C-M-y" . org-insert-clipboard-image)
-            ("C-," . org-table-transpose-table-at-point))
+            (org-log-done . t)
+            (org-image-actual-width . nil))
+  :preface
+  (defun org-insert-clipboard-image ()
+    (interactive)
+    (let* (
+           (buf-name (file-name-sans-extension (file-name-nondirectory buffer-file-name)))
+           (figures-dir (format "./%s_figures/" buf-name))
+           (figure-name (format "%s%s_%s.png" figures-dir buf-name (format-time-string "%Y%m%d%H%M%S")))
+           (figure-path (expand-file-name figure-name))
+           (path "$HOME/Documentswin/script/import.ps1")
+           (path-win (shell-command-to-string (format "wslpath -w \"%s\"" path)))
+           (path-wsl (replace-regexp-in-string
+                      "\\wsl" "\\\\wsl"
+                      path-win))
+           (script (replace-regexp-in-string
+                    "\n" "" path-win))
+           ;; powershellのスクリプトはwslのパスを認識できないので相対パスfigure-nameを引数とする
+           (call-string (format "powershell.exe -ExecutionPolicy RemoteSigned -windowstyle hidden -File \"%s\" -FileName %s" script figure-name))
            )
-    :custom `((org-directory    . org-path)
-              (org-capture-templates . `(("t" "task"     entry (file+headline todoFile "todo") "** TODO %? \n" :empty-lines 1)))
-              (org-todo-keywords . '((sequence "TODO(t)" "SOMEDAY(s)" "WATTING(w)" "|" "DONE(d)" "CANCELED(c@)")))
-              (org-enforce-todo-dependencies . t)
-              (org-log-done . t)
-              (org-image-actual-width . nil))
-    :preface
-    (setq org-path (expand-file-name
-                    (cond ((string= (system-name) "archlinux") "~/Dropbox/org/")
-                          (t "~/.emacs.d/org/"))))
-    (defun concat-org-path (str) (concat org-path str))
-    (setq todoFile (concat-org-path "todo.org"))
-    (setq memoFile (concat-org-path "memo.org"))
-    (setq glosFile (concat-org-path "glossary.org"))
-    (defun org-insert-clipboard-image ()
-      (interactive)
-      (let* (
-             (buf-name (file-name-sans-extension (file-name-nondirectory buffer-file-name)))
-             (figures-dir (format "./%s_figures/" buf-name))
-             (figure-name (format "%s%s_%s.png" figures-dir buf-name (format-time-string "%Y%m%d%H%M%S")))
-             (figure-path (expand-file-name figure-name))
-             (path "$HOME/Documentswin/script/import.ps1")
-             (path-win (shell-command-to-string (format "wslpath -w \"%s\"" path)))
-             (path-wsl (replace-regexp-in-string
-                        "\\wsl" "\\\\wsl"
-                        path-win))
-             (script (replace-regexp-in-string
-                      "\n" "" path-win))
-             ;; powershellのスクリプトはwslのパスを認識できないので相対パスfigure-nameを引数とする
-             (call-string (format "powershell.exe -ExecutionPolicy RemoteSigned -windowstyle hidden -File \"%s\" -FileName %s" script figure-name))
+
+      (unless (file-directory-p figures-dir)
+        (make-directory figures-dir))
+      (call-process "powershell.exe" nil nil nil call-string)
+      (when (file-exists-p figure-path)
+        (insert (format "#+ATTR_ORG: :width 500\n[[file:%s]]" figure-path)))
+      (org-display-inline-images)))
+  (defun org-delete-image-under-cursor ()
+    "カーソルの位置が画像のリンクにある場合、その画像ファイルを削除します。"
+    (interactive)
+    (let ((cursor-pos (point))
+          (image-path nil)
+          (in-image nil))
+      ;; 画像リンクの位置をチェック
+      (save-excursion
+        (beginning-of-line)
+        (while (re-search-forward org-link-any-re (line-end-position) t)
+          (let ((link-start (match-beginning 0))
+                (link-end (match-end 0)))
+            ;; カーソル位置が画像リンク内にあるかを確認
+            (if (and (>= cursor-pos link-start) (< cursor-pos link-end))
+                (setq in-image t
+                      image-path (match-string-no-properties 0)))))
+
+        (if in-image
+            (progn
+              ;; 画像リンクからパス部分だけを抽出
+              (setq image-path (replace-regexp-in-string "^\\[\\[file:" "" image-path))
+              (setq image-path (replace-regexp-in-string "\\]\\]$" "" image-path))
+              (if (and image-path (file-exists-p image-path))
+                  (progn
+                    ;; 画像ファイルを削除
+                    (delete-file image-path)
+                    (message "Deleted image file: %s" image-path)
+                    ;; (message image-path)
+                    )
+                (message "No image file found at: %s" image-path)))
+          (message "No image under cursor.")))))
+  ;; (defun org-agenda-files-update ()
+  ;;   (interactive)
+  ;;   (setq org-agenda-files (directory-files-recursively (concat user-emacs-directory "org") "\\.org$"))
+  ;;   )
+  :config
+  (setq org-agenda-files (directory-files-recursively (concat user-emacs-directory "org") "\\.org$"))
+
+  ;; org-preview-latexの修正
+  (let ((png (cdr (assoc 'dvipng org-preview-latex-process-alist))))
+    (plist-put png :latex-compiler '("latex -interaction nonstopmode -output-directory %o %F"))
+    (plist-put png :image-converter '("dvipng -D %D -T tight -o %O %F"))
+    (plist-put png :transparent-image-converter '("dvipng -D %D -T tight -bg Transparent -o %O %F")))
+
+  (leaf org-roam
+    :doc "A database abstraction layer for Org-mode"
+    :req "emacs-26.1" "dash-2.13" "org-9.4" "emacsql-4.0.0" "magit-section-3.0.0"
+    :tag "convenience" "roam" "org-mode" "emacs>=26.1"
+    :url "https://github.com/org-roam/org-roam"
+    :added "2025-02-07"
+    :emacs>= 26.1
+    :ensure t
+    ;; :after org emacsql magit-section
+    :custom ((org-roam-directory   . "~/.emacs.d/org-roam")
+             (org-roam-db-location . "~/.emacs.d/org-roam/database.db")
+             (org-roam-index-file  . "~/.emacs.d/org-roam/Index.org")
+             (org-roam-capture-templates . '(("p" "plain" plain "%?"
+                                              :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+                                              :unnarrowed t)
+                                             ("d" "Diary" plain "%?"
+                                              :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title:%<%Y%m%d>\n#+roam_tags: diary\n")
+                                              :unnarrowed t)
+                                             ("g" "Glossary" plain "%?"
+                                              :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+roam_tags: 用語")
+                                              :unnarrowed t)))
              )
-
-        (unless (file-directory-p figures-dir)
-          (make-directory figures-dir))
-        (call-process "powershell.exe" nil nil nil call-string)
-        (when (file-exists-p figure-path)
-          (insert (format "#+ATTR_ORG: :width 500\n[[file:%s]]" figure-path)))
-        (org-display-inline-images)))
-    (defun org-delete-image-under-cursor ()
-      "カーソルの位置が画像のリンクにある場合、その画像ファイルを削除します。"
-      (interactive)
-      (let ((cursor-pos (point))
-            (image-path nil)
-            (in-image nil))
-        ;; 画像リンクの位置をチェック
-        (save-excursion
-          (beginning-of-line)
-          (while (re-search-forward org-link-any-re (line-end-position) t)
-            (let ((link-start (match-beginning 0))
-                  (link-end (match-end 0)))
-              ;; カーソル位置が画像リンク内にあるかを確認
-              (if (and (>= cursor-pos link-start) (< cursor-pos link-end))
-                  (setq in-image t
-                        image-path (match-string-no-properties 0)))))
-
-          (if in-image
-              (progn
-                ;; 画像リンクからパス部分だけを抽出
-                (setq image-path (replace-regexp-in-string "^\\[\\[file:" "" image-path))
-                (setq image-path (replace-regexp-in-string "\\]\\]$" "" image-path))
-                (if (and image-path (file-exists-p image-path))
-                    (progn
-                      ;; 画像ファイルを削除
-                      (delete-file image-path)
-                      (message "Deleted image file: %s" image-path)
-                      ;; (message image-path)
-                      )
-                  (message "No image file found at: %s" image-path)))
-            (message "No image under cursor.")))))
-
+    :bind (("C-c n f" . org-roam-node-find)
+           ("C-c n i" . org-roam-node-insert)
+           ("C-c n c" . org-roam-capture)
+           ("C-c n t" . org-roam-buffer-toggle)
+           ("C-c n a" . org-roam-alias-add)
+           ("C-c n g" . org-roam-graph)
+           ("C-c n l" . org-roam-buffer-toggle)
+           )
     :config
-    (setq org-agenda-files (list todoFile))
-    ;; org-preview-latexの修正
-    (let ((png (cdr (assoc 'dvipng org-preview-latex-process-alist))))
-      (plist-put png :latex-compiler '("latex -interaction nonstopmode -output-directory %o %F"))
-      (plist-put png :image-converter '("dvipng -D %D -T tight -o %O %F"))
-      (plist-put png :transparent-image-converter '("dvipng -D %D -T tight -bg Transparent -o %O %F")))
-
-    (leaf org-roam
-      :doc "A database abstraction layer for Org-mode"
-      :req "emacs-26.1" "dash-2.13" "org-9.4" "emacsql-4.0.0" "magit-section-3.0.0"
-      :tag "convenience" "roam" "org-mode" "emacs>=26.1"
-      :url "https://github.com/org-roam/org-roam"
-      :added "2025-02-07"
-      :emacs>= 26.1
+    (org-roam-db-autosync-mode)
+    (leaf org-roam-ui
+      :doc "User Interface for Org-roam."
+      :req "emacs-27.1" "org-roam-2.0.0" "simple-httpd-20191103.1446" "websocket-1.13"
+      :tag "outlines" "files" "emacs>=27.1"
+      :url "https://github.com/org-roam/org-roam-ui"
+      :added "2025-02-18"
+      :emacs>= 27.1
       :ensure t
-      ;; :after org emacsql magit-section
-      :hook ((after-init-hook . org-roam-mode))
-      :custom ((org-roam-directory   . "~/.emacs.d/org-roam")
-               (org-roam-db-location . "~/.emacs.d/org-roam/database.db")
-               (org-roam-index-file  . "~/.emacs.d/org-roam/Index.org")
-               (org-roam-capture-templates . '(("p" "plain" plain "%?"
-                                                :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
-                                                :unnarrowed t)
-                                               ("d" "Diary" plain "%?"
-                                                :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title:%<%Y%m%d>\n#+roam_tags: diary\n")
-                                                :unnarrowed t)
-                                               ("g" "Glossary" plain "%?"
-                                                :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+roam_tags: 用語")
-                                                :unnarrowed t)))
-               )
-      :bind (("C-c n f" . org-roam-node-find)
-             ("C-c n i" . org-roam-node-insert)
-             ("C-c n c" . org-roam-capture)
-             ("C-c n t" . org-roam-buffer-toggle)
-             ("C-c n a" . org-roam-alias-add)
-             ("C-c n g" . org-roam-graph)
-             ("C-c n l" . org-roam-buffer-toggle)
-             )
-      :config
-      (org-roam-db-autosync-mode)
-      (leaf org-roam-ui
-        :doc "User Interface for Org-roam."
-        :req "emacs-27.1" "org-roam-2.0.0" "simple-httpd-20191103.1446" "websocket-1.13"
-        :tag "outlines" "files" "emacs>=27.1"
-        :url "https://github.com/org-roam/org-roam-ui"
-        :added "2025-02-18"
-        :emacs>= 27.1
-        :ensure t
-        :after org-roam websocket
-        :custom ((org-roam-ui-sync-theme . t)
-                 (org-roam-ui-follow . t)
-                 (org-roam-ui-update-on-save . t)
-                 (org-roam-ui-open-on-start . nil)))
+      :after org-roam websocket
+      :custom ((org-roam-ui-sync-theme . t)
+               (org-roam-ui-follow . t)
+               (org-roam-ui-update-on-save . t)
+               (org-roam-ui-open-on-start . nil)))
+    )
+  (leaf *org-babel-settings
+    :custom ((org-src-fontify-natively . t)
+             (org-confirm-babel-evaluate . nil))
+    :config
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((emacs-lisp . t)
+       (dot . t)
+       (julia . t)
+       (python . t)
+       (jupyter . t)))
+    (defun load-org-babel-jupyter ()
+      (interactive)
+      (org-babel-jupyter-aliases-from-kernelspecs)
       )
-    (leaf *org-babel-settings
-      :custom ((org-src-fontify-natively . t)
-               (org-confirm-babel-evaluate . nil))
-      :config
-      (org-babel-do-load-languages
-       'org-babel-load-languages
-       '((emacs-lisp . t)
-         (dot . t)
-         (julia . t)
-         (python . t)
-         (jupyter . t)))
-      (defun load-org-babel-jupyter ()
-        (interactive)
-        (org-babel-jupyter-aliases-from-kernelspecs)
-        )
-      )
-    (leaf org-flyimage
-      :doc "orgの画像を再読み込みするパッケージ"
-      :vc (:url "https://github.com/misohena/org-inline-image-fix.git")
-      :require 'org-datauri-image
+    )
+  (leaf org-flyimage
+    :doc "orgの画像を再読み込みするパッケージ"
+    :vc (:url "https://github.com/misohena/org-inline-image-fix.git")
+    :require 'org-datauri-image
+    )
     )
 
-    )
-
-(leaf paradox
-  :doc "A modern Packages Menu. Colored, with package ratings, and customizable."
-  :req "emacs-24.4" "seq-1.7" "let-alist-1.0.3" "spinner-1.7.3" "hydra-0.13.2"
-  :tag "packages" "package" "emacs>=24.4"
-  :url "https://github.com/Malabarba/paradox"
-  :added "2023-03-18"
-  :emacs>= 24.4
-  :ensure t
-  :disabled t
-  :require t
-  :config (paradox-enable))
+;; (leaf paradox
+;;   :doc "A modern Packages Menu. Colored, with package ratings, and customizable."
+;;   :req "emacs-24.4" "seq-1.7" "let-alist-1.0.3" "spinner-1.7.3" "hydra-0.13.2"
+;;   :tag "packages" "package" "emacs>=24.4"
+;;   :url "https://github.com/Malabarba/paradox"
+;;   :added "2023-03-18"
+;;   :emacs>= 24.4
+;;   :ensure t
+;;   :disabled t
+;;   :require t
+;;   :config (paradox-enable))
 
 ;; (leaf pdf-tools
 ;;   :doc "Support library for PDF documents"
