@@ -1629,6 +1629,8 @@
                                                       "le" "la" "les" "Zur" "zur" "Des" "Dir" "Die"))
            (ebib-keywords-use-only-file           . t)
            (ebib-keywords-file-save-on-exit       . 'always)
+           (ebib-index-columns                    . '(("Title" 80 t) ("Year" 6 t) ("Author/Editor" 40 t) ))
+           (ebib-layout . 'custom)
            )
   :defer-config
   (leaf *ebibForMac
