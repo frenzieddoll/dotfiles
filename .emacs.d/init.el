@@ -1779,8 +1779,10 @@
                                                             (remove 'jupyter-completion-at-point completion-at-point-functions))))
   ;; :config
   ;; (leaf zmq :ensure t)
-  :bind (:python-mode-map
-         ("C-c s" . my-split-python-and-jupyter)
+  :bind ((python-mode-map
+          ("C-c s" . my-split-python-and-jupyter))
+         (org-mode-map
+          ("C-c h" . nil))
          ;; :jupyter-org-interaction-mode-map
          ;; ("C-c h" . nil)
          ;; ("C-c j" . jupyter-org-hydra/body)
