@@ -2279,6 +2279,19 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
 ;;   :custom ((online-judge-directories . '("~/Dropbox/atcoder/"))
 ;;            (online-judge-command-name . nil)))
 
+(leaf oj
+  :doc "Competitive programming tools client for AtCoder, Codeforces"
+  :req "emacs-26.1" "quickrun-2.2"
+  :tag "convenience" "emacs>=26.1"
+  :url "https://github.com/conao3/oj.el"
+  :added "2025-03-23"
+  :emacs>= 26.1
+  :ensure t
+  :after quickrun
+  :custom ((oj-defalut-online-judge . 'atcoder)))
+
+
+
 (leaf page-ext
   :doc "extended page handling commands"
   :tag "builtin"
@@ -3235,6 +3248,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :added "2022-12-14"
   :emacs>= 25.1
   :ensure t
+  :hook ((purescript-mode-hook . turn-on-purescript-indent))
   ;; :bind `((purescript-mode-map
   ;;           ("C-c C-z" . purescript-interactive-switch)
   ;;           ("C-c C-l" . purescript-process-load-file)
