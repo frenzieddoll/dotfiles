@@ -6,14 +6,18 @@
 ("axis")
 ("tikzpicture")
 ))
-
 (setq YaTeX::usepackage-alist-private '(
+("physics")
 ("fp")
 ("erstyle")
 ("here")
 ("subcaption")
 ))
 (setq user-section-table '(
+("symbf")
+("va*")
+("N_D")
+("vb*")
 ("vspace")
 ("includepgf")
 ("addlegendentry")
@@ -35,7 +39,14 @@
 ("SI" 2)
 ("subcaption")
 ))
+
 (setq user-singlecmd-table '(
+("grad")
+("vdots")
+("vdot")
+("ddots")
+("ln")
+("quad")
 ("cllea")
 ("figurename")
 ("lstlistingname")
@@ -67,8 +78,8 @@
 ("titlepage")
 ("tiny")
 ))
-
 (setq user-fontsize-table '(
+("textcolor")
 ("color")
 ("mathrm")
 ("mathbf")
