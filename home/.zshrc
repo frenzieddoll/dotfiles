@@ -62,8 +62,6 @@ export PATH="$HOME/.ghcup/bin:$PATH"
 export PATH="$HOME/.cabal/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 
-export PYTHONPATH="$HOME/Document/python/modules:$PYTHONPATH"
-
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/home/toshiaki/.local/lib"
 # 環境変数の設定
 export QT_QPA_PLATFORMTHEME="qt5ct"
@@ -118,7 +116,7 @@ case $(uname -n) in
         ;;
     "JPC20627141")
         export LIBGL_ALWAYS_INDIRECT=1
-        export PYTHONPATH="$HOME/Document/python/modules:$PYTHONPATH"
+        export PYTHONPATH="$HOME/Documents/python/modules:$PYTHONPATH"
         ;;
 esac
 

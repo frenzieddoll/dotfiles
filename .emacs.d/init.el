@@ -299,69 +299,69 @@
     (emacs-lock-mode 'kill))
 )
 
-(leaf *fontSetting
-  :disabled t
-  :config
-  (set-face-attribute 'default nil
-                          :family "HackGen"
-                          :height 130)
-  (leaf *forLinux
-    :when (eq system-type 'gnu/linux)
-    :config
-    (leaf *forArchlinux
-      :when (string= (system-name) "archlinuxhonda")
-      :config
-      (set-face-attribute 'default nil
-                          :family "HackGen"
-                          :height 130))
-    (leaf *pi
-      ;; :disabled t
-      :when (string= (system-name) "RaspberryPi")
-      :when (string= (getenv "EXWM") "enable")
-      :config
-      (set-face-attribute 'default nil
-                          :family "HackGen"
-                          :height 120)
-      (set-fontset-font (frame-parameter nil 'font)
-                        'japanese-jisx0208
-                        (font-spec :family "HackGen"
-                                   :height 120)))
-    (leaf *forSX12_wsl
-      :when (string= (system-name) "sx12toshiaki")
-      :config
-      (set-face-attribute 'default nil
-                          :family "HackGen"
-                          :height 140)
-      (set-fontset-font t 'japanese-jisx0208 (font-spec :family "HackGen")))
-    (leaf *HP_wsl
-      :when (string= (system-name) "JPC20627141")
-      :config
-      (set-face-attribute 'default nil
-                          :family "HackGen"
-                          :height 140)
-      (set-fontset-font t 'japanese-jisx0208 (font-spec :family "HackGen")))
-    )
-  (leaf *forMac
-    :when (eq system-type 'darwin)
-    :config
-    (set-face-attribute 'default nil
-                        :family "HackGen"
-                        :height 150)
-    (set-fontset-font (frame-parameter nil 'font)
-                      'japanese-jisx0208
-                      (font-spec :family "HackGen"
-                                 :height 150)))
-  (leaf *windows
-    :when (eq system-type 'windows-nt)
-    :config
-    (set-face-attribute 'default nil
-                        :family "HackGen"
-                        :height 150)
-    (set-fontset-font (frame-parameter nil 'font)
-                      'japanese-jisx0208
-                      (font-spec :family "HackGen"
-                                 :height 150)))
-  )
+;; (leaf *fontSetting
+;;   :disabled t
+;;   :config
+;;   (set-face-attribute 'default nil
+;;                           :family "HackGen"
+;;                           :height 130)
+;;   (leaf *forLinux
+;;     :when (eq system-type 'gnu/linux)
+;;     :config
+;;     (leaf *forArchlinux
+;;       :when (string= (system-name) "archlinuxhonda")
+;;       :config
+;;       (set-face-attribute 'default nil
+;;                           :family "HackGen"
+;;                           :height 130))
+;;     (leaf *pi
+;;       ;; :disabled t
+;;       :when (string= (system-name) "RaspberryPi")
+;;       :when (string= (getenv "EXWM") "enable")
+;;       :config
+;;       (set-face-attribute 'default nil
+;;                           :family "HackGen"
+;;                           :height 120)
+;;       (set-fontset-font (frame-parameter nil 'font)
+;;                         'japanese-jisx0208
+;;                         (font-spec :family "HackGen"
+;;                                    :height 120)))
+;;     (leaf *forSX12_wsl
+;;       :when (string= (system-name) "sx12toshiaki")
+;;       :config
+;;       (set-face-attribute 'default nil
+;;                           :family "HackGen"
+;;                           :height 140)
+;;       (set-fontset-font t 'japanese-jisx0208 (font-spec :family "HackGen")))
+;;     (leaf *HP_wsl
+;;       :when (string= (system-name) "JPC20627141")
+;;       :config
+;;       (set-face-attribute 'default nil
+;;                           :family "HackGen"
+;;                           :height 140)
+;;       (set-fontset-font t 'japanese-jisx0208 (font-spec :family "HackGen")))
+;;     )
+;;   (leaf *forMac
+;;     :when (eq system-type 'darwin)
+;;     :config
+;;     (set-face-attribute 'default nil
+;;                         :family "HackGen"
+;;                         :height 150)
+;;     (set-fontset-font (frame-parameter nil 'font)
+;;                       'japanese-jisx0208
+;;                       (font-spec :family "HackGen"
+;;                                  :height 150)))
+;;   (leaf *windows
+;;     :when (eq system-type 'windows-nt)
+;;     :config
+;;     (set-face-attribute 'default nil
+;;                         :family "HackGen"
+;;                         :height 150)
+;;     (set-fontset-font (frame-parameter nil 'font)
+;;                       'japanese-jisx0208
+;;                       (font-spec :family "HackGen"
+;;                                  :height 150)))
+;;   )
 
 (leaf *fontSetting
   :config
@@ -447,95 +447,34 @@
     :added "2021-09-05"
     :ensure t
     :require t
-    :unless (string-match "microsoft" (shell-command-to-string "uname -r"))
-    :custom ((dired-open-extensions .
-                                    '(("mkv"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                      ("mp4"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                      ("avi"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                      ("wmv"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                      ("webm"     . "~/.emacs.d/script/mpv-rifle.sh")
-                                      ("mpg"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                      ("flv"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                      ("m4v"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                      ("mp3"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                      ("flac"     . "~/.emacs.d/script/mpv-rifle.sh")
-                                      ("wav"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                      ("m4a"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                      ("3gp"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                      ("rm"       . "~/.emacs.d/script/mpv-rifle.sh")
-                                      ("rmvb"     . "~/.emacs.d/script/mpv-rifle.sh")
-                                      ("mpeg"     . "~/.emacs.d/script/mpv-rifle.sh")
-                                      ("VOB"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                      ("mov"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                      ("m3u8"      . "mpv")
-                                      ("m3u"      . "mpv")
-                                      ("iso"      . "mpv dvd:// -dvd-device")
-                                      ("playlist" . "mpv --playlist")
-                                      ("exe"      . "wine")
-                                      ("pdf"      . "zathura")
-                                      ;; ("zip"      . "zathura")
-                                      ;; ("rar"      . "zathura")
-                                      ;; ("tar"      . "zathura")
-                                      ("zip"      . "YACReader")
-                                      ("rar"      . "YACReader")
-                                      ("tar"      . "YACReader")
-                                      ;; ("zip"      . "mcomix")
-                                      ;; ("rar"       . "mcomix")
-                                      ;; ("tar"       . "mcomix")
-                                      ("xls"      . "xdg-open")
-                                      ("xlsx"     . "xdg-open")
-                                      ("jpg"      . "sxiv-rifle.sh")
-                                      ("png"      . "sxiv-rifle.sh")
-                                      ("jpeg"     . "sxiv-rifle.sh")
-                                      ("gif"      . "sxiv-rifle.sh")
-                                      ("png"      . "sxiv-rifle.sh")
-                                      ("webp"     . "sxiv-rifle.sh")
-                                      ))))
-  (leaf dired-open
-    :doc "Open files from dired using using custom actions"
-    :req "dash-2.5.0" "dired-hacks-utils-0.0.1"
-    :tag "files"
-    :added "2021-09-05"
-    :ensure t
-    ;; :after dired-hacks-utils
-    :when (eq system-type 'darwin)
-    :custom ((dired-open-extensions .
-                                    '(("key"  . "open")
-                                      ("docx" . "open")
-                                      ("pdf"  . "open")
-                                      ("cmdf" . "open")
-                                      ("xlsx" . "open")
-                                      ("pxp"  . "open")
-                                      ("bmp"  . "open")
-                                      ))))
-  (leaf dired-open
-    :when (string-match "microsoft" (shell-command-to-string "uname -r"))
-    :when (eq system-type 'gnu/linux)
-    :bind ((dired-mode-map
-            :package dired
-            ("w" . open-file-by-windowsApp-forWSL)))
-    :custom ((dired-open-extensions . '(
-                                        ;; ("mkv"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("mp4"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("avi"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("wmv"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("webm"     . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("mpg"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("flv"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("m4v"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("mp3"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("flac"     . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("wav"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("m4a"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("3gp"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("rm"       . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("rmvb"     . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("mpeg"     . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("VOB"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("mov"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("iso"      . "mpv dvd:// -dvd-device")
-                                        ;; ("playlist" . "mpv --playlist")
-                                        ;; ("exe"      . "wine")
+    :after dired
+    :defer-config
+    (leaf dired-open-linux*
+      :unless (string-match "microsoft" (shell-command-to-string "uname -r"))
+      :custom ((dired-open-extensions .
+                                      '(("mkv"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ("mp4"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ("avi"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ("wmv"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ("webm"     . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ("mpg"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ("flv"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ("m4v"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ("mp3"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ("flac"     . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ("wav"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ("m4a"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ("3gp"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ("rm"       . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ("rmvb"     . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ("mpeg"     . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ("VOB"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ("mov"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ("m3u8"      . "mpv")
+                                        ("m3u"      . "mpv")
+                                        ("iso"      . "mpv dvd:// -dvd-device")
+                                        ("playlist" . "mpv --playlist")
+                                        ("exe"      . "wine")
                                         ("pdf"      . "zathura")
                                         ;; ("zip"      . "zathura")
                                         ;; ("rar"      . "zathura")
@@ -546,149 +485,223 @@
                                         ;; ("zip"      . "mcomix")
                                         ;; ("rar"       . "mcomix")
                                         ;; ("tar"       . "mcomix")
-                                        ("xls"      . "open")
-                                        ("xlsx"     . "open")
-                                        ("jpg"      . "open")
-                                        ("png"      . "open")
-                                        ("jpeg"     . "open")
-                                        ("gif"      . "open")
-                                        ("png"      . "open")
-                                        ("webp"     . "open")
-                                      )))
-    :preface
-    (defun open-file-by-windowsApp-forWSL ()
-      (interactive)
-      (let* ((file-path
-              (replace-regexp-in-string
-               "\\wsl" "\\\\wsl"
-               (shell-command-to-string (format "wslpath -w \"%s\"" (dired-get-file-for-visit)))))
-             (result (shell-command-to-string (format "cmd.exe /c start \"\" \"%s\" 2> /dev/null" file-path)))
-             )
-        (message (format "start %s" file-path))))
-    )
-  (leaf dired-open
-    :when (eq system-type 'windows-nt)
-    :bind ((dired-mode-map
-            :package dired
-            ("w" . open-file-by-windowsApp)
-            ("z" . unzip)
-            ))
-    :custom ((dired-open-extensions . '(
-                                        ;; ("mkv"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("mp4"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("avi"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("wmv"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("webm"     . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("mpg"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("flv"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("m4v"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("mp3"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("flac"     . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("wav"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("m4a"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("3gp"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("rm"       . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("rmvb"     . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("mpeg"     . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("VOB"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("mov"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("iso"      . "mpv dvd:// -dvd-device")
-                                        ;; ("playlist" . "mpv --playlist")
-                                        ;; ("exe"      . "wine")
-                                        ("pdf"      . "zathura")
-                                        ;; ("zip"      . "zathura")
-                                        ;; ("rar"      . "zathura")
-                                        ;; ("tar"      . "zathura")
-                                        ("zip"      . "YACReader")
-                                        ("rar"      . "YACReader")
-                                        ("tar"      . "YACReader")
-                                        ;; ("zip"      . "mcomix")
-                                        ;; ("rar"       . "mcomix")
-                                        ;; ("tar"       . "mcomix")
-                                        ("xls"      . "open")
-                                        ("xlsx"     . "open")
-                                        ("jpg"      . "open")
-                                        ("png"      . "open")
-                                        ("jpeg"     . "open")
-                                        ("gif"      . "open")
-                                        ("png"      . "open")
-                                        ("webp"     . "open")
+                                        ("xls"      . "xdg-open")
+                                        ("xlsx"     . "xdg-open")
+                                        ("jpg"      . "sxiv-rifle.sh")
+                                        ("png"      . "sxiv-rifle.sh")
+                                        ("jpeg"     . "sxiv-rifle.sh")
+                                        ("gif"      . "sxiv-rifle.sh")
+                                        ("png"      . "sxiv-rifle.sh")
+                                        ("webp"     . "sxiv-rifle.sh")
                                         )))
-    :preface
-    (defun open-file-by-windowsApp ()
-      (interactive)
-      ;; (let ((file-name (decode-coding-string (encode-coding-string (dired-get-file-for-visit) 'japanese-shift-jis-dos) 'utf-8)))
-      (let ((file-name (shift-jis-to-utf8 (dired-get-file-for-visit))))
-        (shell-command (format "start \"\" \"%s\"" file-name))
-        (message (utf8-to-shift-jis file-name))))
-    (defun unzip ()
-      (interactive)
-      (let ((file-name (shift-jis-to-utf8 (dired-get-file-for-visit))))
-        (shell-command (format "call powershell -command \"Expand-Archive %s\"" file-name))
-        (message (format "unzip %s" (utf8-to-shift-jis file-name)))))
-    )
-  (leaf dired-open
-    :when (eq system-type 'windows-nt)
-    :bind ((dired-mode-map
-            :package dired
-            ("w" . open-file-by-windowsApp)
-            ("z" . unzip)
-            ))
-    :custom ((dired-open-extensions . '(
-                                        ;; ("mkv"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("mp4"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("avi"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("wmv"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("webm"     . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("mpg"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("flv"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("m4v"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("mp3"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("flac"     . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("wav"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("m4a"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("3gp"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("rm"       . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("rmvb"     . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("mpeg"     . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("VOB"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("mov"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("iso"      . "mpv dvd:// -dvd-device")
-                                        ;; ("playlist" . "mpv --playlist")
-                                        ;; ("exe"      . "wine")
-                                        ("pdf"      . "zathura")
-                                        ;; ("zip"      . "zathura")
-                                        ;; ("rar"      . "zathura")
-                                        ;; ("tar"      . "zathura")
-                                        ("zip"      . "YACReader")
-                                        ("rar"      . "YACReader")
-                                        ("tar"      . "YACReader")
-                                        ;; ("zip"      . "mcomix")
-                                        ;; ("rar"       . "mcomix")
-                                        ;; ("tar"       . "mcomix")
-                                        ("xls"      . "open")
-                                        ("xlsx"     . "open")
-                                        ("jpg"      . "open")
-                                        ("png"      . "open")
-                                        ("jpeg"     . "open")
-                                        ("gif"      . "open")
-                                        ("png"      . "open")
-                                        ("webp"     . "open")
+      )
+    (leaf dired-open-darwin*
+      :when (eq system-type 'darwin)
+      :custom ((dired-open-extensions .
+                                      '(("key"  . "open")
+                                        ("docx" . "open")
+                                        ("pdf"  . "open")
+                                        ("cmdf" . "open")
+                                        ("xlsx" . "open")
+                                        ("pxp"  . "open")
+                                        ("bmp"  . "open")
                                         )))
-    :preface
-    (defun open-file-by-windowsApp ()
-      (interactive)
-      ;; (let ((file-name (decode-coding-string (encode-coding-string (dired-get-file-for-visit) 'japanese-shift-jis-dos) 'utf-8)))
-      (let ((file-name (shift-jis-to-utf8 (dired-get-file-for-visit))))
-        (shell-command (format "start \"\" \"%s\"" file-name))
-        (message (utf8-to-shift-jis file-name))))
-    (defun unzip ()
-      (interactive)
-      (let ((file-name (shift-jis-to-utf8 (dired-get-file-for-visit))))
-        (shell-command (format "call powershell -command \"Expand-Archive %s\"" file-name))
-        (message (format "unzip %s" (utf8-to-shift-jis file-name)))))
+      )
+    (leaf dired-open-windows*
+      :when (string-match "microsoft" (shell-command-to-string "uname -r"))
+      :when (eq system-type 'gnu/linux)
+      :bind ((dired-mode-map
+              :package dired
+              ("w" . open-file-by-windowsApp-forWSL)))
+      :custom ((dired-open-extensions . '(
+                                          ;; ("mkv"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                          ;; ("mp4"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                          ;; ("avi"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                          ;; ("wmv"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                          ;; ("webm"     . "~/.emacs.d/script/mpv-rifle.sh")
+                                          ;; ("mpg"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                          ;; ("flv"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                          ;; ("m4v"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                          ;; ("mp3"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                          ;; ("flac"     . "~/.emacs.d/script/mpv-rifle.sh")
+                                          ;; ("wav"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                          ;; ("m4a"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                          ;; ("3gp"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                          ;; ("rm"       . "~/.emacs.d/script/mpv-rifle.sh")
+                                          ;; ("rmvb"     . "~/.emacs.d/script/mpv-rifle.sh")
+                                          ;; ("mpeg"     . "~/.emacs.d/script/mpv-rifle.sh")
+                                          ;; ("VOB"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                          ;; ("mov"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                          ;; ("iso"      . "mpv dvd:// -dvd-device")
+                                          ;; ("playlist" . "mpv --playlist")
+                                          ;; ("exe"      . "wine")
+                                          ("pdf"      . "zathura")
+                                          ;; ("zip"      . "zathura")
+                                          ;; ("rar"      . "zathura")
+                                          ;; ("tar"      . "zathura")
+                                          ("zip"      . "YACReader")
+                                          ("rar"      . "YACReader")
+                                          ("tar"      . "YACReader")
+                                          ;; ("zip"      . "mcomix")
+                                          ;; ("rar"       . "mcomix")
+                                          ;; ("tar"       . "mcomix")
+                                          ("xls"      . "open")
+                                          ("xlsx"     . "open")
+                                          ("jpg"      . "open")
+                                          ("png"      . "open")
+                                          ("jpeg"     . "open")
+                                          ("gif"      . "open")
+                                          ("png"      . "open")
+                                          ("webp"     . "open")
+                                          )))
+      :preface
+      (defun open-file-by-windowsApp-forWSL ()
+        (interactive)
+        (let* ((file-path
+                (replace-regexp-in-string
+                 "\\wsl" "\\\\wsl"
+                 (shell-command-to-string (format "wslpath -w \"%s\"" (dired-get-file-for-visit)))))
+               (result (shell-command-to-string (format "cmd.exe /c start \"\" \"%s\" 2> /dev/null" file-path)))
+               )
+          (message (format "start %s" file-path))))
+      )
     )
-
+  ;; (leaf dired-open
+  ;;   :doc "Open files from dired using using custom actions"
+  ;;   :req "dash-2.5.0" "dired-hacks-utils-0.0.1"
+  ;;   :tag "files"
+  ;;   :added "2021-09-05"
+  ;;   :ensure t
+  ;;   ;; :after dired-hacks-utils
+  ;;   :when (eq system-type 'darwin)
+  ;;   :custom ((dired-open-extensions .
+  ;;                                   '(("key"  . "open")
+  ;;                                     ("docx" . "open")
+  ;;                                     ("pdf"  . "open")
+  ;;                                     ("cmdf" . "open")
+  ;;                                     ("xlsx" . "open")
+  ;;                                     ("pxp"  . "open")
+  ;;                                     ("bmp"  . "open")
+  ;;                                     ))))
+  ;; (leaf dired-open
+  ;;   :when (string-match "microsoft" (shell-command-to-string "uname -r"))
+  ;;   :when (eq system-type 'gnu/linux)
+  ;;   :bind ((dired-mode-map
+  ;;           :package dired
+  ;;           ("w" . open-file-by-windowsApp-forWSL)))
+  ;;   :custom ((dired-open-extensions . '(
+  ;;                                       ;; ("mkv"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("mp4"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("avi"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("wmv"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("webm"     . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("mpg"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("flv"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("m4v"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("mp3"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("flac"     . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("wav"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("m4a"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("3gp"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("rm"       . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("rmvb"     . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("mpeg"     . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("VOB"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("mov"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("iso"      . "mpv dvd:// -dvd-device")
+  ;;                                       ;; ("playlist" . "mpv --playlist")
+  ;;                                       ;; ("exe"      . "wine")
+  ;;                                       ("pdf"      . "zathura")
+  ;;                                       ;; ("zip"      . "zathura")
+  ;;                                       ;; ("rar"      . "zathura")
+  ;;                                       ;; ("tar"      . "zathura")
+  ;;                                       ("zip"      . "YACReader")
+  ;;                                       ("rar"      . "YACReader")
+  ;;                                       ("tar"      . "YACReader")
+  ;;                                       ;; ("zip"      . "mcomix")
+  ;;                                       ;; ("rar"       . "mcomix")
+  ;;                                       ;; ("tar"       . "mcomix")
+  ;;                                       ("xls"      . "open")
+  ;;                                       ("xlsx"     . "open")
+  ;;                                       ("jpg"      . "open")
+  ;;                                       ("png"      . "open")
+  ;;                                       ("jpeg"     . "open")
+  ;;                                       ("gif"      . "open")
+  ;;                                       ("png"      . "open")
+  ;;                                       ("webp"     . "open")
+  ;;                                     )))
+  ;;   :preface
+  ;;   (defun open-file-by-windowsApp-forWSL ()
+  ;;     (interactive)
+  ;;     (let* ((file-path
+  ;;             (replace-regexp-in-string
+  ;;              "\\wsl" "\\\\wsl"
+  ;;              (shell-command-to-string (format "wslpath -w \"%s\"" (dired-get-file-for-visit)))))
+  ;;            (result (shell-command-to-string (format "cmd.exe /c start \"\" \"%s\" 2> /dev/null" file-path)))
+  ;;            )
+  ;;       (message (format "start %s" file-path))))
+  ;;   )
+  ;; (leaf dired-open
+  ;;   :when (eq system-type 'windows-nt)
+  ;;   :bind ((dired-mode-map
+  ;;           :package dired
+  ;;           ("w" . open-file-by-windowsApp)
+  ;;           ("z" . unzip)
+  ;;           ))
+  ;;   :custom ((dired-open-extensions . '(
+  ;;                                       ;; ("mkv"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("mp4"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("avi"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("wmv"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("webm"     . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("mpg"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("flv"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("m4v"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("mp3"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("flac"     . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("wav"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("m4a"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("3gp"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("rm"       . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("rmvb"     . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("mpeg"     . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("VOB"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("mov"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("iso"      . "mpv dvd:// -dvd-device")
+  ;;                                       ;; ("playlist" . "mpv --playlist")
+  ;;                                       ;; ("exe"      . "wine")
+  ;;                                       ("pdf"      . "zathura")
+  ;;                                       ;; ("zip"      . "zathura")
+  ;;                                       ;; ("rar"      . "zathura")
+  ;;                                       ;; ("tar"      . "zathura")
+  ;;                                       ("zip"      . "YACReader")
+  ;;                                       ("rar"      . "YACReader")
+  ;;                                       ("tar"      . "YACReader")
+  ;;                                       ;; ("zip"      . "mcomix")
+  ;;                                       ;; ("rar"       . "mcomix")
+  ;;                                       ;; ("tar"       . "mcomix")
+  ;;                                       ("xls"      . "open")
+  ;;                                       ("xlsx"     . "open")
+  ;;                                       ("jpg"      . "open")
+  ;;                                       ("png"      . "open")
+  ;;                                       ("jpeg"     . "open")
+  ;;                                       ("gif"      . "open")
+  ;;                                       ("png"      . "open")
+  ;;                                       ("webp"     . "open")
+  ;;                                       )))
+  ;;   :preface
+  ;;   (defun open-file-by-windowsApp ()
+  ;;     (interactive)
+  ;;     ;; (let ((file-name (decode-coding-string (encode-coding-string (dired-get-file-for-visit) 'japanese-shift-jis-dos) 'utf-8)))
+  ;;     (let ((file-name (shift-jis-to-utf8 (dired-get-file-for-visit))))
+  ;;       (shell-command (format "start \"\" \"%s\"" file-name))
+  ;;       (message (utf8-to-shift-jis file-name))))
+  ;;   (defun unzip ()
+  ;;     (interactive)
+  ;;     (let ((file-name (shift-jis-to-utf8 (dired-get-file-for-visit))))
+  ;;       (shell-command (format "call powershell -command \"Expand-Archive %s\"" file-name))
+  ;;       (message (format "unzip %s" (utf8-to-shift-jis file-name)))))
+  ;;   )
   :preface
   (defun kill-current-buffer-and/or-dired-open-file ()
     "In Dired, dired-open-file for a file.
@@ -1781,15 +1794,13 @@
   ;; (leaf zmq :ensure t)
   :bind ((python-mode-map
           ("C-c s" . my-split-python-and-jupyter))
-         (org-mode-map
+         (jupyter-org-interaction-mode-map
           ("C-c h" . nil))
-         ;; :jupyter-org-interaction-mode-map
-         ;; ("C-c h" . nil)
          ;; ("C-c j" . jupyter-org-hydra/body)
          )
-  :config
-  (with-eval-after-load 'jupyter-org-client
-    (define-key jupyter-org-interaction-mode-map (kbd "C-c h") nil))
+  ;; :config
+  ;; (with-eval-after-load 'jupyter-org-client
+  ;;   (define-key jupyter-org-interaction-mode-map (kbd "C-c h") nil))
 
   :preface
   (defun my-image-save ()
@@ -2146,6 +2157,8 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
           ("C-M-y" . org-insert-clipboard-image)
           ("C-," . org-table-transpose-table-at-point)
           ("C-c h" . nil))
+         ;; (jupyter-org-interaction-mode-map
+         ;;  ("C-c h" . nil))
          )
   :custom `((org-directory . ,(concat user-emacs-directory "org/"))
             (org-capture-templates . `(("t" "todo"     entry (file+headline "todo.org" "todo") "* TODO %? \n" :empty-lines 1)
@@ -2764,7 +2777,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :vc (:url "https://github.com/sebastienwae/app-launcher")
   :when (executable-find "git")
   :require t
-  :after orderless
+  ;; :after orderless
   ;; :disabled t
   )
 
@@ -3884,7 +3897,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
             (haskell-indent-offset                  . 4)
             (haskell-indendt-spaces                 . 4)
             (haskell-compile-stack-build-command    . t)
-            (haskell-process-suggest-hoogle-imports . t)
+            ;; (haskell-process-suggest-hoogle-imports . t)
             (haskell-indent-after-keywords          . '(("where" 4 0)
                                                         ("of" 4)
                                                         ("do" 4)
@@ -4000,6 +4013,8 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :url "https://gitlab.com/groups/python-mode-devs"
   :added "2021-09-11"
   :ensure t
+  :bind (python-mode-map
+         ("C-c j" . jupyter-run-repl))
   )
 
 (leaf *ruff
