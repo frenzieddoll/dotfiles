@@ -1505,7 +1505,15 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
           (insert (format "#+ATTR_ORG: :width 500\n[[file:%s]]" figure-path)))
         (org-display-inline-images)))
     )
-
+(leaf *org-eldoc
+  :hook ((org-mode-hook . eldoc-mode))
+  :config
+  (defadvice org-eldoc-documentation-function (around add-field-info activate)
+    (or
+     (ignore-errors (and (not (org-at-table-hline-p)) (org-table-field-info nil)))
+     ad-do-it))
+  (eldoc-add-command-completions "org-table-next-" "org-table-previous", "org-cycle")
+  )
 (leaf org-roam
   :doc "A database abstraction layer for Org-mode"
   :req "emacs-26.1" "dash-2.13" "org-9.4" "emacsql-4.0.0" "magit-section-3.0.0"
