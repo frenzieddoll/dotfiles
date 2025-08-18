@@ -759,6 +759,7 @@
           (list "ll" "ls -ltrh")
           (list "la" "ls -a")
           (list "lla" "ls -ltrha")
+          (list "grep" "*grep $*")
           (list "o" "xdg-open")
           (list "emacs" "find-file $1")
           (list "m" "find-file $1")
@@ -770,7 +771,8 @@
           (list "usbmount" "sudo mount -t vfat $1 $2 -o rw,umask=000")
           (list "open" "cmd.exe /c start {wslpath -w $*}")
           (list "gdrive" "sudo mount -t drvfs G: /mnt/googleDrive/")
-          (list "reflectorjp" "sudo reflector --country \"Japan\" --age 24 --protocol https --sort rate --save /etc/pacman.d/mirrorlist"))))
+          (list "reflectorjp" "sudo reflector --country \"Japan\" --age 24 --protocol https --sort rate --save /etc/pacman.d/mirrorlist")
+          )))
   :config
   (setenv "GIT_PAGER" "")
   (leaf eshell-vterm
@@ -2175,7 +2177,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
            (figures-dir (format "./%s_figures/" buf-name))
            (figure-name (format "%s%s_%s.png" figures-dir buf-name (format-time-string "%Y%m%d%H%M%S")))
            (figure-path (expand-file-name figure-name))
-           (path "$HOME/Documentswin/script/import.ps1")
+           (path "$HOME/Documents/script/import.ps1")
            (path-win (shell-command-to-string (format "wslpath -w \"%s\"" path)))
            (path-wsl (replace-regexp-in-string
                       "\\wsl" "\\\\wsl"
@@ -2702,7 +2704,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
              (lsp-latex-forward-search-args . '("--synctex-forward" "%l:1:%f" "%p")))
     )
   (leaf tikz
-    :doc "A minor mode to edit TikZ pictures. yatexで使う時はコードの一部を編集"
+    :doc "A minor mode to edit TikZ pictures. yatexで使う時はtikz-run-current-bufferの実行条件を変更すること"
     :req "emacs-24.1"
     :tag "tex" "emacs>=24.1"
     :url "https://github.com/emiliotorres/tikz"
