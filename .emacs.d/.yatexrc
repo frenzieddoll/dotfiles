@@ -7,12 +7,15 @@
 ("tikzpicture")
 ))
 (setq YaTeX::usepackage-alist-private '(
+("xfp")
+("pgfcalendar")
 ("physics")
 ("fp")
 ("erstyle")
 ("here")
 ("subcaption")
 ))
+
 (setq user-section-table '(
 ("symbf")
 ("va*")
