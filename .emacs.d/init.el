@@ -374,7 +374,7 @@
            (WFHD (* 2560 1440))
            (QFHD (* 3840 2160))
            (res (* (x-display-pixel-width) (x-display-pixel-height)))
-           (size (cond ((>= res QFHD) 150)
+           (size (cond ((>= res QFHD) 200)
                        ((>= res WFHD) 140)
                        ((>= res  FHD) 130)
                        ((>= res   HD) 120)))
@@ -412,7 +412,7 @@
             (dired-launch-mailcap-frend . '("env" "xdg-open"))
             (dired-launch-enable        . t)
             (dired-isearch-filenames    . t)
-            (dired-listing-switches     . ,(purecopy "-alht")))
+            (dired-listing-switches     . ,(purecopy "-alht --time-style=long-iso")))
   :config
   (leaf dired-x :require t)
   (leaf wdired
@@ -2719,7 +2719,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
            (image-dir "./figures")
            (filename (format "%s/%s.png" image-dir name))
            (fullpath (expand-file-name filename))
-           (path "$HOME/Documentswin/script/import.ps1")
+           (path "$HOME/Documents/script/import.ps1")
            ;; (path "$HOME/.emacs.d/script/import.ps1")
            (path-win (shell-command-to-string (format "wslpath -w \"%s\"" path)))
            (path-wsl (replace-regexp-in-string
