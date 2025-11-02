@@ -108,6 +108,18 @@ case $(uname -n) in
     "archlinuxhonda")
         radeonPro;;
     "sx12toshiaki")
+        open () {
+            if [ $# != 1 ]; then
+                explorer.exe .
+            else
+                if [ -e $1 ]; then
+                    cmd.exe /c start $(wslpath -w $1) 2> /dev/null
+                else
+                    echo "open: $1 : No such file or directory"
+                fi
+            fi
+        }
+
         # PS1='[\u@\h \W]\$ '
         setxkbmap -layout us > /dev/null 2>&1
         setxkbmap -option ctrl:swap_rwin_rctl > /dev/null 2>&1
