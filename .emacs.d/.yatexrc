@@ -15,12 +15,9 @@
 ("here")
 ("subcaption")
 ))
-
 (setq user-section-table '(
+("footnote[frame]")
 ("symbf")
-("va*")
-("N_D")
-("vb*")
 ("vspace")
 ("includepgf")
 ("addlegendentry")
@@ -44,6 +41,11 @@
 ))
 
 (setq user-singlecmd-table '(
+("cdots")
+("exp")
+("sin")
+("hfill")
+("vfill")
 ("grad")
 ("vdots")
 ("vdot")
@@ -81,6 +83,7 @@
 ("titlepage")
 ("tiny")
 ))
+
 (setq user-fontsize-table '(
 ("textcolor")
 ("color")

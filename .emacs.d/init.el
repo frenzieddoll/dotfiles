@@ -515,7 +515,7 @@
               ("w" . open-file-by-windowsApp-forWSL)))
       :custom ((dired-open-extensions . '(
                                           ;; ("mkv"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                          ;; ("mp4"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                          ("mp4"      . "~/.emacs.d/script/mpv-rifle.sh")
                                           ;; ("avi"      . "~/.emacs.d/script/mpv-rifle.sh")
                                           ;; ("wmv"      . "~/.emacs.d/script/mpv-rifle.sh")
                                           ;; ("webm"     . "~/.emacs.d/script/mpv-rifle.sh")
@@ -2305,7 +2305,17 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
     :vc (:url "https://github.com/misohena/org-inline-image-fix.git")
     :require 'org-datauri-image
     )
+  (leaf org-crypt
+    :doc "Public Key Encryption for Org Entries"
+    :tag "builtin"
+    :added "2025-10-10"
+    :custom ((org-crypt-key . "AFAAC9211530D26C")
+             (org-tags-exclude-from-inheritance . '("crypt"))
+             (org-crypt-disable-auto-save . 'encrypt))
+    :config
+    (org-crypt-use-before-save-magic)
     )
+  )
 
 ;; (leaf paradox
 ;;   :doc "A modern Packages Menu. Colored, with package ratings, and customizable."
@@ -2614,7 +2624,12 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
             (YaTeX-close-paren-always     . nil)
             (YaTeX-fill-prefix            . "")
             (YaTeX-user-completion-table  . "~/.emacs.d/.yatexrc")
-            (YaTeX-electric-indent-mode   . -1))
+            ;; (YaTeX-electric-indent-mode   . -1)
+            (YaTeX-indent-level            . 2)
+            (YaTeX-item-indent            . 2)
+            (indent-line-function         . 'YaTeX-indent-line)
+            (indent-region-function       . 'indent-region)
+            )
   :bind ((YaTeX-mode-map
           ("C-M-y" . latex-insert-clipboard-figure)))
 
@@ -2712,6 +2727,17 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
     :emacs>= 24.1
     :ensure t
     )
+  (leaf latex-table-wizard
+    :doc "Magic editing of LaTeX tables."
+    :req "emacs-27.1" "auctex-12.1" "transient-0.3.7"
+    :tag "convenience" "emacs>=27.1"
+    :url "https://github.com/enricoflor/latex-table-wizard"
+    :added "2025-10-27"
+    :emacs>= 27.1
+    :ensure t
+    :after yatexprc
+    :bind ((YaTeX-mode-map
+            ("C-c"))))
   :preface
   (defun latex-insert-clipboard-figure (name)
     (interactive "sfile name: ")
@@ -2890,17 +2916,16 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
             (skk-search-katakana                . t)
             ;; (skk-jisyo-code                     . 'utf-8)
             (skk-jisyo-code . ,(let* ((file-path "~/.emacs.d/ddskk/jisyo")
-                                        (coding
-                                         (with-temp-buffer
-                                           (insert-file-contents file-path)
-                                           (symbol-name buffer-file-coding-system)))
-                                        (jisyo-code
-                                         (cl-case coding
-                                           ("japanese-iso-8bit-unix" "ecu-jp")
-                                           (t "utf-8"))))
-                                   (print coding)
-                                   jisyo-code
-                                   ))
+                                      (coding
+                                       (with-temp-buffer
+                                         (insert-file-contents file-path)
+                                         (symbol-name buffer-file-coding-system)))
+                                      (jisyo-code
+                                       (cl-case coding
+                                         ("japanese-iso-8bit-unix" "ecu-jp")
+                                         (t "utf-8"))))
+                                 ;; (print coding)
+                                 jisyo-code))
             )
   :config
   (defun skk-hiragana-set nil
@@ -3734,7 +3759,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :added "2021-09-05"
   :ensure t
   ;; :disabled t
-  :hook ((;; org-mode-hook
+  :hook ((org-mode-hook
           yatex-mode-hook
           haskell-mode-hook
           web-mode-hook
