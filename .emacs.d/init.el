@@ -841,7 +841,8 @@
   (leaf *forLinux
     :when (eq system-type 'gnu/linux)
     :config
-    (leaf *Linux
+    (leaf *GUI
+      :when (eq window-system 'x)
       :bind (("s-s" . async-shell-command)
              ("s-S" . window-capcher)
              ("s-n" . windmove-down)
@@ -855,6 +856,8 @@
              ("s-p" . windmove-up)
              ("s-q" . kill-current-buffer)
              ("s-o" . consult-buffer))
+      :config
+      (my-xset)
       )
     (leaf *WSL
       :when (string-match "microsoft" (shell-command-to-string "uname -r"))
@@ -862,10 +865,6 @@
              ("M-o" . consult-buffer)
              ("M-q" . kill-current-buffer))
       )
-    (leaf *GUI
-        :when (eq window-system 'x)
-        :config
-        (my-xset))
     (leaf *CLI
         :unless (eq window-system 'x)
         :bind (("M-n" . windmove-down)
@@ -885,6 +884,46 @@
     )
 
   :preface
+  ;; ウィンドウのサイズ変更
+  (defun window-resizer ()
+    "Control window size and position."
+    (interactive)
+    (let ((window-obj (selected-window))
+          (current-width (window-width))
+          (current-height (window-height))
+          (dx (if (= (nth 0 (window-edges)) 0) 1
+                -1))
+          (dy (if (= (nth 1 (window-edges)) 0) 1
+                -1))
+          c)
+      (catch 'end-flag
+        (while t
+          (message "size[%dx%d]"
+                   (window-width) (window-height))
+          (setq c (read-char))
+          (cond ((= c ?f)
+                 (enlarge-window-horizontally dx))
+                ((= c ?b)
+                 (shrink-window-horizontally dx))
+                ((= c ?n)
+                 (enlarge-window dy))
+                ((= c ?p)
+                 (shrink-window dy))
+                ;; otherwise
+                (t
+                 (message "Quit")
+                 (throw 'end-flag t)))))))
+  (defun window-capcher ()
+    "capcher window by imagemagic"
+    (interactive)
+    (let ((stringShellCommand (concat "import " "~/Downloads/screenshot_" "20" (format-time-string "%02y%02m%02d%02H%02M%02S" (current-time)) ".png")))
+      (shell-command stringShellCommand)))
+  (defun my-xset ()
+    (interactive)
+    (start-process-shell-command
+     "xset 再設定"
+     nil
+     "xset r rate 250 40"))
   (defun scroll-up_alt ()
     (interactive)
     (scroll-up 1))
@@ -939,36 +978,196 @@
      (format "xbacklight -dec 10")))
   (defun minibuffer-delete-backward-char ()
     (local-set-key (kbd "C-h") 'delete-backward-char))
+  (defun get-full-path-interactive ()
+    "Prompt user to select a file and return its absolute path."
+    (interactive)
+    (let ((file (read-file-name "Select file: ")))
+      (kill-new file)
+      (message "Full path: %s" (expand-file-name file))))
   :init
-  (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char))
-=======
+  (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char)
+  )
+
 ;; (leaf *globa-keybinding
-;;   :disabled t
+;; ;;   :disabled t
+;; ;;   :hook (minibuffer-setup-hook . minibuffer-delete-backward-char)
+;; ;;   :config
+;; ;;   :bind (;; C-m : 改行プラスインデント
+;; ;;          ("C-m"           . newline-and-indent)
+;; ;;          ;; ;; exwm用
+;; ;;          ("C-h"           . delete-backward-char)
+;; ;;          ("M-h"           . backward-kill-word)
+;; ;;          ;; C-x ? : help
+;; ;;          ("C-c ?"         . help-command)
+;; ;;          ;;折り返しトグルコマンド
+;; ;;          ("C-c l"         . toggle-truncate-lines)
+;; ;;          ;; 行番号を表示
+;; ;;          ("C-c t"         . display-line-numbers-mode)
+;; ;;          ;;スペース、改行、タブを表示する
+;; ;;          ("C-c w"         . whitespace-mode)
+;; ;;          ;; 検索結果のリストアップ
+;; ;;          ("C-c o"         . occur)
+;; ;;          ;; S式の評価
+;; ;;          ("C-c C-j"       . eval-print-last-sexp)
+;; ;;          ;; async shell command
+;; ;;          ("s-s"           . async-shell-command)
+;; ;;          ("s-S"           . window-capcher)
+;; ;;          )
+
+;; ;;   :preface
+;; ;;   (defun upperLight ()
+;; ;;     (interactive)
+;; ;;     (start-process-shell-command
+;; ;;      "upper light"
+;; ;;      nil
+;; ;;      (format "xbacklight -inc 10")))
+;; ;;   (defun lowerLight ()
+;; ;;     (interactive)
+;; ;;     (start-process-shell-command
+;; ;;      "lower light"
+;; ;;      nil
+;; ;;      (format "xbacklight -dec 10")))
+;; ;;   (defun minibuffer-delete-backward-char ()
+;; ;;     (local-set-key (kbd "C-h") 'delete-backward-char))
+;; ;;   :init (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char)
+;; ;;   )
+
+;; (leaf *global-setting
+;;   ;; :disabled t
 ;;   :hook (minibuffer-setup-hook . minibuffer-delete-backward-char)
+;;   :init (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char)
+;;   :bind (("C-x x s" . my-xset)
+;;          ("C-c r"   . window-resizer)
+;;          ("C-S-n"   . scroll-up_alt)
+;;          ("C-S-p"   . scroll-down_alt)
+;;          ("C-m"     . newline-and-indent)
+;;          ("C-h"     . delete-backward-char)
+;;          ("M-h"     . backward-kill-word)
+;;          ("C-c ?"   . help-command)
+;;          ("C-c l"   . toggle-truncate-lines)
+;;          ("C-c t"   . display-line-numbers-mode)
+;;          ("C-c w"   . whitespace-mode)
+;;          ("C-c o"   . occur)
+;;          ("C-c C-j" . eval-print-last-sexp))
+
+;;   :custom ((scroll-preserve-screen-position . t)
+;;            ;; スクロール開始のマージン
+;;            (scroll-margin                   . 5)
+;;            (scroll-conservatively           . 100)
+;;            ;; 1画面スクロール時に重複させる行数
+;;            (next-screen-context-lines       . 10)
+;;            ;; 1画面スクロール時にカーソルの画面上の位置をなるべく変えない
+;;            (scroll-preserve-screen-position . t)
+;;            (windmove-wrap-around            . t))
 ;;   :config
-;;   :bind (;; C-m : 改行プラスインデント
-;;          ("C-m"           . newline-and-indent)
-;;          ;; ;; exwm用
-;;          ("C-h"           . delete-backward-char)
-;;          ("M-h"           . backward-kill-word)
-;;          ;; C-x ? : help
-;;          ("C-c ?"         . help-command)
-;;          ;;折り返しトグルコマンド
-;;          ("C-c l"         . toggle-truncate-lines)
-;;          ;; 行番号を表示
-;;          ("C-c t"         . display-line-numbers-mode)
-;;          ;;スペース、改行、タブを表示する
-;;          ("C-c w"         . whitespace-mode)
-;;          ;; 検索結果のリストアップ
-;;          ("C-c o"         . occur)
-;;          ;; S式の評価
-;;          ("C-c C-j"       . eval-print-last-sexp)
-;;          ;; async shell command
-;;          ("s-s"           . async-shell-command)
-;;          ("s-S"           . window-capcher)
-;;          )
+;;   (leaf *forMac
+;;     :when (eq system-type 'darwin)
+;;     :bind (("s-n" . windmove-down)
+;;            ("s-f" . windmove-right)
+;;            ("s-b" . windmove-left)
+;;            ("s-p" . windmove-up)
+;;            ("s-a" . zoom-window-zoom)
+;;            ("s-q" . kill-current-buffer)
+;;            ("s-h" . delete-window)
+;;            ("s-o" . consult-buffer)))
+;;   (leaf *forWindows
+;;     :when (eq system-type 'windows-nt)
+;;     :bind (("M-n" . windmove-down)
+;;            ("M-f" . windmove-right)
+;;            ("M-b" . windmove-left)
+;;            ("M-p" . windmove-up)
+;;            ("M-a" . zoom-window-zoom)
+;;            ("M-q" . kill-current-buffer)
+;;            ("M-h" . delete-window)
+;;            ("M-d" . app-launcher-run-app)
+;;            ("M-o" . consult-buffer)))
+;;   (leaf *forLinux
+;;     :when (eq system-type 'gnu/linux)
+;;     :bind (("s-s" . async-shell-command)
+;;            ("s-S" . window-capcher)
+;;            ("s-n" . windmove-down)
+;;            ("s-f" . windmove-right)
+;;            ("s-b" . windmove-left)
+;;            ("s-p" . windmove-up)
+;;            ("s-a" . zoom-window-zoom)
+;;            ("s-h" . delete-window)
+;;            ("s-d" . app-launcher-run-app)
+;;            ("s-n" . windmove-down)
+;;            ("s-p" . windmove-up)
+;;            ("s-q" . kill-current-buffer)
+;;            ("s-o" . consult-buffer))
+
+;;     :config
+;;     (leaf *forWSL
+;;       :when (string-match "microsoft" (shell-command-to-string "uname -r"))
+;;       :bind (("M-q" . kill-current-buffer)
+;;              ("M-o" . consult-buffer))
+;;       :config
+;;       (my-xset)))
+;;   (leaf *forCLI
+;;       :unless (eq window-system 'x)
+;;       :bind (("M-n" . windmove-down)
+;;              ("M-f" . windmove-right)
+;;              ("M-b" . windmove-left)
+;;              ("M-p" . windmove-up)
+;;              ("M-a" . zoom-window-zoom)
+;;              ("M-q" . kill-current-buffer)
+;;              ("M-h" . delete-window)
+;;              ("C-M-i" . output_toggle)
+;;              ("C-M-m" . mute_toggle)
+;;              ("C-M-n" . lower_volume )
+;;              ("C-M-p" . upper_volume)
+;;              ("M-d" . app-launcher-run-app)
+;;              ("M-o" . consult-buffer))
+;;       :custom (global-hl-line-mode . t))
 
 ;;   :preface
+;;   ;; ウィンドウのサイズ変更
+;;   (defun window-resizer ()
+;;     "Control window size and position."
+;;     (interactive)
+;;     (let ((window-obj (selected-window))
+;;           (current-width (window-width))
+;;           (current-height (window-height))
+;;           (dx (if (= (nth 0 (window-edges)) 0) 1
+;;                 -1))
+;;           (dy (if (= (nth 1 (window-edges)) 0) 1
+;;                 -1))
+;;           c)
+;;       (catch 'end-flag
+;;         (while t
+;;           (message "size[%dx%d]"
+;;                    (window-width) (window-height))
+;;           (setq c (read-char))
+;;           (cond ((= c ?f)
+;;                  (enlarge-window-horizontally dx))
+;;                 ((= c ?b)
+;;                  (shrink-window-horizontally dx))
+;;                 ((= c ?n)
+;;                  (enlarge-window dy))
+;;                 ((= c ?p)
+;;                  (shrink-window dy))
+;;                 ;; otherwise
+;;                 (t
+;;                  (message "Quit")
+;;                  (throw 'end-flag t)))))))
+;;   (defun window-capcher ()
+;;     "capcher window by imagemagic"
+;;     (interactive)
+;;     (let ((stringShellCommand (concat "import " "~/Downloads/screenshot_" "20" (format-time-string "%02y%02m%02d%02H%02M%02S" (current-time)) ".png")))
+;;       (shell-command stringShellCommand)))
+;;   (defun my-xset ()
+;;     (interactive)
+;;     (start-process-shell-command
+;;      "xset 再設定"
+;;      nil
+;;      "xset r rate 250 40"))
+;;   (defun scroll-up_alt ()
+;;     (interactive)
+;;     (scroll-up 1))
+;;   (defun scroll-down_alt ()
+;;     (interactive)
+;;     (scroll-down 1))
 ;;   (defun upperLight ()
 ;;     (interactive)
 ;;     (start-process-shell-command
@@ -983,249 +1182,32 @@
 ;;      (format "xbacklight -dec 10")))
 ;;   (defun minibuffer-delete-backward-char ()
 ;;     (local-set-key (kbd "C-h") 'delete-backward-char))
-;;   :init (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char)
+;;   (defun base64ToPng (fileName)
+;;     (interactive "sfile name: ")
+;;     (let ((script (concat user-emacs-directory "script/decodeBase64.py %s")))
+;;       (shell-command (format
+;;                       script
+;;                       fileName))
+;;       )
+;;     )
+
+;;   :config
+;;   (leaf zoom-window
+;;     :doc "Zoom window like tmux"
+;;     :req "emacs-24.3"
+;;     :tag "emacs>=24.3"
+;;     :url "https://github.com/syohex/emacs-zoom-window"
+;;     :added "2021-09-05"
+;;     :emacs>= 24.3
+;;     :ensure t
+;;     :custom (zoom-window-mode-line-color . "RoyalBlue4"))
+;;   (defun get-full-path-interactive ()
+;;     "Prompt user to select a file and return its absolute path."
+;;     (interactive)
+;;     (let ((file (read-file-name "Select file: ")))
+;;       (kill-new file)
+;;       (message "Full path: %s" (expand-file-name file))))
 ;;   )
->>>>>>> fafb2d1e (fix global-seggint for each OS)
-
-(leaf *global-setting
-  ;; :disabled t
-  :hook (minibuffer-setup-hook . minibuffer-delete-backward-char)
-  :init (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char)
-  :bind (("C-x x s" . my-xset)
-         ("C-c r"   . window-resizer)
-         ("C-S-n"   . scroll-up_alt)
-         ("C-S-p"   . scroll-down_alt)
-         ("C-m"     . newline-and-indent)
-         ("C-h"     . delete-backward-char)
-         ("M-h"     . backward-kill-word)
-         ("C-c ?"   . help-command)
-         ("C-c l"   . toggle-truncate-lines)
-         ("C-c t"   . display-line-numbers-mode)
-         ("C-c w"   . whitespace-mode)
-         ("C-c o"   . occur)
-         ("C-c C-j" . eval-print-last-sexp))
-
-  :custom ((scroll-preserve-screen-position . t)
-           ;; スクロール開始のマージン
-           (scroll-margin                   . 5)
-           (scroll-conservatively           . 100)
-           ;; 1画面スクロール時に重複させる行数
-           (next-screen-context-lines       . 10)
-           ;; 1画面スクロール時にカーソルの画面上の位置をなるべく変えない
-           (scroll-preserve-screen-position . t)
-           (windmove-wrap-around            . t))
-  :config
-  (leaf *forMac
-    :when (eq system-type 'darwin)
-    :bind (("s-n" . windmove-down)
-           ("s-f" . windmove-right)
-           ("s-b" . windmove-left)
-           ("s-p" . windmove-up)
-           ("s-a" . zoom-window-zoom)
-           ("s-q" . kill-current-buffer)
-           ("s-h" . delete-window)
-           ("s-o" . consult-buffer)))
-  (leaf *forWindows
-    :when (eq system-type 'windows-nt)
-    :bind (("M-n" . windmove-down)
-           ("M-f" . windmove-right)
-           ("M-b" . windmove-left)
-           ("M-p" . windmove-up)
-           ("M-a" . zoom-window-zoom)
-           ("M-q" . kill-current-buffer)
-           ("M-h" . delete-window)
-           ("M-d" . app-launcher-run-app)
-           ("M-o" . consult-buffer)))
-  (leaf *forLinux
-    :when (eq system-type 'gnu/linux)
-    :bind (("s-s" . async-shell-command)
-           ("s-S" . window-capcher)
-           ("s-n" . windmove-down)
-           ("s-f" . windmove-right)
-           ("s-b" . windmove-left)
-           ("s-p" . windmove-up)
-           ("s-a" . zoom-window-zoom)
-           ("s-h" . delete-window)
-           ("s-d" . app-launcher-run-app)
-           ("s-n" . windmove-down)
-           ("s-p" . windmove-up)
-           ("s-q" . kill-current-buffer)
-           ("s-o" . consult-buffer))
-    :config
-    (leaf *forWSL
-      :when (string-match "microsoft" (shell-command-to-string "uname -r"))
-      :config
-      (leaf *wsl
-        :bind (("M-q" . kill-current-buffer)
-               ("M-o" . consult-buffer))
-        :config
-        (my-xset))
-
-      (leaf *forCLI
-        :unless (eq window-system 'x)
-        :bind (("M-n" . windmove-down)
-               ("M-f" . windmove-right)
-               ("M-b" . windmove-left)
-               ("M-p" . windmove-up)
-               ("M-a" . zoom-window-zoom)
-               ("s-a" . zoom-window-zoom))
-        :config
-        (my-xset)))
-
-    (leaf *forCLI
-      :unless (eq window-system 'x)
-      :bind (("M-n" . windmove-down)
-             ("M-f" . windmove-right)
-             ("M-b" . windmove-left)
-             ("M-p" . windmove-up)
-             ("M-a" . zoom-window-zoom)
-             ("M-q" . kill-current-buffer)
-             ("M-h" . delete-window)
-             ("C-M-i" . output_toggle)
-             ("C-M-m" . mute_toggle)
-             ("C-M-n" . lower_volume )
-             ("C-M-p" . upper_volume)
-             ("M-d" . app-launcher-run-app)
-             ("M-o" . consult-buffer))
-      :custom (global-hl-line-mode . t))
-    )
-
-  :preface
-======= end
-  ;; ウィンドウのサイズ変更
-  (defun window-resizer ()
-    "Control window size and position."
-    (interactive)
-    (let ((window-obj (selected-window))
-          (current-width (window-width))
-          (current-height (window-height))
-          (dx (if (= (nth 0 (window-edges)) 0) 1
-                -1))
-          (dy (if (= (nth 1 (window-edges)) 0) 1
-                -1))
-          c)
-      (catch 'end-flag
-        (while t
-          (message "size[%dx%d]"
-                   (window-width) (window-height))
-          (setq c (read-char))
-          (cond ((= c ?f)
-                 (enlarge-window-horizontally dx))
-                ((= c ?b)
-                 (shrink-window-horizontally dx))
-                ((= c ?n)
-                 (enlarge-window dy))
-                ((= c ?p)
-                 (shrink-window dy))
-                ;; otherwise
-                (t
-                 (message "Quit")
-                 (throw 'end-flag t)))))))
-  (defun window-capcher ()
-    "capcher window by imagemagic"
-    (interactive)
-    (let ((stringShellCommand (concat "import " "~/Downloads/screenshot_" "20" (format-time-string "%02y%02m%02d%02H%02M%02S" (current-time)) ".png")))
-      (shell-command stringShellCommand)))
-  (defun my-xset ()
-    (interactive)
-    (start-process-shell-command
-     "xset 再設定"
-     nil
-     "xset r rate 250 40"))
-  (defun scroll-up_alt ()
-    (interactive)
-    (scroll-up 1))
-  (defun scroll-down_alt ()
-    (interactive)
-    (scroll-down 1))
-  (defun upperLight ()
-    (interactive)
-    (start-process-shell-command
-     "upper light"
-     nil
-     (format "xbacklight -inc 10")))
-  (defun lowerLight ()
-    (interactive)
-    (start-process-shell-command
-     "lower light"
-     nil
-     (format "xbacklight -dec 10")))
-  (defun minibuffer-delete-backward-char ()
-    (local-set-key (kbd "C-h") 'delete-backward-char))
-  (defun base64ToPng (fileName)
-    (interactive "sfile name: ")
-    (let ((script (concat user-emacs-directory "script/decodeBase64.py %s")))
-      (shell-command (format
-                      script
-<<<<<<< variant A
-                      fileName))
-      )
-    )
-
-  :config
-  (leaf zoom-window
-    :doc "Zoom window like tmux"
-    :req "emacs-24.3"
-    :tag "emacs>=24.3"
-    :url "https://github.com/syohex/emacs-zoom-window"
-    :added "2021-09-05"
-    :emacs>= 24.3
-    :ensure t
-    :custom (zoom-window-mode-line-color . "RoyalBlue4"))
-  (leaf *mySaveFrame
-    :when (or (eq system-type 'darwin)
-              (eq system-type 'windows-nt))
-    :hook ((emacs-startup-hook . my-load-frame-size)
-           (kill-emacs-hook . my-save-frame-size))
-    :defun my-save-frame-size my-load-frame-size
-    :defvar my-save-frame-file
-    :custom ((my-save-frame-file . "~/.emacs.d/.framesize"))
-    :preface
-    (defun my-save-frame-size ()
-      "現在のフレームの位置、大きさを'my-save-frame-file'に保存します"
-      (interactive)
-      (let* ((param (frame-parameters (selected-frame)))
-             (current-height (frame-height))
-             (current-width (frame-width))
-             (current-top-margin (if (integerp (cdr (assoc 'top param)))
-                                     (cdr (assoc 'top param))
-                                   0))
-
-             (current-left-margin (if (integerp (cdr (assoc 'top param)))
-                                      (cdr (assoc 'top param))
-                                    0))
-             (buf nil)
-             (file my-save-frame-file))
-        ;; ファイルと関連付けられてたバッファ作成
-        (unless (setq buf (get-file-buffer (expand-file-name file)))
-          (setq buf (find-file-noselect (expand-file-name file))))
-        (set-buffer buf)
-        (erase-buffer)
-        ;; ファイル読み込み時に直接評価させる内容を記述
-        (insert
-         (concat
-          "(set-frame-size (selected-frame) "(int-to-string current-width)" "(int-to-string current-height)")\n"
-          "(set-frame-position (selected-frame) "(int-to-string current-left-margin)" "(int-to-string current-top-margin)")\n"
-          ))
-        (save-buffer)))
-    (defun my-load-frame-size ()
-      "`my-save-fram-file'に保存されたフレームの位置、大きさを復元します"
-      (interactive)
-      (let ((file my-save-frame-file))
-        (when (file-exists-p file)
-          (load-file file))))
-    :config
-    (run-with-idle-timer 60 t 'my-save-frame-size))
->>>>>>> variant B
-                      fileName))))
-  (defun get-full-path-interactive ()
-    "Prompt user to select a file and return its absolute path."
-    (interactive)
-    (let ((file (read-file-name "Select file: ")))
-      (kill-new file)
-      (message "Full path: %s" (expand-file-name file))))
-======= end
-  )
 
 (leaf info
   ;; info日本語化
@@ -1277,192 +1259,7 @@
     (let ((script (concat user-emacs-directory "script/decodeBase64.py %s")))
     (let ((script (concat user-emacs-directory "script/decodeBase64.py %s")))
                       script
-                      fileName))))
-    :after dired
-    :bind ((dired-mode-map
-            :package dired
-    (add-to-list 'app-launcher-apps-directories "C:/Users/0145220079/AppData/Roaming/Microsoft/Windows/Start Menu/Programs"))
-  )
-
-(leaf *forWSL
-  :when (eq system-type 'gnu/linux)
-  :when (string-match "microsoft" (shell-command-to-string "uname -r"))
-  :custom ((browse-url-browser-function . #'my-browse-url-wsl-host-browser))
-  :bind (("C-M-w" . copy-temp-file))
-  :preface
-  (defun copy-temp-file ()
-    (interactive)
-    (find-file "~/Desktop/temp.txt")
-    (mark-whole-buffer)
-    (copy-region-as-kill nil nil t)
-    (kill-buffer)
-      (interactive)
-  (defun wsl-paste()
-    (interactive)
-    (insert (shell-command-to-string "powershell.exe -command 'Get-Clipboard'")))
-  (defun my-browse-url-wsl-host-browser (url &rest _args)
-    "Browse URL with WSL host web browser."
-    (prog1 (message "Open %s" url)
-      (shell-command-to-string
-       (mapconcat #'shell-quote-argument
-                  (list "cmd.exe" "/c" "start" url)
-                  " "))))
-  ;; (setopt browse-url-browser-function #'my-browse-url-wsl-host-browser)
-  (defun select-pubkey ()
-    (let ((entries '()))
-      (with-temp-buffer
-        (shell-command "gpg --list-keys" (current-buffer))
-        (goto-char (point-min))
-        (while
-            ;; (re-search-forward "uid +\[\\([^\]]+\\)\] \\([^<]+\\) <\\([^>]+\\)>" nil t)
-            (re-search-forward "uid\\s-*\\[\\s-*\\([^]]+\\)\\s-*\\]\\s-*\\([^<]+\\)\\s-*<\\([^>]+\\)>" nil t)
-          ;; (re-search-forward "uid +\\(.+\\)" nil t)
-          (let ((trust (match-string 1))
-                (name (match-string 2))
-                (addr (match-string 3))
-                )
-            ;; (message trust)
-            (push (cons (format "%s %s %s" trust name addr) addr) entries))))
-      (let* ((choice (completing-read "Select a name" (mapcar #'car entries)))
-             (addr (cdr (assoc choice entries))))
-        addr)))
-  (defun convert-to-number-with-prefix (str)
-    "Convert a string like '10M', '1G' to a number.
-  Recognizes M for Mega (10^6) and G for Giga (10^9)."
-    (let ((prefix (substring str -1))  ;; 最後の文字（接頭辞）を取り出す
-          (value (string-to-number (substring str 0 -1))))  ;; 最後の文字を除いた部分を数値に変換
-      (cond
-       ((string= prefix "M") (* value 1000000))  ;; Mの場合、10^6を掛ける
-       ((string= prefix "G") (* value 1000000000))  ;; Gの場合、10^9を掛ける
-       ((string= prefix "K") (* value 1000))  ;; Kの場合、10^3を掛ける
-       (t (error "Unsupported prefix: %s" prefix)))))  ;; 対応しない接頭辞の場合はエラーを出す
-  (defun encrypt-gpg (arg)
-    (interactive "ssize threshold: ")
-    (let* ((file-path (dired-get-file-for-visit))
-           (file-name (file-name-nondirectory file-path))
-           (file-name-gpg (format "%s.gpg" file-name))
-           (split-threshold-str (if (equal arg nil)
-                                    "10M"
-                                  arg))
-           (split-threshold (convert-to-number-with-prefix split-threshold-str))
-           ;; (split-threshold (* 10 1000 1000))
-           (pubkye (select-pubkey))
-           (gpg-command (format "gpg --encrypt --recipient %s --output %s %s" pubkye file-name-gpg file-name))
-           (split-command (format "split -b %s -d %s %s.part." split-threshold-str file-name-gpg file-name-gpg))
-           ;; (commands '("gpg --encrypt --recipient frenzieddoll@gmail.com --output %s.gpg %s"
-           ;;             "split -b 10M -d %s.gpg %s.gpg.part."))
-           ;; (command (mapconcat (lambda (s) (format s file-name file-name)) commands "; "))
-           )
-      ;; (prin1 command)
-      ;; (shell-command command)
-      (message split-threshold-str)
-      (shell-command gpg-command)
-      (when (>= (nth 7 (file-attributes file-name-gpg)) split-threshold)
-        (shell-command split-command)
-        (delete-file file-name-gpg)
-        )))
-       (mapconcat #'shell-quote-argument
-                  (list "cmd.exe" "/c" "start" url)
-                  " "))))
-  ;; (setopt browse-url-browser-function #'my-browse-url-wsl-host-browser)
-  (defun select-pubkey ()
-    (let ((entries '()))
-      (with-temp-buffer
-        (shell-command "gpg --list-keys" (current-buffer))
-        (goto-char (point-min))
-        (while
-            ;; (re-search-forward "uid +\[\\([^\]]+\\)\] \\([^<]+\\) <\\([^>]+\\)>" nil t)
-            (re-search-forward "uid\\s-*\\[\\s-*\\([^]]+\\)\\s-*\\]\\s-*\\([^<]+\\)\\s-*<\\([^>]+\\)>" nil t)
-          ;; (re-search-forward "uid +\\(.+\\)" nil t)
-          (let ((trust (match-string 1))
-                (name (match-string 2))
-                (addr (match-string 3))
-                )
-            ;; (message trust)
-            (push (cons (format "%s %s %s" trust name addr) addr) entries))))
-      (let* ((choice (completing-read "Select a name" (mapcar #'car entries)))
-             (addr (cdr (assoc choice entries))))
-        addr)))
-  (defun convert-to-number-with-prefix (str)
-    "Convert a string like '10M', '1G' to a number.
-  Recognizes M for Mega (10^6) and G for Giga (10^9)."
-    (let ((prefix (substring str -1))  ;; 最後の文字（接頭辞）を取り出す
-          (value (string-to-number (substring str 0 -1))))  ;; 最後の文字を除いた部分を数値に変換
-      (cond
-       ((string= prefix "M") (* value 1000000))  ;; Mの場合、10^6を掛ける
-       ((string= prefix "G") (* value 1000000000))  ;; Gの場合、10^9を掛ける
-       ((string= prefix "K") (* value 1000))  ;; Kの場合、10^3を掛ける
-       (t (error "Unsupported prefix: %s" prefix)))))  ;; 対応しない接頭辞の場合はエラーを出す
-  (defun encrypt-gpg (arg)
-    (interactive "ssize threshold: ")
-    (let* ((file-path (dired-get-file-for-visit))
-           (file-name (file-name-nondirectory file-path))
-           (file-name-gpg (format "%s.gpg" file-name))
-           (split-threshold-str (if (equal arg nil)
-                                    "10M"
-                                  arg))
-           (split-threshold (convert-to-number-with-prefix split-threshold-str))
-           ;; (split-threshold (* 10 1000 1000))
-           (pubkye (select-pubkey))
-           (gpg-command (format "gpg --encrypt --recipient %s --output %s %s" pubkye file-name-gpg file-name))
-           (split-command (format "split -b %s -d %s %s.part." split-threshold-str file-name-gpg file-name-gpg))
-           ;; (commands '("gpg --encrypt --recipient frenzieddoll@gmail.com --output %s.gpg %s"
-           ;;             "split -b 10M -d %s.gpg %s.gpg.part."))
-           ;; (command (mapconcat (lambda (s) (format s file-name file-name)) commands "; "))
-           )
-      ;; (prin1 command)
-      ;; (shell-command command)
-      (message split-threshold-str)
-      (shell-command gpg-command)
-      (when (>= (nth 7 (file-attributes file-name-gpg)) split-threshold)
-        (shell-command split-command)
-        (delete-file file-name-gpg)
-        )))
->>>>>>> variant B
-======= end
-=======
-      ;; (let ((file-name (decode-coding-string (encode-coding-string (dired-get-file-for-visit) 'japanese-shift-jis-dos) 'utf-8)))
-      (let ((file-name (shift-jis-to-utf8 (dired-get-file-for-visit))))
-        (shell-command (format "start \"\" \"%s\"" file-name))
-        (message (utf8-to-shift-jis file-name))
-        )
-      )
-    (defun openExplorer()
-      (interactive)
-      (let ((currentDir (shift-jis-to-utf8 default-directory)))
-        (shell-command (format "start \"\" \"%s\"" currentDir))
-        (message (format "open %s" (utf8-to-shift-jis currentDir)))
-        )
-      )
-    (defun genBib ()
-      (interactive)
-      (let ((file-name (shift-jis-to-utf8 (dired-get-file-for-visit))))
-        (shell-command (format
-                        "python c:/Users/0145220079/Documents/programing/python/script/fromHTMLtoBib.py \"%s\""
-                        file-name))
-        )
-      )
-    (defun base64ToPng (fileName)
-      (interactive "sfile name: ")
-      (let ((script (concat user-emacs-directory "script/decodeBase64.py %s")))
-        (shell-command (format
-                        script
-                        fileName))
-      )
-      )
-    (defun unzip ()
-      (interactive)
-      (let ((file-name (shift-jis-to-utf8 (dired-get-file-for-visit))))
-        (shell-command (format "call powershell -command \"Expand-Archive %s\"" file-name))
-        (message (format "unzip %s" (utf8-to-shift-jis file-name)))
-        )
-      )
-    )
-=======
-      (shell-command (format
-                      script
-                      fileName))))
->>>>>>> da445c90 (fix init.el wsl用にlatexの設定を修正)
+                      fileName)))
   (leaf *my-app
     :require app-launcher-for-windows
     :config
@@ -1684,28 +1481,6 @@
           (ebib-import-entries)
           (kill-buffer))))
     )
-
-             (ebib-file-associations . '(("pdf" . "zathura") ("ps"  . "zathura")))
-             (ebib-file-search-dirs  . '("~/tex/pdfs" "~/tex/papers" "~/tex/books" "~/Documents/PDF/ER"))
-             ))
-      (let ((file-name (dired-get-file-for-visit))
-            )
-        (shell-command (format
-                        "python $HOME/.emacs.d/script/fromHTMLtoBib.py \"%s\""
-                        file-path))
-        ;; (message bibFile)
-        (my/ebib-import-entries bib-file)
-        ))
-    (defun my/ebib-import-entries (file-path)
-      (interactive "fSelect file: ")
-      (let ((buffer (find-file-noselect file-path)))
-        (with-current-buffer buffer
-          (goto-char (point-min))
-          (push-mark (point-max) nil t)
-          (ebib-import-entries)
-          (kill-buffer))))
-    )
-
   (leaf *ebibForSony
     :when (eq system-type 'windows-nt)
     :when (string= (system-name) "JPC20627141")
@@ -1868,63 +1643,6 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
     :added "2023-11-12"
     :emacs>= 24
     :ensure t)
-  )
-
-(leaf jupyter
-  :ensure t
-  :defvar jupyter-repl-echo-eval-p
-  :custom ((jupyter-repl-echo-eval-p . t))
-  ;; :config
-  ;; (leaf zmq :ensure t)
-  :preface
-  (defun my-image-save ()
-  "Save the image under point to the '.fig' directory with a timestamp filename.
-Creates the '.fig' directory if it doesn't exist.
-Copies the full path of the saved image to the clipboard."
-  (interactive)
-  (let* ((fig-dir "figures")
-         (out-f (format-time-string (concat fig-dir "/%Y%m%d-%H%M%S.png")))
-         (full-path (expand-file-name out-f)))
-    ;; Create '.fig' directory if it doesn't exist
-    (unless (file-exists-p fig-dir)
-      (make-directory fig-dir t)
-      (message "Created directory: %s" (expand-file-name fig-dir)))
-    ;; Save the image
-    (image-save-with-arg out-f)
-    ;; Copy the full path to clipboard
-    (kill-new full-path)
-    ;; Message to inform user
-    (message "Image saved and full path copied to clipboard: %s" full-path)
-    ;; Return the full path of the saved image
-    full-path))
-  (defun image-save-with-arg (&optional file)
-  "Save the image under point.
-This writes the original image data to a file.  Rotating or
-changing the displayed image size does not affect the saved image.
-If FILE is provided, save to that file. Otherwise, prompt for a filename."
-  (interactive)
-  (let ((image (image--get-image)))
-    (with-temp-buffer
-      (let ((image-file (plist-get (cdr image) :file)))
-        (if image-file
-            (if (not (file-exists-p image-file))
-                (error "File %s no longer exists" image-file)
-              (insert-file-contents-literally image-file))
-          (insert (plist-get (cdr image) :data))))
-      (let ((save-file (or file
-                           (read-file-name "Write image to file: "))))
-        (write-region (point-min) (point-max) save-file)
-        (message "Image saved to %s" save-file)))))
-  (defun my-image-yank ()
-  "Insert an Org mode file link for the image path in the clipboard at the current cursor position.
-Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
-  (interactive)
-  (let ((file-path (substring-no-properties (current-kill 0))))
-    (if (string-match-p "\\.\\(png\\|jpe?g\\|gif\\|svg\\)$" file-path)
-        (let ((relative-path (file-relative-name file-path)))
-          (insert (format "#+ATTR_HTML: :width 300\n[[file:%s]]" relative-path))
-          (org-redisplay-inline-images))
-      (message "Clipboard content is not a supported image file path. No insertion performed."))))
   )
 
 (leaf eww
@@ -2647,6 +2365,39 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
 ;;   :disabled t
 ;;   :ensure t)
 
+(leaf vterm
+  :doc "Fully-featured terminal emulator"
+  :req "emacs-25.1"
+  :tag "terminals" "emacs>=25.1"
+  :url "https://github.com/akermu/emacs-libvterm"
+  :added "2023-02-19"
+  :emacs>= 25.1
+  :ensure t
+  :when (string= system-type 'gnu/linux)
+  :custom ((vterm-max-scrollback . 10000)
+           (vterm-buffer-name-string . "vterm: %s")
+           )
+  :bind (("C-c v" . multi-vterm)
+         ;; ("s-v"   . multi-vterm)
+         (:vterm-mode-map
+          ("C-m" . vterm-send-return)
+          ("C-h" . vterm-send-backspace)
+          ("C-y" . vterm-yank)
+          ;; ("C-l" . skk-latin-mode)
+          ;; ("C-j" . skk-hiragana-set)
+          ))
+  :config
+  (leaf multi-vterm
+    :doc "Like multi-term.el but for vterm"
+    :req "emacs-26.3" "vterm-0.0" "project-0.3.0"
+    :tag "processes" "terminals" "emacs>=26.3"
+    :url "https://github.com/suonlight/multi-libvterm"
+    :added "2023-03-12"
+    :emacs>= 26.3
+    :ensure t
+    :after vterm project)
+  )
+
 (leaf yaml
   :doc "YAML parser for Elisp"
   :req "emacs-25.1"
@@ -2826,6 +2577,18 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
 
 
 ;; マイナーモードの設定
+(leaf affe
+  :doc "Asynchronous Fuzzy Finder for Emacs"
+  :req "emacs-28.1" "consult-1.7"
+  :tag "completion" "files" "matching" "emacs>=28.1"
+  :url "https://github.com/minad/affe"
+  :added "2025-01-21"
+  :emacs>= 28.1
+  :ensure t
+  :custom ((affe-highlight-function . 'orderless-highlight-matches)
+           (affe-regexp-function . 'orderless-pattern-compiler))
+  )
+
 (leaf align
   :doc "align text to a specific column, by regexp"
   :tag "builtin"
@@ -2904,6 +2667,159 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
        :contents-sources
        (cons org-src icls-srcs)))
     )
+  )
+
+(leaf cape
+  :doc "Completion At Point Extensions"
+  :req "emacs-27.1"
+  :tag "emacs>=27.1"
+  :url "https://github.com/minad/cape"
+  :added "2022-03-31"
+  :emacs>= 27.1
+  :ensure t
+  ;; :after corfu
+  ;; :disabled t
+  ;; :hook ((ein:notebook-mode-hook . my/set-ein-capf)
+  ;;        (lsp-completion-mode . corfu-setup-lsp))
+  :config
+  ;; (add-to-list 'completion-at-point-functions #'tempel-complete)
+  (add-to-list 'completion-at-point-functions #'cape-file)
+  ;; (add-to-list 'completion-at-point-functions #'cape-dict)
+  ;; (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+  (add-to-list 'completion-at-point-functions #'cape-keyword)
+  ;; (add-to-list 'completion-at-point-functions #'cape-symbol)
+  ;; (add-to-list 'completion-at-point-functions #'cape-abbrev)
+  ;; (add-to-list 'completion-at-point-functions #'cape-elisp-block)
+  ;; (add-to-list 'completion-at-point-functions #'cape-tex)
+  :init
+  (defun corfu-setup-lsp ()
+    (interactive)
+    ""
+    (setq-local completion-at-point-functions
+                (list (cape-capf-buster
+                       (cape-capf-super
+                        #'lsp-completion-at-point
+                        #'cape-abbrev
+                        #'cape-keyword
+                        #'cape-file)))))
+
+  (defun my/convert-super-capf (arg-capf)
+    (list (cape-capf-noninterruptible
+           (cape-capf-accept-all
+            (cape-capf-buster arg-capf
+                              #'cape-file
+                              )))
+          #'cape-dict))
+
+  (defun my/set-ein-capf ()
+    (interactive)
+    ;; (setq-local completion-at-point-functions
+    ;;             (my/convert-super-capf (cape-company-to-capf #'company-jedi)))
+    (setq-local completion-at-point-functions
+                (list (cape-capf-noninterruptible
+                       (cape-capf-accept-all
+                        (cape-capf-buster
+                         (cape-company-to-capf #'company-jedi))))))
+    (add-to-list 'completion-at-point-functions #'cape-file t)
+    (add-to-list 'completion-at-point-functions #'cape-dict t)
+    )
+  (defun my/reset-capf ()
+    (interactive)
+    (setq completion-at-point-functions
+          (list (cape-capf-noninterruptible
+                 (cape-capf-accept-all
+                  (cape-capf-buster #'cape-elisp-symbol)))))
+    )
+
+  )
+
+(leaf consult
+  :doc "Consulting completing-read"
+  :req "emacs-26.1"
+  :tag "emacs>=26.1"
+  :url "https://github.com/minad/consult"
+  :added "2021-09-05"
+  :emacs>= 26.1
+  :ensure t
+  :bind (("M-g g" . consult-goto-line)
+         ("C-x b" . consult-buffer)
+         ("C-c i" . consult-imenu)
+         ("M-y" . consult-yank-pop)
+         ("C-o" . consult-line)
+         ("C-c h" . consult-recent-file)
+         ("M-g g" . consult-goto-line)
+         ("C-x r l" . consult-bookmark)
+         (minibuffer-local-map
+          ("C-c h" . consult-history)))
+
+  :custom `((consult-preview-key . nil)
+            (consult-line-start-from-top . t)
+            (xref-show-xrefs-function . #'consult-xref)
+            (xref-show-definitions-function . #'consult-xref))
+  )
+
+(leaf corfu
+  :doc "Completion Overlay Region FUnction"
+  :req "emacs-27.1"
+  :tag "emacs>=27.1"
+  :url "https://github.com/minad/corfu"
+  :added "2021-09-11"
+  :emacs>= 27.1
+  :ensure t
+  ;; :require t
+  ;; :defvar (corfu-auto)
+  :when (eq window-system 'x)
+  :hook ((minibuffer-setup-hook . my/corfu-enable-in-minibuffer)
+         ((eshell-mode-hook
+           ein:notebook-mode-hook) . (lambda ()
+                                       (setq-local corfu-auto nil)
+                                       (corfu-mode)))
+         ;; (corfu-mode-hook . corfu-popupinfo-mode)
+         )
+  :global-minor-mode (global-corfu-mode
+                      corfu-popupinfo-mode)
+  :hook ((minibuffer-setup-hook . my/corfu-enable-in-minibuffer)
+         ((eshell-mode-hook
+           ein:notebook-mode-hook) . (lambda ()
+                                       (setq-local corfu-auto nil)
+                                       (corfu-mode)))
+         ;; (corfu-mode-hook . corfu-popupinfo-mode)
+         )
+  :custom ((tab-always-indent        . 'complete)
+           (corfu-cycle              . t)
+           (corfu-auto               . t)
+           (corfu-auto-prefix        . 3)
+           (corfu-auto-delay         . 0)
+           ;; (corfu-quit-no-match   . 'separator)
+           ;; (corfu-separator       . ? \s)
+           ;; (corfu-preselect-first . nil)
+           )
+  :bind
+  ((corfu-map
+    ("C-s" . corfu-insert-separator)
+    ("C-SPC" . corfu-insert-separator)
+    ("C-c SPC" . corfu-insert-separator)
+    ("M-SPC" . corfu-insert-separator))) ;SPCにするとSKKのへんかんできなくなる
+  :init
+  (defun my/corfu-enable-in-minibuffer ()
+    (when (where-is-internal #'completion-at-point (list (current-local-map)))
+      (setq-local corfu-auto nil)
+      (corfu-mode 1)))
+  (defun my/corfu-insert-and-send ()
+    (interactive)
+    (corfu-insert)
+    (cond
+     ((and (derived-mode-p 'eshell-mode) (fboundp 'eshell-send-input))
+      (eshell-send-input)
+      ((derived-mode-p 'comint-mode)
+       (comint-send-input)))))
+  )
+
+(leaf corfu-terminal
+  :unless (display-graphic-p)
+  :vc (:url "https://codeberg.org/akib/emacs-corfu-terminal.git")
+  :config
+  (corfu-terminal-mode +1)
   )
 
 (leaf *cua
@@ -3017,6 +2933,51 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
 ;;   :vc (:url "https://github.com/frenzieddoll/etv")
 ;;   :custom ((default-m3u8-url . "https://raw.githubusercontent.com/luongz/iptv-jp/refs/heads/main/jp.m3u"))
 ;; )
+
+(leaf *emacs
+  :preface
+  ;; Add prompt indicator to `completing-read-multiple'.
+  ;; Alternatively try `consult-completing-read-multiple'.
+  (defun crm-indicator (args)
+    (cons (concat "[CRM] " (car args)) (cdr args)))
+  (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
+
+  ;; Do not allow the cursor in the minibuffer prompt
+  (setq minibuffer-prompt-properties
+        '(read-only t cursor-intangible t face minibuffer-prompt))
+  (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
+
+  ;; Emacs 28: Hide commands in M-x which do not work in the current mode.
+  ;; Vertico commands are hidden in normal buffers.
+  ;; (setq read-extended-command-predicate
+  ;;       #'command-completion-default-include-p)
+
+  ;; Enable recursive minibuffers
+  (setq enable-recursive-minibuffers t))
+
+(leaf embark
+  :doc "Conveniently act on minibuffer completions"
+  :req "emacs-26.1"
+  :tag "convenience" "emacs>=26.1"
+  :url "https://github.com/oantolin/embark"
+  :added "2021-09-17"
+  :emacs>= 26.1
+  :ensure t
+  ;; :disabled t
+  :bind ((minibuffer-mode-map
+          :package emacs
+          ("M-." . embark-dwim)
+          ("C-." . embark-act)))
+  ;; :custom ((prefix-help-command . #'embark-prefix-help-command))
+  :config
+  (leaf embark-consult
+    :doc "Consult integration for Embark"
+    :req "emacs-26.1" "embark-0.12" "consult-0.10"
+    :tag "convenience" "emacs>=26.1"
+    :url "https://github.com/oantolin/embark"
+    :added "2022-03-24"
+    :emacs>= 26.1
+    :ensure t))
 
 (leaf git-gutter
   :doc "Port of Sublime Text plugin GitGutter"
@@ -3160,6 +3121,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :config
   (setq calendar-holidays (append japanese-holidays holiday-local-holidays holiday-other-holidays))
   )
+
 ;; (leaf online-judge
 ;;   :when (executable-find "oj")
 ;;   :vc (:url :url "https://github.com/ROCKTAKEY/emacs-online-judge")
@@ -3167,7 +3129,94 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
 ;;   :custom ((online-judge-directories . '("~/Dropbox/atcoder/"))
 ;;            (online-judge-command-name . nil)))
 
+(leaf kind-icon
+  :doc "Completion kind icons"
+  :req "emacs-27.1" "svg-lib-0"
+  :tag "completion" "emacs>=27.1"
+  :url "https://github.com/jdtsmith/kind-icon"
+  :added "2022-11-26"
+  :emacs>= 27.1
+  :ensure t
+  :disabled t
+  :when (eq window-system 'x)
+  :after corfu
+  :pre-setq (kind-icon-defalut-face . 'corfu-default)
+  :config
+  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
+(leaf marginalia
+  :doc "Enrich existing commands with completion annotations"
+  :req "emacs-26.1"
+  :tag "emacs>=26.1"
+  :url "https://github.com/minad/marginalia"
+  :added "2021-09-06"
+  :emacs>= 26.1
+  :ensure t
+  :unless (string= (system-name) "RaspberryPi")
+  :global-minor-mode t
+  )
+
+(leaf *mySaveFrame
+  :disabled t
+  :when (or (eq system-type 'darwin)
+            (eq system-type 'windows-nt))
+  :hook ((emacs-startup-hook . my-load-frame-size)
+         (kill-emacs-hook . my-save-frame-size))
+  :defun my-save-frame-size my-load-frame-size
+  :defvar my-save-frame-file
+  :custom ((my-save-frame-file . "~/.emacs.d/.framesize"))
+  :preface
+  (defun my-save-frame-size ()
+    "現在のフレームの位置、大きさを'my-save-frame-file'に保存します"
+    (interactive)
+    (let* ((param (frame-parameters (selected-frame)))
+           (current-height (frame-height))
+           (current-width (frame-width))
+           (current-top-margin (if (integerp (cdr (assoc 'top param)))
+                                   (cdr (assoc 'top param))
+                                 0))
+
+           (current-left-margin (if (integerp (cdr (assoc 'top param)))
+                                    (cdr (assoc 'top param))
+                                  0))
+           (buf nil)
+           (file my-save-frame-file))
+      ;; ファイルと関連付けられてたバッファ作成
+      (unless (setq buf (get-file-buffer (expand-file-name file)))
+        (setq buf (find-file-noselect (expand-file-name file))))
+      (set-buffer buf)
+      (erase-buffer)
+      ;; ファイル読み込み時に直接評価させる内容を記述
+      (insert
+       (concat
+        "(set-frame-size (selected-frame) "(int-to-string current-width)" "(int-to-string current-height)")\n"
+        "(set-frame-position (selected-frame) "(int-to-string current-left-margin)" "(int-to-string current-top-margin)")\n"
+        ))
+      (save-buffer)))
+  (defun my-load-frame-size ()
+    "`my-save-fram-file'に保存されたフレームの位置、大きさを復元します"
+    (interactive)
+    (let ((file my-save-frame-file))
+      (when (file-exists-p file)
+        (load-file file))))
+  :config
+  (run-with-idle-timer 60 t 'my-save-frame-size)
+  )
+
+(leaf orderless
+  :doc "Completion style for matching regexps in any order"
+  :req "emacs-26.1"
+  :tag "extensions" "emacs>=26.1"
+  :url "https://github.com/oantolin/orderless"
+  :added "2021-09-05"
+  :emacs>= 26.1
+  :ensure t
+  :defvar (orderless-style-dispatchers)
+  :custom ((completion-styles . '(basic  orderless))
+           (completion-category-defaults . nil)
+           (completion-category-overrides . nil)
+           )
+  )
 
 (leaf page-ext
   :doc "extended page handling commands"
@@ -3196,33 +3245,38 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
 
 (leaf puni
   :doc "Parentheses Universalistic"
-  :req "emacs-26.1"
-  :tag "tools" "lisp" "convenience" "emacs>=26.1"
-  :url "https://github.com/AmaiKinono/puni"
-  :added "2025-02-13"
-  :emacs>= 26.1
   :ensure t
   :global-minor-mode puni-global-mode
   :bind (puni-mode-map
          ;; default mapping
-         ;; ("C-M-f" . puni-forward-sexp)
-         ;; ("C-M-b" . puni-backward-sexp)
-         ;; ("C-M-a" . puni-beginning-of-sexp)
-         ;; ("C-M-e" . puni-end-of-sexp)
-         ;; ("M-)" . puni-syntactic-forward-punct)
-         ;; ("C-M-u" . backward-up-list)
-         ;; ("C-M-d" . backward-down-list)
-         ("C-)" . puni-slurp-forward)
-         ("C-}" . puni-barf-forward)
-         ("M-(" . puni-wrap-round)
+         ("C-c C-SPC" . puni-mark-list-around-point)
+         ("C-c M-SPC" . puni-mark-sexp-around-point)
+         ("C-M-SPC" . puni-expand-region)
+         ("C-(" . puni-wrap-round)
+         ;; ("C-[" . puni-wrap-square)
+         ("C-{" . puni-wrap-curly)
+         ("C-<" . puni-wrap-angle)
+         ("C-." . puni-slurp-forward)
+         ("C->" . puni-barf-forward)
+         ("C-]" . puni-slurp-backward)
+         ("C-}" . puni-barf-backward)
          ("M-s" . puni-splice)
          ("M-r" . puni-raise)
          ("M-U" . puni-splice-killing-backward)
          ("M-z" . puni-squeeze))
+  :preface
+  (define-key input-decode-map (kbd "C-[") [control-bracket])
+  (global-set-key [control-bracket] 'puni-wrap-square)
   :config
   (leaf elec-pair
     :doc "Automatic parenthesis pairing"
-    :global-minor-mode electric-pair-mode))
+    :global-minor-mode electric-pair-mode)
+  :defer-config
+  (define-key puni-mode-map (kbd "C-d") nil)
+  (define-key puni-mode-map (kbd "C-k") nil)
+  (define-key puni-mode-map (kbd "C-w") nil)
+  (define-key puni-mode-map (kbd "M-DEL") nil)
+)
 
 (leaf rainbow-delimiters
   :doc "Highlight brackets according to their depth"
@@ -3256,6 +3310,12 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
     )
   :global-minor-mode (recentf-mode)
   )
+
+(leaf savehist
+  :doc "Save minibuffer history"
+  :tag "builtin"
+  :added "2021-09-05"
+  :global-minor-mode t)
 
 (leaf smartparens
   :doc "Automatic insertion, wrapping and paredit-like navigation with user defined pairs."
@@ -3303,6 +3363,40 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :emacs>= 24
   :ensure t)
 
+(leaf tempel
+  :doc "Tempo templates/snippets with in-buffer field editing"
+  :req "emacs-27.1" "compat-29.1.4.0"
+  :tag "wp" "tools" "languages" "abbrev" "emacs>=27.1"
+  :url "https://github.com/minad/tempel"
+  :added "2023-11-10"
+  :emacs>= 27.1
+  :ensure t
+  :after corfu
+  :bind (("C-+" . tempel-complete)
+         ("C-*" . tempel-insert)
+         (tempel-map
+          ("C-S-n" . tempel-next)
+          ("C-S-p" . tempel-previous)
+          ("C-RET" . tempel-done)
+          )
+         )
+  :config
+  (leaf tempel-collection
+    :doc "Collection of templates for Tempel"
+    :req "tempel-0.5" "emacs-29.1"
+    :tag "tools" "emacs>=29.1"
+    :url "https://github.com/Crandel/tempel-collection"
+    :added "2023-11-10"
+    :emacs>= 29.1
+    :ensure t
+    :after tempel)
+  :preface
+  (defun tempel-setup-capf ()
+    (setq-local completion-at-point-functions
+                (cons #'tempel-complete
+                      completion-at-point-functions)))
+  )
+
 (leaf undo-tree
   :doc "Treat undo history as a tree"
   :tag "tree" "history" "redo" "undo" "files" "convenience"
@@ -3345,398 +3439,6 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :global-minor-mode t
   )
 
-(leaf consult
-  :doc "Consulting completing-read"
-  :req "emacs-26.1"
-  :tag "emacs>=26.1"
-  :url "https://github.com/minad/consult"
-  :added "2021-09-05"
-  :emacs>= 26.1
-  :ensure t
-  :bind (("M-g g" . consult-goto-line)
-         ("C-x b" . consult-buffer)
-         ("C-c i" . consult-imenu)
-         ("M-y" . consult-yank-pop)
-         ("C-o" . consult-line)
-         ("C-c h" . consult-recent-file)
-         ("M-g g" . consult-goto-line)
-         ("C-x r l" . consult-bookmark)
-         (minibuffer-local-map
-          ("C-c h" . consult-history)))
-
-  :custom `((consult-preview-key . nil)
-            (consult-line-start-from-top . t)
-            (xref-show-xrefs-function . #'consult-xref)
-            (xref-show-definitions-function . #'consult-xref))
-  )
-
-(leaf orderless
-  :doc "Completion style for matching regexps in any order"
-  :req "emacs-26.1"
-  :tag "extensions" "emacs>=26.1"
-  :url "https://github.com/oantolin/orderless"
-  :added "2021-09-05"
-  :emacs>= 26.1
-  :ensure t
-  :defvar (orderless-style-dispatchers)
-  :custom ((completion-styles . '(basic  orderless))
-           (completion-category-defaults . nil)
-           (completion-category-overrides . nil)
-           )
-  )
-
-(leaf marginalia
-  :doc "Enrich existing commands with completion annotations"
-  :req "emacs-26.1"
-  :tag "emacs>=26.1"
-  :url "https://github.com/minad/marginalia"
-  :added "2021-09-06"
-  :emacs>= 26.1
-  :ensure t
-  :unless (string= (system-name) "RaspberryPi")
-  :global-minor-mode t
-  )
-
-(leaf embark
-  :doc "Conveniently act on minibuffer completions"
-  :req "emacs-26.1"
-  :tag "convenience" "emacs>=26.1"
-  :url "https://github.com/oantolin/embark"
-  :added "2021-09-17"
-  :emacs>= 26.1
-  :ensure t
-  ;; :disabled t
-  :bind ((minibuffer-mode-map
-          :package emacs
-          ("M-." . embark-dwim)
-          ("C-." . embark-act)))
-  ;; :custom ((prefix-help-command . #'embark-prefix-help-command))
-  :config
-  (leaf embark-consult
-    :doc "Consult integration for Embark"
-    :req "emacs-26.1" "embark-0.12" "consult-0.10"
-    :tag "convenience" "emacs>=26.1"
-    :url "https://github.com/oantolin/embark"
-    :added "2022-03-24"
-    :emacs>= 26.1
-    :ensure t))
-
-(leaf savehist
-  :doc "Save minibuffer history"
-  :tag "builtin"
-  :added "2021-09-05"
-  :global-minor-mode t)
-
-;; (leaf *mySaveFrame
-;;     :when (or (eq system-type 'darwin)
-;;               (eq system-type 'windows-nt))
-;;     :hook ((emacs-startup-hook . my-load-frame-size)
-;;            (kill-emacs-hook . my-save-frame-size))
-;;     :defun my-save-frame-size my-load-frame-size
-;;     :defvar my-save-frame-file
-;;     :custom ((my-save-frame-file . "~/.emacs.d/.framesize"))
-;;     :preface
-;;     (defun my-save-frame-size ()
-;;       "現在のフレームの位置、大きさを'my-save-frame-file'に保存します"
-;;       (interactive)
-;;       (let* ((param (frame-parameters (selected-frame)))
-;;              (current-height (frame-height))
-;;              (current-width (frame-width))
-;;              (current-top-margin (if (integerp (cdr (assoc 'top param)))
-;;                                      (cdr (assoc 'top param))
-;;                                    0))
-
-;;              (current-left-margin (if (integerp (cdr (assoc 'top param)))
-;;                                       (cdr (assoc 'top param))
-;;                                     0))
-;;              (buf nil)
-;;              (file my-save-frame-file))
-;;         ;; ファイルと関連付けられてたバッファ作成
-;;         (unless (setq buf (get-file-buffer (expand-file-name file)))
-;;           (setq buf (find-file-noselect (expand-file-name file))))
-;;         (set-buffer buf)
-;;         (erase-buffer)
-;;         ;; ファイル読み込み時に直接評価させる内容を記述
-;;         (insert
-;;          (concat
-;;           "(set-frame-size (selected-frame) "(int-to-string current-width)" "(int-to-string current-height)")\n"
-;;           "(set-frame-position (selected-frame) "(int-to-string current-left-margin)" "(int-to-string current-top-margin)")\n"
-;;           ))
-;;         (save-buffer)))
-;;     (defun my-load-frame-size ()
-;;       "`my-save-fram-file'に保存されたフレームの位置、大きさを復元します"
-;;       (interactive)
-;;       (let ((file my-save-frame-file))
-;;         (when (file-exists-p file)
-;;           (load-file file))))
-;;     :config
-;;     (run-with-idle-timer 60 t 'my-save-frame-size)
-;;     )
-
-(leaf affe
-  :doc "Asynchronous Fuzzy Finder for Emacs"
-  :req "emacs-28.1" "consult-1.7"
-  :tag "completion" "files" "matching" "emacs>=28.1"
-  :url "https://github.com/minad/affe"
-  :added "2025-01-21"
-  :emacs>= 28.1
-  :ensure t
-  :custom ((affe-highlight-function . 'orderless-highlight-matches)
-           (affe-regexp-function . 'orderless-pattern-compiler))
-  )
-
-(leaf corfu-terminal
-  :unless (display-graphic-p)
-  :vc (:url "https://codeberg.org/akib/emacs-corfu-terminal.git")
-  :config
-  (corfu-terminal-mode +1)
-  )
-
-(leaf affe
-  :doc "Asynchronous Fuzzy Finder for Emacs"
-  :req "emacs-28.1" "consult-1.7"
-  :tag "completion" "files" "matching" "emacs>=28.1"
-  :url "https://github.com/minad/affe"
-  :added "2025-01-21"
-  :emacs>= 28.1
-  :ensure t
-  :custom ((affe-highlight-function . 'orderless-highlight-matches)
-           (affe-regexp-function . 'orderless-pattern-compiler))
-  )
-
-(leaf *corfu-terminal
-  :unless (display-graphic-p)
-  :el-get
-  (corfu-terminal :url "https://codeberg.org/akib/emacs-corfu-terminal.git"
-                  (corfu-terminal-mode +1))
-  )
-
-(leaf corfu
-  :doc "Completion Overlay Region FUnction"
-  :req "emacs-27.1"
-  :tag "emacs>=27.1"
-  :url "https://github.com/minad/corfu"
-  :added "2021-09-11"
-  :emacs>= 27.1
-  :ensure t
-  ;; :require t
-  ;; :defvar (corfu-auto)
-  :when (eq window-system 'x)
-  :hook ((minibuffer-setup-hook . my/corfu-enable-in-minibuffer)
-         ((eshell-mode-hook
-           ein:notebook-mode-hook) . (lambda ()
-                                       (setq-local corfu-auto nil)
-                                       (corfu-mode)))
-         ;; (corfu-mode-hook . corfu-popupinfo-mode)
-         )
-  :global-minor-mode (global-corfu-mode
-                      corfu-popupinfo-mode)
-  :hook ((minibuffer-setup-hook . my/corfu-enable-in-minibuffer)
-         ((eshell-mode-hook
-           ein:notebook-mode-hook) . (lambda ()
-                                       (setq-local corfu-auto nil)
-                                       (corfu-mode)))
-         ;; (corfu-mode-hook . corfu-popupinfo-mode)
-         )
-  :custom ((tab-always-indent        . 'complete)
-           (corfu-cycle              . t)
-           (corfu-auto               . t)
-           (corfu-auto-prefix        . 3)
-           (corfu-auto-delay         . 0)
-           ;; (corfu-quit-no-match   . 'separator)
-           ;; (corfu-separator       . ? \s)
-           ;; (corfu-preselect-first . nil)
-           )
-  :bind
-  ((corfu-map
-    ("C-s" . corfu-insert-separator)
-    ("C-SPC" . corfu-insert-separator)
-    ("C-c SPC" . corfu-insert-separator)
-    ("M-SPC" . corfu-insert-separator))) ;SPCにするとSKKのへんかんできなくなる
-  :init
-  (defun my/corfu-enable-in-minibuffer ()
-    (when (where-is-internal #'completion-at-point (list (current-local-map)))
-      (setq-local corfu-auto nil)
-      (corfu-mode 1)))
-  (defun my/corfu-insert-and-send ()
-    (interactive)
-    (corfu-insert)
-    (cond
-     ((and (derived-mode-p 'eshell-mode) (fboundp 'eshell-send-input))
-      (eshell-send-input)
-      ((derived-mode-p 'comint-mode)
-       (comint-send-input)))))
-  )
-
-(leaf kind-icon
-  :doc "Completion kind icons"
-  :req "emacs-27.1" "svg-lib-0"
-  :tag "completion" "emacs>=27.1"
-  :url "https://github.com/jdtsmith/kind-icon"
-  :added "2022-11-26"
-  :emacs>= 27.1
-  :ensure t
-  :disabled t
-  :when (eq window-system 'x)
-  :after corfu
-  :pre-setq (kind-icon-defalut-face . 'corfu-default)
-  :config
-  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
-
-(leaf tempel
-  :doc "Tempo templates/snippets with in-buffer field editing"
-  :req "emacs-27.1" "compat-29.1.4.0"
-  :tag "wp" "tools" "languages" "abbrev" "emacs>=27.1"
-  :url "https://github.com/minad/tempel"
-  :added "2023-11-10"
-  :emacs>= 27.1
-  :ensure t
-  :after corfu
-  :bind (("C-+" . tempel-complete)
-         ("C-*" . tempel-insert)
-         (tempel-map
-          ("C-S-n" . tempel-next)
-          ("C-S-p" . tempel-previous)
-          ("C-RET" . tempel-done)
-          )
-         )
-  :config
-  (leaf tempel-collection
-    :doc "Collection of templates for Tempel"
-    :req "tempel-0.5" "emacs-29.1"
-    :tag "tools" "emacs>=29.1"
-    :url "https://github.com/Crandel/tempel-collection"
-    :added "2023-11-10"
-    :emacs>= 29.1
-    :ensure t
-    :after tempel)
-  :preface
-  (defun tempel-setup-capf ()
-    (setq-local completion-at-point-functions
-                (cons #'tempel-complete
-                      completion-at-point-functions)))
-  )
-
-(leaf cape
-  :doc "Completion At Point Extensions"
-  :req "emacs-27.1"
-  :tag "emacs>=27.1"
-  :url "https://github.com/minad/cape"
-  :added "2022-03-31"
-  :emacs>= 27.1
-  :ensure t
-  ;; :after corfu
-  ;; :disabled t
-  ;; :hook ((ein:notebook-mode-hook . my/set-ein-capf)
-  ;;        (lsp-completion-mode . corfu-setup-lsp))
-  :config
-  ;; (add-to-list 'completion-at-point-functions #'tempel-complete)
-  (add-to-list 'completion-at-point-functions #'cape-file)
-  ;; (add-to-list 'completion-at-point-functions #'cape-dict)
-  ;; (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-  (add-to-list 'completion-at-point-functions #'cape-keyword)
-  ;; (add-to-list 'completion-at-point-functions #'cape-symbol)
-  ;; (add-to-list 'completion-at-point-functions #'cape-abbrev)
-  ;; (add-to-list 'completion-at-point-functions #'cape-elisp-block)
-  ;; (add-to-list 'completion-at-point-functions #'cape-tex)
-  :init
-  (defun corfu-setup-lsp ()
-    (interactive)
-    ""
-    (setq-local completion-at-point-functions
-                (list (cape-capf-buster
-                       (cape-capf-super
-                        #'lsp-completion-at-point
-                        #'cape-abbrev
-                        #'cape-keyword
-                        #'cape-file)))))
-
-  (defun my/convert-super-capf (arg-capf)
-    (list (cape-capf-noninterruptible
-           (cape-capf-accept-all
-            (cape-capf-buster arg-capf
-                              #'cape-file
-                              )))
-          #'cape-dict))
-
-  (defun my/set-ein-capf ()
-    (interactive)
-    ;; (setq-local completion-at-point-functions
-    ;;             (my/convert-super-capf (cape-company-to-capf #'company-jedi)))
-    (setq-local completion-at-point-functions
-                (list (cape-capf-noninterruptible
-                       (cape-capf-accept-all
-                        (cape-capf-buster
-                         (cape-company-to-capf #'company-jedi))))))
-    (add-to-list 'completion-at-point-functions #'cape-file t)
-    (add-to-list 'completion-at-point-functions #'cape-dict t)
-    )
-  (defun my/reset-capf ()
-    (interactive)
-    (setq completion-at-point-functions
-          (list (cape-capf-noninterruptible
-                 (cape-capf-accept-all
-                  (cape-capf-buster #'cape-elisp-symbol)))))
-    )
-
-  )
-
-(leaf *emacs
-  :preface
-  ;; Add prompt indicator to `completing-read-multiple'.
-  ;; Alternatively try `consult-completing-read-multiple'.
-  (defun crm-indicator (args)
-    (cons (concat "[CRM] " (car args)) (cdr args)))
-  (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
-
-  ;; Do not allow the cursor in the minibuffer prompt
-  (setq minibuffer-prompt-properties
-        '(read-only t cursor-intangible t face minibuffer-prompt))
-  (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
-
-  ;; Emacs 28: Hide commands in M-x which do not work in the current mode.
-  ;; Vertico commands are hidden in normal buffers.
-  ;; (setq read-extended-command-predicate
-  ;;       #'command-completion-default-include-p)
-
-  ;; Enable recursive minibuffers
-  (setq enable-recursive-minibuffers t))
-
-(leaf puni
-  :doc "Parentheses Universalistic"
-  :ensure t
-  :global-minor-mode puni-global-mode
-  :bind (puni-mode-map
-         ;; default mapping
-         ("C-c C-SPC" . puni-mark-list-around-point)
-         ("C-c M-SPC" . puni-mark-sexp-around-point)
-         ("C-M-SPC" . puni-expand-region)
-         ("C-(" . puni-wrap-round)
-         ;; ("C-[" . puni-wrap-square)
-         ("C-{" . puni-wrap-curly)
-         ("C-<" . puni-wrap-angle)
-         ("C-." . puni-slurp-forward)
-         ("C->" . puni-barf-forward)
-         ("C-]" . puni-slurp-backward)
-         ("C-}" . puni-barf-backward)
-         ("M-s" . puni-splice)
-         ("M-r" . puni-raise)
-         ("M-U" . puni-splice-killing-backward)
-         ("M-z" . puni-squeeze))
-  :preface
-  (define-key input-decode-map (kbd "C-[") [control-bracket])
-  (global-set-key [control-bracket] 'puni-wrap-square)
-  :config
-  (leaf elec-pair
-    :doc "Automatic parenthesis pairing"
-    :global-minor-mode electric-pair-mode)
-  :defer-config
-  (define-key puni-mode-map (kbd "C-d") nil)
-  (define-key puni-mode-map (kbd "C-k") nil)
-  (define-key puni-mode-map (kbd "C-w") nil)
-  (define-key puni-mode-map (kbd "M-DEL") nil)
-)
-
 (leaf visual-regexp-steroids
   :doc "Extends visual-regexp to support other regexp engines"
   :req "visual-regexp-1.1"
@@ -3752,39 +3454,6 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
          ("C-M-r" . vr/isearch-backward)
          ("C-M-s" . vr/isearch-forward))
   :custom `((vr/engine . 'python)))
-
-(leaf vterm
-  :doc "Fully-featured terminal emulator"
-  :req "emacs-25.1"
-  :tag "terminals" "emacs>=25.1"
-  :url "https://github.com/akermu/emacs-libvterm"
-  :added "2023-02-19"
-  :emacs>= 25.1
-  :ensure t
-  :when (string= system-type 'gnu/linux)
-  :custom ((vterm-max-scrollback . 10000)
-           (vterm-buffer-name-string . "vterm: %s")
-           )
-  :bind (("C-c v" . multi-vterm)
-         ;; ("s-v"   . multi-vterm)
-         (:vterm-mode-map
-          ("C-m" . vterm-send-return)
-          ("C-h" . vterm-send-backspace)
-          ("C-y" . vterm-yank)
-          ;; ("C-l" . skk-latin-mode)
-          ;; ("C-j" . skk-hiragana-set)
-          ))
-  :config
-  (leaf multi-vterm
-    :doc "Like multi-term.el but for vterm"
-    :req "emacs-26.3" "vterm-0.0" "project-0.3.0"
-    :tag "processes" "terminals" "emacs>=26.3"
-    :url "https://github.com/suonlight/multi-libvterm"
-    :added "2023-03-12"
-    :emacs>= 26.3
-    :ensure t
-    :after vterm project)
-  )
 
 (leaf vundo
   :doc "Visual undo tree"
