@@ -667,6 +667,7 @@
      :after vterm)
   )
 
+<<<<<<< HEAD
 (leaf *global-setting
   ;; :disabled t
   :config
@@ -824,9 +825,71 @@
     (local-set-key (kbd "C-h") 'delete-backward-char))
   :init
   (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char))
+=======
+;; (leaf *globa-keybinding
+;;   :disabled t
+;;   :hook (minibuffer-setup-hook . minibuffer-delete-backward-char)
+;;   :config
+;;   :bind (;; C-m : 改行プラスインデント
+;;          ("C-m"           . newline-and-indent)
+;;          ;; ;; exwm用
+;;          ("C-h"           . delete-backward-char)
+;;          ("M-h"           . backward-kill-word)
+;;          ;; C-x ? : help
+;;          ("C-c ?"         . help-command)
+;;          ;;折り返しトグルコマンド
+;;          ("C-c l"         . toggle-truncate-lines)
+;;          ;; 行番号を表示
+;;          ("C-c t"         . display-line-numbers-mode)
+;;          ;;スペース、改行、タブを表示する
+;;          ("C-c w"         . whitespace-mode)
+;;          ;; 検索結果のリストアップ
+;;          ("C-c o"         . occur)
+;;          ;; S式の評価
+;;          ("C-c C-j"       . eval-print-last-sexp)
+;;          ;; async shell command
+;;          ("s-s"           . async-shell-command)
+;;          ("s-S"           . window-capcher)
+;;          )
+
+;;   :preface
+;;   (defun upperLight ()
+;;     (interactive)
+;;     (start-process-shell-command
+;;      "upper light"
+;;      nil
+;;      (format "xbacklight -inc 10")))
+;;   (defun lowerLight ()
+;;     (interactive)
+;;     (start-process-shell-command
+;;      "lower light"
+;;      nil
+;;      (format "xbacklight -dec 10")))
+;;   (defun minibuffer-delete-backward-char ()
+;;     (local-set-key (kbd "C-h") 'delete-backward-char))
+;;   :init (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char)
+;;   )
+>>>>>>> fafb2d1e (fix global-seggint for each OS)
 
 (leaf *window-tools
-  :bind (("C-x x s" . my-xset))
+  :hook (minibuffer-setup-hook . minibuffer-delete-backward-char)
+  :init (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char)
+  :bind (("C-x x s" . my-xset)
+         ("C-c r" . window-resizer)
+         ("C-S-n" . scroll-up_alt)
+         ("C-S-p" . scroll-down_alt)
+         ("C-m"           . newline-and-indent)
+         ("C-h"           . delete-backward-char)
+         ("M-h"           . backward-kill-word)
+         ("C-c ?"         . help-command)
+         ("C-c l"         . toggle-truncate-lines)
+         ("C-c t"         . display-line-numbers-mode)
+         ("C-c w"         . whitespace-mode)
+         ("C-c o"         . occur)
+         ("C-c C-j"       . eval-print-last-sexp)
+         ("s-s"           . async-shell-command)
+         ("s-S"           . window-capcher))
+
   :custom ((scroll-preserve-screen-position . t)
            ;; スクロール開始のマージン
            (scroll-margin                   . 5)
@@ -836,6 +899,73 @@
            ;; 1画面スクロール時にカーソルの画面上の位置をなるべく変えない
            (scroll-preserve-screen-position . t)
            (windmove-wrap-around            . t))
+  :config
+  (leaf *ForMac
+    :when (eq system-type 'darwin)
+    :bind (("s-n" . windmove-down)
+           ("s-f" . windmove-right)
+           ("s-b" . windmove-left)
+           ("s-p" . windmove-up)
+           ("s-a" . zoom-window-zoom)
+           ("s-q" . kill-current-buffer)
+           ("s-h" . delete-window)
+           ("s-o" . consult-buffer)))
+
+  (leaf *ForWindows
+    :when (eq system-type 'windows-nt)
+    :bind (("M-n" . windmove-down)
+           ("M-f" . windmove-right)
+           ("M-b" . windmove-left)
+           ("M-p" . windmove-up)
+           ("M-a" . zoom-window-zoom)
+           ("M-q" . kill-current-buffer)
+           ("M-h" . delete-window)
+           ("C-M-i" . output_toggle)
+           ("C-M-m" . mute_toggle)
+           ("C-M-n" . lower_volume )
+           ("C-M-p" . upper_volume)
+           ("M-d" . app-launcher-run-app)
+           ("M-o" . consult-buffer)))
+
+  (leaf *ForLinux
+    :when (eq system-type 'gnu/linux)
+    :config
+    (leaf *ForWsl
+      :when (string-match "microsoft" (shell-command-to-string "uname -r"))
+      :config
+      (leaf *SX12
+        :when (string= (system-name) "sx12toshiaki")
+        :bind (("s-f" . windmove-right)
+               ("s-b" . windmove-left)
+               ("s-a" . zoom-window-zoom)
+               ("s-h" . delete-window)
+               ("s-d" . app-launcher-run-app)
+               ("s-n" . windmove-down)
+               ("s-p" . windmove-up)
+               ("s-q" . kill-current-buffer)
+               ("s-o" . consult-buffer)
+               ("M-q" . kill-current-buffer)
+               ("M-o" . consult-buffer))
+        :config
+        (my-xset))
+
+      (leaf *CLI
+        :unless (eq window-system 'x)
+        :bind (("M-n" . windmove-down)
+               ("M-f" . windmove-right)
+               ("M-b" . windmove-left)
+               ("M-p" . windmove-up)
+               ("M-a" . zoom-window-zoom)
+               ("M-q" . kill-current-buffer)
+               ("M-h" . delete-window)
+               ("C-M-i" . output_toggle)
+               ("C-M-m" . mute_toggle)
+               ("C-M-n" . lower_volume )
+               ("C-M-p" . upper_volume)
+               ("M-d" . app-launcher-run-app)
+               ("M-o" . consult-buffer))
+        :custom (global-hl-line-mode . t))
+      )
   :preface
 ======= end
   ;; ウィンドウのサイズ変更
@@ -878,6 +1008,26 @@
      "xset 再設定"
      nil
      (format "xset r rate 250 40")))
+  (defun scroll-up_alt ()
+    (interactive)
+    (scroll-up 1))
+  (defun scroll-down_alt ()
+    (interactive)
+    (scroll-down 1))
+  (defun upperLight ()
+    (interactive)
+    (start-process-shell-command
+     "upper light"
+     nil
+     (format "xbacklight -inc 10")))
+  (defun lowerLight ()
+    (interactive)
+    (start-process-shell-command
+     "lower light"
+     nil
+     (format "xbacklight -dec 10")))
+  (defun minibuffer-delete-backward-char ()
+    (local-set-key (kbd "C-h") 'delete-backward-char))
   :config
   (leaf zoom-window
     :doc "Zoom window like tmux"
@@ -888,72 +1038,11 @@
     :emacs>= 24.3
     :ensure t
     :custom (zoom-window-mode-line-color . "RoyalBlue4"))
-
-  (leaf *ForMac
-    :when (eq system-type 'darwin)
-    :bind (("s-n" . windmove-down)
-           ("s-f" . windmove-right)
-           ("s-b" . windmove-left)
-           ("s-p" . windmove-up)
-           ("s-a" . zoom-window-zoom)
-           ("s-q" . kill-current-buffer)
-           ("s-h" . delete-window)
-           ("s-o" . consult-buffer)))
-
-  (leaf *ForWindows
-    :when (eq system-type 'windows-nt)
-    :bind (("M-n" . windmove-down)
-           ("M-f" . windmove-right)
-           ("M-b" . windmove-left)
-           ("M-p" . windmove-up)
-           ("M-a" . zoom-window-zoom)
-           ("M-q" . kill-current-buffer)
-           ("M-h" . delete-window)
-           ("C-M-i" . output_toggle)
-           ("C-M-m" . mute_toggle)
-           ("C-M-n" . lower_volume )
-           ("C-M-p" . upper_volume)
-           ("M-d" . app-launcher-run-app)
-           ("M-o" . consult-buffer)))
-
-  (leaf *ForWsl
-    ;; :when (eq system-type 'gnu/linux)
-    :when (eq system-type 'gnu/linux)
-    :when (string= (system-name) "sx12toshiaki")
-    :bind (("s-f" . windmove-right)
-           ("s-b" . windmove-left)
-           ("s-a" . zoom-window-zoom)
-           ("s-h" . delete-window)
-           ("s-d" . app-launcher-run-app)
-           ("s-n" . windmove-down)
-           ("s-p" . windmove-up)
-           ("s-q" . kill-current-buffer)
-           ("s-o" . consult-buffer)
-           ("M-q" . kill-current-buffer)
-           ("M-o" . consult-buffer)
-           )
-    :config
-    (my-xset)
     )
 
-  (leaf *ForCUI
-    ;; :unless (string= (system-name) "sx12_toshiaki")
-    :unless (eq window-system 'x)
-    :when (eq system-type 'gnu/linux)
-    :bind (("M-n" . windmove-down)
-           ("M-f" . windmove-right)
-           ("M-b" . windmove-left)
-           ("M-p" . windmove-up)
-           ("M-a" . zoom-window-zoom)
-           ("M-q" . kill-current-buffer)
-           ("M-h" . delete-window)
-           ("C-M-i" . output_toggle)
-           ("C-M-m" . mute_toggle)
-           ("C-M-n" . lower_volume )
-           ("C-M-p" . upper_volume)
-           ("M-d" . app-launcher-run-app)
-           ("M-o" . consult-buffer))
-    :custom (global-hl-line-mode . t))
+
+
+
 
   (leaf *mySaveFrame
     :when (or (eq system-type 'darwin)
@@ -999,6 +1088,7 @@
           (load-file file))))
     :config
     (run-with-idle-timer 60 t 'my-save-frame-size)))
+
 
 (leaf info
   ;; info日本語化
@@ -1696,10 +1786,14 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :after git-commit magit-section with-editor
 ======= end
   :when (executable-find "git")
+<<<<<<< HEAD
 <<<<<<< variant A
   :bind (("C-x g" . magit-status))
 >>>>>>> variant B
 ======= end
+=======
+  :bind (("C-x g" . magit-status))
+>>>>>>> fafb2d1e (fix global-seggint for each OS)
   :config (setenv "GIT_PAGER" ""))
 
 ;; (leaf mew
