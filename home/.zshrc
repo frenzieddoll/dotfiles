@@ -112,7 +112,8 @@ case $(uname -n) in
         # PS1='[\u@\h \W]\$ '
         setxkbmap -layout us > /dev/null 2>&1
         setxkbmap -option ctrl:swap_rwin_rctl > /dev/null 2>&1
-        export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0.0;;
+        # export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0.0
+        ;;
     "JPC20627141" | "JPC20661318")
         export LIBGL_ALWAYS_INDIRECT=1
         export PYTHONPATH="$HOME/Documents/programing/python/modules:$PYTHONPATH"
