@@ -1,0 +1,3 @@
+[general]
+import = ["/home/toshiaki/.config/alacritty/alacritty_default.toml",
+"/home/toshiaki/.config/alacritty/alacritty_local.yml"]
