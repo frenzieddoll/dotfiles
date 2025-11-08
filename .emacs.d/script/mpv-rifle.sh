@@ -8,8 +8,6 @@ fileList (){
     find "$path" -maxdepth 1 -type f -iregex '.*\(mp4\|mkv\|avi\|wmv\|webm\|mpg\|flv\|m4v\|rm\|rmvb\|mpeg\|asf\|mp3\|mov\)$' | sort
 }
 
-startCount (){
-    echo "$(fileList | grep -n "$name" | cut -d ":" -f 1)-1" | bc
-}
+startCount=$(fileList | grep -n "$name" | cut -d ":" -f 1)
 
-mpv --playlist=<(fileList) --playlist-start=$(startCount)
+mpv --playlist=<(fileList) --playlist-start=$((startCount-1))

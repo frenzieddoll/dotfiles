@@ -6,14 +6,18 @@
 ("axis")
 ("tikzpicture")
 ))
-
 (setq YaTeX::usepackage-alist-private '(
+("xfp")
+("pgfcalendar")
+("physics")
 ("fp")
 ("erstyle")
 ("here")
 ("subcaption")
 ))
 (setq user-section-table '(
+("footnote[frame]")
+("symbf")
 ("vspace")
 ("includepgf")
 ("addlegendentry")
@@ -35,7 +39,19 @@
 ("SI" 2)
 ("subcaption")
 ))
+
 (setq user-singlecmd-table '(
+("cdots")
+("exp")
+("sin")
+("hfill")
+("vfill")
+("grad")
+("vdots")
+("vdot")
+("ddots")
+("ln")
+("quad")
 ("cllea")
 ("figurename")
 ("lstlistingname")
@@ -69,6 +85,7 @@
 ))
 
 (setq user-fontsize-table '(
+("textcolor")
 ("color")
 ("mathrm")
 ("mathbf")

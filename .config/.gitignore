@@ -1,5 +1,5 @@
 # gitで管理しない
-*
+/*
 */
 
 # gitで管理する
@@ -8,6 +8,7 @@
 # directory
 !/alacritty/*
 /alacritty/alacritty_local.yml
+!/foot/
 !/gtk-3.0/
 !/libskk/
 !/mpv/

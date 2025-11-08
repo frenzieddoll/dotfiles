@@ -75,7 +75,7 @@
     :init
     ;; optional packages if you want to use :hydra, :el-get, :blackout,,,
     (leaf hydra :ensure t)
-    ;; (leaf el-get :ensure t)
+    (leaf el-get :ensure t)
     (leaf blackout :ensure t)
     ;; (leaf *straight
     ;;   :when (executable-find "git")
@@ -159,9 +159,15 @@
   :added "2021-09-18"
   :emacs>= 24
   :ensure t
+  :disabled t
   :global-minor-mode t
   :custom `((read-process-output-max . ,(* 64 1024 1024))
             (garbage-collection-messages           . t)))
+
+(leaf *gc-conc
+  :hook ((forcus-out-hook . garbage-collect))
+  :custom `((gc-conc-percentage . 0.2)
+            (gc-conc-threshold . ,(* 64 1024 1024))))
 
 (leaf async
     :doc "Asynchronous processing in Emacs"
@@ -272,7 +278,17 @@
             (eval-expression-print-length . nil)
             (eval-expression-print-level  . nil)
             (auto-revert-interval . 0.1)
-            (global-auto-revert-mode . t))
+            (global-auto-revert-mode . t)
+            (native-comp-async-repot-warning-errors . 'silent)
+            ;; パフォーマンスの向上
+            (process-adaptive-read-buffering . t)
+            (auto-mode-case-fold . nil)
+            (bidi-inhibit-bpa . t)
+            (fast-but-imprecise-scrolling . t)
+            (ffap-machine-at-point . 'reject)
+            (idle-update-delay . 1.0)
+            (redisplay-skip-fontification-on-input . t)
+            )
   :init
   (set-face-background 'region "#555")
   (run-with-idle-timer 60.0 t #'garbage-collect)
@@ -283,67 +299,94 @@
     (emacs-lock-mode 'kill))
 )
 
+;; (leaf *fontSetting
+;;   :disabled t
+;;   :config
+;;   (set-face-attribute 'default nil
+;;                           :family "HackGen"
+;;                           :height 130)
+;;   (leaf *forLinux
+;;     :when (eq system-type 'gnu/linux)
+;;     :config
+;;     (leaf *forArchlinux
+;;       :when (string= (system-name) "archlinuxhonda")
+;;       :config
+;;       (set-face-attribute 'default nil
+;;                           :family "HackGen"
+;;                           :height 130))
+;;     (leaf *pi
+;;       ;; :disabled t
+;;       :when (string= (system-name) "RaspberryPi")
+;;       :when (string= (getenv "EXWM") "enable")
+;;       :config
+;;       (set-face-attribute 'default nil
+;;                           :family "HackGen"
+;;                           :height 120)
+;;       (set-fontset-font (frame-parameter nil 'font)
+;;                         'japanese-jisx0208
+;;                         (font-spec :family "HackGen"
+;;                                    :height 120)))
+;;     (leaf *forSX12_wsl
+;;       :when (string= (system-name) "sx12toshiaki")
+;;       :config
+;;       (set-face-attribute 'default nil
+;;                           :family "HackGen"
+;;                           :height 140)
+;;       (set-fontset-font t 'japanese-jisx0208 (font-spec :family "HackGen")))
+;;     (leaf *HP_wsl
+;;       :when (string= (system-name) "JPC20627141")
+;;       :config
+;;       (set-face-attribute 'default nil
+;;                           :family "HackGen"
+;;                           :height 140)
+;;       (set-fontset-font t 'japanese-jisx0208 (font-spec :family "HackGen")))
+;;     )
+;;   (leaf *forMac
+;;     :when (eq system-type 'darwin)
+;;     :config
+;;     (set-face-attribute 'default nil
+;;                         :family "HackGen"
+;;                         :height 150)
+;;     (set-fontset-font (frame-parameter nil 'font)
+;;                       'japanese-jisx0208
+;;                       (font-spec :family "HackGen"
+;;                                  :height 150)))
+;;   (leaf *windows
+;;     :when (eq system-type 'windows-nt)
+;;     :config
+;;     (set-face-attribute 'default nil
+;;                         :family "HackGen"
+;;                         :height 150)
+;;     (set-fontset-font (frame-parameter nil 'font)
+;;                       'japanese-jisx0208
+;;                       (font-spec :family "HackGen"
+;;                                  :height 150)))
+;;   )
+
 (leaf *fontSetting
   :config
-  (set-face-attribute 'default nil
-                          :family "HackGen"
-                          :height 130)
-  (leaf *forLinux
-    :when (eq system-type 'gnu/linux)
-    :config
-    (leaf *forArchlinux
-      :when (string= (system-name) "archlinuxhonda")
-      :config
+  (set-font-size)
+  :preface
+  (defun set-font-size ()
+    (interactive)
+    (let* ((HD   (* 1280 720))
+           (FHD  (* 1920 1080))
+           (WFHD (* 2560 1440))
+           (QFHD (* 3840 2160))
+           (res (* (x-display-pixel-width) (x-display-pixel-height)))
+           (size (cond ((>= res QFHD) 200)
+                       ((>= res WFHD) 140)
+                       ((>= res  FHD) 130)
+                       ((>= res   HD) 120)))
+           )
       (set-face-attribute 'default nil
                           :family "HackGen"
-                          :height 130))
-    (leaf *pi
-      ;; :disabled t
-      :when (string= (system-name) "RaspberryPi")
-      :when (string= (getenv "EXWM") "enable")
-      :config
-      (set-face-attribute 'default nil
-                          :family "HackGen"
-                          :height 120)
-      (set-fontset-font (frame-parameter nil 'font)
+                          :height size)
+      (set-fontset-font t
                         'japanese-jisx0208
-                        (font-spec :family "HackGen"
-                                   :height 120)))
-    (leaf *forSX12_wsl
-      :when (string= (system-name) "sx12toshiaki")
-      :config
-      (set-face-attribute 'default nil
-                          :family "HackGen"
-                          :height 130)
-      (set-fontset-font t 'japanese-jisx0208 (font-spec :family "HackGen")))
-    (leaf *HP_wsl
-      :when (string= (system-name) "JPC20627141")
-      :config
-      (set-face-attribute 'default nil
-                          :family "HackGen"
-                          :height 140)
-      (set-fontset-font t 'japanese-jisx0208 (font-spec :family "HackGen")))
+                        (font-spec :family "HackGen"))
+      (message (format "Set font height: %s" size)))
     )
-  (leaf *forMac
-    :when (eq system-type 'darwin)
-    :config
-    (set-face-attribute 'default nil
-                        :family "HackGen"
-                        :height 150)
-    (set-fontset-font (frame-parameter nil 'font)
-                      'japanese-jisx0208
-                      (font-spec :family "HackGen"
-                                 :height 150)))
-  (leaf *windows
-    :when (eq system-type 'windows-nt)
-    :config
-    (set-face-attribute 'default nil
-                        :family "HackGen"
-                        :height 150)
-    (set-fontset-font (frame-parameter nil 'font)
-                      'japanese-jisx0208
-                      (font-spec :family "HackGen"
-                                 :height 150)))
   )
 
 (leaf dired
@@ -369,7 +412,7 @@
             (dired-launch-mailcap-frend . '("env" "xdg-open"))
             (dired-launch-enable        . t)
             (dired-isearch-filenames    . t)
-            (dired-listing-switches     . ,(purecopy "-alht")))
+            (dired-listing-switches     . ,(purecopy "-alht --time-style=long-iso")))
   :config
   (leaf dired-x :require t)
   (leaf wdired
@@ -404,95 +447,34 @@
     :added "2021-09-05"
     :ensure t
     :require t
-    :unless (string-match "microsoft" (shell-command-to-string "uname -r"))
-    :custom ((dired-open-extensions .
-                                    '(("mkv"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                      ("mp4"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                      ("avi"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                      ("wmv"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                      ("webm"     . "~/.emacs.d/script/mpv-rifle.sh")
-                                      ("mpg"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                      ("flv"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                      ("m4v"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                      ("mp3"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                      ("flac"     . "~/.emacs.d/script/mpv-rifle.sh")
-                                      ("wav"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                      ("m4a"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                      ("3gp"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                      ("rm"       . "~/.emacs.d/script/mpv-rifle.sh")
-                                      ("rmvb"     . "~/.emacs.d/script/mpv-rifle.sh")
-                                      ("mpeg"     . "~/.emacs.d/script/mpv-rifle.sh")
-                                      ("VOB"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                      ("mov"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                      ("m3u8"      . "mpv")
-                                      ("m3u"      . "mpv")
-                                      ("iso"      . "mpv dvd:// -dvd-device")
-                                      ("playlist" . "mpv --playlist")
-                                      ("exe"      . "wine")
-                                      ("pdf"      . "zathura")
-                                      ;; ("zip"      . "zathura")
-                                      ;; ("rar"      . "zathura")
-                                      ;; ("tar"      . "zathura")
-                                      ("zip"      . "YACReader")
-                                      ("rar"      . "YACReader")
-                                      ("tar"      . "YACReader")
-                                      ;; ("zip"      . "mcomix")
-                                      ;; ("rar"       . "mcomix")
-                                      ;; ("tar"       . "mcomix")
-                                      ("xls"      . "xdg-open")
-                                      ("xlsx"     . "xdg-open")
-                                      ("jpg"      . "sxiv-rifle.sh")
-                                      ("png"      . "sxiv-rifle.sh")
-                                      ("jpeg"     . "sxiv-rifle.sh")
-                                      ("gif"      . "sxiv-rifle.sh")
-                                      ("png"      . "sxiv-rifle.sh")
-                                      ("webp"     . "sxiv-rifle.sh")
-                                      ))))
-  (leaf dired-open
-    :doc "Open files from dired using using custom actions"
-    :req "dash-2.5.0" "dired-hacks-utils-0.0.1"
-    :tag "files"
-    :added "2021-09-05"
-    :ensure t
-    ;; :after dired-hacks-utils
-    :when (eq system-type 'darwin)
-    :custom ((dired-open-extensions .
-                                    '(("key"  . "open")
-                                      ("docx" . "open")
-                                      ("pdf"  . "open")
-                                      ("cmdf" . "open")
-                                      ("xlsx" . "open")
-                                      ("pxp"  . "open")
-                                      ("bmp"  . "open")
-                                      ))))
-  (leaf dired-open
-    :when (string-match "microsoft" (shell-command-to-string "uname -r"))
-    :when (eq system-type 'gnu/linux)
-    :bind ((dired-mode-map
-            :package dired
-            ("w" . open-file-by-windowsApp-forWSL)))
-    :custom ((dired-open-extensions . '(
-                                        ;; ("mkv"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("mp4"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("avi"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("wmv"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("webm"     . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("mpg"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("flv"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("m4v"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("mp3"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("flac"     . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("wav"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("m4a"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("3gp"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("rm"       . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("rmvb"     . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("mpeg"     . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("VOB"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("mov"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("iso"      . "mpv dvd:// -dvd-device")
-                                        ;; ("playlist" . "mpv --playlist")
-                                        ;; ("exe"      . "wine")
+    :after dired
+    :defer-config
+    (leaf dired-open-linux*
+      :unless (string-match "microsoft" (shell-command-to-string "uname -r"))
+      :custom ((dired-open-extensions .
+                                      '(("mkv"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ("mp4"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ("avi"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ("wmv"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ("webm"     . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ("mpg"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ("flv"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ("m4v"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ("mp3"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ("flac"     . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ("wav"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ("m4a"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ("3gp"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ("rm"       . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ("rmvb"     . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ("mpeg"     . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ("VOB"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ("mov"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                        ("m3u8"      . "mpv")
+                                        ("m3u"      . "mpv")
+                                        ("iso"      . "mpv dvd:// -dvd-device")
+                                        ("playlist" . "mpv --playlist")
+                                        ("exe"      . "wine")
                                         ("pdf"      . "zathura")
                                         ;; ("zip"      . "zathura")
                                         ;; ("rar"      . "zathura")
@@ -503,88 +485,223 @@
                                         ;; ("zip"      . "mcomix")
                                         ;; ("rar"       . "mcomix")
                                         ;; ("tar"       . "mcomix")
-                                        ("xls"      . "open")
-                                        ("xlsx"     . "open")
-                                        ("jpg"      . "open")
-                                        ("png"      . "open")
-                                        ("jpeg"     . "open")
-                                        ("gif"      . "open")
-                                        ("png"      . "open")
-                                        ("webp"     . "open")
-                                      )))
-    :preface
-    (defun open-file-by-windowsApp-forWSL ()
-      (interactive)
-      (let* ((file-path
-              (replace-regexp-in-string
-               "\\wsl" "\\\\wsl"
-               (shell-command-to-string (format "wslpath -w \"%s\"" (dired-get-file-for-visit)))))
-             (result (shell-command-to-string (format "cmd.exe /c start \"\" \"%s\" 2> /dev/null" file-path)))
-             )
-        (message (format "start %s" file-path))))
-    )
-  (leaf dired-open
-    :when (eq system-type 'windows-nt)
-    :bind ((dired-mode-map
-            :package dired
-            ("w" . open-file-by-windowsApp)
-            ("z" . unzip)
-            ))
-    :custom ((dired-open-extensions . '(
-                                        ;; ("mkv"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("mp4"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("avi"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("wmv"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("webm"     . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("mpg"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("flv"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("m4v"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("mp3"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("flac"     . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("wav"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("m4a"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("3gp"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("rm"       . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("rmvb"     . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("mpeg"     . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("VOB"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("mov"      . "~/.emacs.d/script/mpv-rifle.sh")
-                                        ;; ("iso"      . "mpv dvd:// -dvd-device")
-                                        ;; ("playlist" . "mpv --playlist")
-                                        ;; ("exe"      . "wine")
-                                        ("pdf"      . "zathura")
-                                        ;; ("zip"      . "zathura")
-                                        ;; ("rar"      . "zathura")
-                                        ;; ("tar"      . "zathura")
-                                        ("zip"      . "YACReader")
-                                        ("rar"      . "YACReader")
-                                        ("tar"      . "YACReader")
-                                        ;; ("zip"      . "mcomix")
-                                        ;; ("rar"       . "mcomix")
-                                        ;; ("tar"       . "mcomix")
-                                        ("xls"      . "open")
-                                        ("xlsx"     . "open")
-                                        ("jpg"      . "open")
-                                        ("png"      . "open")
-                                        ("jpeg"     . "open")
-                                        ("gif"      . "open")
-                                        ("png"      . "open")
-                                        ("webp"     . "open")
+                                        ("xls"      . "xdg-open")
+                                        ("xlsx"     . "xdg-open")
+                                        ("jpg"      . "sxiv-rifle.sh")
+                                        ("png"      . "sxiv-rifle.sh")
+                                        ("jpeg"     . "sxiv-rifle.sh")
+                                        ("gif"      . "sxiv-rifle.sh")
+                                        ("png"      . "sxiv-rifle.sh")
+                                        ("webp"     . "sxiv-rifle.sh")
                                         )))
-    :preface
-    (defun open-file-by-windowsApp ()
-      (interactive)
-      ;; (let ((file-name (decode-coding-string (encode-coding-string (dired-get-file-for-visit) 'japanese-shift-jis-dos) 'utf-8)))
-      (let ((file-name (shift-jis-to-utf8 (dired-get-file-for-visit))))
-        (shell-command (format "start \"\" \"%s\"" file-name))
-        (message (utf8-to-shift-jis file-name))))
-    (defun unzip ()
-      (interactive)
-      (let ((file-name (shift-jis-to-utf8 (dired-get-file-for-visit))))
-        (shell-command (format "call powershell -command \"Expand-Archive %s\"" file-name))
-        (message (format "unzip %s" (utf8-to-shift-jis file-name)))))
+      )
+    (leaf dired-open-darwin*
+      :when (eq system-type 'darwin)
+      :custom ((dired-open-extensions .
+                                      '(("key"  . "open")
+                                        ("docx" . "open")
+                                        ("pdf"  . "open")
+                                        ("cmdf" . "open")
+                                        ("xlsx" . "open")
+                                        ("pxp"  . "open")
+                                        ("bmp"  . "open")
+                                        )))
+      )
+    (leaf dired-open-windows*
+      :when (string-match "microsoft" (shell-command-to-string "uname -r"))
+      :when (eq system-type 'gnu/linux)
+      :bind ((dired-mode-map
+              :package dired
+              ("w" . open-file-by-windowsApp-forWSL)))
+      :custom ((dired-open-extensions . '(
+                                          ;; ("mkv"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                          ("mp4"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                          ;; ("avi"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                          ;; ("wmv"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                          ;; ("webm"     . "~/.emacs.d/script/mpv-rifle.sh")
+                                          ;; ("mpg"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                          ;; ("flv"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                          ;; ("m4v"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                          ;; ("mp3"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                          ;; ("flac"     . "~/.emacs.d/script/mpv-rifle.sh")
+                                          ;; ("wav"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                          ;; ("m4a"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                          ;; ("3gp"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                          ;; ("rm"       . "~/.emacs.d/script/mpv-rifle.sh")
+                                          ;; ("rmvb"     . "~/.emacs.d/script/mpv-rifle.sh")
+                                          ;; ("mpeg"     . "~/.emacs.d/script/mpv-rifle.sh")
+                                          ;; ("VOB"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                          ;; ("mov"      . "~/.emacs.d/script/mpv-rifle.sh")
+                                          ;; ("iso"      . "mpv dvd:// -dvd-device")
+                                          ;; ("playlist" . "mpv --playlist")
+                                          ;; ("exe"      . "wine")
+                                          ("pdf"      . "zathura")
+                                          ;; ("zip"      . "zathura")
+                                          ;; ("rar"      . "zathura")
+                                          ;; ("tar"      . "zathura")
+                                          ("zip"      . "YACReader")
+                                          ("rar"      . "YACReader")
+                                          ("tar"      . "YACReader")
+                                          ;; ("zip"      . "mcomix")
+                                          ;; ("rar"       . "mcomix")
+                                          ;; ("tar"       . "mcomix")
+                                          ("xls"      . "open")
+                                          ("xlsx"     . "open")
+                                          ("jpg"      . "open")
+                                          ("png"      . "open")
+                                          ("jpeg"     . "open")
+                                          ("gif"      . "open")
+                                          ("png"      . "open")
+                                          ("webp"     . "open")
+                                          )))
+      :preface
+      (defun open-file-by-windowsApp-forWSL ()
+        (interactive)
+        (let* ((file-path
+                (replace-regexp-in-string
+                 "\\wsl" "\\\\wsl"
+                 (shell-command-to-string (format "wslpath -w \"%s\"" (dired-get-file-for-visit)))))
+               (result (shell-command-to-string (format "cmd.exe /c start \"\" \"%s\" 2> /dev/null" file-path)))
+               )
+          (message (format "start %s" file-path))))
+      )
     )
-
+  ;; (leaf dired-open
+  ;;   :doc "Open files from dired using using custom actions"
+  ;;   :req "dash-2.5.0" "dired-hacks-utils-0.0.1"
+  ;;   :tag "files"
+  ;;   :added "2021-09-05"
+  ;;   :ensure t
+  ;;   ;; :after dired-hacks-utils
+  ;;   :when (eq system-type 'darwin)
+  ;;   :custom ((dired-open-extensions .
+  ;;                                   '(("key"  . "open")
+  ;;                                     ("docx" . "open")
+  ;;                                     ("pdf"  . "open")
+  ;;                                     ("cmdf" . "open")
+  ;;                                     ("xlsx" . "open")
+  ;;                                     ("pxp"  . "open")
+  ;;                                     ("bmp"  . "open")
+  ;;                                     ))))
+  ;; (leaf dired-open
+  ;;   :when (string-match "microsoft" (shell-command-to-string "uname -r"))
+  ;;   :when (eq system-type 'gnu/linux)
+  ;;   :bind ((dired-mode-map
+  ;;           :package dired
+  ;;           ("w" . open-file-by-windowsApp-forWSL)))
+  ;;   :custom ((dired-open-extensions . '(
+  ;;                                       ;; ("mkv"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("mp4"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("avi"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("wmv"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("webm"     . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("mpg"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("flv"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("m4v"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("mp3"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("flac"     . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("wav"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("m4a"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("3gp"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("rm"       . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("rmvb"     . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("mpeg"     . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("VOB"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("mov"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("iso"      . "mpv dvd:// -dvd-device")
+  ;;                                       ;; ("playlist" . "mpv --playlist")
+  ;;                                       ;; ("exe"      . "wine")
+  ;;                                       ("pdf"      . "zathura")
+  ;;                                       ;; ("zip"      . "zathura")
+  ;;                                       ;; ("rar"      . "zathura")
+  ;;                                       ;; ("tar"      . "zathura")
+  ;;                                       ("zip"      . "YACReader")
+  ;;                                       ("rar"      . "YACReader")
+  ;;                                       ("tar"      . "YACReader")
+  ;;                                       ;; ("zip"      . "mcomix")
+  ;;                                       ;; ("rar"       . "mcomix")
+  ;;                                       ;; ("tar"       . "mcomix")
+  ;;                                       ("xls"      . "open")
+  ;;                                       ("xlsx"     . "open")
+  ;;                                       ("jpg"      . "open")
+  ;;                                       ("png"      . "open")
+  ;;                                       ("jpeg"     . "open")
+  ;;                                       ("gif"      . "open")
+  ;;                                       ("png"      . "open")
+  ;;                                       ("webp"     . "open")
+  ;;                                     )))
+  ;;   :preface
+  ;;   (defun open-file-by-windowsApp-forWSL ()
+  ;;     (interactive)
+  ;;     (let* ((file-path
+  ;;             (replace-regexp-in-string
+  ;;              "\\wsl" "\\\\wsl"
+  ;;              (shell-command-to-string (format "wslpath -w \"%s\"" (dired-get-file-for-visit)))))
+  ;;            (result (shell-command-to-string (format "cmd.exe /c start \"\" \"%s\" 2> /dev/null" file-path)))
+  ;;            )
+  ;;       (message (format "start %s" file-path))))
+  ;;   )
+  ;; (leaf dired-open
+  ;;   :when (eq system-type 'windows-nt)
+  ;;   :bind ((dired-mode-map
+  ;;           :package dired
+  ;;           ("w" . open-file-by-windowsApp)
+  ;;           ("z" . unzip)
+  ;;           ))
+  ;;   :custom ((dired-open-extensions . '(
+  ;;                                       ;; ("mkv"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("mp4"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("avi"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("wmv"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("webm"     . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("mpg"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("flv"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("m4v"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("mp3"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("flac"     . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("wav"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("m4a"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("3gp"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("rm"       . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("rmvb"     . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("mpeg"     . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("VOB"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("mov"      . "~/.emacs.d/script/mpv-rifle.sh")
+  ;;                                       ;; ("iso"      . "mpv dvd:// -dvd-device")
+  ;;                                       ;; ("playlist" . "mpv --playlist")
+  ;;                                       ;; ("exe"      . "wine")
+  ;;                                       ("pdf"      . "zathura")
+  ;;                                       ;; ("zip"      . "zathura")
+  ;;                                       ;; ("rar"      . "zathura")
+  ;;                                       ;; ("tar"      . "zathura")
+  ;;                                       ("zip"      . "YACReader")
+  ;;                                       ("rar"      . "YACReader")
+  ;;                                       ("tar"      . "YACReader")
+  ;;                                       ;; ("zip"      . "mcomix")
+  ;;                                       ;; ("rar"       . "mcomix")
+  ;;                                       ;; ("tar"       . "mcomix")
+  ;;                                       ("xls"      . "open")
+  ;;                                       ("xlsx"     . "open")
+  ;;                                       ("jpg"      . "open")
+  ;;                                       ("png"      . "open")
+  ;;                                       ("jpeg"     . "open")
+  ;;                                       ("gif"      . "open")
+  ;;                                       ("png"      . "open")
+  ;;                                       ("webp"     . "open")
+  ;;                                       )))
+  ;;   :preface
+  ;;   (defun open-file-by-windowsApp ()
+  ;;     (interactive)
+  ;;     ;; (let ((file-name (decode-coding-string (encode-coding-string (dired-get-file-for-visit) 'japanese-shift-jis-dos) 'utf-8)))
+  ;;     (let ((file-name (shift-jis-to-utf8 (dired-get-file-for-visit))))
+  ;;       (shell-command (format "start \"\" \"%s\"" file-name))
+  ;;       (message (utf8-to-shift-jis file-name))))
+  ;;   (defun unzip ()
+  ;;     (interactive)
+  ;;     (let ((file-name (shift-jis-to-utf8 (dired-get-file-for-visit))))
+  ;;       (shell-command (format "call powershell -command \"Expand-Archive %s\"" file-name))
+  ;;       (message (format "unzip %s" (utf8-to-shift-jis file-name)))))
+  ;;   )
   :preface
   (defun kill-current-buffer-and/or-dired-open-file ()
     "In Dired, dired-open-file for a file.
@@ -642,6 +759,7 @@
           (list "ll" "ls -ltrh")
           (list "la" "ls -a")
           (list "lla" "ls -ltrha")
+          (list "grep" "*grep $*")
           (list "o" "xdg-open")
           (list "emacs" "find-file $1")
           (list "m" "find-file $1")
@@ -653,7 +771,8 @@
           (list "usbmount" "sudo mount -t vfat $1 $2 -o rw,umask=000")
           (list "open" "cmd.exe /c start {wslpath -w $*}")
           (list "gdrive" "sudo mount -t drvfs G: /mnt/googleDrive/")
-          (list "reflectorjp" "sudo reflector --country \"Japan\" --age 24 --protocol https --sort rate --save /etc/pacman.d/mirrorlist"))))
+          (list "reflectorjp" "sudo reflector --country \"Japan\" --age 24 --protocol https --sort rate --save /etc/pacman.d/mirrorlist")
+          )))
   :config
   (setenv "GIT_PAGER" "")
   (leaf eshell-vterm
@@ -722,7 +841,8 @@
   (leaf *forLinux
     :when (eq system-type 'gnu/linux)
     :config
-    (leaf *Linux
+    (leaf *GUI
+      :when (eq window-system 'x)
       :bind (("s-s" . async-shell-command)
              ("s-S" . window-capcher)
              ("s-n" . windmove-down)
@@ -736,6 +856,8 @@
              ("s-p" . windmove-up)
              ("s-q" . kill-current-buffer)
              ("s-o" . consult-buffer))
+      :config
+      (my-xset)
       )
     (leaf *WSL
       :when (string-match "microsoft" (shell-command-to-string "uname -r"))
@@ -743,10 +865,6 @@
              ("M-o" . consult-buffer)
              ("M-q" . kill-current-buffer))
       )
-    (leaf *GUI
-        :when (eq window-system 'x)
-        :config
-        (my-xset))
     (leaf *CLI
         :unless (eq window-system 'x)
         :bind (("M-n" . windmove-down)
@@ -812,6 +930,40 @@
   (defun scroll-down_alt ()
     (interactive)
     (scroll-down 1))
+  (defun insertBackslash ()
+    (interactive)
+    (insert "\\"))
+  (defun insertPipe ()
+    (interactive)
+    (insert "|"))
+  (defun output_toggle ()
+    "Exchange output source."
+    (interactive)
+    (start-process-shell-command
+     "output-toggle"
+     nil
+     (format "~/.emacs.d/script/output_toggle.sh")))
+  (defun upper_volume ()
+    "Volume up."
+    (interactive)
+    (start-process-shell-command
+     "upper_volume"
+     nil
+     (format "~/.emacs.d/script/upper_volume.sh")))
+  (defun lower_volume ()
+    "Volume down."
+    (interactive)
+    (start-process-shell-command
+     "lower_volume"
+     nil
+     (format "~/.emacs.d/script/lower_volume.sh")))
+  (defun mute_toggle ()
+    "Volume mute."
+    (interactive)
+    (start-process-shell-command
+     "mute_toggle"
+     nil
+     (format "~/.emacs.d/script/mute_toggle.sh")))
   (defun upperLight ()
     (interactive)
     (start-process-shell-command
@@ -826,16 +978,236 @@
      (format "xbacklight -dec 10")))
   (defun minibuffer-delete-backward-char ()
     (local-set-key (kbd "C-h") 'delete-backward-char))
-  (defun base64ToPng (fileName)
-    (interactive "sfile name: ")
-    (let ((script (concat user-emacs-directory "script/decodeBase64.py %s")))
-      (shell-command (format
-                      script
-                      fileName))
-      )
-    )
-
+  (defun get-full-path-interactive ()
+    "Prompt user to select a file and return its absolute path."
+    (interactive)
+    (let ((file (read-file-name "Select file: ")))
+      (kill-new file)
+      (message "Full path: %s" (expand-file-name file))))
+  :init
+  (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char)
   )
+
+;; (leaf *globa-keybinding
+;; ;;   :disabled t
+;; ;;   :hook (minibuffer-setup-hook . minibuffer-delete-backward-char)
+;; ;;   :config
+;; ;;   :bind (;; C-m : 改行プラスインデント
+;; ;;          ("C-m"           . newline-and-indent)
+;; ;;          ;; ;; exwm用
+;; ;;          ("C-h"           . delete-backward-char)
+;; ;;          ("M-h"           . backward-kill-word)
+;; ;;          ;; C-x ? : help
+;; ;;          ("C-c ?"         . help-command)
+;; ;;          ;;折り返しトグルコマンド
+;; ;;          ("C-c l"         . toggle-truncate-lines)
+;; ;;          ;; 行番号を表示
+;; ;;          ("C-c t"         . display-line-numbers-mode)
+;; ;;          ;;スペース、改行、タブを表示する
+;; ;;          ("C-c w"         . whitespace-mode)
+;; ;;          ;; 検索結果のリストアップ
+;; ;;          ("C-c o"         . occur)
+;; ;;          ;; S式の評価
+;; ;;          ("C-c C-j"       . eval-print-last-sexp)
+;; ;;          ;; async shell command
+;; ;;          ("s-s"           . async-shell-command)
+;; ;;          ("s-S"           . window-capcher)
+;; ;;          )
+
+;; ;;   :preface
+;; ;;   (defun upperLight ()
+;; ;;     (interactive)
+;; ;;     (start-process-shell-command
+;; ;;      "upper light"
+;; ;;      nil
+;; ;;      (format "xbacklight -inc 10")))
+;; ;;   (defun lowerLight ()
+;; ;;     (interactive)
+;; ;;     (start-process-shell-command
+;; ;;      "lower light"
+;; ;;      nil
+;; ;;      (format "xbacklight -dec 10")))
+;; ;;   (defun minibuffer-delete-backward-char ()
+;; ;;     (local-set-key (kbd "C-h") 'delete-backward-char))
+;; ;;   :init (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char)
+;; ;;   )
+
+;; (leaf *global-setting
+;;   ;; :disabled t
+;;   :hook (minibuffer-setup-hook . minibuffer-delete-backward-char)
+;;   :init (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char)
+;;   :bind (("C-x x s" . my-xset)
+;;          ("C-c r"   . window-resizer)
+;;          ("C-S-n"   . scroll-up_alt)
+;;          ("C-S-p"   . scroll-down_alt)
+;;          ("C-m"     . newline-and-indent)
+;;          ("C-h"     . delete-backward-char)
+;;          ("M-h"     . backward-kill-word)
+;;          ("C-c ?"   . help-command)
+;;          ("C-c l"   . toggle-truncate-lines)
+;;          ("C-c t"   . display-line-numbers-mode)
+;;          ("C-c w"   . whitespace-mode)
+;;          ("C-c o"   . occur)
+;;          ("C-c C-j" . eval-print-last-sexp))
+
+;;   :custom ((scroll-preserve-screen-position . t)
+;;            ;; スクロール開始のマージン
+;;            (scroll-margin                   . 5)
+;;            (scroll-conservatively           . 100)
+;;            ;; 1画面スクロール時に重複させる行数
+;;            (next-screen-context-lines       . 10)
+;;            ;; 1画面スクロール時にカーソルの画面上の位置をなるべく変えない
+;;            (scroll-preserve-screen-position . t)
+;;            (windmove-wrap-around            . t))
+;;   :config
+;;   (leaf *forMac
+;;     :when (eq system-type 'darwin)
+;;     :bind (("s-n" . windmove-down)
+;;            ("s-f" . windmove-right)
+;;            ("s-b" . windmove-left)
+;;            ("s-p" . windmove-up)
+;;            ("s-a" . zoom-window-zoom)
+;;            ("s-q" . kill-current-buffer)
+;;            ("s-h" . delete-window)
+;;            ("s-o" . consult-buffer)))
+;;   (leaf *forWindows
+;;     :when (eq system-type 'windows-nt)
+;;     :bind (("M-n" . windmove-down)
+;;            ("M-f" . windmove-right)
+;;            ("M-b" . windmove-left)
+;;            ("M-p" . windmove-up)
+;;            ("M-a" . zoom-window-zoom)
+;;            ("M-q" . kill-current-buffer)
+;;            ("M-h" . delete-window)
+;;            ("M-d" . app-launcher-run-app)
+;;            ("M-o" . consult-buffer)))
+;;   (leaf *forLinux
+;;     :when (eq system-type 'gnu/linux)
+;;     :bind (("s-s" . async-shell-command)
+;;            ("s-S" . window-capcher)
+;;            ("s-n" . windmove-down)
+;;            ("s-f" . windmove-right)
+;;            ("s-b" . windmove-left)
+;;            ("s-p" . windmove-up)
+;;            ("s-a" . zoom-window-zoom)
+;;            ("s-h" . delete-window)
+;;            ("s-d" . app-launcher-run-app)
+;;            ("s-n" . windmove-down)
+;;            ("s-p" . windmove-up)
+;;            ("s-q" . kill-current-buffer)
+;;            ("s-o" . consult-buffer))
+
+;;     :config
+;;     (leaf *forWSL
+;;       :when (string-match "microsoft" (shell-command-to-string "uname -r"))
+;;       :bind (("M-q" . kill-current-buffer)
+;;              ("M-o" . consult-buffer))
+;;       :config
+;;       (my-xset)))
+;;   (leaf *forCLI
+;;       :unless (eq window-system 'x)
+;;       :bind (("M-n" . windmove-down)
+;;              ("M-f" . windmove-right)
+;;              ("M-b" . windmove-left)
+;;              ("M-p" . windmove-up)
+;;              ("M-a" . zoom-window-zoom)
+;;              ("M-q" . kill-current-buffer)
+;;              ("M-h" . delete-window)
+;;              ("C-M-i" . output_toggle)
+;;              ("C-M-m" . mute_toggle)
+;;              ("C-M-n" . lower_volume )
+;;              ("C-M-p" . upper_volume)
+;;              ("M-d" . app-launcher-run-app)
+;;              ("M-o" . consult-buffer))
+;;       :custom (global-hl-line-mode . t))
+
+;;   :preface
+;;   ;; ウィンドウのサイズ変更
+;;   (defun window-resizer ()
+;;     "Control window size and position."
+;;     (interactive)
+;;     (let ((window-obj (selected-window))
+;;           (current-width (window-width))
+;;           (current-height (window-height))
+;;           (dx (if (= (nth 0 (window-edges)) 0) 1
+;;                 -1))
+;;           (dy (if (= (nth 1 (window-edges)) 0) 1
+;;                 -1))
+;;           c)
+;;       (catch 'end-flag
+;;         (while t
+;;           (message "size[%dx%d]"
+;;                    (window-width) (window-height))
+;;           (setq c (read-char))
+;;           (cond ((= c ?f)
+;;                  (enlarge-window-horizontally dx))
+;;                 ((= c ?b)
+;;                  (shrink-window-horizontally dx))
+;;                 ((= c ?n)
+;;                  (enlarge-window dy))
+;;                 ((= c ?p)
+;;                  (shrink-window dy))
+;;                 ;; otherwise
+;;                 (t
+;;                  (message "Quit")
+;;                  (throw 'end-flag t)))))))
+;;   (defun window-capcher ()
+;;     "capcher window by imagemagic"
+;;     (interactive)
+;;     (let ((stringShellCommand (concat "import " "~/Downloads/screenshot_" "20" (format-time-string "%02y%02m%02d%02H%02M%02S" (current-time)) ".png")))
+;;       (shell-command stringShellCommand)))
+;;   (defun my-xset ()
+;;     (interactive)
+;;     (start-process-shell-command
+;;      "xset 再設定"
+;;      nil
+;;      "xset r rate 250 40"))
+;;   (defun scroll-up_alt ()
+;;     (interactive)
+;;     (scroll-up 1))
+;;   (defun scroll-down_alt ()
+;;     (interactive)
+;;     (scroll-down 1))
+;;   (defun upperLight ()
+;;     (interactive)
+;;     (start-process-shell-command
+;;      "upper light"
+;;      nil
+;;      (format "xbacklight -inc 10")))
+;;   (defun lowerLight ()
+;;     (interactive)
+;;     (start-process-shell-command
+;;      "lower light"
+;;      nil
+;;      (format "xbacklight -dec 10")))
+;;   (defun minibuffer-delete-backward-char ()
+;;     (local-set-key (kbd "C-h") 'delete-backward-char))
+;;   (defun base64ToPng (fileName)
+;;     (interactive "sfile name: ")
+;;     (let ((script (concat user-emacs-directory "script/decodeBase64.py %s")))
+;;       (shell-command (format
+;;                       script
+;;                       fileName))
+;;       )
+;;     )
+
+;;   :config
+;;   (leaf zoom-window
+;;     :doc "Zoom window like tmux"
+;;     :req "emacs-24.3"
+;;     :tag "emacs>=24.3"
+;;     :url "https://github.com/syohex/emacs-zoom-window"
+;;     :added "2021-09-05"
+;;     :emacs>= 24.3
+;;     :ensure t
+;;     :custom (zoom-window-mode-line-color . "RoyalBlue4"))
+;;   (defun get-full-path-interactive ()
+;;     "Prompt user to select a file and return its absolute path."
+;;     (interactive)
+;;     (let ((file (read-file-name "Select file: ")))
+;;       (kill-new file)
+;;       (message "Full path: %s" (expand-file-name file))))
+;;   )
 
 (leaf info
   ;; info日本語化
@@ -885,9 +1257,9 @@
   (defun base64ToPng (fileName)
     (interactive "sfile name: ")
     (let ((script (concat user-emacs-directory "script/decodeBase64.py %s")))
-      (shell-command (format
+    (let ((script (concat user-emacs-directory "script/decodeBase64.py %s")))
                       script
-                      fileName))))
+                      fileName)))
   (leaf *my-app
     :require app-launcher-for-windows
     :config
@@ -956,8 +1328,8 @@
                                   arg))
            (split-threshold (convert-to-number-with-prefix split-threshold-str))
            ;; (split-threshold (* 10 1000 1000))
-           (pubkye (select-pubkey))
-           (gpg-command (format "gpg --encrypt --recipient %s --output %s %s" pubkye file-name-gpg file-name))
+           (pubkey (select-pubkey))
+           (gpg-command (format "gpg --encrypt --recipient %s --output %s %s" pubkey file-name-gpg file-name))
            (split-command (format "split -b %s -d %s %s.part." split-threshold-str file-name-gpg file-name-gpg))
            ;; (commands '("gpg --encrypt --recipient frenzieddoll@gmail.com --output %s.gpg %s"
            ;;             "split -b 10M -d %s.gpg %s.gpg.part."))
@@ -1025,19 +1397,20 @@
   )
 
 
-;; (leaf chatgpt-shell
-;;   :doc "Interaction mode for ChatGPT"
-;;   :req "emacs-27.1" "shell-maker-0.17.1"
-;;   :tag "emacs>=27.1"
-;;   :url "https://github.com/xenodium/chatgpt-shell"
-;;   :added "2023-04-28"
-;;   :emacs>= 27.1
-;;   :ensure t
-;;   :disabled t
-;;   :custom
-;;   `(chatgpt-shell-openai-key . ,(auth-source-pick-first-password :host "api.openai.com"))
-;;   :bind ("C-c g" . chatgpt-shell)
-;;   )
+
+(leaf chatgpt-shell
+  :doc "Interaction mode for ChatGPT"
+  :req "emacs-27.1" "shell-maker-0.17.1"
+  :tag "emacs>=27.1"
+  :url "https://github.com/xenodium/chatgpt-shell"
+  :added "2023-04-28"
+  :emacs>= 27.1
+  :ensure t
+  :disabled t
+  :custom
+  `(chatgpt-shell-openai-key . ,(auth-source-pick-first-password :host "api.openai.com"))
+  :bind ("C-c g" . chatgpt-shell)
+  )
 
 (leaf csv
   :doc "Functions for reading and parsing CSV files."
@@ -1068,6 +1441,8 @@
                                                       "le" "la" "les" "Zur" "zur" "Des" "Dir" "Die"))
            (ebib-keywords-use-only-file           . t)
            (ebib-keywords-file-save-on-exit       . 'always)
+           (ebib-index-columns                    . '(("Title" 80 t) ("Year" 6 t) ("Author/Editor" 40 t) ))
+           (ebib-layout . 'custom)
            )
   :defer-config
   (leaf *ebibForMac
@@ -1106,17 +1481,16 @@
           (ebib-import-entries)
           (kill-buffer))))
     )
-
   (leaf *ebibForSony
     :when (eq system-type 'windows-nt)
     :when (string= (system-name) "JPC20627141")
+    :bind (("C-c b" . ebib))
     :custom ((ebib-preload-bib-files . '("~/Documents/PDF/references.bib"))
              (ebib-keywords-file     . "~/Documents/PDF/ebib-keywords.txt")
              (ebib-file-associations . '(("pdf" . "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe")
                                          ("ps"  . "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe")))
              (ebib-file-search-dirs  . '("~/Documents/PDF/ER" "~/Documents/PDF/paper"))
              ))
-
   (leaf biblio
     :doc "Browse and import bibliographic references from CrossRef, arXiv, DBLP, HAL, Dissemin, and doi.org"
     :req "emacs-24.3" "biblio-core-0.2"
@@ -1156,6 +1530,8 @@
            (jedi:complete-on-dot . t)
            )
   :defer-config
+  :config
+  :defer-config
   (leaf *ein-for-windows
     :when (string= system-type 'windows-nt)
     :hook ((ein:notebook-mode-hook . ac-mode-map-bind))
@@ -1188,8 +1564,21 @@
   :ensure t
   :defvar jupyter-repl-echo-eval-p
   :custom ((jupyter-repl-echo-eval-p . t))
+  :hook (jupyter-repl-interaction-mode-hook . (lambda ()
+                                                (setq-local completion-at-point-functions
+                                                            (remove 'jupyter-completion-at-point completion-at-point-functions))))
   ;; :config
   ;; (leaf zmq :ensure t)
+  :bind ((python-mode-map
+          ("C-c s" . my-split-python-and-jupyter))
+         (jupyter-org-interaction-mode-map
+          ("C-c h" . nil))
+         ;; ("C-c j" . jupyter-org-hydra/body)
+         )
+  ;; :config
+  ;; (with-eval-after-load 'jupyter-org-client
+  ;;   (define-key jupyter-org-interaction-mode-map (kbd "C-c h") nil))
+
   :preface
   (defun my-image-save ()
   "Save the image under point to the '.fig' directory with a timestamp filename.
@@ -1239,6 +1628,21 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
           (insert (format "#+ATTR_HTML: :width 300\n[[file:%s]]" relative-path))
           (org-redisplay-inline-images))
       (message "Clipboard content is not a supported image file path. No insertion performed."))))
+  (leaf jedi-core
+    :doc "Common code of jedi.el and company-jedi.el"
+    :req "emacs-24" "epc-0.1.0" "python-environment-0.0.2" "cl-lib-0.5"
+    :tag "emacs>=24"
+    :added "2023-11-12"
+    :emacs>= 24
+    :ensure t)
+  (leaf company-jedi
+    :doc "Company-mode completion back-end for Python JEDI"
+    :req "emacs-24" "cl-lib-0.5" "company-0.8.11" "jedi-core-0.2.7"
+    :tag "emacs>=24"
+    :url "https://github.com/emacsorphanage/company-jedi"
+    :added "2023-11-12"
+    :emacs>= 24
+    :ensure t)
   )
 
 (leaf eww
@@ -1249,11 +1653,11 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :hook ((eww-mode-hook . eww-mode-hook-disable-image))
   :defun eww-reload
   :defvar (shr-put-image-function eww-disable-colorize)
-  :custom ((eww-search-prefix . "https://www.google.co.jp/search?btnl&q=")
+  :custom ((eww-searc-prefix . "https://duckduckgo.com/html/?kl=jp-jp&k1=-1&kc=1&kf=-1&q=")
            (eww-browse-with-external-link . t)
            (eww-disable-colorize . t))
   :bind (("C-c m"  . browse-url-with-eww)
-         (eww-mode-map
+         (:eww-mode-map
           ("f"     . ace-link-eww)
           ("s-l"   . eww-search-words)
           ("M"     . eww-open-in-new-buffer)
@@ -1407,6 +1811,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :added "2021-09-05"
   :emacs>= 25.1
   :ensure t
+  :after git-commit magit-section with-editor
   :when (executable-find "git")
   :bind (("C-x g" . magit-status))
   :config (setenv "GIT_PAGER" ""))
@@ -1534,8 +1939,159 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
          ("C-c n a" . org-roam-alias-add)
          ("C-c n g" . org-roam-graph)
          )
+  :custom `((org-directory . ,(concat user-emacs-directory "org/"))
+            (org-capture-templates . `(("t" "todo"     entry (file+headline "todo.org" "todo") "* TODO %? \n" :empty-lines 1)
+                                       ("m" "memo"     entry (file          "memo.org") "* %^t \n" :empty-lines 1)))
+            (org-todo-keywords . '((sequence "TODO(t)" "SOMEDAY(s)" "WATTING(w)" "|" "DONE(d)" "CANCELED(c@)")))
+            (org-enforce-todo-dependencies . t)
+            (org-log-done . t)
+            (org-image-actual-width . nil))
+  :preface
+  (defun org-insert-clipboard-image ()
+    (interactive)
+    (let* (
+           (buf-name (file-name-sans-extension (file-name-nondirectory buffer-file-name)))
+           (figures-dir (format "./%s_figures/" buf-name))
+           (figure-name (format "%s%s_%s.png" figures-dir buf-name (format-time-string "%Y%m%d%H%M%S")))
+           (figure-path (expand-file-name figure-name))
+           (path "$HOME/Documents/script/import.ps1")
+           (path-win (shell-command-to-string (format "wslpath -w \"%s\"" path)))
+           (path-wsl (replace-regexp-in-string
+                      "\\wsl" "\\\\wsl"
+                      path-win))
+           (script (replace-regexp-in-string
+                    "\n" "" path-win))
+           ;; powershellのスクリプトはwslのパスを認識できないので相対パスfigure-nameを引数とする
+           (call-string (format "powershell.exe -ExecutionPolicy RemoteSigned -windowstyle hidden -File \"%s\" -FileName %s" script figure-name))
+           )
+
+      (unless (file-directory-p figures-dir)
+        (make-directory figures-dir))
+      (call-process "powershell.exe" nil nil nil call-string)
+      (when (file-exists-p figure-path)
+        (insert (format "#+ATTR_ORG: :width 500\n[[file:%s]]" figure-path)))
+      (org-display-inline-images)))
+  (defun org-delete-image-under-cursor ()
+    "カーソルの位置が画像のリンクにある場合、その画像ファイルを削除します。"
+    (interactive)
+    (let ((cursor-pos (point))
+          (image-path nil)
+          (in-image nil))
+      ;; 画像リンクの位置をチェック
+      (save-excursion
+        (beginning-of-line)
+        (while (re-search-forward org-link-any-re (line-end-position) t)
+          (let ((link-start (match-beginning 0))
+                (link-end (match-end 0)))
+            ;; カーソル位置が画像リンク内にあるかを確認
+            (if (and (>= cursor-pos link-start) (< cursor-pos link-end))
+                (setq in-image t
+                      image-path (match-string-no-properties 0)))))
+
+        (if in-image
+            (progn
+              ;; 画像リンクからパス部分だけを抽出
+              (setq image-path (replace-regexp-in-string "^\\[\\[file:" "" image-path))
+              (setq image-path (replace-regexp-in-string "\\]\\]$" "" image-path))
+              (if (and image-path (file-exists-p image-path))
+                  (progn
+                    ;; 画像ファイルを削除
+                    (delete-file image-path)
+                    (message "Deleted image file: %s" image-path)
+                    ;; (message image-path)
+                    )
+                (message "No image file found at: %s" image-path)))
+          (message "No image under cursor.")))))
+  ;; (defun org-agenda-files-update ()
+  ;;   (interactive)
+  ;;   (setq org-agenda-files (directory-files-recursively (concat user-emacs-directory "org") "\\.org$"))
+  ;;   )
   :config
-  (org-roam-db-autosync-mode)
+  (setq org-agenda-files (directory-files-recursively (concat user-emacs-directory "org") "\\.org$"))
+
+  ;; org-preview-latexの修正
+  (let ((png (cdr (assoc 'dvipng org-preview-latex-process-alist))))
+    (plist-put png :latex-compiler '("latex -interaction nonstopmode -output-directory %o %F"))
+    (plist-put png :image-converter '("dvipng -D %D -T tight -o %O %F"))
+    (plist-put png :transparent-image-converter '("dvipng -D %D -T tight -bg Transparent -o %O %F")))
+
+  (leaf org-roam
+    :doc "A database abstraction layer for Org-mode"
+    :req "emacs-26.1" "dash-2.13" "org-9.4" "emacsql-4.0.0" "magit-section-3.0.0"
+    :tag "convenience" "roam" "org-mode" "emacs>=26.1"
+    :url "https://github.com/org-roam/org-roam"
+    :added "2025-02-07"
+    :emacs>= 26.1
+    :ensure t
+    ;; :after org emacsql magit-section
+    :custom ((org-roam-directory   . "~/.emacs.d/org-roam")
+             (org-roam-db-location . "~/.emacs.d/org-roam/database.db")
+             (org-roam-index-file  . "~/.emacs.d/org-roam/Index.org")
+             (org-roam-capture-templates . '(("p" "plain" plain "%?"
+                                              :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+                                              :unnarrowed t)
+                                             ("d" "Diary" plain "%?"
+                                              :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title:%<%Y%m%d>\n#+roam_tags: diary\n")
+                                              :unnarrowed t)
+                                             ("g" "Glossary" plain "%?"
+                                              :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+roam_tags: 用語")
+                                              :unnarrowed t)))
+             )
+    :bind (("C-c n f" . org-roam-node-find)
+           ("C-c n i" . org-roam-node-insert)
+           ("C-c n c" . org-roam-capture)
+           ("C-c n t" . org-roam-buffer-toggle)
+           ("C-c n a" . org-roam-alias-add)
+           ("C-c n g" . org-roam-graph)
+           ("C-c n l" . org-roam-buffer-toggle)
+           )
+    :config
+    (org-roam-db-autosync-mode)
+    (leaf org-roam-ui
+      :doc "User Interface for Org-roam."
+      :req "emacs-27.1" "org-roam-2.0.0" "simple-httpd-20191103.1446" "websocket-1.13"
+      :tag "outlines" "files" "emacs>=27.1"
+      :url "https://github.com/org-roam/org-roam-ui"
+      :added "2025-02-18"
+      :emacs>= 27.1
+      :ensure t
+      :after org-roam websocket
+      :custom ((org-roam-ui-sync-theme . t)
+               (org-roam-ui-follow . t)
+               (org-roam-ui-update-on-save . t)
+               (org-roam-ui-open-on-start . nil)))
+    )
+  (leaf *org-babel-settings
+    :custom ((org-src-fontify-natively . t)
+             (org-confirm-babel-evaluate . nil))
+    :config
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((emacs-lisp . t)
+       (dot . t)
+       (julia . t)
+       (python . t)
+       (jupyter . t)))
+    (defun load-org-babel-jupyter ()
+      (interactive)
+      (org-babel-jupyter-aliases-from-kernelspecs)
+      )
+    )
+  (leaf org-flyimage
+    :doc "orgの画像を再読み込みするパッケージ"
+    :vc (:url "https://github.com/misohena/org-inline-image-fix.git")
+    :require 'org-datauri-image
+    )
+  (leaf org-crypt
+    :doc "Public Key Encryption for Org Entries"
+    :tag "builtin"
+    :added "2025-10-10"
+    :custom ((org-crypt-key . "AFAAC9211530D26C")
+             (org-tags-exclude-from-inheritance . '("crypt"))
+             (org-crypt-disable-auto-save . 'encrypt))
+    :config
+    (org-crypt-use-before-save-magic)
+    )
   )
 
 ;; (leaf paradox
@@ -1809,6 +2365,39 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
 ;;   :disabled t
 ;;   :ensure t)
 
+(leaf vterm
+  :doc "Fully-featured terminal emulator"
+  :req "emacs-25.1"
+  :tag "terminals" "emacs>=25.1"
+  :url "https://github.com/akermu/emacs-libvterm"
+  :added "2023-02-19"
+  :emacs>= 25.1
+  :ensure t
+  :when (string= system-type 'gnu/linux)
+  :custom ((vterm-max-scrollback . 10000)
+           (vterm-buffer-name-string . "vterm: %s")
+           )
+  :bind (("C-c v" . multi-vterm)
+         ;; ("s-v"   . multi-vterm)
+         (:vterm-mode-map
+          ("C-m" . vterm-send-return)
+          ("C-h" . vterm-send-backspace)
+          ("C-y" . vterm-yank)
+          ;; ("C-l" . skk-latin-mode)
+          ;; ("C-j" . skk-hiragana-set)
+          ))
+  :config
+  (leaf multi-vterm
+    :doc "Like multi-term.el but for vterm"
+    :req "emacs-26.3" "vterm-0.0" "project-0.3.0"
+    :tag "processes" "terminals" "emacs>=26.3"
+    :url "https://github.com/suonlight/multi-libvterm"
+    :added "2023-03-12"
+    :emacs>= 26.3
+    :ensure t
+    :after vterm project)
+  )
+
 (leaf yaml
   :doc "YAML parser for Elisp"
   :req "emacs-25.1"
@@ -1837,14 +2426,20 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
             (tex-command                  . "lualatex -synctex=1")
             ;; (tex-command  . "ptex2pdf -u -l -ot '-synctex=1 -file-line-error'")
             ;; (tex-command  . "ptex2pdf -l -ot '-synctex=1")
-            (bibtex-command               . "upbibtex")
+            ;; (bibtex-command               . "upbibtex")
+            (bibtex-command               . "biber")
             ;; (makeindex-command  . "mendex")
             (dviprint-command-format      . "open -a \"Adobe Acrobat Reader DC\" `echo %s | gsed -e \"s/\\.[^.]*$/\\.pdf/\"`")
             (YaTeX-nervous                . nil)
             (YaTeX-close-paren-always     . nil)
             (YaTeX-fill-prefix            . "")
             (YaTeX-user-completion-table  . "~/.emacs.d/.yatexrc")
-            (YaTeX-electric-indent-mode   . -1))
+            ;; (YaTeX-electric-indent-mode   . -1)
+            (YaTeX-indent-level            . 2)
+            (YaTeX-item-indent            . 2)
+            (indent-line-function         . 'YaTeX-indent-line)
+            (indent-region-function       . 'indent-region)
+            )
   :bind ((YaTeX-mode-map
           ("C-M-y" . latex-insert-clipboard-figure)))
 
@@ -1927,13 +2522,14 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
     :require t
     :disabled t
     ;; :after lsp-mode consult yatex
+    :disabled t
     :hook (yatex-mode-hook . lsp)
     :custom ((lsp-tex-server . 'texlab)
              (lsp-latex-forward-search-executable . "zathura")
              (lsp-latex-forward-search-args . '("--synctex-forward" "%l:1:%f" "%p")))
     )
   (leaf tikz
-    :doc "A minor mode to edit TikZ pictures. yatexで使う時はコードの一部を編集"
+    :doc "A minor mode to edit TikZ pictures. yatexで使う時はtikz-run-current-bufferの実行条件を変更すること"
     :req "emacs-24.1"
     :tag "tex" "emacs>=24.1"
     :url "https://github.com/emiliotorres/tikz"
@@ -1941,6 +2537,17 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
     :emacs>= 24.1
     :ensure t
     )
+  (leaf latex-table-wizard
+    :doc "Magic editing of LaTeX tables."
+    :req "emacs-27.1" "auctex-12.1" "transient-0.3.7"
+    :tag "convenience" "emacs>=27.1"
+    :url "https://github.com/enricoflor/latex-table-wizard"
+    :added "2025-10-27"
+    :emacs>= 27.1
+    :ensure t
+    :after yatexprc
+    :bind ((YaTeX-mode-map
+            ("C-c"))))
   :preface
   (defun latex-insert-clipboard-figure (name)
     (interactive "sfile name: ")
@@ -1948,7 +2555,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
            (image-dir "./figures")
            (filename (format "%s/%s.png" image-dir name))
            (fullpath (expand-file-name filename))
-           (path "$HOME/Documentswin/script/import.ps1")
+           (path "$HOME/Documents/script/import.ps1")
            ;; (path "$HOME/.emacs.d/script/import.ps1")
            (path-win (shell-command-to-string (format "wslpath -w \"%s\"" path)))
            (path-wsl (replace-regexp-in-string
@@ -1970,6 +2577,18 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
 
 
 ;; マイナーモードの設定
+(leaf affe
+  :doc "Asynchronous Fuzzy Finder for Emacs"
+  :req "emacs-28.1" "consult-1.7"
+  :tag "completion" "files" "matching" "emacs>=28.1"
+  :url "https://github.com/minad/affe"
+  :added "2025-01-21"
+  :emacs>= 28.1
+  :ensure t
+  :custom ((affe-highlight-function . 'orderless-highlight-matches)
+           (affe-regexp-function . 'orderless-pattern-compiler))
+  )
+
 (leaf align
   :doc "align text to a specific column, by regexp"
   :tag "builtin"
@@ -2008,36 +2627,200 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :vc (:url "https://github.com/sebastienwae/app-launcher")
   :when (executable-find "git")
   :require t
-  :after orderless
+  ;; :after orderless
   ;; :disabled t
   )
 
-;; (leaf calfw
-;;   :doc "Calendar view framework on Emacs"
-;;   :tag "calendar"
-;;   :url "https://github.com/kiwanami/emacs-calfw"
-;;   :added "2021-09-05"
-;;   :ensure t
-;;   :disabled t
-;;   :config
-;;   (leaf calfw-org
-;;     :doc "calendar view for org-agenda"
-;;     :tag "org" "calendar"
-;;     :added "2021-09-05"
-;;     :ensure t
-;;     :require t)
-;;   (leaf calfw-ical
-;;     :doc "calendar view for ical format"
-;;     :tag "calendar"
-;;     :added "2021-09-05"
-;;     :ensure t
-;;     :require t
-;;     :config
-;;     (load "calfw_functions" t)
-;;     (add-hook 'calendar-load-hook (lambda ()
-;;                                     (require 'japanese-holidays)
-;;                                     (setq calendar-holidays
-;;                                           (append japanese-holidays))))))
+(leaf calfw
+  :doc "Calendar view framework on Emacs"
+  :tag "calendar"
+  :url "https://github.com/kiwanami/emacs-calfw"
+  :added "2021-09-05"
+  :ensure t
+  ;; :disabled t
+  :config
+  (leaf calfw-org
+    :doc "calendar view for org-agenda"
+    :tag "org" "calendar"
+    :added "2021-09-05"
+    :ensure t
+    :require t)
+  (leaf calfw-ical
+    :doc "calendar view for ical format"
+    :tag "calendar"
+    :added "2021-09-05"
+    :ensure t
+    :require t
+    )
+  (defun my-open-calendar ()
+    (interactive)
+    (let* ((org-src (cfw:org-create-source "Seagreen4"))
+           (icls-src-dir "/home/toshiaki/Documents/calendar/")
+           (get-files (lambda (directory) (seq-filter #'file-regular-p (directory-files directory t "\\`[^.]"))))
+           (file-paths (funcall get-files icls-src-dir))
+           (to-name (lambda (path) (file-name-sans-extension (file-name-nondirectory path))))
+           (to-icls-src  (lambda (path) (cfw:ical-create-source (funcall to-name path) path "Pink" )))
+           (icls-srcs (mapcar to-icls-src file-paths))
+           )
+      (cfw:open-calendar-buffer
+       :view 'month
+       :contents-sources
+       (cons org-src icls-srcs)))
+    )
+  )
+
+(leaf cape
+  :doc "Completion At Point Extensions"
+  :req "emacs-27.1"
+  :tag "emacs>=27.1"
+  :url "https://github.com/minad/cape"
+  :added "2022-03-31"
+  :emacs>= 27.1
+  :ensure t
+  ;; :after corfu
+  ;; :disabled t
+  ;; :hook ((ein:notebook-mode-hook . my/set-ein-capf)
+  ;;        (lsp-completion-mode . corfu-setup-lsp))
+  :config
+  ;; (add-to-list 'completion-at-point-functions #'tempel-complete)
+  (add-to-list 'completion-at-point-functions #'cape-file)
+  ;; (add-to-list 'completion-at-point-functions #'cape-dict)
+  ;; (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+  (add-to-list 'completion-at-point-functions #'cape-keyword)
+  ;; (add-to-list 'completion-at-point-functions #'cape-symbol)
+  ;; (add-to-list 'completion-at-point-functions #'cape-abbrev)
+  ;; (add-to-list 'completion-at-point-functions #'cape-elisp-block)
+  ;; (add-to-list 'completion-at-point-functions #'cape-tex)
+  :init
+  (defun corfu-setup-lsp ()
+    (interactive)
+    ""
+    (setq-local completion-at-point-functions
+                (list (cape-capf-buster
+                       (cape-capf-super
+                        #'lsp-completion-at-point
+                        #'cape-abbrev
+                        #'cape-keyword
+                        #'cape-file)))))
+
+  (defun my/convert-super-capf (arg-capf)
+    (list (cape-capf-noninterruptible
+           (cape-capf-accept-all
+            (cape-capf-buster arg-capf
+                              #'cape-file
+                              )))
+          #'cape-dict))
+
+  (defun my/set-ein-capf ()
+    (interactive)
+    ;; (setq-local completion-at-point-functions
+    ;;             (my/convert-super-capf (cape-company-to-capf #'company-jedi)))
+    (setq-local completion-at-point-functions
+                (list (cape-capf-noninterruptible
+                       (cape-capf-accept-all
+                        (cape-capf-buster
+                         (cape-company-to-capf #'company-jedi))))))
+    (add-to-list 'completion-at-point-functions #'cape-file t)
+    (add-to-list 'completion-at-point-functions #'cape-dict t)
+    )
+  (defun my/reset-capf ()
+    (interactive)
+    (setq completion-at-point-functions
+          (list (cape-capf-noninterruptible
+                 (cape-capf-accept-all
+                  (cape-capf-buster #'cape-elisp-symbol)))))
+    )
+
+  )
+
+(leaf consult
+  :doc "Consulting completing-read"
+  :req "emacs-26.1"
+  :tag "emacs>=26.1"
+  :url "https://github.com/minad/consult"
+  :added "2021-09-05"
+  :emacs>= 26.1
+  :ensure t
+  :bind (("M-g g" . consult-goto-line)
+         ("C-x b" . consult-buffer)
+         ("C-c i" . consult-imenu)
+         ("M-y" . consult-yank-pop)
+         ("C-o" . consult-line)
+         ("C-c h" . consult-recent-file)
+         ("M-g g" . consult-goto-line)
+         ("C-x r l" . consult-bookmark)
+         (minibuffer-local-map
+          ("C-c h" . consult-history)))
+
+  :custom `((consult-preview-key . nil)
+            (consult-line-start-from-top . t)
+            (xref-show-xrefs-function . #'consult-xref)
+            (xref-show-definitions-function . #'consult-xref))
+  )
+
+(leaf corfu
+  :doc "Completion Overlay Region FUnction"
+  :req "emacs-27.1"
+  :tag "emacs>=27.1"
+  :url "https://github.com/minad/corfu"
+  :added "2021-09-11"
+  :emacs>= 27.1
+  :ensure t
+  ;; :require t
+  ;; :defvar (corfu-auto)
+  :when (eq window-system 'x)
+  :hook ((minibuffer-setup-hook . my/corfu-enable-in-minibuffer)
+         ((eshell-mode-hook
+           ein:notebook-mode-hook) . (lambda ()
+                                       (setq-local corfu-auto nil)
+                                       (corfu-mode)))
+         ;; (corfu-mode-hook . corfu-popupinfo-mode)
+         )
+  :global-minor-mode (global-corfu-mode
+                      corfu-popupinfo-mode)
+  :hook ((minibuffer-setup-hook . my/corfu-enable-in-minibuffer)
+         ((eshell-mode-hook
+           ein:notebook-mode-hook) . (lambda ()
+                                       (setq-local corfu-auto nil)
+                                       (corfu-mode)))
+         ;; (corfu-mode-hook . corfu-popupinfo-mode)
+         )
+  :custom ((tab-always-indent        . 'complete)
+           (corfu-cycle              . t)
+           (corfu-auto               . t)
+           (corfu-auto-prefix        . 3)
+           (corfu-auto-delay         . 0)
+           ;; (corfu-quit-no-match   . 'separator)
+           ;; (corfu-separator       . ? \s)
+           ;; (corfu-preselect-first . nil)
+           )
+  :bind
+  ((corfu-map
+    ("C-s" . corfu-insert-separator)
+    ("C-SPC" . corfu-insert-separator)
+    ("C-c SPC" . corfu-insert-separator)
+    ("M-SPC" . corfu-insert-separator))) ;SPCにするとSKKのへんかんできなくなる
+  :init
+  (defun my/corfu-enable-in-minibuffer ()
+    (when (where-is-internal #'completion-at-point (list (current-local-map)))
+      (setq-local corfu-auto nil)
+      (corfu-mode 1)))
+  (defun my/corfu-insert-and-send ()
+    (interactive)
+    (corfu-insert)
+    (cond
+     ((and (derived-mode-p 'eshell-mode) (fboundp 'eshell-send-input))
+      (eshell-send-input)
+      ((derived-mode-p 'comint-mode)
+       (comint-send-input)))))
+  )
+
+(leaf corfu-terminal
+  :unless (display-graphic-p)
+  :vc (:url "https://codeberg.org/akib/emacs-corfu-terminal.git")
+  :config
+  (corfu-terminal-mode +1)
+  )
 
 (leaf *cua
   :bind (("C-x SPC" . cua-set-rectangle-mark)
@@ -2054,15 +2837,39 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
          ("C-M-/" . dabbrev-expand))
   :custom (dabbrev-case-fold-search . nil))
 
+(leaf dape
+  :doc "Debug Adapter Protocol for Emacs"
+  :req "emacs-29.1" "jsonrpc-1.0.25"
+  :tag "emacs>=29.1"
+  :url "https://github.com/svaante/dape"
+  :added "2025-02-18"
+  :emacs>= 29.1
+  :ensure t
+  :after jsonrpc
+  :hook ((kill-emacs . dape-breakpoint-save))
+  :custom `((dape-buffer-window-arrangemnt . 'right)
+           (dape-inlay-hints . t)
+           (read-process-output-max . ,(* 1024 1024))
+           )
+  :bind (dape-mode-map
+         ("C-x C-a" . dape-global-map))
+  :config
+  (leaf repeat
+    :doc "convenient way to repeat the previous command"
+    :tag "builtin"
+    :added "2025-02-18"
+    :config (repeat-mode))
+  )
+
 (leaf ddskk
   :doc "Simple Kana to Kanji conversion program."
   :req "ccc-1.43" "cdb-20141201.754"
   :added "2021-09-05"
   :ensure t
   ;; :after ccc cdb
-  :require skk skk-study
-  :defvar (skk-user-directory skk-rom-kana-rule-list skk-katakana skk-j-mode skk-latin-mode)
-  :defun skk-toggle-kana skk-hiragana-set skk-katakana-set
+  ;; :require skk skk-study
+  ;; :defvar (skk-user-directory skk-rom-kana-rule-list skk-katakana skk-j-mode skk-latin-mode)
+  ;; :defun skk-toggle-kana skk-hiragana-set skk-katakana-set
   :hook ((isearch-mode-hook . skk-isearch-mode-setup)
          (isearch-mode-end-hook . skk-isearch-mode-cleanup)
          (find-file-hooks . my/always-enable-skk-latin-mode-hook))
@@ -2083,19 +2890,17 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
             (skk-isearch-start-mode             . 'latin)
             (skk-search-katakana                . t)
             ;; (skk-jisyo-code                     . 'utf-8)
-            (skk-jisyo-code . ,(lambda ()
-                                 (let* ((file-path "~/.emacs.d/ddskk/jisyo")
-                                        (coding
-                                         (with-temp-buffer
-                                           (insert-file-contents file-path)
-                                           (symbol-name buffer-file-coding-system)))
-                                        (jisyo-code
-                                         (cl-case coding
-                                           ("japanese-iso-8bit-unix" "ecu-jp")
-                                           (t "ecu-jp"))))
-                                   (print jisyo-code)
-                                   jisyo-code
-                                   )))
+            (skk-jisyo-code . ,(let* ((file-path "~/.emacs.d/ddskk/jisyo")
+                                      (coding
+                                       (with-temp-buffer
+                                         (insert-file-contents file-path)
+                                         (symbol-name buffer-file-coding-system)))
+                                      (jisyo-code
+                                       (cl-case coding
+                                         ("japanese-iso-8bit-unix" "ecu-jp")
+                                         (t "utf-8"))))
+                                 ;; (print coding)
+                                 jisyo-code))
             )
   :config
   (defun skk-hiragana-set nil
@@ -2128,6 +2933,51 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
 ;;   :vc (:url "https://github.com/frenzieddoll/etv")
 ;;   :custom ((default-m3u8-url . "https://raw.githubusercontent.com/luongz/iptv-jp/refs/heads/main/jp.m3u"))
 ;; )
+
+(leaf *emacs
+  :preface
+  ;; Add prompt indicator to `completing-read-multiple'.
+  ;; Alternatively try `consult-completing-read-multiple'.
+  (defun crm-indicator (args)
+    (cons (concat "[CRM] " (car args)) (cdr args)))
+  (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
+
+  ;; Do not allow the cursor in the minibuffer prompt
+  (setq minibuffer-prompt-properties
+        '(read-only t cursor-intangible t face minibuffer-prompt))
+  (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
+
+  ;; Emacs 28: Hide commands in M-x which do not work in the current mode.
+  ;; Vertico commands are hidden in normal buffers.
+  ;; (setq read-extended-command-predicate
+  ;;       #'command-completion-default-include-p)
+
+  ;; Enable recursive minibuffers
+  (setq enable-recursive-minibuffers t))
+
+(leaf embark
+  :doc "Conveniently act on minibuffer completions"
+  :req "emacs-26.1"
+  :tag "convenience" "emacs>=26.1"
+  :url "https://github.com/oantolin/embark"
+  :added "2021-09-17"
+  :emacs>= 26.1
+  :ensure t
+  ;; :disabled t
+  :bind ((minibuffer-mode-map
+          :package emacs
+          ("M-." . embark-dwim)
+          ("C-." . embark-act)))
+  ;; :custom ((prefix-help-command . #'embark-prefix-help-command))
+  :config
+  (leaf embark-consult
+    :doc "Consult integration for Embark"
+    :req "emacs-26.1" "embark-0.12" "consult-0.10"
+    :tag "convenience" "emacs>=26.1"
+    :url "https://github.com/oantolin/embark"
+    :added "2022-03-24"
+    :emacs>= 26.1
+    :ensure t))
 
 (leaf git-gutter
   :doc "Port of Sublime Text plugin GitGutter"
@@ -2201,36 +3051,36 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   (hydra-pinky
    (global-map "s-j p")
    "pinky"
-   ("n" next-line)
-   ("p" previous-line)
-   ("f" forward-char)
-   ("b" backward-char)
-   ("a" beginning-of-line)
-   ("e" move-end-of-line)
-   ("v" scroll-up-command)
-   ("V" scroll-down-command)
-   ("g" keyboard-quit)
-   ("j" next-line)
-   ("k" previous-line)
-   ("l" forward-char)
-   ("h" backward-char)
-   ("o" other-window)
-   ("r" avy-goto-word-1)
-   ("s" consult-line)
-   ("S" window-swap-states)
-   ("q" kill-buffer)
-   ("w" clipboard-kill-ring-save)
-   ("," beginning-of-buffer)
-   ("." end-of-buffer)
-   ("SPC" set-mark-command)
-   ("1" delete-other-windows)
-   ("2" split-window-below)
-   ("3" split-window-right)
-   ("0" delete-window)
-   ("x" delete-window)
-   (";" consult-buffer)
-   ("M-n" next-buffer)
-   ("M-p" previous-buffer))
+   ("n" next-line           "next-line")
+   ("p" previous-line       "prev-line")
+   ("f" forward-char        "forward-char")
+   ("b" backward-char       "backward-char")
+   ("a" beginning-of-line   "begining-line")
+   ("e" move-end-of-line    "end-line")
+   ("v" scroll-up-command   "scroll-up")
+   ("V" scroll-down-command "scroll-up")
+   ("g" keyboard-quit       "guit")
+   ("j" next-line           "next-line")
+   ("k" previous-line       "prev-line")
+   ("l" forward-char        "forward-char")
+   ("h" backward-char       "backward-char")
+   ("o" other-window        "other-window")
+   ("r" avy-goto-word-1     "goto-word")
+   ("s" consult-line        "consult-line")
+   ("S" window-swap-states  "window-swap")
+   ("q" kill-buffer         "kill-buffer")
+   ("w" clipboard-kill-ring-save "kill-ring-save")
+   ("," beginning-of-buffer      "biginning-buffer")
+   ("." end-of-buffer            "end-buffer")
+   ("SPC" set-mark-command       "set-mark")
+   ("1" delete-other-windows     "del-other-window")
+   ("2" split-window-below       "split-below")
+   ("3" split-window-right       "split-right")
+   ("0" delete-window            "del-window")
+   ("x" delete-window            "del-window")
+   (";" consult-buffer           "consult-buffer")
+   ("M-n" next-buffer            "next-buffer")
+   ("M-p" previous-buffer        "prev-buffer"))
   (hydra-zoom
    (global-map "<f2>")
    "zoom"
@@ -2264,12 +3114,12 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
            (calendar-month-header . '(propertize
                                       (format "%d年 %s月" year month)
                                       'font-lock-face 'calendar-month-header))
-           ;; (calendar-holidays . nil)
-           `(calendar-holidays . ,(append japanese-holidays holiday-local-holidays holiday-other-holidays))
-           (calendar-mark-holidays-flag . t)
+           ;; (calendar-holidays . ,(append japanese-holidays holiday-local-holidays holiday-other-holidays))
            )
-  ;; :config
-  ;; (setq calendar-holidays (append japanese-holidays holiday-local-holidays holiday-other-holidays))
+  ;; :setq
+  ;; `((calendar-holidays . ,(append japanese-holidays holiday-local-holidays holiday-other-holidays)))
+  :config
+  (setq calendar-holidays (append japanese-holidays holiday-local-holidays holiday-other-holidays))
   )
 
 ;; (leaf online-judge
@@ -2279,18 +3129,94 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
 ;;   :custom ((online-judge-directories . '("~/Dropbox/atcoder/"))
 ;;            (online-judge-command-name . nil)))
 
-(leaf oj
-  :doc "Competitive programming tools client for AtCoder, Codeforces"
-  :req "emacs-26.1" "quickrun-2.2"
-  :tag "convenience" "emacs>=26.1"
-  :url "https://github.com/conao3/oj.el"
-  :added "2025-03-23"
+(leaf kind-icon
+  :doc "Completion kind icons"
+  :req "emacs-27.1" "svg-lib-0"
+  :tag "completion" "emacs>=27.1"
+  :url "https://github.com/jdtsmith/kind-icon"
+  :added "2022-11-26"
+  :emacs>= 27.1
+  :ensure t
+  :disabled t
+  :when (eq window-system 'x)
+  :after corfu
+  :pre-setq (kind-icon-defalut-face . 'corfu-default)
+  :config
+  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+
+(leaf marginalia
+  :doc "Enrich existing commands with completion annotations"
+  :req "emacs-26.1"
+  :tag "emacs>=26.1"
+  :url "https://github.com/minad/marginalia"
+  :added "2021-09-06"
   :emacs>= 26.1
   :ensure t
-  :after quickrun
-  :custom ((oj-defalut-online-judge . 'atcoder)))
+  :unless (string= (system-name) "RaspberryPi")
+  :global-minor-mode t
+  )
 
+(leaf *mySaveFrame
+  :disabled t
+  :when (or (eq system-type 'darwin)
+            (eq system-type 'windows-nt))
+  :hook ((emacs-startup-hook . my-load-frame-size)
+         (kill-emacs-hook . my-save-frame-size))
+  :defun my-save-frame-size my-load-frame-size
+  :defvar my-save-frame-file
+  :custom ((my-save-frame-file . "~/.emacs.d/.framesize"))
+  :preface
+  (defun my-save-frame-size ()
+    "現在のフレームの位置、大きさを'my-save-frame-file'に保存します"
+    (interactive)
+    (let* ((param (frame-parameters (selected-frame)))
+           (current-height (frame-height))
+           (current-width (frame-width))
+           (current-top-margin (if (integerp (cdr (assoc 'top param)))
+                                   (cdr (assoc 'top param))
+                                 0))
 
+           (current-left-margin (if (integerp (cdr (assoc 'top param)))
+                                    (cdr (assoc 'top param))
+                                  0))
+           (buf nil)
+           (file my-save-frame-file))
+      ;; ファイルと関連付けられてたバッファ作成
+      (unless (setq buf (get-file-buffer (expand-file-name file)))
+        (setq buf (find-file-noselect (expand-file-name file))))
+      (set-buffer buf)
+      (erase-buffer)
+      ;; ファイル読み込み時に直接評価させる内容を記述
+      (insert
+       (concat
+        "(set-frame-size (selected-frame) "(int-to-string current-width)" "(int-to-string current-height)")\n"
+        "(set-frame-position (selected-frame) "(int-to-string current-left-margin)" "(int-to-string current-top-margin)")\n"
+        ))
+      (save-buffer)))
+  (defun my-load-frame-size ()
+    "`my-save-fram-file'に保存されたフレームの位置、大きさを復元します"
+    (interactive)
+    (let ((file my-save-frame-file))
+      (when (file-exists-p file)
+        (load-file file))))
+  :config
+  (run-with-idle-timer 60 t 'my-save-frame-size)
+  )
+
+(leaf orderless
+  :doc "Completion style for matching regexps in any order"
+  :req "emacs-26.1"
+  :tag "extensions" "emacs>=26.1"
+  :url "https://github.com/oantolin/orderless"
+  :added "2021-09-05"
+  :emacs>= 26.1
+  :ensure t
+  :defvar (orderless-style-dispatchers)
+  :custom ((completion-styles . '(basic  orderless))
+           (completion-category-defaults . nil)
+           (completion-category-overrides . nil)
+           )
+  )
 
 (leaf page-ext
   :doc "extended page handling commands"
@@ -2316,459 +3242,6 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :unless (string-match "microsoft" (shell-command-to-string "uname -r"))
   :require t
   )
-
-(leaf rainbow-delimiters
-  :doc "Highlight brackets according to their depth"
-  :tag "tools" "lisp" "convenience" "faces"
-  :url "https://github.com/Fanael/rainbow-delimiters"
-  :added "2021-09-05"
-  :ensure t
-  :hook (emacs-lisp-mode-hook . rainbow-delimiters-mode))
-
-(leaf recentf
-  :init
-  (leaf recentf-ext
-    :doc "Recentf extensions"
-    :tag "files" "convenience"
-    :url "http://www.emacswiki.org/cgi-bin/wiki/download/recentf-ext.el"
-    :added "2023-02-09"
-    :ensure t
-    )
-  :custom
-  `((recentf-save-file . "~/.emacs.d/recentf")
-    (recentf-max-saved-items . 2000)
-    (recentf-auto-cleanup . 'never)
-    (recentf-exclude . '("recentf"
-                         "COMMIT_EDITMSG"
-                         "/.?TAGS"
-                         "^/sudo:"
-                         "/\\.emacs\\.d/games/*-scores"
-                         "/\\.emacs\\.d/\\.cask/"
-                         "Geheimnis"))
-    ;; (recentf-auto-cleanup-timer . (run-with-idle-timer 30 t 'recentf-save-list))
-    )
-  :global-minor-mode (recentf-mode)
-  )
-
-;; (leaf smartparens
-;;   :doc "Automatic insertion, wrapping and paredit-like navigation with user defined pairs."
-;;   :req "dash-2.13.0" "cl-lib-0.3"
-;;   :tag "editing" "convenience" "abbrev"
-;;   :url "https://github.com/Fuco1/smartparens"
-;;   :added "2022-02-25"
-;;   :ensure t
-;;   :global-minor-mode (smartparens-strict-mode)
-;;   :bind (("C-c s" . smartparens-strict-mode)
-;;          (:smartparens-mode-map
-;;           ("C-M-f" . sp-forward-sexp)
-;;           ("C-M-b" . sp-backward-sexp)
-;;           ("C-M-n" . sp-next-sexp)
-;;           ("C-M-p" . sp-previous-sexp)
-;;           ("C-M-a" . sp-beginning-of-sexp)
-;;           ("C-M-e" . sp-end-of-sexp)
-;;           ("M-["   . sp-backward-unwrap-sexp)
-;;           ("M-]"   . sp-unwrap-sexp)))
-;;   :config
-;;   (sp-pair "'" "'" :actions :rem)
-;;   (sp-pair "`" "`" :actions :rem)
-;;   (sp-local-pair 'python-mode "'" "'")
-;;   (sp-local-pair 'ein:ipynb-mode "'" "'")
-;;   (sp-local-pair 'haskell-mode "`" "`"))
-
-(leaf ssh
-  :doc "Support for remote logins using ssh."
-  :tag "comm" "unix"
-  :added "2021-11-03"
-  :ensure t)
-
-(leaf sudo-edit
-  :doc "Open files as another user"
-  :req "emacs-24" "cl-lib-0.5"
-  :tag "convenience" "emacs>=24"
-  :url "https://github.com/nflath/sudo-edit"
-  :added "2021-09-10"
-  :emacs>= 24
-  :ensure t)
-
-;; (leaf undo-tree
-;;   :doc "Treat undo history as a tree"
-;;   :tag "tree" "history" "redo" "undo" "files" "convenience"
-;;   :url "http://www.dr-qubit.org/emacs.php"
-;;   :added "2021-09-05"
-;;   :ensure t
-;;   :unless (string-match "RaspberryPi" (system-name))
-;;   :global-minor-mode t)
-
-(leaf uniquify
-  :doc "unique buffer names dependent on file name"
-  :tag "builtin" "files"
-  :added "2023-02-09"
-  :custom
-  ((uniquify-buffer-name-style . 'post-forward-angle-brackets)
-   (uniquify-min-dir-content . 1)))
-
-(leaf vertico
-  :doc "VERTical Interactive COmpletion"
-  :req "emacs-27.1"
-  :tag "emacs>=27.1"
-  :url "https://github.com/minad/vertico"
-  :added "2021-09-05"
-  :emacs>= 27.1
-  :ensure t
-  :require t
-  ;; :disabled t
-  :bind ((vertico-map
-          ("?" . minibuffer-complition-help)
-          ("M-RET" . minibuffer-force-complete-and-exit)
-          ("M-TAB" . minibuffer-complete)
-          ;; ("C-," . up-to-dir)
-          ("C-," . vertico-directory-up)
-          ("<mouse-3>" . vertico-exit)))
-  :custom ((vertico-count . 15)
-           (vertico-mouse-mode . t)
-           ;; (vertico-preselect . 'prompt)
-           )
-  :global-minor-mode t
-  ;; :preface
-  ;; (defun up-to-dir ()
-  ;;   "Move to parent directory like \"cd ..\" in find-file."
-  ;;   (interactive)
-  ;;   (let ((sep (eval-when-compile (regexp-opt '("/" "\\")))))
-  ;;     (save-excursion
-  ;;       (left-char 1)
-  ;;       (when (looking-at-p sep)
-  ;;         (delete-char 1)))
-  ;;     (save-match-data
-  ;;       (when (search-backward-regexp sep nil t)
-  ;;         (right-char 1)
-  ;;         (filter-buffer-substring (point)
-  ;;                                  (save-excursion (end-of-line) (point))
-  ;;                                  #'delete)))))
-  )
-
-(leaf consult
-  :doc "Consulting completing-read"
-  :req "emacs-26.1"
-  :tag "emacs>=26.1"
-  :url "https://github.com/minad/consult"
-  :added "2021-09-05"
-  :emacs>= 26.1
-  :ensure t
-  :bind (("M-g g" . consult-goto-line)
-         ("C-x b" . consult-buffer)
-         ("C-c i" . consult-imenu)
-         ("M-y" . consult-yank-pop)
-         ("C-o" . consult-line)
-         ("C-c h" . consult-recent-file)
-         ("M-g g" . consult-goto-line)
-         ("C-x r l" . consult-bookmark)
-         (minibuffer-local-map
-          ("C-c h" . consult-history)))
-
-  :custom `((consult-preview-key . nil))
-  )
-
-(leaf orderless
-  :doc "Completion style for matching regexps in any order"
-  :req "emacs-26.1"
-  :tag "extensions" "emacs>=26.1"
-  :url "https://github.com/oantolin/orderless"
-  :added "2021-09-05"
-  :emacs>= 26.1
-  :ensure t
-  :defvar (orderless-style-dispatchers)
-  :custom ((completion-styles . '(basic  orderless))
-           (completion-category-defaults . nil)
-           (completion-category-overrides . nil)
-           )
-  )
-
-(leaf marginalia
-  :doc "Enrich existing commands with completion annotations"
-  :req "emacs-26.1"
-  :tag "emacs>=26.1"
-  :url "https://github.com/minad/marginalia"
-  :added "2021-09-06"
-  :emacs>= 26.1
-  :ensure t
-  :unless (string= (system-name) "RaspberryPi")
-  :config (marginalia-mode 1)
-  )
-
-(leaf embark
-  :doc "Conveniently act on minibuffer completions"
-  :req "emacs-26.1"
-  :tag "convenience" "emacs>=26.1"
-  :url "https://github.com/oantolin/embark"
-  :added "2021-09-17"
-  :emacs>= 26.1
-  :ensure t
-  :disabled t
-  :bind (("s-e" . embark-act))
-  ;; :custom ((prefix-help-command . #'embark-prefix-help-command))
-  :config
-  (leaf embark-consult
-    :doc "Consult integration for Embark"
-    :req "emacs-26.1" "embark-0.12" "consult-0.10"
-    :tag "convenience" "emacs>=26.1"
-    :url "https://github.com/oantolin/embark"
-    :added "2022-03-24"
-    :emacs>= 26.1
-    :ensure t))
-
-(leaf savehist
-  :doc "Save minibuffer history"
-  :tag "builtin"
-  :added "2021-09-05"
-  :global-minor-mode t)
-
-;; (leaf *mySaveFrame
-;;     :when (or (eq system-type 'darwin)
-;;               (eq system-type 'windows-nt))
-;;     :hook ((emacs-startup-hook . my-load-frame-size)
-;;            (kill-emacs-hook . my-save-frame-size))
-;;     :defun my-save-frame-size my-load-frame-size
-;;     :defvar my-save-frame-file
-;;     :custom ((my-save-frame-file . "~/.emacs.d/.framesize"))
-;;     :preface
-;;     (defun my-save-frame-size ()
-;;       "現在のフレームの位置、大きさを'my-save-frame-file'に保存します"
-;;       (interactive)
-;;       (let* ((param (frame-parameters (selected-frame)))
-;;              (current-height (frame-height))
-;;              (current-width (frame-width))
-;;              (current-top-margin (if (integerp (cdr (assoc 'top param)))
-;;                                      (cdr (assoc 'top param))
-;;                                    0))
-
-;;              (current-left-margin (if (integerp (cdr (assoc 'top param)))
-;;                                       (cdr (assoc 'top param))
-;;                                     0))
-;;              (buf nil)
-;;              (file my-save-frame-file))
-;;         ;; ファイルと関連付けられてたバッファ作成
-;;         (unless (setq buf (get-file-buffer (expand-file-name file)))
-;;           (setq buf (find-file-noselect (expand-file-name file))))
-;;         (set-buffer buf)
-;;         (erase-buffer)
-;;         ;; ファイル読み込み時に直接評価させる内容を記述
-;;         (insert
-;;          (concat
-;;           "(set-frame-size (selected-frame) "(int-to-string current-width)" "(int-to-string current-height)")\n"
-;;           "(set-frame-position (selected-frame) "(int-to-string current-left-margin)" "(int-to-string current-top-margin)")\n"
-;;           ))
-;;         (save-buffer)))
-;;     (defun my-load-frame-size ()
-;;       "`my-save-fram-file'に保存されたフレームの位置、大きさを復元します"
-;;       (interactive)
-;;       (let ((file my-save-frame-file))
-;;         (when (file-exists-p file)
-;;           (load-file file))))
-;;     :config
-;;     (run-with-idle-timer 60 t 'my-save-frame-size)
-;;     )
-
-(leaf affe
-  :doc "Asynchronous Fuzzy Finder for Emacs"
-  :req "emacs-28.1" "consult-1.7"
-  :tag "completion" "files" "matching" "emacs>=28.1"
-  :url "https://github.com/minad/affe"
-  :added "2025-01-21"
-  :emacs>= 28.1
-  :ensure t
-  :custom ((affe-highlight-function . 'orderless-highlight-matches)
-           (affe-regexp-function . 'orderless-pattern-compiler))
-  )
-
-(leaf corfu-terminal
-  :unless (display-graphic-p)
-  :vc (:url "https://codeberg.org/akib/emacs-corfu-terminal.git")
-  :config
-  (corfu-terminal-mode +1)
-  )
-
-(leaf corfu
-  :doc "Completion Overlay Region FUnction"
-  :req "emacs-27.1"
-  :tag "emacs>=27.1"
-  :url "https://github.com/minad/corfu"
-  :added "2021-09-11"
-  :emacs>= 27.1
-  :ensure t
-  ;; :require t
-  ;; :defvar (corfu-auto)
-  :when (eq window-system 'x)
-  :global-minor-mode global-corfu-mode
-  :hook ((minibuffer-setup-hook . my/corfu-enable-in-minibuffer)
-         ((eshell-mode-hook
-           ein:notebook-mode-hook) . (lambda ()
-                                       (setq-local corfu-auto nil)
-                                       (corfu-mode)))
-         ;; (corfu-mode-hook . corfu-popupinfo-mode)
-         )
-  :custom ((tab-always-indent        . 'complete)
-           (corfu-cycle              . t)
-           (corfu-auto               . t)
-           (corfu-auto-prefix        . 3)
-           (corfu-auto-delay         . 0)
-           ;; (corfu-quit-no-match   . 'separator)
-           ;; (corfu-separator       . ? \s)
-           ;; (corfu-preselect-first . nil)
-           )
-  :bind
-  ((corfu-map
-    ("C-s" . corfu-insert-separator)
-    ("C-SPC" . corfu-insert-separator)
-    ("C-c SPC" . corfu-insert-separator)
-    ("M-SPC" . corfu-insert-separator))) ;SPCにするとSKKのへんかんできなくなる
-  :init
-  (defun my/corfu-enable-in-minibuffer ()
-    (when (where-is-internal #'completion-at-point (list (current-local-map)))
-      (setq-local corfu-auto nil)
-      (corfu-mode 1)))
-  (defun my/corfu-insert-and-send ()
-    (interactive)
-    (corfu-insert)
-    (cond
-     ((and (derived-mode-p 'eshell-mode) (fboundp 'eshell-send-input))
-      (eshell-send-input)
-      ((derived-mode-p 'comint-mode)
-       (comint-send-input)))))
-  )
-
-(leaf kind-icon
-  :doc "Completion kind icons"
-  :req "emacs-27.1" "svg-lib-0"
-  :tag "completion" "emacs>=27.1"
-  :url "https://github.com/jdtsmith/kind-icon"
-  :added "2022-11-26"
-  :emacs>= 27.1
-  :ensure t
-  :disabled t
-  :when (eq window-system 'x)
-  :after corfu
-  :pre-setq (kind-icon-defalut-face . 'corfu-default)
-  :config
-  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
-
-(leaf tempel
-  :doc "Tempo templates/snippets with in-buffer field editing"
-  :req "emacs-27.1" "compat-29.1.4.0"
-  :tag "wp" "tools" "languages" "abbrev" "emacs>=27.1"
-  :url "https://github.com/minad/tempel"
-  :added "2023-11-10"
-  :emacs>= 27.1
-  :ensure t
-  :after corfu
-  :bind (("C-+" . tempel-complete)
-         ("C-*" . tempel-insert)
-         (tempel-map
-          ("C-S-n" . tempel-next)
-          ("C-S-p" . tempel-previous)
-          ("C-RET" . tempel-done)
-          )
-         )
-  :config
-  (leaf tempel-collection
-    :doc "Collection of templates for Tempel"
-    :req "tempel-0.5" "emacs-29.1"
-    :tag "tools" "emacs>=29.1"
-    :url "https://github.com/Crandel/tempel-collection"
-    :added "2023-11-10"
-    :emacs>= 29.1
-    :ensure t
-    :after tempel)
-  :preface
-  (defun tempel-setup-capf ()
-    (setq-local completion-at-point-functions
-                (cons #'tempel-complete
-                      completion-at-point-functions)))
-  )
-
-(leaf cape
-  :doc "Completion At Point Extensions"
-  :req "emacs-27.1"
-  :tag "emacs>=27.1"
-  :url "https://github.com/minad/cape"
-  :added "2022-03-31"
-  :emacs>= 27.1
-  :ensure t
-  ;; :after corfu
-  ;; :disabled t
-  ;; :hook ((ein:notebook-mode-hook . my/set-ein-capf)
-  ;;        (lsp-completion-mode . corfu-setup-lsp))
-  :config
-  ;; (add-to-list 'completion-at-point-functions #'tempel-complete)
-  (add-to-list 'completion-at-point-functions #'cape-file)
-  ;; (add-to-list 'completion-at-point-functions #'cape-dict)
-  ;; (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-  (add-to-list 'completion-at-point-functions #'cape-keyword)
-  ;; (add-to-list 'completion-at-point-functions #'cape-symbol)
-  ;; (add-to-list 'completion-at-point-functions #'cape-abbrev)
-  ;; (add-to-list 'completion-at-point-functions #'cape-elisp-block)
-  ;; (add-to-list 'completion-at-point-functions #'cape-tex)
-  :init
-  (defun corfu-setup-lsp ()
-    (interactive)
-    ""
-    (setq-local completion-at-point-functions
-                (list (cape-capf-buster
-                       (cape-capf-super
-                        #'lsp-completion-at-point
-                        #'cape-abbrev
-                        #'cape-keyword
-                        #'cape-file)))))
-
-  (defun my/convert-super-capf (arg-capf)
-    (list (cape-capf-noninterruptible
-           (cape-capf-accept-all
-            (cape-capf-buster arg-capf
-                              #'cape-file
-                              )))
-          #'cape-dict))
-
-  (defun my/set-ein-capf ()
-    (interactive)
-    ;; (setq-local completion-at-point-functions
-    ;;             (my/convert-super-capf (cape-company-to-capf #'company-jedi)))
-    (setq-local completion-at-point-functions
-                (list (cape-capf-noninterruptible
-                       (cape-capf-accept-all
-                        (cape-capf-buster
-                         (cape-company-to-capf #'company-jedi))))))
-    (add-to-list 'completion-at-point-functions #'cape-file t)
-    (add-to-list 'completion-at-point-functions #'cape-dict t)
-    )
-  (defun my/reset-capf ()
-    (interactive)
-    (setq completion-at-point-functions
-          (list (cape-capf-noninterruptible
-                 (cape-capf-accept-all
-                  (cape-capf-buster #'cape-elisp-symbol)))))
-    )
-
-  )
-
-(leaf *emacs
-  :preface
-  ;; Add prompt indicator to `completing-read-multiple'.
-  ;; Alternatively try `consult-completing-read-multiple'.
-  (defun crm-indicator (args)
-    (cons (concat "[CRM] " (car args)) (cdr args)))
-  (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
-
-  ;; Do not allow the cursor in the minibuffer prompt
-  (setq minibuffer-prompt-properties
-        '(read-only t cursor-intangible t face minibuffer-prompt))
-  (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
-
-  ;; Emacs 28: Hide commands in M-x which do not work in the current mode.
-  ;; Vertico commands are hidden in normal buffers.
-  ;; (setq read-extended-command-predicate
-  ;;       #'command-completion-default-include-p)
-
-  ;; Enable recursive minibuffers
-  (setq enable-recursive-minibuffers t))
 
 (leaf puni
   :doc "Parentheses Universalistic"
@@ -2805,6 +3278,167 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   (define-key puni-mode-map (kbd "M-DEL") nil)
 )
 
+(leaf rainbow-delimiters
+  :doc "Highlight brackets according to their depth"
+  :tag "tools" "lisp" "convenience" "faces"
+  :url "https://github.com/Fanael/rainbow-delimiters"
+  :added "2021-09-05"
+  :ensure t
+  :hook (emacs-lisp-mode-hook . rainbow-delimiters-mode))
+
+(leaf recentf
+  :init
+  (leaf recentf-ext
+    :doc "Recentf extensions"
+    :tag "files" "convenience"
+    :url "http://www.emacswiki.org/cgi-bin/wiki/download/recentf-ext.el"
+    :added "2023-02-09"
+    :ensure t
+    )
+  :custom
+  `((recentf-save-file . "~/.emacs.d/recentf")
+    (recentf-max-saved-items . 2000)
+    (recentf-auto-cleanup . 'never)
+    (recentf-exclude . '("recentf"
+                         "COMMIT_EDITMSG"
+                         "/.?TAGS"
+                         "^/sudo:"
+                         "/\\.emacs\\.d/games/*-scores"
+                         "/\\.emacs\\.d/\\.cask/"
+                         "Geheimnis"))
+    ;; (recentf-auto-cleanup-timer . (run-with-idle-timer 30 t 'recentf-save-list))
+    )
+  :global-minor-mode (recentf-mode)
+  )
+
+(leaf savehist
+  :doc "Save minibuffer history"
+  :tag "builtin"
+  :added "2021-09-05"
+  :global-minor-mode t)
+
+(leaf smartparens
+  :doc "Automatic insertion, wrapping and paredit-like navigation with user defined pairs."
+  :req "dash-2.13.0" "cl-lib-0.3"
+  :tag "editing" "convenience" "abbrev"
+  :url "https://github.com/Fuco1/smartparens"
+  :added "2022-02-25"
+  :ensure t
+  :disabled t
+  :global-minor-mode (smartparens-strict-mode)
+  :bind (("C-c s" . smartparens-strict-mode)
+         (:smartparens-mode-map
+          ("C-M-f" . sp-forward-sexp)
+          ("C-M-b" . sp-backward-sexp)
+          ("C-M-n" . sp-next-sexp)
+          ("C-M-p" . sp-previous-sexp)
+          ("C-M-a" . sp-beginning-of-sexp)
+          ("C-M-e" . sp-end-of-sexp)
+          ("M-["   . sp-backward-unwrap-sexp)
+          ("M-]"   . sp-unwrap-sexp)))
+  :config
+  (sp-pair "'" "'" :actions :rem)
+  (sp-pair "`" "`" :actions :rem)
+  (sp-local-pair 'python-mode "'" "'")
+  (sp-local-pair 'ein:ipynb-mode "'" "'")
+  (sp-local-pair 'haskell-mode "`" "`"))
+
+(leaf ssh
+  :doc "Support for remote logins using ssh."
+  :tag "comm" "unix"
+  :added "2021-11-03"
+  :ensure t)
+
+(leaf subword
+  :doc "Handling capitalized subwords in a nomenclature"
+  :tag "builtin"
+  :added "2025-03-06")
+
+(leaf sudo-edit
+  :doc "Open files as another user"
+  :req "emacs-24" "cl-lib-0.5"
+  :tag "convenience" "emacs>=24"
+  :url "https://github.com/nflath/sudo-edit"
+  :added "2021-09-10"
+  :emacs>= 24
+  :ensure t)
+
+(leaf tempel
+  :doc "Tempo templates/snippets with in-buffer field editing"
+  :req "emacs-27.1" "compat-29.1.4.0"
+  :tag "wp" "tools" "languages" "abbrev" "emacs>=27.1"
+  :url "https://github.com/minad/tempel"
+  :added "2023-11-10"
+  :emacs>= 27.1
+  :ensure t
+  :after corfu
+  :bind (("C-+" . tempel-complete)
+         ("C-*" . tempel-insert)
+         (tempel-map
+          ("C-S-n" . tempel-next)
+          ("C-S-p" . tempel-previous)
+          ("C-RET" . tempel-done)
+          )
+         )
+  :config
+  (leaf tempel-collection
+    :doc "Collection of templates for Tempel"
+    :req "tempel-0.5" "emacs-29.1"
+    :tag "tools" "emacs>=29.1"
+    :url "https://github.com/Crandel/tempel-collection"
+    :added "2023-11-10"
+    :emacs>= 29.1
+    :ensure t
+    :after tempel)
+  :preface
+  (defun tempel-setup-capf ()
+    (setq-local completion-at-point-functions
+                (cons #'tempel-complete
+                      completion-at-point-functions)))
+  )
+
+(leaf undo-tree
+  :doc "Treat undo history as a tree"
+  :tag "tree" "history" "redo" "undo" "files" "convenience"
+  :url "http://www.dr-qubit.org/emacs.php"
+  :added "2021-09-05"
+  :ensure t
+  :disabled t
+  :unless (string-match "RaspberryPi" (system-name))
+  :global-minor-mode t)
+
+(leaf uniquify
+  :doc "unique buffer names dependent on file name"
+  :tag "builtin" "files"
+  :added "2023-02-09"
+  :custom
+  ((uniquify-buffer-name-style . 'post-forward-angle-brackets)
+   (uniquify-min-dir-content . 1)))
+
+(leaf vertico
+  :doc "VERTical Interactive COmpletion"
+  :req "emacs-27.1"
+  :tag "emacs>=27.1"
+  :url "https://github.com/minad/vertico"
+  :added "2021-09-05"
+  :emacs>= 27.1
+  :ensure t
+  :require t
+  ;; :disabled t
+  :bind ((vertico-map
+          ("?" . minibuffer-complition-help)
+          ("M-RET" . minibuffer-force-complete-and-exit)
+          ("M-TAB" . minibuffer-complete)
+          ;; ("C-," . up-to-dir)
+          ("C-," . vertico-directory-up)
+          ("<mouse-3>" . vertico-exit)))
+  :custom ((vertico-count . 15)
+           (vertico-mouse-mode . t)
+           ;; (vertico-preselect . 'prompt)
+           )
+  :global-minor-mode t
+  )
+
 (leaf visual-regexp-steroids
   :doc "Extends visual-regexp to support other regexp engines"
   :req "visual-regexp-1.1"
@@ -2820,39 +3454,6 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
          ("C-M-r" . vr/isearch-backward)
          ("C-M-s" . vr/isearch-forward))
   :custom `((vr/engine . 'python)))
-
-(leaf vterm
-  :doc "Fully-featured terminal emulator"
-  :req "emacs-25.1"
-  :tag "terminals" "emacs>=25.1"
-  :url "https://github.com/akermu/emacs-libvterm"
-  :added "2023-02-19"
-  :emacs>= 25.1
-  :ensure t
-  :when (string= system-type 'gnu/linux)
-  :custom ((vterm-max-scrollback . 10000)
-           (vterm-buffer-name-string . "vterm: %s")
-           )
-  :bind (("C-c v" . multi-vterm)
-         ;; ("s-v"   . multi-vterm)
-         (:vterm-mode-map
-          ("C-m" . vterm-send-return)
-          ("C-h" . vterm-send-backspace)
-          ("C-y" . vterm-yank)
-          ;; ("C-l" . skk-latin-mode)
-          ;; ("C-j" . skk-hiragana-set)
-          ))
-  :config
-  (leaf multi-vterm
-    :doc "Like multi-term.el but for vterm"
-    :req "emacs-26.3" "vterm-0.0" "project-0.3.0"
-    :tag "processes" "terminals" "emacs>=26.3"
-    :url "https://github.com/suonlight/multi-libvterm"
-    :added "2023-03-12"
-    :emacs>= 26.3
-    :ensure t
-    :after vterm project)
-  )
 
 (leaf vundo
   :doc "Visual undo tree"
@@ -2886,7 +3487,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :added "2021-09-05"
   :ensure t
   ;; :disabled t
-  :hook ((;; org-mode-hook
+  :hook ((org-mode-hook
           yatex-mode-hook
           haskell-mode-hook
           web-mode-hook
@@ -2971,9 +3572,9 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   ;; :custom `((read-process-output-max       . ,(* 1024 1024))
   ;;           (completion-category-overrides . '((eglot (styles orderless))))
   ;;           )
-  ;; :bind (eglot-mode-map
-  ;;        ("C-c C-s" . eglot-code-actions)
-  ;;        )
+  :bind (eglot-mode-map
+         ("C-c s" . eglot-code-actions)
+         )
   :preface
   (defun my/eglot-capf ()
     (interactive)
@@ -2988,7 +3589,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
 
   :config
   (add-to-list 'eglot-server-programs
-               '(yatex-mode . ("latexlab")))
+               '(yatex-mode . ("texlab")))
   (add-to-list 'eglot-server-programs
                '(haskell-mode . ("haskell-language-server-wrapper" "--lsp")))
   (leaf eglot-booster
@@ -3051,7 +3652,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
             (haskell-indent-offset                  . 4)
             (haskell-indendt-spaces                 . 4)
             (haskell-compile-stack-build-command    . t)
-            (haskell-process-suggest-hoogle-imports . t)
+            ;; (haskell-process-suggest-hoogle-imports . t)
             (haskell-indent-after-keywords          . '(("where" 4 0)
                                                         ("of" 4)
                                                         ("do" 4)
@@ -3167,6 +3768,8 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :url "https://gitlab.com/groups/python-mode-devs"
   :added "2021-09-11"
   :ensure t
+  :bind (python-mode-map
+         ("C-c j" . jupyter-run-repl))
   )
 
 (leaf *ruff

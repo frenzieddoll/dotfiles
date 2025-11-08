@@ -7,7 +7,7 @@ checkExist () {
     ls $1 > /dev/null 2>&1
 }
 
-autoload -Uz promptinit; promptinit
+autoload -U promptinit; promptinit
 
 temp="/usr/share/zsh/functions/Prompts/prompt_pure_setup"
 checkExist $temp && prompt pure
@@ -61,6 +61,7 @@ export PATH="$HOME/.emacs.d/script:$PATH"
 export PATH="$HOME/.ghcup/bin:$PATH"
 export PATH="$HOME/.cabal/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
+
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/home/toshiaki/.local/lib"
 # 環境変数の設定
 export QT_QPA_PLATFORMTHEME="qt5ct"
@@ -111,10 +112,11 @@ case $(uname -n) in
         # PS1='[\u@\h \W]\$ '
         setxkbmap -layout us > /dev/null 2>&1
         setxkbmap -option ctrl:swap_rwin_rctl > /dev/null 2>&1
-        export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0.0;;
-    "JPC20627141")
+        # export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0.0
+        ;;
+    "JPC20627141" | "JPC20661318")
         export LIBGL_ALWAYS_INDIRECT=1
-        export PYTHONPATH="$HOME/Document/python/modules:$PYTHONPATH"
+        export PYTHONPATH="$HOME/Documents/programing/python/modules:$PYTHONPATH"
         ;;
 esac
 
