@@ -1,0 +1,30 @@
+# ==============
+# Nord Prompt
+# ==============
+
+add_newline = true
+
+[character]
+success_symbol = "[](#88c0d0)"
+error_symbol = "[](#bf616a)"
+
+[directory]
+style = "bold #81a1c1"
+read_only = " "
+truncation_length = 3
+
+[git_branch]
+style = "bold #a3be8c"
+
+[git_status]
+style = "#d08770"
+
+[username]
+style_root = "bold #bf616a"
+style_user = "#8fbcbb"
+
+[hostname]
+style = "#5e81ac"
+
+[cmd_duration]
+style = "#ebcb8b"
