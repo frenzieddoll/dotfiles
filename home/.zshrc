@@ -19,9 +19,8 @@ checkExist $temp && source $temp
 temp="/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 checkExist $temp && source $temp
 
-# prompt pure
-# source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-# source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+temp="/usr/sbin/starship"
+checkExist $temp && eval "$(starship init zsh)"
 
 autoload -Uz colors
 colors

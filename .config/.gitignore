@@ -10,6 +10,7 @@
 /alacritty/alacritty_local.yml
 !/foot/
 !/gtk-3.0/
+!/kitty/
 !/libskk/
 !/mpv/
 !/zathura/
@@ -20,3 +21,4 @@
 !/fcitx
 !/fcitx5
 !/mimeapps.list
+!/starship.toml
