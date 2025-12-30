@@ -2,7 +2,11 @@
 # Nord Prompt
 # ==============
 
-add_newline = true
+command_timeout = 800
+scan_timeout = 30
+
+add_newline = false
+format = "$directory$git_branch$git_status$cmd_duration$line_break$character"
 
 [character]
 success_symbol = "[](#88c0d0)"
@@ -18,6 +22,7 @@ style = "bold #a3be8c"
 
 [git_status]
 style = "#d08770"
+format = "[$all_status$ahead_behind]($style)"
 
 [username]
 style_root = "bold #bf616a"
@@ -27,4 +32,6 @@ style_user = "#8fbcbb"
 style = "#5e81ac"
 
 [cmd_duration]
-style = "#ebcb8b"
+style = "dimmed #ebcb8b"
+min_time = 500
+format = " [⏱ $duration]($style)"

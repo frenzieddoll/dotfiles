@@ -7,8 +7,7 @@ checkExist () {
     ls $1 > /dev/null 2>&1
 }
 
-autoload -U promptinit; promptinit
-
+# autoload -U promptinit; promptinit
 # # plugins
 
 # temp="/usr/share/zsh/functions/Prompts/prompt_pure_setup"
@@ -101,7 +100,7 @@ alias drun='docker run -it --network=host --device=/dev/kfd --device=/dev/dri --
 
 which gh > /dev/null 2>&1 && eval "$(gh completion -s zsh)"
 
-function radeonPro () {
+radeonPro () {
     export DISABLE_LAYER_AMD_SWITCHABLE_GRAPHICS_1=1
     export VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.i686.json:/usr/share/vulkan/icd.d/radeon_icd.x86_64.json
     export RADV_PERFTEST=rt,gpl,nv_ms # Ray Tracing等の有効化
