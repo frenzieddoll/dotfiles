@@ -9,10 +9,11 @@ checkExist () {
 
 autoload -U promptinit; promptinit
 
-temp="/usr/share/zsh/functions/Prompts/prompt_pure_setup"
-checkExist $temp && prompt pure
-
 # # plugins
+
+# temp="/usr/share/zsh/functions/Prompts/prompt_pure_setup"
+# checkExist $temp && prompt pure
+
 temp="/usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
 checkExist $temp && source $temp
 
@@ -60,6 +61,7 @@ export PATH="$HOME/.emacs.d/script:$PATH"
 export PATH="$HOME/.ghcup/bin:$PATH"
 export PATH="$HOME/.cabal/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/.nvm/versions/node/v18.20.8:$PATH"
 
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/home/toshiaki/.local/lib"
 # 環境変数の設定
@@ -71,6 +73,8 @@ export INPUT_METHOD=fcitx
 
 # 言語を英語にする
 export LANG=en_US.utf-8
+
+source /usr/share/nvm/init-nvm.sh
 
 # エイリアス
 alias la='ls -a'

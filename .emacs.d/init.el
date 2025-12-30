@@ -3562,13 +3562,15 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :ensure t
   ;; :disabled t
   :hook (((python-mode-hook
+           purescript-mode-hook
            haskell-mode-hook
            yatex-mode-hook) . eglot-ensure)
          )
   :custom ((eldoc-echo-area-use-multiline-p . nil)
            (eglot-connect-timeout . 600)
            (eglot-autoshutdown . t)
-           (eglot-confirm-server-initiated-edits . nil))
+           (eglot-confirm-server-initiated-edits . nil)
+           (project-vc-extra-root-markers . '(".project")))
   ;; :custom `((read-process-output-max       . ,(* 1024 1024))
   ;;           (completion-category-overrides . '((eglot (styles orderless))))
   ;;           )
@@ -3592,6 +3594,9 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
                '(yatex-mode . ("texlab")))
   (add-to-list 'eglot-server-programs
                '(haskell-mode . ("haskell-language-server-wrapper" "--lsp")))
+  (add-to-list 'eglot-server-programs
+               '(purescript-mode  . ("purescript-language-server" "--stdio")))
+
   (leaf eglot-booster
     :when (executable-find "emacs-lsp-booster")
     :vc (:url "https://github.com/jdtsmith/eglot-booster")
@@ -3851,7 +3856,24 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :added "2022-12-14"
   :emacs>= 25.1
   :ensure t
-  :hook ((purescript-mode-hook . turn-on-purescript-indent))
+  :hook ((purescript-mode-hook . turn-on-purescript-indentation))
+  :custom ((purescript-notify-p . t)
+           (purescript-tags-on-save . t)
+           (purescript-stylish-on-save . t)
+           (purescript-indent-line-after-keywords . nil)
+           (purescript-indent-stops-at-each-level . t)
+           (purescript-indent-after-keyword-column . '(("where" 4)
+                                                       ("do" 4)
+                                                       ("let" 4)
+                                                       ("in" 4)
+                                                       ("of" 4)
+                                                       ("case" 4)
+                                                       ("{" 4)))
+           (purescript-indent-switch-body . t)
+           (purescript-mode-indent-remove-extra-spaces . t)
+           (purescript-indent-align-guards . nil)
+           (purescript-indent-enable-reindent . nil)
+          )
   ;; :bind `((purescript-mode-map
   ;;           ("C-c C-z" . purescript-interactive-switch)
   ;;           ("C-c C-l" . purescript-process-load-file)
