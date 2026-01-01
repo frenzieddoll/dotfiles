@@ -73,8 +73,6 @@ export INPUT_METHOD=fcitx
 # 言語を英語にする
 export LANG=en_US.utf-8
 
-source /usr/share/nvm/init-nvm.sh
-
 # エイリアス
 alias la='ls -a'
 alias ll='ls -lh'
@@ -99,6 +97,10 @@ alias -s wav=mpv
 alias drun='docker run -it --network=host --device=/dev/kfd --device=/dev/dri --group-add=video --ipc=host --cap-add=SYS_PTRACE --security-opt seccomp=unconfined -v $(pwd):/pwd'
 
 which gh > /dev/null 2>&1 && eval "$(gh completion -s zsh)"
+
+# Node.js用
+temp="/usr/share/nvm/init-nvm.sh"
+checkExist $temp && source $temp
 
 radeonPro () {
     export DISABLE_LAYER_AMD_SWITCHABLE_GRAPHICS_1=1
