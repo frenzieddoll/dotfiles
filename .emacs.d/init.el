@@ -1397,6 +1397,15 @@
   )
 
 
+(leaf bluetooth
+  :doc "A mode for interacting with Bluetooth devices"
+  :req "emacs-26.1" "dash-2.18.1" "compat-30.0.0.0" "transient-0.5.0"
+  :tag "hardware" "emacs>=26.1"
+  :url "https://codeberg.org/rstocker/emacs-bluetooth"
+  :added "2026-01-17"
+  :emacs>= 26.1
+  :ensure t
+  :after compat)
 
 (leaf chatgpt-shell
   :doc "Interaction mode for ChatGPT"
