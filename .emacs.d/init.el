@@ -63,8 +63,9 @@
 (eval-and-compile
   (customize-set-variable
    'package-archives '(;; ("org" . "https://orgmode.org/elpa/")
-                       ("gnu"   . "https://elpa.gnu.org/packages/")
-                       ("melpa" . "https://melpa.org/packages/")))
+                       ("gnu"    . "https://elpa.gnu.org/packages/")
+                       ("nongnu" . "https://elpa.nongnu.org/nongnu/")
+                       ("melpa"  . "https://melpa.org/packages/")))
   (package-initialize)
   (unless (package-installed-p 'leaf)
     (package-refresh-contents)
@@ -476,6 +477,7 @@
                                         ("playlist" . "mpv --playlist")
                                         ("exe"      . "wine")
                                         ("pdf"      . "zathura")
+                                        ("epub"     . "zathura")
                                         ;; ("zip"      . "zathura")
                                         ;; ("rar"      . "zathura")
                                         ;; ("tar"      . "zathura")
@@ -2787,13 +2789,6 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
          )
   :global-minor-mode (global-corfu-mode
                       corfu-popupinfo-mode)
-  :hook ((minibuffer-setup-hook . my/corfu-enable-in-minibuffer)
-         ((eshell-mode-hook
-           ein:notebook-mode-hook) . (lambda ()
-                                       (setq-local corfu-auto nil)
-                                       (corfu-mode)))
-         ;; (corfu-mode-hook . corfu-popupinfo-mode)
-         )
   :custom ((tab-always-indent        . 'complete)
            (corfu-cycle              . t)
            (corfu-auto               . t)
@@ -2805,10 +2800,11 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
            )
   :bind
   ((corfu-map
-    ("C-s" . corfu-insert-separator)
-    ("C-SPC" . corfu-insert-separator)
+    ("C-m"     . corfu-complete)
+    ("C-s"     . corfu-insert-separator)
+    ("C-SPC"   . corfu-insert-separator)
     ("C-c SPC" . corfu-insert-separator)
-    ("M-SPC" . corfu-insert-separator))) ;SPCにするとSKKのへんかんできなくなる
+    ("M-SPC"   . corfu-insert-separator))) ;SPCにするとSKKのへんかんできなくなる
   :init
   (defun my/corfu-enable-in-minibuffer ()
     (when (where-is-internal #'completion-at-point (list (current-local-map)))
@@ -3573,13 +3569,14 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
   :hook (((python-mode-hook
            purescript-mode-hook
            haskell-mode-hook
-           yatex-mode-hook) . eglot-ensure)
+           yatex-mode-hook
+           web-mode-hook) . eglot-ensure)
          )
   :custom ((eldoc-echo-area-use-multiline-p . nil)
            (eglot-connect-timeout . 600)
            (eglot-autoshutdown . t)
            (eglot-confirm-server-initiated-edits . nil)
-           (project-vc-extra-root-markers . '(".project")))
+           )
   ;; :custom `((read-process-output-max       . ,(* 1024 1024))
   ;;           (completion-category-overrides . '((eglot (styles orderless))))
   ;;           )
@@ -3599,12 +3596,15 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
                         #'cape-file)))))
 
   :config
-  (add-to-list 'eglot-server-programs
-               '(yatex-mode . ("texlab")))
-  (add-to-list 'eglot-server-programs
-               '(haskell-mode . ("haskell-language-server-wrapper" "--lsp")))
-  (add-to-list 'eglot-server-programs
-               '(purescript-mode  . ("purescript-language-server" "--stdio")))
+  (dolist (x '((haskell-mode    . ("haskell-language-server-wrapper" "--lsp"))
+               (purescript-mode . ("purescript-language-server" "--stdio"))
+               (yatex-mode      . ("texlab"))
+               (web-mode        . ("vscode-html-language-server" "--stdio"))
+               ))
+    (add-to-list 'eglot-server-programs x))
+
+  (dolist (name '(".project" "spago.yaml"))
+    (add-to-list 'project-vc-extra-root-markers name))
 
   (leaf eglot-booster
     :when (executable-find "emacs-lsp-booster")
@@ -3967,7 +3967,19 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
            (web-mode-css-indent-offset . 4)
            (web-mode-enable-current-element-highlight . t)
            (web-mode-enable-auto-pairing . t)
-           (web-mode-enable-auto-closing . t)))
+           (web-mode-enable-auto-closing . t)
+           (web-mode-tag-auto-close-style . 2)
+           )
+  :config
+  (leaf impatient-mode
+    :doc "Serve buffers live over HTTP."
+    :req "emacs-24.3" "simple-httpd-1.5.0" "htmlize-1.40"
+    :tag "emacs>=24.3"
+    :url "https://github.com/netguy204/imp.el"
+    :added "2026-02-01"
+    :emacs>= 24.3
+    :ensure t)
+  )
 
 ;; window managr
 (leaf *exwm-config
@@ -4026,6 +4038,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
                                           (,(kbd "C-s-m")   . pulseaudio-toggle-sink-mute)
                                           (,(kbd "C-s-n")   . pulseaudio-decrease-sink-volume)
                                           (,(kbd "C-s-p")   . pulseaudio-increase-sink-volume)
+                                          (,(kbd "C-s-b")   . bluetooth-list-devices)
                                           (,(kbd "s-[")     . lowerLight)
                                           (,(kbd "s-]")     . upperLight)
                                           (,(kbd "s-d")     . app-launcher-run-app)
