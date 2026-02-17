@@ -183,6 +183,10 @@
              (async-bytecomp-package-mode . 1)
              (async-bytecomp-allowed-packages . '(all))))
 
+(leaf so-long
+  :config
+  (global-so-long-mode +1))
+
 
 ;; 基本設定
 (leaf *cus-start
@@ -256,6 +260,7 @@
             (show-paren-delay                      . 0.125)
             ;;
             (vc-follow-symlinks                    . t)
+            (vc-handled-backends                   . '(Git))
             (temp-buffer-resize-mode               . 1)
             (display-time-mode                     . t)
             (display-time-string-forms             . '((format "%s/%s(%s)%s:%s"
@@ -289,6 +294,8 @@
             (ffap-machine-at-point . 'reject)
             (idle-update-delay . 1.0)
             (redisplay-skip-fontification-on-input . t)
+            (cursor-in-non-selected-windows . nil)
+            (highlight-nonselected-windows . nil)
             )
   :init
   (set-face-background 'region "#555")
@@ -1230,11 +1237,20 @@
            args))
   (advice-add 'Info-find-node :around 'Info-find-node--info-ja))
 
+(leaf *forLinux
+  :when (eq system-type 'gnu/linux)
+  :unless (string-match "microsoft" (shell-command-to-string "uname -r"))
+  :custom ((command-line-x-option-alist . nil))
+  )
+
 (leaf *forWindows
   :when (eq system-type 'windows-nt)
-  :custom ((w32-pass-rwindow-to-system . nil)
+  :custom `((w32-pass-rwindow-to-system . nil)
            (w32-rwindow-modifier       . 'super)
            (w32-shell-execute          . t)
+           (w32-get-true-file-attrributes . nil)
+           (w32-pipe-read-delay . 0)
+           (w32-pipe-buffer-size . ,(* 64 1024))
            (set-default-coding-systems . 'utf-8-dos)
            (default-file-name-coding-system . 'shift_jis)
            ;; (default-file-name-coding-system . 'shift-jis)
@@ -1888,68 +1904,6 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
             ("C-M-y" . org-insert-clipboard-image)
             ("C-," . org-table-transpose-table-at-point))
            )
-    :custom `((org-directory . ,(concat user-emacs-directory "org/"))
-              (org-capture-templates . `(("t" "task"     entry (file+headline "todo.org" "todo") "** TODO %? \n" :empty-lines 1)
-                                         ("m" "memo"     entry (file          "memo.org") "* %^t \n" :empty-lines 1)))
-              (org-todo-keywords . '((sequence "TODO(t)" "SOMEDAY(s)" "WATTING(w)" "|" "DONE(d)" "CANCELED(c@)")))
-              (org-enforce-todo-dependencies . t)
-              (org-log-done . t)
-              (org-image-actual-width . nil))
-    :preface
-    (defun org-insert-clipboard-image ()
-      (interactive)
-      (let* (
-             (buf-name (file-name-sans-extension (file-name-nondirectory buffer-file-name)))
-             (figures-dir (format "./%s_figures/" buf-name))
-             (figure-name (format "%s%s_%s.png" figures-dir buf-name (format-time-string "%Y%m%d%H%M%S")))
-             (figure-path (expand-file-name figure-name))
-             (path "$HOME/Documentswin/script/import.ps1")
-             (path-win (shell-command-to-string (format "wslpath -w \"%s\"" path)))
-             (path-wsl (replace-regexp-in-string
-                        "\\wsl" "\\\\wsl"
-                        path-win))
-             (script (replace-regexp-in-string
-                      "\n" "" path-win))
-             ;; powershellのスクリプトはwslのパスを認識できないので相対パスfigure-nameを引数とする
-             (call-string (format "powershell.exe -ExecutionPolicy RemoteSigned -windowstyle hidden -File \"%s\" -FileName %s" script figure-name))
-             )
-
-        (unless (file-directory-p figures-dir)
-          (make-directory figures-dir))
-        (call-process "powershell.exe" nil nil nil call-string)
-        (when (file-exists-p figure-path)
-          (insert (format "#+ATTR_ORG: :width 500\n[[file:%s]]" figure-path)))
-        (org-display-inline-images)))
-    )
-(leaf *org-eldoc
-  :hook ((org-mode-hook . eldoc-mode))
-  :config
-  (defadvice org-eldoc-documentation-function (around add-field-info activate)
-    (or
-     (ignore-errors (and (not (org-at-table-hline-p)) (org-table-field-info nil)))
-     ad-do-it))
-  (eldoc-add-command-completions "org-table-next-" "org-table-previous", "org-cycle")
-  )
-(leaf org-roam
-  :doc "A database abstraction layer for Org-mode"
-  :req "emacs-26.1" "dash-2.13" "org-9.4" "emacsql-4.0.0" "magit-section-3.0.0"
-  :tag "convenience" "roam" "org-mode" "emacs>=26.1"
-  :url "https://github.com/org-roam/org-roam"
-  :added "2025-02-07"
-  :emacs>= 26.1
-  :ensure t
-  ;; :after org emacsql magit-section
-  :custom ((org-roam-directory   . "~/.emacs.d/org-roam")
-           (org-roam-db-location . "~/.emacs.d/org-roam/database.db")
-           (org-roam-index-file  . "~/.emacs.d/org-roam/Index.org")
-           )
-  :bind (("C-c n f" . org-roam-node-find)
-         ("C-c n i" . org-roam-node-insert)
-         ("C-c n c" . org-roam-capture)
-         ("C-c n t" . org-roam-buffer-toggle)
-         ("C-c n a" . org-roam-alias-add)
-         ("C-c n g" . org-roam-graph)
-         )
   :custom `((org-directory . ,(concat user-emacs-directory "org/"))
             (org-capture-templates . `(("t" "todo"     entry (file+headline "todo.org" "todo") "* TODO %? \n" :empty-lines 1)
                                        ("m" "memo"     entry (file          "memo.org") "* %^t \n" :empty-lines 1)))
@@ -2026,7 +1980,39 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
     (plist-put png :image-converter '("dvipng -D %D -T tight -o %O %F"))
     (plist-put png :transparent-image-converter '("dvipng -D %D -T tight -bg Transparent -o %O %F")))
 
-  (leaf org-roam
+  (leaf *org-babel-settings
+    :custom ((org-src-fontify-natively . t)
+             (org-confirm-babel-evaluate . nil))
+    :config
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((emacs-lisp . t)
+       (dot . t)
+       (julia . t)
+       (python . t)
+       (jupyter . t)))
+    (defun load-org-babel-jupyter ()
+      (interactive)
+      (org-babel-jupyter-aliases-from-kernelspecs)
+      )
+    )
+  (leaf org-flyimage
+    :doc "orgの画像を再読み込みするパッケージ"
+    :vc (:url "https://github.com/misohena/org-inline-image-fix.git")
+    :require 'org-datauri-image
+    )
+  (leaf org-crypt
+    :doc "Public Key Encryption for Org Entries"
+    :tag "builtin"
+    :added "2025-10-10"
+    :custom ((org-crypt-key . "AFAAC9211530D26C")
+             (org-tags-exclude-from-inheritance . '("crypt"))
+             (org-crypt-disable-auto-save . 'encrypt))
+    :config
+    (org-crypt-use-before-save-magic)
+    )
+  )
+(leaf org-roam
     :doc "A database abstraction layer for Org-mode"
     :req "emacs-26.1" "dash-2.13" "org-9.4" "emacsql-4.0.0" "magit-section-3.0.0"
     :tag "convenience" "roam" "org-mode" "emacs>=26.1"
@@ -2072,37 +2058,43 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
                (org-roam-ui-update-on-save . t)
                (org-roam-ui-open-on-start . nil)))
     )
-  (leaf *org-babel-settings
-    :custom ((org-src-fontify-natively . t)
-             (org-confirm-babel-evaluate . nil))
-    :config
-    (org-babel-do-load-languages
-     'org-babel-load-languages
-     '((emacs-lisp . t)
-       (dot . t)
-       (julia . t)
-       (python . t)
-       (jupyter . t)))
-    (defun load-org-babel-jupyter ()
-      (interactive)
-      (org-babel-jupyter-aliases-from-kernelspecs)
-      )
-    )
-  (leaf org-flyimage
-    :doc "orgの画像を再読み込みするパッケージ"
-    :vc (:url "https://github.com/misohena/org-inline-image-fix.git")
-    :require 'org-datauri-image
-    )
-  (leaf org-crypt
-    :doc "Public Key Encryption for Org Entries"
-    :tag "builtin"
-    :added "2025-10-10"
-    :custom ((org-crypt-key . "AFAAC9211530D26C")
-             (org-tags-exclude-from-inheritance . '("crypt"))
-             (org-crypt-disable-auto-save . 'encrypt))
-    :config
-    (org-crypt-use-before-save-magic)
-    )
+(leaf org-modern
+  :doc "Modern looks for Org"
+  :req "emacs-29.1" "org-9.6" "compat-30"
+  :tag "text" "hypermedia" "outlines" "emacs>=29.1"
+  :url "https://github.com/minad/org-modern"
+  :added "2026-02-17"
+  :emacs>= 29.1
+  :ensure t
+  :after org compat
+  :bind ((org-mode-map
+          ("C-c s" . org-modern-mode)))
+  :config
+  (setopt
+   ;; Edit settings
+   org-auto-align-tags nil
+   org-tags-column 0
+   org-catch-invisible-edits 'show-and-error
+   org-special-ctrl-a/e t
+   org-insert-heading-respect-content t
+
+   ;; Org styling, hide markup etc.
+   org-hide-emphasis-markers t
+   org-pretty-entities t
+
+   ;; Agenda styling
+   org-agenda-tags-column 0
+   org-agenda-block-separator ?─
+   org-agenda-time-grid
+   '((daily today require-timed)
+     (800 1000 1200 1400 1600 1800 2000)
+     " ┄┄┄┄┄ " "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄")
+   org-agenda-current-time-string
+   "◀── now ─────────────────────────────────────────────────"
+   )
+  ;; Ellipsis styling
+  (setopt org-ellipsis "…")
+  (set-face-attribute 'org-ellipsis nil :inherit 'default :box nil)
   )
 
 ;; (leaf paradox
@@ -3442,6 +3434,11 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
            ;; (vertico-preselect . 'prompt)
            )
   :global-minor-mode t
+  :config
+  (leaf vertico-truncate
+    :vc (:url "https://github.com/jdtsmith/vertico-truncate")
+    :global-minor-mode vertico-truncate-mode
+    )
   )
 
 (leaf visual-regexp-steroids
