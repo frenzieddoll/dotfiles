@@ -3591,7 +3591,11 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
                         #'eglot-completion-at-point
                         #'cape-keyword
                         #'cape-file)))))
-
+  (defun my/eglot-force-utf8 ()
+    (interactive)
+    (when-let* ((server (eglot-current-server))
+                (proc (jsonrpc--process server)))
+      (set-process-coding-system proc 'utf-8-emacs-unix 'utf-8-emacs-unix)))
   :config
   (dolist (x '((haskell-mode    . ("haskell-language-server-wrapper" "--lsp"))
                (purescript-mode . ("purescript-language-server" "--stdio"))
@@ -3604,6 +3608,7 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
     (add-to-list 'project-vc-extra-root-markers name))
 
   (leaf eglot-booster
+    :disabled t
     :when (executable-find "emacs-lsp-booster")
     :vc (:url "https://github.com/jdtsmith/eglot-booster")
     :global-minor-mode t)
@@ -3679,12 +3684,12 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
             (haskell-hoogle-url . "https://www.stackage.org/lts/hoogle?q=%s")
             )
   :bind ((haskell-mode-map
-          ("C-c C-z" . haskell-interactive-bring)
-          ("C-c C-l" . haskell-process-load-file)
+          ;; ("C-c C-z" . haskell-interactive-bring)
+          ;; ("C-c C-l" . haskell-process-load-file)
           ("C-c C-," . haskell-mode-format-imports)
           ("C-c C-a" . haskell-command-insert-language-pragma)
           ("<f5>"    . haskell-compile)
-          ("<f8>"    . haskell-navigate-imports)))
+          ("C-c C-i"  . haskell-navigate-imports)))
   :preface
   (defun haskell-interactive-repl-flycheck ()
     "左ウィンドウにコード画面を残し、右ウィンドウを上下に分割してREPLとFlycheckを開く。"
@@ -3697,6 +3702,33 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
     (other-window 1)
     (switch-to-buffer flycheck-error-list-buffer)
     (other-window 1))
+
+  (defun my/project-root ()
+    "Return project root or `default-directory`."
+    (if-let ((pr (project-current nil)))
+        (expand-file-name (project-root pr))
+      default-directory))
+
+  (defun my/vterm-run-in (dir buffer-name command)
+    "Open vterm BUFFER-NAME in DIR and run COMMAND."
+    (let ((default-directory dir))
+      (with-current-buffer (vterm (generate-new-buffer-name buffer-name))
+        (vterm-send-string command)
+        (vterm-send-return)
+        (current-buffer))))
+
+  (defun my/haskell-ghcid (&optional command)
+    "Run ghcid in vterm at project root.
+     With prefix arg, prompt for COMMAND."
+    (interactive
+     (list (when current-prefix-arg
+             (read-string "ghcid command: "
+                          "ghcid -c \"cabal repl\""))))
+    (let* ((root (my/project-root))
+           (proj (file-name-nondirectory (directory-file-name root)))
+           (bufname (format "*ghcid:%s*" proj))
+           (cmd (or command "ghcid -c \"cabal repl\"")))
+      (pop-to-buffer (my/vterm-run-in root bufname cmd))))
   )
 
 ;; (leaf lsp-mode
