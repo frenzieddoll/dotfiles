@@ -3727,7 +3727,8 @@ Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
     (let* ((root (my/project-root))
            (proj (file-name-nondirectory (directory-file-name root)))
            (bufname (format "*ghcid:%s*" proj))
-           (cmd (or command "ghcid -c \"cabal repl\"")))
+           (default-command (format "ghcid -c \"cabal repl exe:%s\" --test=\":main\" --warnings --restart=%s" proj proj))
+           (cmd (or command default-command)))
       (pop-to-buffer (my/vterm-run-in root bufname cmd))))
   )
 
