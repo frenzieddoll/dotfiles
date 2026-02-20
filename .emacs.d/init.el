@@ -15,6 +15,9 @@
 ;; setup.el より
 
 ;;;; Core
+(defconst my-saved-file-name-handler-alist file-name-handler-alist)
+(setq file-name-handler-alist nil)
+
 (eval-and-compile
   (customize-set-variable
    'package-archives '(;; ("org" . "https://orgmode.org/elpa/")
@@ -1037,11 +1040,10 @@
                 (message "No image file found at: %s" image-path)))
           (message "No image under cursor.")))))
   ;; org-preview-latexの修正
-  (let ((png (cdr (assoc 'dvipng org-preview-latex-process-alist))))
-    (plist-put png :latex-compiler '("latex -interaction nonstopmode -output-directory %o %F"))
-    (plist-put png :image-converter '("dvipng -D %D -T tight -o %O %F"))
-    (plist-put png :transparent-image-converter '("dvipng -D %D -T tight -bg Transparent -o %O %F")))
-
+  ;; (let ((png (cdr (assoc 'dvipng org-preview-latex-process-alist))))
+  ;;   (plist-put png :latex-compiler '("latex -interaction nonstopmode -output-directory %o %F"))
+  ;;   (plist-put png :image-converter '("dvipng -D %D -T tight -o %O %F"))
+  ;;   (plist-put png :transparent-image-converter '("dvipng -D %D -T tight -bg Transparent -o %O %F")))
   )
 ;;;; Org (capture/agenda)
 (leaf org-capture/agenda
@@ -2574,7 +2576,6 @@
 
   ;; Enable recursive minibuffers
   (setq enable-recursive-minibuffers t))
-
 (leaf embark
   :doc "Conveniently act on minibuffer completions"
   :req "emacs-26.1"
@@ -2598,7 +2599,6 @@
     :added "2022-03-24"
     :emacs>= 26.1
     :ensure t))
-
 (leaf git-gutter
   :doc "Port of Sublime Text plugin GitGutter"
   :req "emacs-24.4"
@@ -2616,7 +2616,6 @@
 
   :global-minor-mode global-git-gutter-mode
   )
-
 (leaf highlight-indent-guides
   :doc "Minor mode to highlight indentation"
   :req "emacs-24.1"
@@ -2628,7 +2627,6 @@
   :unless (string-match "RaspberryPi" (system-name))
   :hook ((prog-mode-hook . highlight-indent-guides-mode))
   :custom '((highlight-indent-guides-method . 'column)))
-
 (leaf *hs-minor-mode
   :hook ((emacs-lisp-mode-hook . hs-minor-mode-active)
          (yatex-mode-hook . hs-yatex-env-setup))
@@ -2660,7 +2658,6 @@
         (re-search-forward "}")
         (narrow-to-region begin (point)))))
   )
-
 (leaf *hydra-config
   :doc "Make bindings that stick around."
   :req "cl-lib-0.5" "lv-0"
@@ -2708,7 +2705,6 @@
    ("k" text-scale-decrease "out")
    ("l" text-scale-set "adjust"))
   )
-
 (leaf japanese-holidays
   :doc "Calendar functions for the Japanese calendar"
   :req "emacs-24.1" "cl-lib-0.3"
@@ -2741,14 +2737,12 @@
   :config
   (setq calendar-holidays (append japanese-holidays holiday-local-holidays holiday-other-holidays))
   )
-
 ;; (leaf online-judge
 ;;   :when (executable-find "oj")
 ;;   :vc (:url :url "https://github.com/ROCKTAKEY/emacs-online-judge")
 ;;   :require t
 ;;   :custom ((online-judge-directories . '("~/Dropbox/atcoder/"))
 ;;            (online-judge-command-name . nil)))
-
 (leaf kind-icon
   :doc "Completion kind icons"
   :req "emacs-27.1" "svg-lib-0"
@@ -2763,7 +2757,6 @@
   :pre-setq (kind-icon-defalut-face . 'corfu-default)
   :config
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
-
 (leaf marginalia
   :doc "Enrich existing commands with completion annotations"
   :req "emacs-26.1"
@@ -2775,7 +2768,6 @@
   :unless (string= (system-name) "RaspberryPi")
   :global-minor-mode t
   )
-
 (leaf *mySaveFrame
   :disabled t
   :when (or (eq system-type 'darwin)
@@ -2822,7 +2814,6 @@
   :config
   (run-with-idle-timer 60 t 'my-save-frame-size)
   )
-
 (leaf orderless
   :doc "Completion style for matching regexps in any order"
   :req "emacs-26.1"
@@ -2837,13 +2828,11 @@
            (completion-category-overrides . nil)
            )
   )
-
 (leaf page-ext
   :doc "extended page handling commands"
   :tag "builtin"
   :added "2021-09-05"
   :require t)
-
 (leaf paren
   :doc "highlight matching paren"
   :tag "builtin"
@@ -2855,14 +2844,12 @@
   :custom ((show-paren-style . 'mixed)
            (show-paren-when-point-inside-paren . t)
            (show-paren-when-point-in-periphery . t)))
-
 (leaf pulseaudio
   :when (executable-find "pactl")
   :vc (:url "https://github.com/frenzieddoll/pulseaudio")
   :unless (string-match "microsoft" (shell-command-to-string "uname -r"))
   :require t
   )
-
 (leaf puni
   :doc "Parentheses Universalistic"
   :ensure t
@@ -2897,7 +2884,6 @@
   (define-key puni-mode-map (kbd "C-w") nil)
   (define-key puni-mode-map (kbd "M-DEL") nil)
 )
-
 (leaf rainbow-delimiters
   :doc "Highlight brackets according to their depth"
   :tag "tools" "lisp" "convenience" "faces"
@@ -2905,7 +2891,6 @@
   :added "2021-09-05"
   :ensure t
   :hook (emacs-lisp-mode-hook . rainbow-delimiters-mode))
-
 (leaf recentf
   :init
   (leaf recentf-ext
@@ -2930,13 +2915,11 @@
     )
   :global-minor-mode (recentf-mode)
   )
-
 (leaf savehist
   :doc "Save minibuffer history"
   :tag "builtin"
   :added "2021-09-05"
   :global-minor-mode t)
-
 (leaf smartparens
   :doc "Automatic insertion, wrapping and paredit-like navigation with user defined pairs."
   :req "dash-2.13.0" "cl-lib-0.3"
@@ -2962,18 +2945,15 @@
   (sp-local-pair 'python-mode "'" "'")
   (sp-local-pair 'ein:ipynb-mode "'" "'")
   (sp-local-pair 'haskell-mode "`" "`"))
-
 (leaf ssh
   :doc "Support for remote logins using ssh."
   :tag "comm" "unix"
   :added "2021-11-03"
   :ensure t)
-
 (leaf subword
   :doc "Handling capitalized subwords in a nomenclature"
   :tag "builtin"
   :added "2025-03-06")
-
 (leaf sudo-edit
   :doc "Open files as another user"
   :req "emacs-24" "cl-lib-0.5"
@@ -2982,7 +2962,6 @@
   :added "2021-09-10"
   :emacs>= 24
   :ensure t)
-
 (leaf tempel
   :doc "Tempo templates/snippets with in-buffer field editing"
   :req "emacs-27.1" "compat-29.1.4.0"
@@ -3016,7 +2995,6 @@
                 (cons #'tempel-complete
                       completion-at-point-functions)))
   )
-
 (leaf undo-tree
   :doc "Treat undo history as a tree"
   :tag "tree" "history" "redo" "undo" "files" "convenience"
@@ -3026,7 +3004,6 @@
   :disabled t
   :unless (string-match "RaspberryPi" (system-name))
   :global-minor-mode t)
-
 (leaf uniquify
   :doc "unique buffer names dependent on file name"
   :tag "builtin" "files"
@@ -3034,7 +3011,6 @@
   :custom
   ((uniquify-buffer-name-style . 'post-forward-angle-brackets)
    (uniquify-min-dir-content . 1)))
-
 (leaf vertico
   :doc "VERTical Interactive COmpletion"
   :req "emacs-27.1"
@@ -3063,7 +3039,6 @@
     :global-minor-mode vertico-truncate-mode
     )
   )
-
 (leaf visual-regexp-steroids
   :doc "Extends visual-regexp to support other regexp engines"
   :req "visual-regexp-1.1"
@@ -3079,7 +3054,6 @@
          ("C-M-r" . vr/isearch-backward)
          ("C-M-s" . vr/isearch-forward))
   :custom `((vr/engine . 'python)))
-
 (leaf vundo
   :doc "Visual undo tree"
   :req "emacs-28.1"
@@ -3090,7 +3064,6 @@
   :ensure t
   :bind (("C-c C-v" . vundo))
   )
-
 (leaf which-key
   :doc "Display available keybindings in popup"
   :req "emacs-24.4"
@@ -3103,7 +3076,6 @@
   (which-key-setup-side-window-bottom)
   :global-minor-mode which-key-mode
   )
-
 (leaf yasnippet
   :doc "Yet another snippet extension for Emacs"
   :req "cl-lib-0.5"
@@ -3158,7 +3130,6 @@
     :ensure t
     :after yasnippet)
   )
-
 (leaf zoom-window
   :doc "Zoom window like tmux"
   :req "emacs-24.3"
@@ -3176,7 +3147,6 @@
   :bind (cc-mode-map
          ("C-c c" . compile))
   )
-
 (leaf eglot
   :doc "The Emacs Client for LSP servers"
   :req "emacs-26.3" "jsonrpc-1.0.14" "flymake-1.2.1" "project-0.3.0" "xref-1.0.1" "eldoc-1.11.0" "seq-2.23"
@@ -3236,7 +3206,6 @@
     :vc (:url "https://github.com/jdtsmith/eglot-booster")
     :global-minor-mode t)
   )
-
 (leaf flycheck
   :doc "On-the-fly syntax checking"
   :req "dash-2.12.1" "pkg-info-0.4" "let-alist-1.0.4" "seq-1.11" "emacs-24.3"
@@ -3250,7 +3219,6 @@
   :disabled t
   :bind (("M-n" . flycheck-next-error)
          ("M-p" . flycheck-previous-error)))
-
 (leaf flymake
   :doc "A universal on-the-fly syntax checker"
   :tag "builtin"
@@ -3274,7 +3242,6 @@
     (remove-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode)
     (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake))
   )
-
 (leaf haskell-mode
   :doc "A Haskell editing mode"
   :req "emacs-25.1"
@@ -3354,7 +3321,6 @@
            (cmd (or command default-command)))
       (pop-to-buffer (my/vterm-run-in root bufname cmd))))
   )
-
 ;; (leaf lsp-mode
 ;;   :doc "LSP mode"
 ;;   :req "emacs-26.1" "dash-2.18.0" "f-0.20.0" "ht-2.3" "spinner-1.7.3" "markdown-mode-2.3" "lv-0"
@@ -3428,7 +3394,6 @@
 ;;     ;; :disabled t
 ;;     :ensure t)
 ;;   )
-
 (leaf python-mode
   :doc "Python major mode"
   :tag "oop" "python" "processes" "languages"
@@ -3438,7 +3403,6 @@
   :bind (python-mode-map
          ("C-c j" . jupyter-run-repl))
   )
-
 (leaf *ruff
   :config
   (leaf flymake-ruff
@@ -3491,7 +3455,6 @@
   ;;   (when (memq major-mode '(python-mode python-ts-mode))
   ;;     (ruff-fix-buffer)))
   )
-
 (leaf pyvenv
   :doc "Python virtual environment interface"
   :tag "tools" "virtualenv" "python"
@@ -3500,7 +3463,6 @@
   :ensure t
   :custom `((pyvenv-default-virtual-env-name . ,(expand-file-name "~/.virtualenvs/")))
   )
-
 ;; (leaf quickrun
 ;;   :doc "Run commands quickly"
 ;;   :req "emacs-24.3"
@@ -3509,7 +3471,6 @@
 ;;   :added "2021-11-06"
 ;;   :emacs>= 24.3
 ;;   :ensure t)
-
 (leaf purescript-mode
   :doc "A PureScript editing mode"
   :req "emacs-25.1"
@@ -3544,7 +3505,6 @@
   ;;           ("C-c C-i" . purescript-process-do-info)))
   ;; :hook ()
   )
-
 (leaf rustic
   :doc "Rust development environment"
   :req "emacs-26.1" "dash-2.13.0" "f-0.18.2" "let-alist-1.0.4" "markdown-mode-2.3" "project-0.3.0" "s-1.10.0" "seq-2.3" "spinner-1.7.3" "xterm-color-1.6"
@@ -3577,7 +3537,6 @@
     :hook (rust-mode . cargo-minor-mode)
     )
   )
-
 ;; (leaf tree-sitter
 ;;   :doc "Incremental parsing system"
 ;;   :req "emacs-25.1" "tsc-0.18.0"
@@ -3605,7 +3564,6 @@
 ;;     ;; (global-treesit-auto-mode)
 ;;     )
 ;;   )
-
 (leaf web-mode
   :doc "major mode for editing web templates"
   :req "emacs-23.1"
@@ -3635,7 +3593,7 @@
   )
 
 
-(setq file-name-handler-alist my/saved-file-name-handler-alist)
+(setq file-name-handler-alist my-saved-file-name-handler-alist)
 
 (provide 'init)
 
