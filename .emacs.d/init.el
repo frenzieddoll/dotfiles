@@ -864,6 +864,7 @@
   ;; :require skk skk-study
   ;; :defvar (skk-user-directory skk-rom-kana-rule-list skk-katakana skk-j-mode skk-latin-mode)
   ;; :defun skk-toggle-kana skk-hiragana-set skk-katakana-set
+  :commands (skk-mode skk-hiragana-set skk-latin-mode skk-kakutei skk-auto-fill-mode)
   :hook ((isearch-mode-hook . skk-isearch-mode-setup)
          (isearch-mode-end-hook . skk-isearch-mode-cleanup)
          (find-file-hooks . my/always-enable-skk-latin-mode-hook))
@@ -938,7 +939,6 @@
             (dired-launch-enable        . t)
             (dired-isearch-filenames    . t)
             (dired-listing-switches     . ,(purecopy "-alht --time-style=long-iso")))
-  :config
   :preface
   (defun kill-current-buffer-and/or-dired-open-file ()
     "In Dired, dired-open-file for a file.
@@ -1004,7 +1004,7 @@
   :added "2021-09-05"
   :ensure t
   :after dired
-  :bind (:dired-mode-map
+  :bind (dired-mode-map
          ("RET" . dired-open-file))
   :defer-config
   (leaf dired-open-linux*
@@ -1141,6 +1141,7 @@
 
 ;;;; [Org] Core
 (leaf org
+  ;; :disabled t
   :doc "Export Framework for Org Mode"
   :tag "builtin"
   :added "2021-09-05"
@@ -1270,6 +1271,7 @@
   )
 ;;;; [Org] Extension
 (leaf *org-babel-settings
+  ;; :disabled t
   :after org
   :custom ((org-src-fontify-natively   . t)
            (org-confirm-babel-evaluate . nil))
@@ -1292,11 +1294,13 @@
   (:before org-babel-execute-src-block my/org-babel-load-languages)
   )
 (leaf org-flyimage
+  :disabled t
   :doc "orgの画像を再読み込みするパッケージ"
   :vc (:url "https://github.com/misohena/org-inline-image-fix.git")
   :require org-datauri-image
   )
 (leaf org-crypt
+  ;; :disabled t
   :doc "Public Key Encryption for Org Entries"
   :tag "builtin"
   :added "2025-10-10"
@@ -1308,6 +1312,7 @@
   (org-crypt-use-before-save-magic)
   )
 (leaf org-roam
+  ;; :disabled t
   :doc "A database abstraction layer for Org-mode"
   :req "emacs-26.1" "dash-2.13" "org-9.4" "emacsql-4.0.0" "magit-section-3.0.0"
   :tag "convenience" "roam" "org-mode" "emacs>=26.1"
@@ -1346,6 +1351,7 @@
   (org-roam-db-autosync-mode)
   )
 (leaf org-roam-ui
+  ;; :disabled t
   :doc "User Interface for Org-roam."
   :req "emacs-27.1" "org-roam-2.0.0" "simple-httpd-20191103.1446" "websocket-1.13"
   :tag "outlines" "files" "emacs>=27.1"
@@ -1359,6 +1365,7 @@
            (org-roam-ui-update-on-save . t)
            (org-roam-ui-open-on-start . nil)))
 (leaf org-modern
+  ;; :disabled t
   :doc "Modern looks for Org"
   :req "emacs-29.1" "org-9.6" "compat-30"
   :tag "text" "hypermedia" "outlines" "emacs>=29.1"
@@ -1366,9 +1373,10 @@
   :added "2026-02-17"
   :emacs>= 29.1
   :ensure t
+  :commands (org-modern-mode)
   :bind ((:org-mode-map
           ("C-c M-m" . org-modern-mode)))
-  :config
+  :defer-config
   (set-face-attribute 'org-ellipsis nil
                       :inherit 'default
                       :box nil)
