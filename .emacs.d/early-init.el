@@ -16,11 +16,6 @@
 (setq gc-cons-threshold most-positive-fixnum
       gc-cons-percentage 0.6)
 
-(add-hook 'emacs-startup-hook
-          (lambda ()
-            (setq gc-cons-threshold (* 64 1024 1024)
-                  gc-cons-percentage 0.1)))
-
 ;; For slightly faster startup
 (setq package-enable-at-startup nil)
 
