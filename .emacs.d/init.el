@@ -8,6 +8,40 @@
 
 ;;; Code:
 
+;;;; [Profiling]
+(defvar setup-tracker--level 0)
+(defvar setup-tracker--parents nil)
+(defvar setup-tracker--times nil)
+
+(when load-file-name
+  (push load-file-name setup-tracker--parents)
+  (push (current-time) setup-tracker--times)
+  (setq setup-tracker--level (1+ setup-tracker--level)))
+
+(add-variable-watcher
+ 'load-file-name
+ (lambda (_ v &rest __)
+   (cond ((equal v (car setup-tracker--parents))
+          nil)
+         ((equal v (cadr setup-tracker--parents))
+          (setq setup-tracker--level (1- setup-tracker--level))
+          (let* ((now (current-time))
+                 (start (pop setup-tracker--times))
+                 (elapsed (+ (* (- (nth 1 now) (nth 1 start)) 1000)
+                             (/ (- (nth 2 now) (nth 2 start)) 1000))))
+            (with-current-buffer (get-buffer-create "*setup-tracker*")
+              (save-excursion
+                (goto-char (point-min))
+                (dotimes (_ setup-tracker--level) (insert "> "))
+                (insert
+                 (file-name-nondirectory (pop setup-tracker--parents))
+                 " (" (number-to-string elapsed) " msec)\n")))))
+         (t
+          (push v setup-tracker--parents)
+          (push (current-time) setup-tracker--times)
+          (setq setup-tracker--level (1+ setup-tracker--level))))))
+
+;;;; [Mics]
 (defconst my-saved-file-name-handler-alist file-name-handler-alist)
 (setq file-name-handler-alist nil)
 
@@ -69,12 +103,14 @@
   :added "2021-09-05"
   :emacs>= 24.1
   :ensure t
-  :unless (eq system-type 'windows-nt)
+  :hook ((emacs-startup-hook . exec-path-from-shell-initialize))
+  :unless (display-graphic-p)
   :defun (exec-path-from-shell-initialize)
   :custom ((exec-path-from-shell-check-startup-files . nil)
            (exec-path-from-shell-variables           . '("SHELL" "PATH")))
-  :config
-  (exec-path-from-shell-initialize))
+  ;; :config
+  ;; (exec-path-from-shell-initialize)
+  )
 (leaf *gc-conc
   :hook ((forcus-out-hook . garbage-collect)
          (minibuffer-setup-hook . my/gc-minibuffer-setup)
@@ -240,7 +276,6 @@
         )))
   )
 
-;;;; [UI]
 ;;;; [UI] Core
 (leaf *cus-start
   :doc "define customization properties of builtins"
@@ -606,7 +641,6 @@
   :custom ((minions-mode-line-lighter . "[+]"))
   :global-minor-mode (minions-mode))
 
-;;;; [Emacs]
 ;;;; [Emacs] Window
 (leaf *global-setting
   ;; :disabled t
@@ -879,7 +913,6 @@
     (skk-latin-mode 1))
   )
 
-;;;; [Dired]
 ;;;; [Dired] Core
 (leaf dired
   ;; :disabled t
@@ -1106,7 +1139,6 @@
            (async-bytecomp-allowed-packages . '(all)))
   :hook (dired-mode-hook . dired-async-mode))
 
-;;;; [Org]
 ;;;; [Org] Core
 (leaf org
   :doc "Export Framework for Org Mode"
@@ -1121,38 +1153,24 @@
           ("C-,"   . org-table-transpose-table-at-point))
          )
   :custom ((org-directory . "~/.emacs.d/org/")
-           (org-log-done . t)
-           (org-image-actual-width . nil)
-           (org-capture-templates . '(("t" "todo"     entry (file+headline "todo.org" "todo") "* TODO %? \n" :empty-lines 1)
-                                      ("m" "memo"     entry (file          "memo.org") "* %^t \n" :empty-lines 1)))
-           (org-todo-keywords . '((sequence "TODO(t)" "SOMEDAY(s)" "WATTING(w)" "|" "DONE(d)" "CANCELED(c@)")))
-           (org-enforce-todo-dependencies . t)
-
-           ;; org-modern用
-           (org-auto-align-tags . nil)
-           (org-tags-column . 0)
-           (org-catch-invisible-edits . 'show-and-error)
-           (org-special-ctrl-a/e . t)
-           (org-insert-heading-respect-content . t)
-
-           ;; Org styling, hide markup etc.
-           (org-hide-emphasis-markers . t)
-           (org-pretty-entities . t)
-
-           ;; Agenda styling
-           (org-agenda-tags-column . 0)
-           (org-agenda-block-separator . ?─)
-           (org-agenda-time-grid
-            . '((daily today require-timed)
-                (800 1000 1200 1400 1600 1800 2000)
-                " ┄┄┄┄┄ " "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄"))
-           (org-agenda-current-time-string
-            . "◀── now ─────────────────────────────────────────────────")
-
-           ;; Ellipsis styling
-           (org-ellipsis . "…")
            )
   :preface
+  (defvar my/org-agenda-files--cached nil)
+  (defvar my/org-agenda-files--cached-at nil)
+  (defun my/org-agenda-files ()
+    "Return cached org files list; refresh occasionally."
+    ;; 例：5分に1回だけ再走査（必要に応じて調整）
+    (let ((now (float-time)))
+      (if (and my/org-agenda-files--cached
+               my/org-agenda-files--cached-at
+               (< (- now my/org-agenda-files--cached-at) (* 5 60)))
+          my/org-agenda-files--cached
+        (setq my/org-agenda-files--cached-at now)
+        (setq my/org-agenda-files--cached
+              (directory-files-recursively (expand-file-name org-directory) "\\.org\\'")))))
+  ;; ここは「org-agenda を呼んだ時」だけ動くのでOK
+  (defun my/org-agenda-set-files (&rest _)
+    (setq org-agenda-files (my/org-agenda-files)))
   (defun org-insert-clipboard-image ()
     (interactive)
     (let* (
@@ -1213,19 +1231,42 @@
                     )
                 (message "No image file found at: %s" image-path)))
           (message "No image under cursor.")))))
-  (defvar my/org-agenda-files--cached nil)
-  (defun my/org-agenda-files ()
-    (or my/org-agenda-files--cached
-        (setq my/org-agenda-files--cached
-              (directory-files-recursively (expand-file-name org-directory) "\\.org\\'"))))
-  :advice
-  (:before org-agenda (lambda (&rest _) (setq org-agenda-files (my/org-agenda-files))))
+
+  :defer-config
+  (setq org-log-done t
+        org-image-actual-width nil
+        org-capture-templates
+        '(("t" "todo" entry (file+headline "todo.org" "todo") "* TODO %? \n" :empty-lines 1)
+          ("m" "memo" entry (file "memo.org") "* %^t \n" :empty-lines 1))
+        org-todo-keywords
+        '((sequence "TODO(t)" "SOMEDAY(s)" "WATTING(w)" "|" "DONE(d)" "CANCELED(c@)"))
+        org-enforce-todo-dependencies t
+
+        ;; org-modern用
+        org-auto-align-tags nil
+        org-tags-column 0
+        org-catch-invisible-edits 'show-and-error
+        org-special-ctrl-a/e t
+        org-insert-heading-respect-content t
+
+        ;; styling
+        org-hide-emphasis-markers t
+        org-pretty-entities t
+
+        ;; agenda styling
+        org-agenda-tags-column 0
+        org-agenda-block-separator ?─
+        org-agenda-time-grid '((daily today require-timed)
+                               (800 1000 1200 1400 1600 1800 2000)
+                               " ┄┄┄┄┄ " "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄")
+        org-agenda-current-time-string "◀── now ─────────────────────────────────────────────────"
+        org-ellipsis "…")
+  (advice-add 'org-agenda :before #'my/org-agenda-set-files)
   ;; org-preview-latexの修正
   ;; (let ((png (cdr (assoc 'dvipng org-preview-latex-process-alist))))
   ;;   (plist-put png :latex-compiler '("latex -interaction nonstopmode -output-directory %o %F"))
   ;;   (plist-put png :image-converter '("dvipng -D %D -T tight -o %O %F"))
   ;;   (plist-put png :transparent-image-converter '("dvipng -D %D -T tight -bg Transparent -o %O %F")))
-
   )
 ;;;; [Org] Extension
 (leaf *org-babel-settings
@@ -1333,7 +1374,6 @@
                       :box nil)
   )
 
-;;;; [Terminal]
 ;;;; [Terminal] Core
 (leaf eshell
   :bind (("C-c e" . eshell))
@@ -1400,6 +1440,7 @@
   :added "2023-02-19"
   :emacs>= 25.1
   :ensure t
+  :commands (multi-vterm)
   :when (string= system-type 'gnu/linux)
   :custom ((vterm-max-scrollback . 10000)
            (vterm-buffer-name-string . "vterm: %s")
@@ -1422,7 +1463,6 @@
   :ensure t
   :after vterm project)
 
-;;;; [Completion]
 ;;;; [Completion] Core
 (leaf *completion-core
   :custom
@@ -1567,7 +1607,6 @@
   :custom ((affe-highlight-function . 'orderless-highlight-matches)
            (affe-regexp-function . 'orderless-pattern-compiler))
   )
-
 ;;;; [Completion] In-buffer UI
 (leaf corfu
   :doc "Completion Overlay Region FUnction"
@@ -1759,19 +1798,7 @@
   :custom `((yas-trigers-in-field . t)
             (yas-snippet-dirs . '(,(expand-file-name "snippets" user-emacs-directory)))
             )
-  )
-(leaf consult-yasnippet
-  :doc "A consulting-read interface for yasnippet"
-  :req "emacs-27.1" "yasnippet-0.14" "consult-0.16"
-  :tag "emacs>=27.1"
-  :url "https://github.com/mohkale/consult-yasnippet"
-  :added "2022-09-04"
-  :emacs>= 27.1
-  :ensure t
-  :after yasnippet consult)
-(leaf *snippets
-  :after yasnippet
-  :config
+  :defer-config
   (leaf yasnippet-snippets
     :doc "Collection of yasnippet snippets"
     :req "yasnippet-0.8.0"
@@ -1796,9 +1823,17 @@
     :added "2023-02-18"
     :ensure t
     :after yasnippet)
+  (leaf consult-yasnippet
+    :doc "A consulting-read interface for yasnippet"
+    :req "emacs-27.1" "yasnippet-0.14" "consult-0.16"
+    :tag "emacs>=27.1"
+    :url "https://github.com/mohkale/consult-yasnippet"
+    :added "2022-09-04"
+    :emacs>= 27.1
+    :ensure t
+    :after yasnippet consult)
   )
 
-;;;; [Editing]
 ;;;; [Editing] Core
 (leaf align
   :doc "align text to a specific column, by regexp"
@@ -1942,7 +1977,6 @@
   :bind (("C-c C-v" . vundo))
   )
 
-;;;; [VC]
 ;;;; [VC] Core
 (leaf project
   :ensure t
@@ -1959,6 +1993,7 @@
   :added "2021-09-05"
   :emacs>= 25.1
   :ensure t
+  :commands (magit-status)
   :after git-commit magit-section with-editor
   :when (executable-find "git")
   :bind (("C-x g" . magit-status))
@@ -1984,7 +2019,6 @@
   :ensure t
   :bind (("C-=" . transient-dwim-dispatch)))
 
-;;;; [Programing]
 ;;;; [Programing] LSP
 (leaf eglot
   :doc "The Emacs Client for LSP servers"
@@ -2043,9 +2077,11 @@
 
   )
 (leaf eglot-booster
-    :when (executable-find "emacs-lsp-booster")
-    :vc (:url "https://github.com/jdtsmith/eglot-booster")
-    :global-minor-mode t)
+  :disabled t
+  :when (executable-find "emacs-lsp-booster")
+  :vc (:url "https://github.com/jdtsmith/eglot-booster")
+  :commands (eglot)
+  :global-minor-mode t)
 (leaf lsp-mode
   :doc "LSP mode"
   :req "emacs-26.1" "dash-2.18.0" "f-0.20.0" "ht-2.3" "spinner-1.7.3" "markdown-mode-2.3" "lv-0"
@@ -2465,6 +2501,7 @@
   :added "2021-09-05"
   :emacs>= 25.1
   :ensure t
+  :mode ("\\.hs\\'" "\\.lhs\\'" "cabal\\.project\\'")
   :defvar haskell-process-args-ghcie
   :custom `(;; (flymake-proc-allowed-file-name-masks . ,(delete '("\\.l?hs\\'" haskell-flymake-init) flymake-proc-allowed-file-name-masks))
             (haskell-process-type          . 'cabal-repl)
@@ -2542,6 +2579,7 @@
   :url "https://gitlab.com/groups/python-mode-devs"
   :added "2021-09-11"
   :ensure t
+  :mode ("\\.py\\'" "Pipfile\\'" "pyproject\\.toml\\'")
   :bind (python-mode-map
          ("C-c j" . jupyter-run-repl))
   )
@@ -2715,7 +2753,6 @@
                  '(haskell-mode . haskell-ts-mode))))
 
 
-;;;; [Navigation]
 ;;;; [Navigation] Core
 (leaf imenu
   :tag "builtin"
@@ -2827,7 +2864,6 @@
    ("l" text-scale-set "adjust"))
   )
 
-;;;; [Application]
 ;;;; [Application] Core
 (leaf eww
   :doc "Emacs Web Wowser"
@@ -2835,6 +2871,7 @@
   :added "2021-09-05"
   ;; :disabled t
   :hook ((eww-mode-hook . eww-mode-hook-disable-image))
+  :commands (eww)
   :defun eww-reload
   :defvar (shr-put-image-function eww-disable-colorize)
   :custom ((eww-searc-prefix . "https://duckduckgo.com/html/?kl=jp-jp&k1=-1&kc=1&kf=-1&q=")
@@ -2936,12 +2973,14 @@
   :doc "a comprehensive visual interface to diff & patch"
   :tag "builtin"
   :added "2022-03-24"
+  :commands (ediff)
   :custom `((ediff-window-setup-function . 'ediff-setup-windows-plain)
             (ediff-split-window-function . 'split-window-horizontally)))
 (leaf view
   :doc "peruse file or buffer without editing"
   :tag "builtin"
   :added "2021-09-05"
+  :commands (view-mode)
   :defun (undo-tree-redo
           undo-tree-undo
           backward-line)
@@ -3143,6 +3182,7 @@
   :emacs>= 25.1
   :ensure t
   :after parsebib
+  :commands (ebib)
   :bind (("C-c b" . ebib))
   :custom ((bibtex-autokey-name-case-convert      . 'capitalize)
            (bibtex-autokey-titleword-case-convert . 'capitalize)
@@ -3218,11 +3258,12 @@
   )
 (leaf google-translate
   :ensure t
+  :commands (google-translate-enja-or-jaen)
   :bind (("s-g" . google-translate-enja-or-jaen))
   :custom ((google-translate--translation-directions-alist . '(("en" . "ja")
                                                                ("ja" . "en")))
            (google-translate-output-destination . 'popup))
-  :config
+  :preface
   (defun google-translate-enja-or-jaen (&optional string)
     "Translate words in region or current position. Can also specify query with C-u"
     (interactive)
@@ -3242,7 +3283,6 @@
        (if asciip "en" "ja")
        (if asciip "ja" "en")
        string)))
-
   (defun google-translate--search-tkk ()
     "Search TKK."
     (list 430675 2721866130))
@@ -3338,7 +3378,8 @@
   :emacs>= 27.1
   :vc (:url "https://github.com/sebastienwae/app-launcher")
   :when (executable-find "git")
-  :require t
+  :commands (app-launcher-run-app)
+  ;; :require t
   ;; :after orderless
   ;; :disabled t
   )
@@ -3357,7 +3398,8 @@
   :added "2021-09-05"
   :ensure t
   ;; :disabled t
-  :config
+  :commands (my/open-calendar)
+  :defer-config
   (leaf calfw-org
     :doc "calendar view for org-agenda"
     :tag "org" "calendar"
@@ -3371,7 +3413,7 @@
     :ensure t
     :require t
     )
-  (defun my-open-calendar ()
+  (defun my/open-calendar ()
     (interactive)
     (let* ((org-src (cfw:org-create-source "Seagreen4"))
            (icls-src-dir "/home/toshiaki/Documents/calendar/")
@@ -3400,18 +3442,6 @@
   :require t
   :custom ((online-judge-directories . '("~/Dropbox/atcoder/"))
            (online-judge-command-name . nil)))
-(leaf which-key
-  :doc "Display available keybindings in popup"
-  :req "emacs-24.4"
-  :tag "emacs>=24.4"
-  :url "https://github.com/justbur/emacs-which-key"
-  :added "2021-09-12"
-  :emacs>= 24.4
-  :ensure t
-  :custom
-  (which-key-setup-side-window-bottom)
-  :global-minor-mode which-key-mode
-  )
 (leaf jupyter
   :ensure t
   :defvar jupyter-repl-echo-eval-p
@@ -3502,7 +3532,6 @@
   (setq calendar-holidays (append japanese-holidays holiday-local-holidays holiday-other-holidays))
   )
 
-;;;; [Files]
 ;;;; [Files] Core
 (leaf recentf
   :custom
