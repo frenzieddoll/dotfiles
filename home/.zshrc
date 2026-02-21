@@ -140,6 +140,10 @@ case $(uname -r | grep microsoft > /dev/null 2>&1 && echo wsl || echo not_wsl) i
         ;;
 esac
 
+# fbterm のとき：xterm-256color に偽装（Emacsの発色が良いならこれ）
+if [[ "$TERM" == linux ]]; then
+  export TERM=xterm-256color
+fi
 
 # for vterm
 if [[ "$INSIDE_EMACS" = 'vterm' ]] \
