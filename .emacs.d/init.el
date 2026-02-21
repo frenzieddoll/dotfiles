@@ -1006,7 +1006,7 @@
   :after dired
   :bind (:dired-mode-map
          ("RET" . dired-open-file))
-  :config
+  :defer-config
   (leaf dired-open-linux*
     :unless (string-match "microsoft" (shell-command-to-string "uname -r"))
     :custom ((dired-open-extensions .
