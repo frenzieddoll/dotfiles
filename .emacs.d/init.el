@@ -7,23 +7,21 @@
 ;; You may delete these explanatory comments.
 
 ;;; Code:
-
-;; leaf読み込み前の設定
-;; ラズパイでpackageをインストールができなかったときよう
-;; (when (string= (system-name) "RaspberryPi")
-;;   (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
-;; setup.el より
 
 (defconst my-saved-file-name-handler-alist file-name-handler-alist)
 (setq file-name-handler-alist nil)
 
-;;;; [Package Install]
+;;;; [Package]
 (eval-and-compile
   (customize-set-variable
    'package-archives '(;; ("org" . "https://orgmode.org/elpa/")
                        ("gnu"    . "https://elpa.gnu.org/packages/")
                        ("nongnu" . "https://elpa.nongnu.org/nongnu/")
                        ("melpa"  . "https://melpa.org/packages/")))
+
+  ;; ラズパイでpackageをインストールができなかったときよう
+  ;; (when (string= (system-name) "RaspberryPi")
+  ;;   (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
   (package-initialize)
   (unless (package-installed-p 'leaf)
     (package-refresh-contents)
@@ -33,9 +31,9 @@
     :ensure t
     :init
     ;; optional packages if you want to use :hydra, :el-get, :blackout,,,
-    (leaf hydra :ensure t)
-    (leaf el-get :ensure t)
-    (leaf blackout :ensure t)
+    ;; (leaf hydra :ensure t)
+    ;; (leaf el-get :ensure t)
+    ;; (leaf blackout :ensure t)
     :config
     ;; initialize leaf-keywords.el
     (leaf-keywords-init)))
@@ -46,6 +44,8 @@
 (leaf macrostep
   :ensure t
   :bind (("C-c j" . macrostep-expand)))
+
+;;;; [Core]
 (leaf *add-to-load-path
   :load-path `(,(mapcar (lambda (elm)
                           (concat user-emacs-directory elm))
@@ -96,6 +96,26 @@
     )
 
   )
+(leaf *minibuffer
+  :preface
+  ;; Add prompt indicator to `completing-read-multiple'.
+  ;; Alternatively try `consult-completing-read-multiple'.
+  (defun crm-indicator (args)
+    (cons (concat "[CRM] " (car args)) (cdr args)))
+  (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
+
+  ;; Do not allow the cursor in the minibuffer prompt
+  (setq minibuffer-prompt-properties
+        '(read-only t cursor-intangible t face minibuffer-prompt))
+  (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
+
+  ;; Emacs 28: Hide commands in M-x which do not work in the current mode.
+  ;; Vertico commands are hidden in normal buffers.
+  ;; (setq read-extended-command-predicate
+  ;;       #'command-completion-default-include-p)
+
+  ;; Enable recursive minibuffers
+  (setq enable-recursive-minibuffers t))
 (leaf *forLinux
   :when (eq system-type 'gnu/linux)
   :unless (string-match "microsoft" (shell-command-to-string "uname -r"))
@@ -220,7 +240,175 @@
         )))
   )
 
-;;;; [Exwm]
+;;;; [UI]
+;;;; [UI] Core
+(leaf *cus-start
+  :doc "define customization properties of builtins"
+  :url "http://handlename.hatenablog.jp/entry/2011/12/11/214923" ; align sumple
+  :hook  ((before-save-hook . delete-trailing-whitespace) ; 保存時にいらないスペースを削除
+          (after-save-hook  . flash-after-save)            ; 保存時に光らせる
+          (after-save-hook  . executable-make-buffer-file-executable-if-script-p)
+          (emacs-startup-hook .
+           (lambda ()
+             (setq gc-cons-threshold (* 64 1024 1024)
+                   gc-cons-percentage 0.1)
+             (garbage-collect))))
+
+  :custom ((ring-bell-function                    . 'ignore) ; ベルを鳴らさない
+           (tab-width                             . 4)  ; タブの代わりにスペース4文字
+           (fill-column                           . 72) ; RFC2822 風味
+           (truncate-lines                        . t)  ; 折り返し無し
+           (truncate-partial-width-windows        . nil)
+           (paragraph-start                       . "^\\([ 　・○<\t\n\f]\\|(?[0-9a-zA-Z]+)\\)")
+           (read-file-name-completion-ignore-case . t)  ; 大文字小文字区別無し
+           (undo-limit                            . 200000) ; undoの制限
+           (undo-strong-limit                     . 260000) ; undoの制限
+           (history-length                        . 100000) ; 履歴の制限
+           (create-lockfiles                      . nil)
+           (use-dialog-box                        . nil)
+           (use-file-dialog                       . nil)
+           (frame-resize-pixelwise                . t)
+           (enable-recursive-minibuffers          . t)
+           (history-delete-duplicates             . t)
+           (mouse-wheel-scroll-amount             . '(1 ((control) . 5)))
+           (text-quoting-style                    . 'straight)
+           (system-time-locale                    . "C") ; システムの時計をCにする
+           (eol-mnemonic-dos                      . "(CRLF)") ; 改行コードを表示する
+           (eol-mnemonic-mac                      . "(CR)") ; 改行コードを表示する
+           (eol-mnemonic-unix                     . "(LF)") ; 改行コードを表示する
+           (bidi-display-reordering               . nil) ; 右から左に読む言語に対応させないことで描画高速化
+           (make-backup-files                     . nil) ; バックアップファイルの無効
+           (auto-save-default                     . nil) ; 自動セーブの無効
+           (next-line-add-newlines                . nil) ; バッファの最後でnewlineで新規行を追加するのを禁止する
+           (show-paren-delay                      . 0.125) ; show-parenをわずかに遅延させる
+           (vc-handled-backends                   . '(Git)) ; vcのバックエンドにgitを使用
+           (vc-follow-symlinks                    . t) ; シンボリックリンクを含める
+           (display-time-string-forms             . '((format "%s/%s(%s)%s:%s"
+                                                              month day dayname
+                                                              24-hours minutes)))
+           ;; 初めの画面を表示させない
+           (inhibit-splash-screen             . t)
+           (inhibit-startup-screen            . t)
+           (inhibit-startup-message           . t)
+           (inhibit-startup-echo-area-message . t)
+           (initial-buffer-choice             . t)
+           (initial-scratch-message           . nil)
+           ;; byte-compileのエラーを無視する
+           (debug-on-error           . nil)
+           (byte-compile-no-warnings . t)
+           (byte-compile-warnings    . '(not cl-functions obsolete))
+           (native-comp-async-report-warnings-errors . 'silent)
+           ;; キルリングの設定
+           (kill-ring-max                . 10000)
+           (kill-read-only-ok            . t)
+           (kill-whole-line              . t)
+           (eval-expression-print-length . nil)
+           (eval-expression-print-level  . nil)
+           (auto-revert-interval . 5)
+           ;; パフォーマンスの向上
+           (process-adaptive-read-buffering . t)
+           (auto-mode-case-fold . nil)
+           (bidi-inhibit-bpa . t)
+           (fast-but-imprecise-scrolling . t)
+           (ffap-machine-at-point . 'reject)
+           (idle-update-delay . 1.0)
+           (redisplay-skip-fontification-on-input . t)
+           (cursor-in-non-selected-windows . nil)
+           (highlight-nonselected-windows . nil)
+           )
+  :init
+  (setq-default indent-tabs-mode nil)
+  (defalias 'yes-or-no-p 'y-or-n-p)
+  (remove-hook 'text-mode-hook #'turn-on-auto-fill)
+  ;; (set-face-background 'region "#555")
+  (run-with-idle-timer 600.0 t #'garbage-collect) ;10分無操作のときGCを走らせる
+  ;; 関数の設定
+  ;; (tool-bar-mode -1)
+  ;; (scroll-bar-mode -1)
+  ;; (menu-bar-mode -1)
+  (blink-cursor-mode -1)
+  (column-number-mode -1)
+  (savehist-mode 1) ; ミニバッファの履歴を保存する
+  (show-paren-mode 1)
+  (display-time-mode 1)
+  (global-so-long-mode 1)
+  (global-auto-revert-mode 1)
+  (temp-buffer-resize-mode 1)
+
+
+  (when (get-buffer "*scratch*")
+    (with-current-buffer "*scratch*"
+      (emacs-lock-mode 'kill)))
+  (when (get-buffer "*Messages*")
+    (with-current-buffer "*Messages*"
+      (emacs-lock-mode 'kill)))
+
+  :preface
+  (defun flash-after-save ()
+    (let ((orig (face-background 'mode-line nil t)))
+      (set-face-background 'mode-line "dark green")
+      (run-with-idle-timer
+       0.1 nil
+       (lambda (fg)
+         (when fg (set-face-background 'mode-line fg)))
+       orig)))
+  (defun my/toggle-debug-on-error ()
+    (interactive)
+    (setq debug-on-error (not debug-on-error))
+    (message "debug-on-error: %s" debug-on-error))
+  )
+(leaf *fontSetting
+  :init
+  (when (display-graphic-p)
+    (my/apply-font (selected-frame)))
+  :hook ((after-make-frame-functions . my/apply-font))
+  :preface
+  (defun my/font-height-from-monitor (frame)
+    "Return font height (1/10 pt in face :height) based on monitor resolution."
+    (let* ((attrs (and (display-graphic-p frame) (frame-monitor-attributes frame)))
+           (geom  (cdr (assq 'geometry attrs))) ;; (x y width height)
+           (w     (or (nth 2 geom) 1920))
+           (h     (or (nth 3 geom) 1080))
+           (res   (* w h)))
+      (cond ((>= res (* 3840 2160)) 200)  ; 4K
+            ((>= res (* 2560 1440)) 140)  ; WQHD
+            ((>= res (* 1920 1080)) 130)  ; FHD
+            ((>= res (* 1280  720)) 120)  ; HD
+            (t 120))))                    ; fallback
+  (defun my/apply-font (frame)
+    "Apply my font settings to FRAME."
+    (when (display-graphic-p frame)
+      (with-selected-frame frame
+        (let ((size (my/font-height-from-monitor frame)))
+          (set-face-attribute 'default frame
+                              :family "HackGen"
+                              :height size)
+          ;; Japanese glyphs
+          (dolist (charset '(japanese-jisx0208 japanese-jisx0213-1 japanese-jisx0213-2 kana))
+            (set-fontset-font t charset (font-spec :family "HackGen")))
+          (message "Font: HackGen height=%s (monitor=%sx%s)"
+                   size (frame-pixel-width frame) (frame-pixel-height frame))))))
+  (defun set-font-size ()
+    (interactive)
+    (if (display-graphic-p)
+        (my/apply-font (select-frame))
+      (message "not XWindow"))
+    )
+  )
+;;;; [UI] Extension
+(leaf which-key
+  :doc "Display available keybindings in popup"
+  :req "emacs-24.4"
+  :tag "emacs>=24.4"
+  :url "https://github.com/justbur/emacs-which-key"
+  :added "2021-09-12"
+  :emacs>= 24.4
+  :ensure t
+  :custom
+  (which-key-setup-side-window-bottom)
+  :global-minor-mode which-key-mode
+  )
+;;;; [UI] Exwm
 (leaf *exwm-config
   ;; :disabled t
   ;; ワークスペースを切り替えたとき、braveがフォーカスから外れるときは、exwm-layout.elの
@@ -249,7 +437,7 @@
               (window-divider-default-right-width . 1)
               (exwm-workspace-show-all-buffers    . t)
               (exwm-layout-show-all-buffers       . t)
-              (exwm-workspace-number              . 3)
+              (exwm-workspace-number              . 2)
               (exwm-input-global-keys . '(;; 自前の関数
                                           (,(kbd "s-r")     . exwm-reset)
                                           (,(kbd "s-<tab>") . exwm-workspace-toggle)
@@ -376,162 +564,6 @@
     ;; (leaf *fix_ediff
     ;;   :after ediff-wind
     ;;   :custom `((ediff-window-setup-function . 'ediff-setup-windows-plain)))
-    )
-  )
-
-;;;; [UI]
-;;;; [UI] Core
-(leaf *cus-start
-  :doc "define customization properties of builtins"
-  :url "http://handlename.hatenablog.jp/entry/2011/12/11/214923" ; align sumple
-  :hook  ((before-save-hook . delete-trailing-whitespace) ; 保存時にいらないスペースを削除
-          (after-save-hook  . flash-after-save)            ; 保存時に光らせる
-          (after-save-hook  . executable-make-buffer-file-executable-if-script-p)
-          (emacs-startup-hook .
-           (lambda ()
-             (setq gc-cons-threshold (* 64 1024 1024)
-                   gc-cons-percentage 0.1)
-             (garbage-collect))))
-
-  :custom ((ring-bell-function                    . 'ignore) ; ベルを鳴らさない
-           (tab-width                             . 4)  ; タブの代わりにスペース4文字
-           (fill-column                           . 72) ; RFC2822 風味
-           (truncate-lines                        . t)  ; 折り返し無し
-           (truncate-partial-width-windows        . nil)
-           (paragraph-start                       . "^\\([ 　・○<\t\n\f]\\|(?[0-9a-zA-Z]+)\\)")
-           (read-file-name-completion-ignore-case . t)  ; 大文字小文字区別無し
-           (undo-limit                            . 200000) ; undoの制限
-           (undo-strong-limit                     . 260000) ; undoの制限
-           (history-length                        . 100000) ; 履歴の制限
-           (create-lockfiles                      . nil)
-           (use-dialog-box                        . nil)
-           (use-file-dialog                       . nil)
-           (frame-resize-pixelwise                . t)
-           (enable-recursive-minibuffers          . t)
-           (history-delete-duplicates             . t)
-           (mouse-wheel-scroll-amount             . '(1 ((control) . 5)))
-           (text-quoting-style                    . 'straight)
-           (system-time-locale                    . "C") ; システムの時計をCにする
-           (eol-mnemonic-dos                      . "(CRLF)") ; 改行コードを表示する
-           (eol-mnemonic-mac                      . "(CR)") ; 改行コードを表示する
-           (eol-mnemonic-unix                     . "(LF)") ; 改行コードを表示する
-           (bidi-display-reordering               . nil) ; 右から左に読む言語に対応させないことで描画高速化
-           (make-backup-files                     . nil) ; バックアップファイルの無効
-           (auto-save-default                     . nil) ; 自動セーブの無効
-           (next-line-add-newlines                . nil) ; バッファの最後でnewlineで新規行を追加するのを禁止する
-           (show-paren-delay                      . 0.125) ; show-parenをわずかに遅延させる
-           (vc-handled-backends                   . '(Git)) ; vcのバックエンドにgitを使用
-           (vc-follow-symlinks                    . t) ; シンボリックリンクを含める
-           (display-time-string-forms             . '((format "%s/%s(%s)%s:%s"
-                                                              month day dayname
-                                                              24-hours minutes)))
-           ;; 初めの画面を表示させない
-           (inhibit-splash-screen             . t)
-           (inhibit-startup-screen            . t)
-           (inhibit-startup-message           . t)
-           (inhibit-startup-echo-area-message . t)
-           (initial-buffer-choice             . t)
-           (initial-scratch-message           . nil)
-           ;; byte-compileのエラーを無視する
-           (debug-on-error           . nil)
-           (byte-compile-no-warnings . t)
-           (byte-compile-warnings    . '(not cl-functions obsolete))
-           (native-comp-async-report-warnings-errors . 'silent)
-           ;; キルリングの設定
-           (kill-ring-max                . 10000)
-           (kill-read-only-ok            . t)
-           (kill-whole-line              . t)
-           (eval-expression-print-length . nil)
-           (eval-expression-print-level  . nil)
-           (auto-revert-interval . 5)
-           ;; パフォーマンスの向上
-           (process-adaptive-read-buffering . t)
-           (auto-mode-case-fold . nil)
-           (bidi-inhibit-bpa . t)
-           (fast-but-imprecise-scrolling . t)
-           (ffap-machine-at-point . 'reject)
-           (idle-update-delay . 1.0)
-           (redisplay-skip-fontification-on-input . t)
-           (cursor-in-non-selected-windows . nil)
-           (highlight-nonselected-windows . nil)
-           )
-  :init
-  (setq-default indent-tabs-mode nil)
-  (defalias 'yes-or-no-p 'y-or-n-p)
-  (remove-hook 'text-mode-hook #'turn-on-auto-fill)
-  ;; (set-face-background 'region "#555")
-  (run-with-idle-timer 600.0 t #'garbage-collect) ;10分無操作のときGCを走らせる
-  ;; 関数の設定
-  ;; (tool-bar-mode -1)
-  ;; (scroll-bar-mode -1)
-  ;; (menu-bar-mode -1)
-  (blink-cursor-mode -1)
-  (column-number-mode -1)
-  (savehist-mode 1) ; ミニバッファの履歴を保存する
-  (show-paren-mode 1)
-  (display-time-mode 1)
-  (global-so-long-mode 1)
-  (global-auto-revert-mode 1)
-  (temp-buffer-resize-mode 1)
-
-
-  (when (get-buffer "*scratch*")
-    (with-current-buffer "*scratch*"
-      (emacs-lock-mode 'kill)))
-  (when (get-buffer "*Messages*")
-    (with-current-buffer "*Messages*"
-      (emacs-lock-mode 'kill)))
-
-  :preface
-  (defun flash-after-save ()
-    (let ((orig (face-background 'mode-line nil t)))
-      (set-face-background 'mode-line "dark green")
-      (run-with-idle-timer
-       0.1 nil
-       (lambda (fg)
-         (when fg (set-face-background 'mode-line fg)))
-       orig)))
-  (defun my/toggle-debug-on-error ()
-    (interactive)
-    (setq debug-on-error (not debug-on-error))
-    (message "debug-on-error: %s" debug-on-error))
-  )
-(leaf *fontSetting
-  :init
-  (when (display-graphic-p)
-    (my/apply-font (selected-frame)))
-  :hook ((after-make-frame-fucntions . my/apply-font))
-  :preface
-  (defun my/font-height-from-monitor (frame)
-    "Return font height (1/10 pt in face :height) based on monitor resolution."
-    (let* ((attrs (and (display-graphic-p frame) (frame-monitor-attributes frame)))
-           (geom  (cdr (assq 'geometry attrs))) ;; (x y width height)
-           (w     (or (nth 2 geom) 1920))
-           (h     (or (nth 3 geom) 1080))
-           (res   (* w h)))
-      (cond ((>= res (* 3840 2160)) 200)  ; 4K
-            ((>= res (* 2560 1440)) 140)  ; WQHD
-            ((>= res (* 1920 1080)) 130)  ; FHD
-            ((>= res (* 1280  720)) 120)  ; HD
-            (t 120))))                    ; fallback
-  (defun my/apply-font (frame)
-    "Apply my font settings to FRAME."
-    (when (display-graphic-p frame)
-      (with-selected-frame frame
-        (let ((size (my/font-height-from-monitor frame)))
-          (set-face-attribute 'default frame
-                              :family "HackGen"
-                              :height size)
-          ;; Japanese glyphs
-          (dolist (charset '(japanese-jisx0208 japanese-jisx0213-1 japanese-jisx0213-2 kana))
-            (set-fontset-font t charset (font-spec :family "HackGen")))
-          (message "Font: HackGen height=%s (monitor=%sx%s)"
-                   size (frame-pixel-width frame) (frame-pixel-height frame))))))
-  (defun set-font-size ()
-    (interactive)
-    (if (display-graphic-p)
-        (my/apply-font (select-frame))
-      (message "not XWindow"))
     )
   )
 ;;;; [UI] Theme
@@ -1523,6 +1555,19 @@
   :emacs>= 26.1
   :ensure t
   :after (embark consult))
+(leaf affe
+  :doc "Asynchronous Fuzzy Finder for Emacs"
+  :req "emacs-28.1" "consult-1.7"
+  :tag "completion" "files" "matching" "emacs>=28.1"
+  :url "https://github.com/minad/affe"
+  :added "2025-01-21"
+  :emacs>= 28.1
+  :ensure t
+  :disabled t
+  :custom ((affe-highlight-function . 'orderless-highlight-matches)
+           (affe-regexp-function . 'orderless-pattern-compiler))
+  )
+
 ;;;; [Completion] In-buffer UI
 (leaf corfu
   :doc "Completion Overlay Region FUnction"
@@ -1666,6 +1711,24 @@
   :emacs>= 29.1
   :ensure t
   :after tempel)
+(leaf jedi-core
+  :doc "Common code of jedi.el and company-jedi.el"
+  :req "emacs-24" "epc-0.1.0" "python-environment-0.0.2" "cl-lib-0.5"
+  :tag "emacs>=24"
+  :added "2023-11-12"
+  :emacs>= 24
+  :ensure t
+  :commands (jupyter))
+(leaf company-jedi
+  :doc "Company-mode completion back-end for Python JEDI"
+  :req "emacs-24" "cl-lib-0.5" "company-0.8.11" "jedi-core-0.2.7"
+  :tag "emacs>=24"
+  :url "https://github.com/emacsorphanage/company-jedi"
+  :added "2023-11-12"
+  :emacs>= 24
+  :ensure t
+  :commands (jupyter)
+  )
 ;;;; [Completion] dabbrev/Snippets
 (leaf dabbrev
   :doc "dynamic abbreviation package"
@@ -1917,6 +1980,9 @@
 
   :global-minor-mode global-git-gutter-mode
   )
+(leaf transient-dwim
+  :ensure t
+  :bind (("C-=" . transient-dwim-dispatch)))
 
 ;;;; [Programing]
 ;;;; [Programing] LSP
@@ -2171,6 +2237,30 @@
   :emacs>= 24.3
   :ensure t
   :commands (quickrun))
+;;;; [Programing] Debugger
+(leaf dape
+  :doc "Debug Adapter Protocol for Emacs"
+  :req "emacs-29.1" "jsonrpc-1.0.25"
+  :tag "emacs>=29.1"
+  :url "https://github.com/svaante/dape"
+  :added "2025-02-18"
+  :emacs>= 29.1
+  :ensure t
+  :after jsonrpc
+  :hook ((kill-emacs . dape-breakpoint-save))
+  :custom `((dape-buffer-window-arrangemnt . 'right)
+            (dape-inlay-hints . t)
+            (read-process-output-max . ,(* 1024 1024))
+            )
+  :bind (dape-mode-map
+         ("C-x C-a" . dape-global-map))
+  :config
+  (leaf repeat
+    :doc "convenient way to repeat the previous command"
+    :tag "builtin"
+    :added "2025-02-18"
+    :config (repeat-mode))
+  )
 ;;;; [Programing] Environment
 (leaf pyvenv
   :doc "Python virtual environment interface"
@@ -2556,6 +2646,74 @@
   :added "2023-06-20"
   :emacs>= 25.0
   :ensure t)
+;;;; [Programing] tree-sitter (Emacs 29+ / treesit)
+(leaf treesit
+  :tag "builtin"
+  :disabled t
+  :preface
+  (defun my/treesit-available-p ()
+    (and (fboundp 'treesit-available-p)
+         (treesit-available-p)))
+  (defun my/treesit-install-missing-grammars ()
+    "Install missing tree-sitter grammars defined in `treesit-language-source-alist`."
+    (interactive)
+    (when (my/treesit-available-p)
+      (dolist (spec treesit-language-source-alist)
+        (let ((lang (car spec)))
+          (unless (treesit-language-available-p lang)
+            (ignore-errors
+              (treesit-install-language-grammar lang)))))))
+
+  :init
+  ;; 使う言語だけ追加（必要に応じて増やしてOK）
+  ;; treesit-language-source-alist は Emacs が文法を取ってくる元 :contentReference[oaicite:2]{index=2}
+  (when (my/treesit-available-p)
+    (setq treesit-language-source-alist
+          '((python       . ("https://github.com/tree-sitter/tree-sitter-python"))
+            (bash         . ("https://github.com/tree-sitter/tree-sitter-bash"))
+            (json         . ("https://github.com/tree-sitter/tree-sitter-json"))
+            (yaml         . ("https://github.com/ikatyang/tree-sitter-yaml"))
+            (javascript   . ("https://github.com/tree-sitter/tree-sitter-javascript" "master" "src"))
+            (typescript   . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src"))
+            (tsx          . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src"))
+            (css          . ("https://github.com/tree-sitter/tree-sitter-css"))
+            (html         . ("https://github.com/tree-sitter/tree-sitter-html"))
+            (haskell      . ("https://github.com/tree-sitter/tree-sitter-haskell"))
+            ;; PureScript: 文法はある（ただし Emacs標準の purescript-ts-mode は無い） :contentReference[oaicite:3]{index=3}
+            ;; (purescript   . ("https://github.com/postsolar/tree-sitter-purescript"))
+            )))
+
+  :config
+  ;; ハイライトを細かく（重いと感じたら 3 に戻す）
+  (setq treesit-font-lock-level 4)
+
+  ;; ts-mode に自動切替（Emacs 29 の major-mode-remap-alist を使う） :contentReference[oaicite:4]{index=4}
+  ;; ※ 対応する *-ts-mode が Emacs に存在する言語だけ書くのが安全
+  (when (my/treesit-available-p)
+    (dolist (pair '((python-mode . python-ts-mode)
+                    (js-mode     . js-ts-mode)
+                    (js-json-mode . json-ts-mode)
+                    (css-mode    . css-ts-mode)
+                    (yaml-mode   . yaml-ts-mode)
+                    (sh-mode     . bash-ts-mode)))
+      (add-to-list 'major-mode-remap-alist pair))
+
+    ;; TypeScript / TSX は組み込み（typescript-ts-mode / tsx-ts-mode） :contentReference[oaicite:5]{index=5}
+    ;; 既存の typescript-mode 等を使っているなら remap を追加してOK
+    (add-to-list 'major-mode-remap-alist '(typescript-mode . typescript-ts-mode))
+    (add-to-list 'major-mode-remap-alist '(tsx-mode . tsx-ts-mode)))
+
+  ;; 便利コマンド：一括インストール（初回だけ手で M-x 実行してもOK）
+  ;; M-x my/treesit-install-missing-grammars
+  )
+(leaf haskell-ts-mode
+  :ensure t
+  :mode ("\\.hs\\'" . haskell-ts-mode)
+  :init
+  (when (treesit-available-p)
+    (add-to-list 'major-mode-remap-alist
+                 '(haskell-mode . haskell-ts-mode))))
+
 
 ;;;; [Navigation]
 ;;;; [Navigation] Core
@@ -2566,7 +2724,7 @@
   (defun my/imenu-add-headings ()
     "Add ;;;; headings to imenu."
     (add-to-list 'imenu-generic-expression
-                 '("Sections" "^;;+ \\[\\([^]]+\\)\\].*$" 1)
+                 '("Sections" "^;;+\\s-+\\(\\[[^]]+\\]\\s-*.*\\)$" 1)
                  ;; '("Sections" "^;;;;+\\s-+\\(.*\\)$" 1)
                  t)))
 (leaf *hs-minor-mode
@@ -2600,7 +2758,74 @@
         (re-search-forward "}")
         (narrow-to-region begin (point)))))
   )
+(leaf subword
+  :doc "Handling capitalized subwords in a nomenclature"
+  :tag "builtin"
+  :added "2025-03-06"
+  :hook ((haskell-mode-hook
+          purescript-mode-hook
+          python-mode-hook) . subword-mode)
+  )
 ;;;; [Navigation] Extension
+(leaf highlight-indent-guides
+  :doc "Minor mode to highlight indentation"
+  :req "emacs-24.1"
+  :tag "emacs>=24.1"
+  :url "https://github.com/DarthFennec/highlight-indent-guides"
+  :added "2021-09-05"
+  :emacs>= 24.1
+  :ensure t
+  :unless (string-match "RaspberryPi" (system-name))
+  :hook ((prog-mode-hook . highlight-indent-guides-mode))
+  :custom '((highlight-indent-guides-method . 'column)))
+(leaf hydra :ensure t)
+(leaf *hydra-config
+  :doc "Make bindings that stick around."
+  :req "cl-lib-0.5" "lv-0"
+  :tag "bindings"
+  :url "https://github.com/abo-abo/hydra"
+  :added "2021-09-06"
+  :hydra
+  (hydra-pinky
+   (global-map "s-j p")
+   "pinky"
+   ("n" next-line           "next-line")
+   ("p" previous-line       "prev-line")
+   ("f" forward-char        "forward-char")
+   ("b" backward-char       "backward-char")
+   ("a" beginning-of-line   "begining-line")
+   ("e" move-end-of-line    "end-line")
+   ("v" scroll-up-command   "scroll-up")
+   ("V" scroll-down-command "scroll-up")
+   ("g" keyboard-quit       "guit")
+   ("j" next-line           "next-line")
+   ("k" previous-line       "prev-line")
+   ("l" forward-char        "forward-char")
+   ("h" backward-char       "backward-char")
+   ("o" other-window        "other-window")
+   ("r" avy-goto-word-1     "goto-word")
+   ("s" consult-line        "consult-line")
+   ("S" window-swap-states  "window-swap")
+   ("q" kill-buffer         "kill-buffer")
+   ("w" clipboard-kill-ring-save "kill-ring-save")
+   ("," beginning-of-buffer      "biginning-buffer")
+   ("." end-of-buffer            "end-buffer")
+   ("SPC" set-mark-command       "set-mark")
+   ("1" delete-other-windows     "del-other-window")
+   ("2" split-window-below       "split-below")
+   ("3" split-window-right       "split-right")
+   ("0" delete-window            "del-window")
+   ("x" delete-window            "del-window")
+   (";" consult-buffer           "consult-buffer")
+   ("M-n" next-buffer            "next-buffer")
+   ("M-p" previous-buffer        "prev-buffer"))
+  (hydra-zoom
+   (global-map "<f2>")
+   "zoom"
+   ("j" text-scale-increase "in")
+   ("k" text-scale-decrease "out")
+   ("l" text-scale-set "adjust"))
+  )
 
 ;;;; [Application]
 ;;;; [Application] Core
@@ -3175,88 +3400,18 @@
   :require t
   :custom ((online-judge-directories . '("~/Dropbox/atcoder/"))
            (online-judge-command-name . nil)))
-
-;;;; [Files]
-;;;; [Files] Extension
-(leaf vlf
-  :doc "View Large Files"
-  :tag "utilities" "large files"
-  :url "https://github.com/m00natic/vlfi"
-  :added "2021-09-05"
+(leaf which-key
+  :doc "Display available keybindings in popup"
+  :req "emacs-24.4"
+  :tag "emacs>=24.4"
+  :url "https://github.com/justbur/emacs-which-key"
+  :added "2021-09-12"
+  :emacs>= 24.4
   :ensure t
-  :commands (vlf vlf-mode)
-  :custom  ((vlf-application . 'ask))
-  :hook (after-init-hook . my/vlf-setup)
-  :preface
-  (defun my/vlf-setup ()
-    "Enable VLF integration for visiting large files."
-    ;; 大きいファイルを開く導線に VLF を統合するために必要 :contentReference[oaicite:2]{index=2}
-    (require 'vlf-setup nil t))
+  :custom
+  (which-key-setup-side-window-bottom)
+  :global-minor-mode which-key-mode
   )
-(leaf sudo-edit
-  :doc "Open files as another user"
-  :req "emacs-24" "cl-lib-0.5"
-  :tag "convenience" "emacs>=24"
-  :url "https://github.com/nflath/sudo-edit"
-  :added "2021-09-10"
-  :emacs>= 24
-  :ensure t)
-
-;;;; [Mics]
-(leaf info
-  :tag "builtin"
-  :preface
-  (defvar my/info-ja-alist
-    '(("emacs" . "emacs-ja.info")
-      ("elisp" . "elisp-ja.info"))
-    "Map of Info manual names to Japanese .info filenames.")
-
-  (defun my/info--ja-file (filename)
-    "Return Japanese info filename for FILENAME if available, otherwise nil."
-    (let ((ja (cdr (assoc filename my/info-ja-alist))))
-      (when ja
-        ;; Info-directory-list のどこかに存在するなら採用
-        (catch 'found
-          (dolist (dir Info-directory-list)
-            (when (file-exists-p (expand-file-name ja dir))
-              (throw 'found ja)))
-          nil))))
-
-  (defun my/info-find-node--use-ja (orig-fn filename &rest args)
-    "Advice: prefer Japanese Info manual when available."
-    (let ((ja (and (stringp filename) (my/info--ja-file filename))))
-      (apply orig-fn (or ja filename) args)))
-
-  :init
-  ;; info が使われるまでロードしない：パス追加だけ先に
-  (add-to-list 'Info-directory-list (expand-file-name "info/" user-emacs-directory))
-
-  :config
-  (advice-add 'Info-find-node :around #'my/info-find-node--use-ja))
-(leaf dape
-  :doc "Debug Adapter Protocol for Emacs"
-  :req "emacs-29.1" "jsonrpc-1.0.25"
-  :tag "emacs>=29.1"
-  :url "https://github.com/svaante/dape"
-  :added "2025-02-18"
-  :emacs>= 29.1
-  :ensure t
-  :after jsonrpc
-  :hook ((kill-emacs . dape-breakpoint-save))
-  :custom `((dape-buffer-window-arrangemnt . 'right)
-            (dape-inlay-hints . t)
-            (read-process-output-max . ,(* 1024 1024))
-            )
-  :bind (dape-mode-map
-         ("C-x C-a" . dape-global-map))
-  :config
-  (leaf repeat
-    :doc "convenient way to repeat the previous command"
-    :tag "builtin"
-    :added "2025-02-18"
-    :config (repeat-mode))
-  )
-
 (leaf jupyter
   :ensure t
   :defvar jupyter-repl-echo-eval-p
@@ -3314,120 +3469,6 @@
             (org-redisplay-inline-images))
         (message "Clipboard content is not a supported image file path. No insertion performed."))))
   )
-(leaf jedi-core
-  :doc "Common code of jedi.el and company-jedi.el"
-  :req "emacs-24" "epc-0.1.0" "python-environment-0.0.2" "cl-lib-0.5"
-  :tag "emacs>=24"
-  :added "2023-11-12"
-  :emacs>= 24
-  :ensure t
-  :commands (jupyter))
-(leaf company-jedi
-  :doc "Company-mode completion back-end for Python JEDI"
-  :req "emacs-24" "cl-lib-0.5" "company-0.8.11" "jedi-core-0.2.7"
-  :tag "emacs>=24"
-  :url "https://github.com/emacsorphanage/company-jedi"
-  :added "2023-11-12"
-  :emacs>= 24
-  :ensure t
-  :commands (jupyter)
-  )
-
-(leaf transient-dwim
-  :ensure t
-  :bind (("C-=" . transient-dwim-dispatch)))
-(leaf affe
-  :doc "Asynchronous Fuzzy Finder for Emacs"
-  :req "emacs-28.1" "consult-1.7"
-  :tag "completion" "files" "matching" "emacs>=28.1"
-  :url "https://github.com/minad/affe"
-  :added "2025-01-21"
-  :emacs>= 28.1
-  :ensure t
-  :custom ((affe-highlight-function . 'orderless-highlight-matches)
-           (affe-regexp-function . 'orderless-pattern-compiler))
-  )
-
-
-(leaf *emacs
-  :preface
-  ;; Add prompt indicator to `completing-read-multiple'.
-  ;; Alternatively try `consult-completing-read-multiple'.
-  (defun crm-indicator (args)
-    (cons (concat "[CRM] " (car args)) (cdr args)))
-  (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
-
-  ;; Do not allow the cursor in the minibuffer prompt
-  (setq minibuffer-prompt-properties
-        '(read-only t cursor-intangible t face minibuffer-prompt))
-  (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
-
-  ;; Emacs 28: Hide commands in M-x which do not work in the current mode.
-  ;; Vertico commands are hidden in normal buffers.
-  ;; (setq read-extended-command-predicate
-  ;;       #'command-completion-default-include-p)
-
-  ;; Enable recursive minibuffers
-  (setq enable-recursive-minibuffers t))
-
-(leaf highlight-indent-guides
-  :doc "Minor mode to highlight indentation"
-  :req "emacs-24.1"
-  :tag "emacs>=24.1"
-  :url "https://github.com/DarthFennec/highlight-indent-guides"
-  :added "2021-09-05"
-  :emacs>= 24.1
-  :ensure t
-  :unless (string-match "RaspberryPi" (system-name))
-  :hook ((prog-mode-hook . highlight-indent-guides-mode))
-  :custom '((highlight-indent-guides-method . 'column)))
-(leaf *hydra-config
-  :doc "Make bindings that stick around."
-  :req "cl-lib-0.5" "lv-0"
-  :tag "bindings"
-  :url "https://github.com/abo-abo/hydra"
-  :added "2021-09-06"
-  :hydra
-  (hydra-pinky
-   (global-map "s-j p")
-   "pinky"
-   ("n" next-line           "next-line")
-   ("p" previous-line       "prev-line")
-   ("f" forward-char        "forward-char")
-   ("b" backward-char       "backward-char")
-   ("a" beginning-of-line   "begining-line")
-   ("e" move-end-of-line    "end-line")
-   ("v" scroll-up-command   "scroll-up")
-   ("V" scroll-down-command "scroll-up")
-   ("g" keyboard-quit       "guit")
-   ("j" next-line           "next-line")
-   ("k" previous-line       "prev-line")
-   ("l" forward-char        "forward-char")
-   ("h" backward-char       "backward-char")
-   ("o" other-window        "other-window")
-   ("r" avy-goto-word-1     "goto-word")
-   ("s" consult-line        "consult-line")
-   ("S" window-swap-states  "window-swap")
-   ("q" kill-buffer         "kill-buffer")
-   ("w" clipboard-kill-ring-save "kill-ring-save")
-   ("," beginning-of-buffer      "biginning-buffer")
-   ("." end-of-buffer            "end-buffer")
-   ("SPC" set-mark-command       "set-mark")
-   ("1" delete-other-windows     "del-other-window")
-   ("2" split-window-below       "split-below")
-   ("3" split-window-right       "split-right")
-   ("0" delete-window            "del-window")
-   ("x" delete-window            "del-window")
-   (";" consult-buffer           "consult-buffer")
-   ("M-n" next-buffer            "next-buffer")
-   ("M-p" previous-buffer        "prev-buffer"))
-  (hydra-zoom
-   (global-map "<f2>")
-   "zoom"
-   ("j" text-scale-increase "in")
-   ("k" text-scale-decrease "out")
-   ("l" text-scale-set "adjust"))
-  )
 (leaf japanese-holidays
   :doc "Calendar functions for the Japanese calendar"
   :req "emacs-24.1" "cl-lib-0.3"
@@ -3460,15 +3501,10 @@
   :config
   (setq calendar-holidays (append japanese-holidays holiday-local-holidays holiday-other-holidays))
   )
+
+;;;; [Files]
+;;;; [Files] Core
 (leaf recentf
-  :init
-  (leaf recentf-ext
-    :doc "Recentf extensions"
-    :tag "files" "convenience"
-    :url "http://www.emacswiki.org/cgi-bin/wiki/download/recentf-ext.el"
-    :added "2023-02-09"
-    :ensure t
-    )
   :custom
   `((recentf-save-file . "~/.emacs.d/recentf")
     (recentf-max-saved-items . 2000)
@@ -3480,20 +3516,45 @@
                          "/\\.emacs\\.d/games/*-scores"
                          "/\\.emacs\\.d/\\.cask/"
                          "Geheimnis"))
-    ;; (recentf-auto-cleanup-timer . (run-with-idle-timer 30 t 'recentf-save-list))
     )
   :global-minor-mode (recentf-mode)
   )
+(leaf recentf-ext
+    :doc "Recentf extensions"
+    :tag "files" "convenience"
+    :url "http://www.emacswiki.org/cgi-bin/wiki/download/recentf-ext.el"
+    :added "2023-02-09"
+    :ensure t
+    )
 (leaf ssh
   :doc "Support for remote logins using ssh."
   :tag "comm" "unix"
   :added "2021-11-03"
   :ensure t)
-(leaf subword
-  :doc "Handling capitalized subwords in a nomenclature"
-  :tag "builtin"
-  :added "2025-03-06")
-
+;;;; [Files] Extension
+(leaf vlf
+  :doc "View Large Files"
+  :tag "utilities" "large files"
+  :url "https://github.com/m00natic/vlfi"
+  :added "2021-09-05"
+  :ensure t
+  :commands (vlf vlf-mode)
+  :custom  ((vlf-application . 'ask))
+  :hook (after-init-hook . my/vlf-setup)
+  :preface
+  (defun my/vlf-setup ()
+    "Enable VLF integration for visiting large files."
+    ;; 大きいファイルを開く導線に VLF を統合するために必要 :contentReference[oaicite:2]{index=2}
+    (require 'vlf-setup nil t))
+  )
+(leaf sudo-edit
+  :doc "Open files as another user"
+  :req "emacs-24" "cl-lib-0.5"
+  :tag "convenience" "emacs>=24"
+  :url "https://github.com/nflath/sudo-edit"
+  :added "2021-09-10"
+  :emacs>= 24
+  :ensure t)
 (leaf uniquify
   :doc "unique buffer names dependent on file name"
   :tag "builtin" "files"
@@ -3502,48 +3563,35 @@
   ((uniquify-buffer-name-style . 'post-forward-angle-brackets)
    (uniquify-min-dir-content . 1)))
 
-(leaf which-key
-  :doc "Display available keybindings in popup"
-  :req "emacs-24.4"
-  :tag "emacs>=24.4"
-  :url "https://github.com/justbur/emacs-which-key"
-  :added "2021-09-12"
-  :emacs>= 24.4
-  :ensure t
-  :custom
-  (which-key-setup-side-window-bottom)
-  :global-minor-mode which-key-mode
-  )
+;;;; [Mics]
+(leaf info
+  :tag "builtin"
+  :preface
+  (defvar my/info-ja-alist
+    '(("emacs" . "emacs-ja.info")
+      ("elisp" . "elisp-ja.info"))
+    "Map of Info manual names to Japanese .info filenames.")
 
+  (defun my/info--ja-file (filename)
+    "Return Japanese info filename for FILENAME if available, otherwise nil."
+    (let ((ja (cdr (assoc filename my/info-ja-alist))))
+      (when ja
+        (when (boundp 'Info-directory-list)
+          (catch 'found
+            (dolist (dir Info-directory-list)
+              (when (file-exists-p (expand-file-name ja dir))
+                (throw 'found ja)))
+            nil)))))
 
-;; (leaf tree-sitter
-;;   :doc "Incremental parsing system"
-;;   :req "emacs-25.1" "tsc-0.18.0"
-;;   :tag "tree-sitter" "parsers" "tools" "languages" "emacs>=25.1"
-;;   :url "https://github.com/emacs-tree-sitter/elisp-tree-sitter"
-;;   :added "2025-03-02"
-;;   :emacs>= 25.1
-;;   :ensure t
-;;   :require t
-;;   ;; :disabled t
-;;   :hook (tree-sitter-after-on-hook . tree-sitter-hl-mode)
-;;   :config
-;;   (global-tree-sitter-mode)
-;;   (add-to-list 'tree-sitter-major-mode-language-alist '(haskell python))
-;;   (leaf treesit-auto
-;;     :doc "Automatically use tree-sitter enhanced major modes"
-;;     :req "emacs-29.0"
-;;     :tag "convenience" "fallback" "mode" "major" "automatic" "auto" "treesitter" "emacs>=29.0"
-;;     :url "https://github.com/renzmann/treesit-auto.git"
-;;     :added "2025-03-02"
-;;     :emacs>= 29.0
-;;     :ensure t
-;;     :custom ((treesit-auto-install . t))
-;;     ;; :config
-;;     ;; (global-treesit-auto-mode)
-;;     )
-;;   )
-
+  (defun my/info-find-node--use-ja (orig-fn filename &rest args)
+    "Advice: prefer Japanese Info manual when available."
+    (let ((ja (and (stringp filename) (my/info--ja-file filename))))
+      (apply orig-fn (or ja filename) args)))
+
+  :defer-config
+  ;; info がロードされてから確実に変数が存在する
+  (add-to-list 'Info-directory-list (expand-file-name "info/" user-emacs-directory))
+  (advice-add 'Info-find-node :around #'my/info-find-node--use-ja))
 
 (setq file-name-handler-alist my-saved-file-name-handler-alist)
 
