@@ -17,7 +17,7 @@
 (defconst my-saved-file-name-handler-alist file-name-handler-alist)
 (setq file-name-handler-alist nil)
 
-;;;; Package Install
+;;;; [Package Install]
 (eval-and-compile
   (customize-set-variable
    'package-archives '(;; ("org" . "https://orgmode.org/elpa/")
@@ -40,7 +40,7 @@
     ;; initialize leaf-keywords.el
     (leaf-keywords-init)))
 
-;;;; Core
+;;;; [Leaf]
 (leaf leaf-tree :ensure t)
 (leaf leaf-convert :ensure t)
 (leaf macrostep
@@ -220,7 +220,7 @@
         )))
   )
 
-;;;; Exwm
+;;;; [Exwm]
 (leaf *exwm-config
   ;; :disabled t
   ;; ワークスペースを切り替えたとき、braveがフォーカスから外れるときは、exwm-layout.elの
@@ -379,8 +379,8 @@
     )
   )
 
-;;;; UI
-;;;; Core
+;;;; [UI]
+;;;; [UI] Core
 (leaf *cus-start
   :doc "define customization properties of builtins"
   :url "http://handlename.hatenablog.jp/entry/2011/12/11/214923" ; align sumple
@@ -534,7 +534,7 @@
       (message "not XWindow"))
     )
   )
-;;;; Theme
+;;;; [UI] Theme
 (leaf nord-theme
   :doc "emacs30以降に対応するためのフォーク"
   :vc (:url "https://github.com/frenzieddoll/emacs-nord-theme")
@@ -574,8 +574,8 @@
   :custom ((minions-mode-line-lighter . "[+]"))
   :global-minor-mode (minions-mode))
 
-;;;; Emacs
-;;;; Window
+;;;; [Emacs]
+;;;; [Emacs] Window
 (leaf *global-setting
   ;; :disabled t
   :config
@@ -788,7 +788,7 @@
   :commands (zoom-window-zoom)
   :custom (zoom-window-mode-line-color . "#5E81AC")
   )
-;;;; Input method
+;;;; [Emacs] Input method
 (leaf ddskk
   :doc "Simple Kana to Kanji conversion program."
   :req "ccc-1.43" "cdb-20141201.754"
@@ -847,8 +847,8 @@
     (skk-latin-mode 1))
   )
 
-;;;; Dired(File Management)
-;;;; Core
+;;;; [Dired]
+;;;; [Dired] Core
 (leaf dired
   ;; :disabled t
   ;; :after dired
@@ -900,7 +900,7 @@
     "In Dired, dired-up-directory on other-window"
     (interactive)
     (dired-up-directory t)))
-;;;; Extensions
+;;;; [Dired] Extension
 (leaf dired-x
   :require t)
 (leaf wdired
@@ -1074,8 +1074,8 @@
            (async-bytecomp-allowed-packages . '(all)))
   :hook (dired-mode-hook . dired-async-mode))
 
-;;;; Org
-;;;; Core
+;;;; [Org]
+;;;; [Org] Core
 (leaf org
   :doc "Export Framework for Org Mode"
   :tag "builtin"
@@ -1195,7 +1195,7 @@
   ;;   (plist-put png :transparent-image-converter '("dvipng -D %D -T tight -bg Transparent -o %O %F")))
 
   )
-;;;; Extensions
+;;;; [Org] Extension
 (leaf *org-babel-settings
   :after org
   :custom ((org-src-fontify-natively   . t)
@@ -1301,8 +1301,8 @@
                       :box nil)
   )
 
-;;;; Terminal
-;;;; Core
+;;;; [Terminal]
+;;;; [Terminal] Core
 (leaf eshell
   :bind (("C-c e" . eshell))
   :commands (eshell)
@@ -1343,7 +1343,7 @@
   :hook
   ;; Eshell バッファができたタイミングで設定
   (eshell-first-time-mode-hook . my/eshell-init))
-;;;;  Extension
+;;;;  [Terminal] Extension
 (leaf eshell-prompt-extras
   :ensure t
   :commands (epe-theme-lambda)
@@ -1390,15 +1390,15 @@
   :ensure t
   :after vterm project)
 
-;;;; Completion
-;;;; Core
+;;;; [Completion]
+;;;; [Completion] Core
 (leaf *completion-core
   :custom
   ((tab-always-indent . 'complete)
    (completion-styles . '(basic orderless))
    (completion-category-defaults . nil)
    (completion-category-overrides . nil)))
-;;;; UI
+;;;; [Completion] UI
 (leaf vertico
   :doc "VERTical Interactive COmpletion"
   :req "emacs-27.1"
@@ -1450,7 +1450,7 @@
            (kind-icon-blend-background . nil))
   :config
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
-;;;; Matching Style
+;;;; [Completion] Matching Style
 (leaf orderless
   :doc "Completion style for matching regexps in any order"
   :req "emacs-26.1"
@@ -1477,7 +1477,7 @@
            (orderless-style-dispatchers . 'orderless-affix-dispatch)
            )
   )
-;;;; Minibuffer Commands
+;;;; [Completion] Minibuffer Commands
 (leaf consult
   :doc "Consulting completing-read"
   :req "emacs-26.1"
@@ -1523,7 +1523,7 @@
   :emacs>= 26.1
   :ensure t
   :after (embark consult))
-;;;; In-buffer UI
+;;;; [Completion] In-buffer UI
 (leaf corfu
   :doc "Completion Overlay Region FUnction"
   :req "emacs-27.1"
@@ -1579,7 +1579,7 @@
   :vc (:url "https://codeberg.org/akib/emacs-corfu-terminal.git")
   :hook (after-init-hook . corfu-terminal-mode)
   )
-;;;; In-buffer Source
+;;;; [Completion] In-buffer Source
 (leaf cape
   :doc "Completion At Point Extensions"
   :req "emacs-27.1"
@@ -1666,7 +1666,7 @@
   :emacs>= 29.1
   :ensure t
   :after tempel)
-;;;; Snippets/Fallback
+;;;; [Completion] dabbrev/Snippets
 (leaf dabbrev
   :doc "dynamic abbreviation package"
   :tag "builtin"
@@ -1735,8 +1735,8 @@
     :after yasnippet)
   )
 
-;;;; Editing
-;;;; Core
+;;;; [Editing]
+;;;; [Editing] Core
 (leaf align
   :doc "align text to a specific column, by regexp"
   :tag "builtin"
@@ -1784,7 +1784,7 @@
 (leaf elec-pair
   :doc "Automatic parenthesis pairing"
   :global-minor-mode electric-pair-mode)
-;;;; Extension
+;;;; [Editing] Extension
 (leaf puni
   :doc "Parentheses Universalistic"
   :ensure t
@@ -1853,8 +1853,41 @@
   :added "2021-09-05"
   :ensure t
   :hook (emacs-lisp-mode-hook . rainbow-delimiters-mode))
+(leaf visual-regexp-steroids
+  :doc "Extends visual-regexp to support other regexp engines"
+  :req "visual-regexp-1.1"
+  :tag "feedback" "visual" "python" "replace" "regexp" "foreign" "external"
+  :url "https://github.com/benma/visual-regexp-steroids.el/"
+  :added "2021-09-05"
+  :ensure t
+  :after visual-regexp
+  :bind (("M-%" . vr/query-replace)
+         ;; multiple-cursorsを使っているならこれで
+         ("C-c m" . vr/mc-mark)
+         ;; 普段の正規表現isearchにも使いたいならこれを
+         ("C-M-r" . vr/isearch-backward)
+         ("C-M-s" . vr/isearch-forward))
+  :custom `((vr/engine . 'python)))
+(leaf vundo
+  :doc "Visual undo tree"
+  :req "emacs-28.1"
+  :tag "editing" "text" "undo" "emacs>=28.1"
+  :url "https://github.com/casouri/vundo"
+  :added "2024-10-11"
+  :emacs>= 28.1
+  :ensure t
+  :bind (("C-c C-v" . vundo))
+  )
 
-;;;; vc
+;;;; [VC]
+;;;; [VC] Core
+(leaf project
+  :ensure t
+  :defer-config
+  (dolist (name '(".project" "spago.yaml"))
+    (add-to-list 'project-vc-extra-root-markers name))
+  )
+;;;; [VC] Extension
 (leaf magit
   :doc "A Git porcelain inside Emacs."
   :req "emacs-25.1" "dash-20210330" "git-commit-20210806" "magit-section-20210806" "transient-20210701" "with-editor-20210524"
@@ -1884,15 +1917,9 @@
 
   :global-minor-mode global-git-gutter-mode
   )
-(leaf project
-  :ensure t
-  :defer-config
-  (dolist (name '(".project" "spago.yaml"))
-    (add-to-list 'project-vc-extra-root-markers name))
-  )
 
-;;;; Mejor Mode
-;;;; LSP
+;;;; [Programing]
+;;;; [Programing] LSP
 (leaf eglot
   :doc "The Emacs Client for LSP servers"
   :req "emacs-26.3" "jsonrpc-1.0.14" "flymake-1.2.1" "project-0.3.0" "xref-1.0.1" "eldoc-1.11.0" "seq-2.23"
@@ -2022,7 +2049,7 @@
   :emacs>= 27.1
   :disabled t
   :ensure t)
-;;;; Linter
+;;;; [Programing] Linter
 (leaf flymake
   :doc "A universal on-the-fly syntax checker"
   :tag "builtin"
@@ -2101,22 +2128,40 @@
   :disabled t
   :bind (("M-n" . flycheck-next-error)
          ("M-p" . flycheck-previous-error)))
-;;;; Formatter
-(leaf reformatter
-    :doc "Define commands which run reformatters on the current buffer"
-    :req "emacs-24.3"
-    :tag "tools" "convenience" "emacs>=24.3"
-    :url "https://github.com/purcell/emacs-reformatter"
-    :added "2025-02-06"
-    :emacs>= 24.3
-    :ensure t
-    :hook ((python-ts-mode-hook . ruff-format-on-save-mode))
-    :config
-    (reformatter-define ruff-format
-      :program "ruff"
-      :args `("format" "--stdin-filename" ,buffer-file-name "-"))
-    )
-;;;; Build
+;;;; [Programing] Formatter
+(leaf apheleia
+  :doc "Reformat buffer stably"
+  :req "emacs-27"
+  :tag "tools" "emacs>=27"
+  :url "https://github.com/radian-software/apheleia"
+  :added "2026-02-22"
+  :emacs>= 27
+  :ensure t
+  :ensure t
+  :hook ((web-mode-hook . (lambda () (my/apheleia-enable-if-exec "prettier")))
+         (haskell-mode-hook . (lambda () (my/apheleia-enable-if-exec "ormolu")))
+         (purescript-mode-hook . (lambda () (my/apheleia-enable-if-exec "purs-tidy")))
+         (python-mode-hook . (lambda () (my/apheleia-enable-if-exec "ruff")))
+         )
+  :preface
+  ;; 1回だけ通知したい場合のため(うるさくしない)
+  (defvar my/apheleia--warned-executables nil)
+
+  (defun my/apheleia-enable-if-exec (exe)
+    "Enable `apheleia-mode' iff EXE exists. Otherwise do nothing."
+    (if (executable-find exe)
+        (apheleia-mode +1)
+      (unless (member exe my/apheleia--warned-executables)
+        (push exe my/apheleia--warned-executables)
+        (message "[apheleia] skip: executable not found: %s" exe))))
+  :defer-config
+  ;; HTML を prettier で整形
+  (setf (alist-get 'web-mode apheleia-mode-alist) 'prettier)
+  (setf (alist-get 'python-mode apheleia-mode-alist) 'ruff)
+  (setf (alist-get 'haskell-mode apheleia-mode-alist) 'ormolu)
+  (setf (alist-get 'purescript-mode apheleia-mode-alist) 'purs-tidy)
+  )
+;;;; [Programing] Build
 (leaf quickrun
   :doc "Run commands quickly"
   :req "emacs-24.3"
@@ -2126,7 +2171,7 @@
   :emacs>= 24.3
   :ensure t
   :commands (quickrun))
-;;;; Environment
+;;;; [Programing] Environment
 (leaf pyvenv
   :doc "Python virtual environment interface"
   :tag "tools" "virtualenv" "python"
@@ -2136,7 +2181,7 @@
   :custom `((pyvenv-default-virtual-env-name . ,(expand-file-name "~/.virtualenvs/")))
   :commands (pyvenv-activate)
   )
-;;;; Mode
+;;;; [Programing] Mode
 (leaf csv
   :doc "Functions for reading and parsing CSV files."
   :tag "csv" "data" "extensions"
@@ -2512,267 +2557,53 @@
   :emacs>= 25.0
   :ensure t)
 
-;;;; mics
-(leaf info
+;;;; [Navigation]
+;;;; [Navigation] Core
+(leaf imenu
   :tag "builtin"
+  :hook (emacs-lisp-mode-hook . my/imenu-add-headings)
   :preface
-  (defvar my/info-ja-alist
-    '(("emacs" . "emacs-ja.info")
-      ("elisp" . "elisp-ja.info"))
-    "Map of Info manual names to Japanese .info filenames.")
-
-  (defun my/info--ja-file (filename)
-    "Return Japanese info filename for FILENAME if available, otherwise nil."
-    (let ((ja (cdr (assoc filename my/info-ja-alist))))
-      (when ja
-        ;; Info-directory-list のどこかに存在するなら採用
-        (catch 'found
-          (dolist (dir Info-directory-list)
-            (when (file-exists-p (expand-file-name ja dir))
-              (throw 'found ja)))
-          nil))))
-
-  (defun my/info-find-node--use-ja (orig-fn filename &rest args)
-    "Advice: prefer Japanese Info manual when available."
-    (let ((ja (and (stringp filename) (my/info--ja-file filename))))
-      (apply orig-fn (or ja filename) args)))
-
-  :init
-  ;; info が使われるまでロードしない：パス追加だけ先に
-  (add-to-list 'Info-directory-list (expand-file-name "info/" user-emacs-directory))
-
-  :config
-  (advice-add 'Info-find-node :around #'my/info-find-node--use-ja))
-
-
-(leaf dape
-  :doc "Debug Adapter Protocol for Emacs"
-  :req "emacs-29.1" "jsonrpc-1.0.25"
-  :tag "emacs>=29.1"
-  :url "https://github.com/svaante/dape"
-  :added "2025-02-18"
-  :emacs>= 29.1
-  :ensure t
-  :after jsonrpc
-  :hook ((kill-emacs . dape-breakpoint-save))
-  :custom `((dape-buffer-window-arrangemnt . 'right)
-            (dape-inlay-hints . t)
-            (read-process-output-max . ,(* 1024 1024))
-            )
-  :bind (dape-mode-map
-         ("C-x C-a" . dape-global-map))
-  :config
-  (leaf repeat
-    :doc "convenient way to repeat the previous command"
-    :tag "builtin"
-    :added "2025-02-18"
-    :config (repeat-mode))
-  )
-(leaf bluetooth
-  :doc "A mode for interacting with Bluetooth devices"
-  :req "emacs-26.1" "dash-2.18.1" "compat-30.0.0.0" "transient-0.5.0"
-  :tag "hardware" "emacs>=26.1"
-  :url "https://codeberg.org/rstocker/emacs-bluetooth"
-  :added "2026-01-17"
-  :emacs>= 26.1
-  :ensure t
-  :after compat
-  :commands (bluetooth-list-devices))
-(leaf ebib
-  :doc "a BibTeX database manager"
-  :req "parsebib-2.3" "emacs-25.1"
-  :tag "bibtex" "text" "emacs>=25.1"
-  :url "http://joostkremers.github.io/ebib/"
-  :added "2021-09-05"
-  :emacs>= 25.1
-  :ensure t
-  :after parsebib
-  :bind (("C-c b" . ebib))
-  :custom ((bibtex-autokey-name-case-convert      . 'capitalize)
-           (bibtex-autokey-titleword-case-convert . 'capitalize)
-           (bibtex-autokey-titleword-separator    . "")
-           (bibtex-autokey-titleword-length       . nil)
-           (bibtex-autokey-titlewords             . 1)
-           (bibtex-autokey-year-length            . 4)
-           (bibtex-autokey-year-title-separator   . "_")
-           (bibtex-autokey-titleword-ignore       . '("A" "An" "On" "The" "a" "an"
-                                                      "on" "the" "Le" "La" "Les"
-                                                      "le" "la" "les" "Zur" "zur" "Des" "Dir" "Die"))
-           (ebib-keywords-use-only-file           . t)
-           (ebib-keywords-file-save-on-exit       . 'always)
-           (ebib-index-columns                    . '(("Title" 80 t) ("Year" 6 t) ("Author/Editor" 40 t) ))
-           (ebib-layout . 'custom)
-           )
-  :defer-config
-  (leaf *ebibForMac
-    :when (eq system-type 'darwin)
-    :custom ((ebib-file-associations . '(("pdf" . "open") ("ps"  . "open"))))
-    )
-  (leaf *ebibForLinux
-    :when (eq system-type 'gnu/linux)
-    :custom ((ebib-preload-bib-files . '("~/Documents/PDF/references.bib"))
-             (ebib-keywords-file     . "~/tex/ebib-keywords.txt")
-             (ebib-file-associations . '(("pdf" . "zathura")
-                                         ("ps"  . "zathura")))
-             (ebib-file-search-dirs  . '("~/Documents/PDF/ER"
-                                         "~/Documents/PDF/paper"))
-             )
-    :config
-    (defun genBib ()
-      (interactive)
-      (let* ((file-path (dired-get-file-for-visit))
-             (file-name (file-name-nondirectory file-path))
-             (repotID (car (split-string file-name)))
-             (bib-file (concat repotID ".bib"))
-             )
-        (shell-command (format
-                        "python $HOME/.emacs.d/script/fromHTMLtoBib.py \"%s\""
-                        file-path))
-        ;; (message bibFile)
-        (my/ebib-import-entries bib-file)
-        ))
-    (defun my/ebib-import-entries (file-path)
-      (interactive "fSelect file: ")
-      (let ((buffer (find-file-noselect file-path)))
-        (with-current-buffer buffer
-          (goto-char (point-min))
-          (push-mark (point-max) nil t)
-          (ebib-import-entries)
-          (kill-buffer))))
-    )
-  (leaf *ebibForSony
-    :when (eq system-type 'windows-nt)
-    :when (string= (system-name) "JPC20627141")
-    :bind (("C-c b" . ebib))
-    :custom ((ebib-preload-bib-files . '("~/Documents/PDF/references.bib"))
-             (ebib-keywords-file     . "~/Documents/PDF/ebib-keywords.txt")
-             (ebib-file-associations . '(("pdf" . "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe")
-                                         ("ps"  . "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe")))
-             (ebib-file-search-dirs  . '("~/Documents/PDF/ER" "~/Documents/PDF/paper"))
-             ))
-  (leaf biblio
-    :doc "Browse and import bibliographic references from CrossRef, arXiv, DBLP, HAL, Dissemin, and doi.org"
-    :req "emacs-24.3" "biblio-core-0.2"
-    :tag "hypermedia" "convenience" "tex" "bib" "emacs>=24.3"
-    :url "https://github.com/cpitclaudel/biblio.el"
-    :added "2023-04-18"
-    :emacs>= 24.3
-    :ensure t
-    :after biblio-core)
-  )
-(leaf ediff
-  :doc "a comprehensive visual interface to diff & patch"
-  :tag "builtin"
-  :added "2022-03-24"
-  :custom `((ediff-window-setup-function . 'ediff-setup-windows-plain)
-            (ediff-split-window-function . 'split-window-horizontally)))
-(leaf ein
-  :doc "Emacs IPython Notebook"
-  :req "emacs-25" "websocket-1.12" "anaphora-1.0.4" "request-0.3.3" "deferred-0.5" "polymode-0.2.2" "dash-2.13.0" "with-editor-0.-1"
-  :tag "reproducible research" "literate programming" "jupyter" "emacs>=25"
-  :url "https://github.com/dickmao/emacs-ipython-notebook"
-  :added "2021-09-05"
-  :emacs>= 25
-  :ensure t
-  :disabled t
-  :hook (
-         (ein:notebook-mode-hook . jedi:setup)
-         (ein:notebook-mode-hook . smartparens-mode))
-  :custom (
-           (ein:worksheet-enable-undo . t)
-           (ein:output-area-inlined-images . t)
-           (ein:markdown-command . "pandoc --metadata pagetitle=\"markdown preview\" -f markdown -c ~/.pandoc/github-markdown.css -s --self-contained --mathjax=https://raw.githubusercontent.com/ustasb/dotfiles/b54b8f502eb94d6146c2a02bfc62ebda72b91035/pandoc/mathjax.js")
-           (jedi:complete-on-dot . t)
-           )
-
-  :defer-config
-  (leaf *ein-for-windows
-    :when (string= system-type 'windows-nt)
-    :hook ((ein:notebook-mode-hook . ac-mode-map-bind))
-    :preface
-    (defun ac-mode-map-bind ()
-      (interactive)
-      (progn
-        (define-key ac-complete-mode-map (kbd "C-n") 'ac-next)
-        (define-key ac-complete-mode-map (kbd "C-p") 'ac-previous))))
-  (setq ein:output-type-preference
-        '(emacs-lisp svg png jpeg html text latex javascript))
-  )
-(leaf jupyter
-  :ensure t
-  :defvar jupyter-repl-echo-eval-p
-  :custom ((jupyter-repl-echo-eval-p . t))
-  :hook (jupyter-repl-interaction-mode-hook . (lambda ()
-                                                (setq-local completion-at-point-functions
-                                                            (remove 'jupyter-completion-at-point completion-at-point-functions))))
+  (defun my/imenu-add-headings ()
+    "Add ;;;; headings to imenu."
+    (add-to-list 'imenu-generic-expression
+                 '("Sections" "^;;+ \\[\\([^]]+\\)\\].*$" 1)
+                 ;; '("Sections" "^;;;;+\\s-+\\(.*\\)$" 1)
+                 t)))
+(leaf *hs-minor-mode
+  :hook ((emacs-lisp-mode-hook . hs-minor-mode-active)
+         (yatex-mode-hook . hs-yatex-env-setup))
+  :bind (("C-'" . hs-toggle-hiding))
   :preface
-  (defun my-image-save ()
-    "Save the image under point to the '.fig' directory with a timestamp filename.
-   Creates the '.fig' directory if it doesn't exist.
-   Copies the full path of the saved image to the clipboard."
+  (defun hs-minor-mode-active ()
     (interactive)
-    (let* ((fig-dir "figures")
-           (out-f (format-time-string (concat fig-dir "/%Y%m%d-%H%M%S.png")))
-           (full-path (expand-file-name out-f)))
-      ;; Create '.fig' directory if it doesn't exist
-      (unless (file-exists-p fig-dir)
-        (make-directory fig-dir t)
-        (message "Created directory: %s" (expand-file-name fig-dir)))
-      ;; Save the image
-      (image-save-with-arg out-f)
-      ;; Copy the full path to clipboard
-      (kill-new full-path)
-      ;; Message to inform user
-      (message "Image saved and full path copied to clipboard: %s" full-path)
-      ;; Return the full path of the saved image
-      full-path))
-  (defun image-save-with-arg (&optional file)
-    "Save the image under point.
-   This writes the original image data to a file.  Rotating or
-   changing the displayed image size does not affect the saved image.
-   If FILE is provided, save to that file. Otherwise, prompt for a filename."
+    (hs-minor-mode 1))
+
+  (defun hs-yatex-env-setup ()
+    "YaTeX用にhs-minor-modeをカスタマイズします。"
     (interactive)
-    (let ((image (image--get-image)))
-      (with-temp-buffer
-        (let ((image-file (plist-get (cdr image) :file)))
-          (if image-file
-              (if (not (file-exists-p image-file))
-                  (error "File %s no longer exists" image-file)
-                (insert-file-contents-literally image-file))
-            (insert (plist-get (cdr image) :data))))
-        (let ((save-file (or file
-                             (read-file-name "Write image to file: "))))
-          (write-region (point-min) (point-max) save-file)
-          (message "Image saved to %s" save-file)))))
-  (defun my-image-yank ()
-    "Insert an Org mode file link for the image path in the clipboard at the current cursor position.
-   Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
+    (hs-minor-mode 1)
+    (setq-local hs-special-modes-alist
+                (cons '(yatex-mode
+                        "\\\\begin{[^}]+}" ;; ブロック開始の正規表現
+                        "\\\\end{[^}]+}"   ;; ブロック終了の正規表現
+                        nil
+                        (lambda (arg) (yatex-narrow-to-environment))
+                        nil)
+                      hs-special-modes-alist)))
+  (defun yatex-narrow-to-environment ()
+    "現在のLaTeX環境を狭めます（narrow）。"
     (interactive)
-    (let ((file-path (substring-no-properties (current-kill 0))))
-      (if (string-match-p "\\.\\(png\\|jpe?g\\|gif\\|svg\\)$" file-path)
-          (let ((relative-path (file-relative-name file-path)))
-            (insert (format "#+ATTR_HTML: :width 300\n[[file:%s]]" relative-path))
-            (org-redisplay-inline-images))
-        (message "Clipboard content is not a supported image file path. No insertion performed."))))
+    (save-excursion
+      (search-backward "\\begin{")
+      (let ((begin (point)))
+        (search-forward "\\end{")
+        (re-search-forward "}")
+        (narrow-to-region begin (point)))))
   )
-(leaf jedi-core
-  :doc "Common code of jedi.el and company-jedi.el"
-  :req "emacs-24" "epc-0.1.0" "python-environment-0.0.2" "cl-lib-0.5"
-  :tag "emacs>=24"
-  :added "2023-11-12"
-  :emacs>= 24
-  :ensure t
-  :commands (jupyter))
-(leaf company-jedi
-  :doc "Company-mode completion back-end for Python JEDI"
-  :req "emacs-24" "cl-lib-0.5" "company-0.8.11" "jedi-core-0.2.7"
-  :tag "emacs>=24"
-  :url "https://github.com/emacsorphanage/company-jedi"
-  :added "2023-11-12"
-  :emacs>= 24
-  :ensure t
-  :commands (jupyter)
-  )
+;;;; [Navigation] Extension
+
+;;;; [Application]
+;;;; [Application] Core
 (leaf eww
   :doc "Emacs Web Wowser"
   :tag "builtin"
@@ -2876,165 +2707,12 @@
     (interactive)
     (setq-local eww-disable-colorize nil)
     (eww-reload)))
-(leaf google-translate
-  :ensure t
-  :bind (("s-g" . google-translate-enja-or-jaen))
-  :custom ((google-translate--translation-directions-alist . '(("en" . "ja")
-                                                               ("ja" . "en")))
-           (google-translate-output-destination . 'popup))
-  :config
-  (defun google-translate-enja-or-jaen (&optional string)
-    "Translate words in region or current position. Can also specify query with C-u"
-    (interactive)
-    (setq string
-          (cond ((stringp string) string)
-                (current-prefix-arg
-                 (read-string "Google Translate: "))
-                ((use-region-p)
-                 (buffer-substring (region-beginning) (region-end)))
-                (t
-                 (thing-at-point 'word))))
-    (let* ((asciip (string-match
-                    (format "\\`[%s]+\\'" "[:ascii:]’“”–")
-                    string)))
-      (run-at-time 0.1 nil 'deactivate-mark)
-      (google-translate-translate
-       (if asciip "en" "ja")
-       (if asciip "ja" "en")
-       string)))
-
-  (defun google-translate--search-tkk ()
-    "Search TKK."
-    (list 430675 2721866130))
-  ;; (defun google-translate--get-b-d1 ()
-  ;;   ;; TKK='427110.1469889687'
-  ;;   (list 427110 1469889687))
-  )
-;; (leaf mew
-;;   :doc "Messaging in the Emacs World"
-;;   :added "2024-02-18"
-;;   :ensure t
-;;   ;; :require t
-;;   :when (executable-find "stunnel")
-;;   ;; :custom ((mew-fcc . "+outbox")
-;;   ;;          (exec-path . (cons "/usr/bin" exec-path))
-;;   ;;          (user-mail-addressuser-mail-address . "frenzieddoll@gmail.com")
-;;   ;;          (user-full-name . "frenzieddoll")
-;;   ;;          (mew-smtp-server . "smtp.gmail.com")
-;;   ;;          (mail-user-agent . 'mew-user-agent)
-;;   ;;          )
-;;   ;; :init
-;;   ;; (autoload 'mew "mew" nil t)
-;;   ;; (autoload 'mew-send "mew" nil t)
-
-;;   :config
-;;   (autoload 'mew "mew" nil t)
-;;   (autoload 'mew-send "mew" nil t)
-;;   (setq mew-fcc "+outbox")
-;;   (setq exec-path (cons "/usr/bin" exec-path))
-
-;;   (setq user-mail-address "frenzieddoll@gmail.com")
-;;   (setq user-full-name "frenzieddoll")
-;;   (setq mew-smtp-server "smtp.gmail.com")
-;;   (setq mail-user-agent 'mew-user-agent)
-;;   (define-mail-user-agent
-;;     'mew-user-agent
-;;     'mew-user-agent-compose
-;;     'mew-draft-send-message
-;;     'mew-draft-kill
-;;     'mew-send-hook))
-
-;; (leaf org
-;;   :doc "Export Framework for Org Mode"
-;;   :tag "builtin"
-;;   :added "2021-09-05"
-;;   :disabled t
-;;   :custom ((org-agenda-files . '("~/Dropbox/org/todo.org"))
-;;            (org-directory . "~/Dropbox/org"))
-;;   :bind (("C-c a" . org-agenda)
-;;          ("C-c c" . org-capture))
-;;   :custom `((org-capture-templates . '(("n" "Note" entry (file+headline "~/Dropbox/org/notes.org" "Notes") "* %?\nEntered on %U\n %i\n %a")
-;;                                        ("t" "Todo" entry (file+headline "~/Dropbox/org/todo.org"  "Todo")  "* TODO %?\n %i\n %a")))
-;;             (org-todo-keywords . '((sequence "TODO(t)" "SOMEDAY(s)" "WATTING(w)" "|" "DONE(d)" "CANCELED(c@)")))
-;;             (org-enforce-todo-dependencies . t)
-;;             (org-log-done . t))
-;;   )
-
-;; (leaf paradox
-;;   :doc "A modern Packages Menu. Colored, with package ratings, and customizable."
-;;   :req "emacs-24.4" "seq-1.7" "let-alist-1.0.3" "spinner-1.7.3" "hydra-0.13.2"
-;;   :tag "packages" "package" "emacs>=24.4"
-;;   :url "https://github.com/Malabarba/paradox"
-;;   :added "2023-03-18"
-;;   :emacs>= 24.4
-;;   :ensure t
-;;   :disabled t
-;;   :require t
-;;   :config (paradox-enable))
-
-;; (leaf pdf-tools
-;;   :doc "Support library for PDF documents"
-;;   :req "emacs-24.3" "tablist-1.0" "let-alist-1.0.4"
-;;   :tag "multimedia" "files" "emacs>=24.3"
-;;   :url "http://github.com/vedang/pdf-tools/"
-;;   :added "2021-09-05"
-;;   :emacs>= 24.3
-;;   :ensure t
-;;   :after tablist
-;;   :when (executable-find "epdfinfo")
-;;   :hook ((pdf-view-mode-hook . pdf-misc-size-indication-minor-mode)
-;;          (pdf-view-mode-hook . pdf-links-minor-mode)
-;;          (pdf-view-mode-hook . pdf-isearch-minor-mode)))
-
-;; (leaf shackle
-;;   :doc "Enforce rules for popups"
-;;   :req "emacs-24.3" "cl-lib-0.5"
-;;   :tag "convenience" "emacs>=24.3"
-;;   :url "https://depp.brause.cc/shackle"
-;;   :added "2021-09-05"
-;;   :emacs>= 24.3
-;;   :ensure t
-;;   :unless (string-match "RaspberryPi" (system-name))
-;;   :custom `((shackle-rules . '((compilation-mode :align below :ratio 0.2)
-;;                                ("*Google Translate*" :align right :ratio 0.3)
-;;                                ("*Help*" :align right)
-;;                                ("*online-judge*" :align below :ratio 0.5)
-;;                                ("*haskell-compilation*" :align below :ratio 0.5)
-;;                                ))
-;;             (shackle-mode . 1)
-;;             (winner-mode . 1)
-;;             (shackle-lighter . ""))
-;;   :bind (("C-z" . winner-undo)))
-
-;; (leaf twittering-mode
-;;   :doc "Major mode for Twitter"
-;;   :tag "web" "twitter"
-;;   :url "http://twmode.sf.net/"
-;;   :added "2021-09-05"
-;;   :ensure t
-;;   :custom ((twittering-allow-insecure-server-cert . t)
-;;            (twittering-use-master-password . t)))
-
-;; (leaf treemacs
-;;   :doc "A tree style file explorer package"
-;;   :req "emacs-26.1" "cl-lib-0.5" "dash-2.11.0" "s-1.12.0" "ace-window-0.9.0" "pfuture-1.7" "hydra-0.13.2" "ht-2.2" "cfrs-1.3.2"
-;;   :tag "emacs>=26.1"
-;;   :url "https://github.com/Alexander-Miller/treemacs"
-;;   :added "2023-04-09"
-;;   :emacs>= 26.1
-;;   :ensure t
-;;   :custom ((treemacs-load-theme . "all-the-icons"))
-;;   :config
-;;   (leaf treemacs-all-the-icons
-;;     :doc "all-the-icons integration for treemacs"
-;;     :req "emacs-26.1" "all-the-icons-4.0.1" "treemacs-0.0"
-;;     :tag "emacs>=26.1"
-;;     :url "https://github.com/Alexander-Miller/treemacs"
-;;     :added "2023-04-09"
-;;     :emacs>= 26.1
-;;     :ensure t
-;;     :after all-the-icons treemacs)
-;; )
+(leaf ediff
+  :doc "a comprehensive visual interface to diff & patch"
+  :tag "builtin"
+  :added "2022-03-24"
+  :custom `((ediff-window-setup-function . 'ediff-setup-windows-plain)
+            (ediff-split-window-function . 'split-window-horizontally)))
 (leaf view
   :doc "peruse file or buffer without editing"
   :tag "builtin"
@@ -3220,29 +2898,211 @@
       (kill-line 0)
       (view-mode 1)
       (message "backward-kill-line"))))
-(leaf vlf
-  :doc "View Large Files"
-  :tag "utilities" "large files"
-  :url "https://github.com/m00natic/vlfi"
+;;;; [Application] Extension
+(leaf bluetooth
+  :doc "A mode for interacting with Bluetooth devices"
+  :req "emacs-26.1" "dash-2.18.1" "compat-30.0.0.0" "transient-0.5.0"
+  :tag "hardware" "emacs>=26.1"
+  :url "https://codeberg.org/rstocker/emacs-bluetooth"
+  :added "2026-01-17"
+  :emacs>= 26.1
+  :ensure t
+  :after compat
+  :commands (bluetooth-list-devices))
+(leaf ebib
+  :doc "a BibTeX database manager"
+  :req "parsebib-2.3" "emacs-25.1"
+  :tag "bibtex" "text" "emacs>=25.1"
+  :url "http://joostkremers.github.io/ebib/"
   :added "2021-09-05"
-  ;; :require vlf-setup
-  :disabled t
-  :ensure t)
+  :emacs>= 25.1
+  :ensure t
+  :after parsebib
+  :bind (("C-c b" . ebib))
+  :custom ((bibtex-autokey-name-case-convert      . 'capitalize)
+           (bibtex-autokey-titleword-case-convert . 'capitalize)
+           (bibtex-autokey-titleword-separator    . "")
+           (bibtex-autokey-titleword-length       . nil)
+           (bibtex-autokey-titlewords             . 1)
+           (bibtex-autokey-year-length            . 4)
+           (bibtex-autokey-year-title-separator   . "_")
+           (bibtex-autokey-titleword-ignore       . '("A" "An" "On" "The" "a" "an"
+                                                      "on" "the" "Le" "La" "Les"
+                                                      "le" "la" "les" "Zur" "zur" "Des" "Dir" "Die"))
+           (ebib-keywords-use-only-file           . t)
+           (ebib-keywords-file-save-on-exit       . 'always)
+           (ebib-index-columns                    . '(("Title" 80 t) ("Year" 6 t) ("Author/Editor" 40 t) ))
+           (ebib-layout . 'custom)
+           )
+  :defer-config
+  (leaf *ebibForMac
+    :when (eq system-type 'darwin)
+    :custom ((ebib-file-associations . '(("pdf" . "open") ("ps"  . "open"))))
+    )
+  (leaf *ebibForLinux
+    :when (eq system-type 'gnu/linux)
+    :custom ((ebib-preload-bib-files . '("~/Documents/PDF/references.bib"))
+             (ebib-keywords-file     . "~/tex/ebib-keywords.txt")
+             (ebib-file-associations . '(("pdf" . "zathura")
+                                         ("ps"  . "zathura")))
+             (ebib-file-search-dirs  . '("~/Documents/PDF/ER"
+                                         "~/Documents/PDF/paper"))
+             )
+    :config
+    (defun genBib ()
+      (interactive)
+      (let* ((file-path (dired-get-file-for-visit))
+             (file-name (file-name-nondirectory file-path))
+             (repotID (car (split-string file-name)))
+             (bib-file (concat repotID ".bib"))
+             )
+        (shell-command (format
+                        "python $HOME/.emacs.d/script/fromHTMLtoBib.py \"%s\""
+                        file-path))
+        ;; (message bibFile)
+        (my/ebib-import-entries bib-file)
+        ))
+    (defun my/ebib-import-entries (file-path)
+      (interactive "fSelect file: ")
+      (let ((buffer (find-file-noselect file-path)))
+        (with-current-buffer buffer
+          (goto-char (point-min))
+          (push-mark (point-max) nil t)
+          (ebib-import-entries)
+          (kill-buffer))))
+    )
+  (leaf *ebibForSony
+    :when (eq system-type 'windows-nt)
+    :when (string= (system-name) "JPC20627141")
+    :bind (("C-c b" . ebib))
+    :custom ((ebib-preload-bib-files . '("~/Documents/PDF/references.bib"))
+             (ebib-keywords-file     . "~/Documents/PDF/ebib-keywords.txt")
+             (ebib-file-associations . '(("pdf" . "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe")
+                                         ("ps"  . "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe")))
+             (ebib-file-search-dirs  . '("~/Documents/PDF/ER" "~/Documents/PDF/paper"))
+             ))
+  (leaf biblio
+    :doc "Browse and import bibliographic references from CrossRef, arXiv, DBLP, HAL, Dissemin, and doi.org"
+    :req "emacs-24.3" "biblio-core-0.2"
+    :tag "hypermedia" "convenience" "tex" "bib" "emacs>=24.3"
+    :url "https://github.com/cpitclaudel/biblio.el"
+    :added "2023-04-18"
+    :emacs>= 24.3
+    :ensure t
+    :after biblio-core)
+  )
+(leaf google-translate
+  :ensure t
+  :bind (("s-g" . google-translate-enja-or-jaen))
+  :custom ((google-translate--translation-directions-alist . '(("en" . "ja")
+                                                               ("ja" . "en")))
+           (google-translate-output-destination . 'popup))
+  :config
+  (defun google-translate-enja-or-jaen (&optional string)
+    "Translate words in region or current position. Can also specify query with C-u"
+    (interactive)
+    (setq string
+          (cond ((stringp string) string)
+                (current-prefix-arg
+                 (read-string "Google Translate: "))
+                ((use-region-p)
+                 (buffer-substring (region-beginning) (region-end)))
+                (t
+                 (thing-at-point 'word))))
+    (let* ((asciip (string-match
+                    (format "\\`[%s]+\\'" "[:ascii:]’“”–")
+                    string)))
+      (run-at-time 0.1 nil 'deactivate-mark)
+      (google-translate-translate
+       (if asciip "en" "ja")
+       (if asciip "ja" "en")
+       string)))
 
-マイナーモードの設定
-(leaf transient-dwim
+  (defun google-translate--search-tkk ()
+    "Search TKK."
+    (list 430675 2721866130))
+  ;; (defun google-translate--get-b-d1 ()
+  ;;   ;; TKK='427110.1469889687'
+  ;;   (list 427110 1469889687))
+  )
+(leaf mew
+  :doc "Messaging in the Emacs World"
+  :added "2024-02-18"
+  :disabled t
   :ensure t
-  :bind (("C-=" . transient-dwim-dispatch)))
-(leaf affe
-  :doc "Asynchronous Fuzzy Finder for Emacs"
-  :req "emacs-28.1" "consult-1.7"
-  :tag "completion" "files" "matching" "emacs>=28.1"
-  :url "https://github.com/minad/affe"
-  :added "2025-01-21"
-  :emacs>= 28.1
+  :when (executable-find "stunnel")
+  ;; :custom ((mew-fcc . "+outbox")
+  ;;          (exec-path . (cons "/usr/bin" exec-path))
+  ;;          (user-mail-addressuser-mail-address . "frenzieddoll@gmail.com")
+  ;;          (user-full-name . "frenzieddoll")
+  ;;          (mew-smtp-server . "smtp.gmail.com")
+  ;;          (mail-user-agent . 'mew-user-agent)
+  ;;          )
+  ;; :init
+  ;; (autoload 'mew "mew" nil t)
+  ;; (autoload 'mew-send "mew" nil t)
+
+  :config
+  (autoload 'mew "mew" nil t)
+  (autoload 'mew-send "mew" nil t)
+  (setq mew-fcc "+outbox")
+  (setq exec-path (cons "/usr/bin" exec-path))
+
+  (setq user-mail-address "frenzieddoll@gmail.com")
+  (setq user-full-name "frenzieddoll")
+  (setq mew-smtp-server "smtp.gmail.com")
+  (setq mail-user-agent 'mew-user-agent)
+  (define-mail-user-agent
+    'mew-user-agent
+    'mew-user-agent-compose
+    'mew-draft-send-message
+    'mew-draft-kill
+    'mew-send-hook))
+(leaf pdf-tools
+  :doc "Support library for PDF documents"
+  :req "emacs-24.3" "tablist-1.0" "let-alist-1.0.4"
+  :tag "multimedia" "files" "emacs>=24.3"
+  :url "http://github.com/vedang/pdf-tools/"
+  :added "2021-09-05"
+  :emacs>= 24.3
   :ensure t
-  :custom ((affe-highlight-function . 'orderless-highlight-matches)
-           (affe-regexp-function . 'orderless-pattern-compiler))
+  :disabled t
+  :after tablist
+  :when (executable-find "epdfinfo")
+  :hook ((pdf-view-mode-hook . pdf-misc-size-indication-minor-mode)
+         (pdf-view-mode-hook . pdf-links-minor-mode)
+         (pdf-view-mode-hook . pdf-isearch-minor-mode)))
+(leaf ein
+  :doc "Emacs IPython Notebook"
+  :req "emacs-25" "websocket-1.12" "anaphora-1.0.4" "request-0.3.3" "deferred-0.5" "polymode-0.2.2" "dash-2.13.0" "with-editor-0.-1"
+  :tag "reproducible research" "literate programming" "jupyter" "emacs>=25"
+  :url "https://github.com/dickmao/emacs-ipython-notebook"
+  :added "2021-09-05"
+  :emacs>= 25
+  :ensure t
+  :disabled t
+  :hook (
+         (ein:notebook-mode-hook . jedi:setup)
+         (ein:notebook-mode-hook . smartparens-mode))
+  :custom (
+           (ein:worksheet-enable-undo . t)
+           (ein:output-area-inlined-images . t)
+           (ein:markdown-command . "pandoc --metadata pagetitle=\"markdown preview\" -f markdown -c ~/.pandoc/github-markdown.css -s --self-contained --mathjax=https://raw.githubusercontent.com/ustasb/dotfiles/b54b8f502eb94d6146c2a02bfc62ebda72b91035/pandoc/mathjax.js")
+           (jedi:complete-on-dot . t)
+           )
+
+  :defer-config
+  (leaf *ein-for-windows
+    :when (string= system-type 'windows-nt)
+    :hook ((ein:notebook-mode-hook . ac-mode-map-bind))
+    :preface
+    (defun ac-mode-map-bind ()
+      (interactive)
+      (progn
+        (define-key ac-complete-mode-map (kbd "C-n") 'ac-next)
+        (define-key ac-complete-mode-map (kbd "C-p") 'ac-previous))))
+  (setq ein:output-type-preference
+        '(emacs-lisp svg png jpeg html text latex javascript))
   )
 (leaf app-launcher
   :doc "Launch applications from Emacs"
@@ -3257,6 +3117,14 @@
   ;; :after orderless
   ;; :disabled t
   )
+(leaf etv
+  :disabled t
+  :when (and (executable-find "mpv")
+             (executable-find "ffmpeg"))
+  :require t
+  :vc (:url "https://github.com/frenzieddoll/etv")
+  :custom ((default-m3u8-url . "https://raw.githubusercontent.com/luongz/iptv-jp/refs/heads/main/jp.m3u"))
+)
 (leaf calfw
   :doc "Calendar view framework on Emacs"
   :tag "calendar"
@@ -3294,14 +3162,192 @@
        (cons org-src icls-srcs)))
     )
   )
+(leaf pulseaudio
+  :when (executable-find "pactl")
+  :vc (:url "https://github.com/frenzieddoll/pulseaudio")
+  :unless (string-match "microsoft" (shell-command-to-string "uname -r"))
+  :require t
+  )
+(leaf online-judge
+  :disabled t
+  :when (executable-find "oj")
+  :vc (:url :url "https://github.com/ROCKTAKEY/emacs-online-judge")
+  :require t
+  :custom ((online-judge-directories . '("~/Dropbox/atcoder/"))
+           (online-judge-command-name . nil)))
 
-;; (leaf etv
-;;   :when (and (executable-find "mpv")
-;;              (executable-find "ffmpeg"))
-;;   :require t
-;;   :vc (:url "https://github.com/frenzieddoll/etv")
-;;   :custom ((default-m3u8-url . "https://raw.githubusercontent.com/luongz/iptv-jp/refs/heads/main/jp.m3u"))
-;; )
+;;;; [Files]
+;;;; [Files] Extension
+(leaf vlf
+  :doc "View Large Files"
+  :tag "utilities" "large files"
+  :url "https://github.com/m00natic/vlfi"
+  :added "2021-09-05"
+  :ensure t
+  :commands (vlf vlf-mode)
+  :custom  ((vlf-application . 'ask))
+  :hook (after-init-hook . my/vlf-setup)
+  :preface
+  (defun my/vlf-setup ()
+    "Enable VLF integration for visiting large files."
+    ;; 大きいファイルを開く導線に VLF を統合するために必要 :contentReference[oaicite:2]{index=2}
+    (require 'vlf-setup nil t))
+  )
+(leaf sudo-edit
+  :doc "Open files as another user"
+  :req "emacs-24" "cl-lib-0.5"
+  :tag "convenience" "emacs>=24"
+  :url "https://github.com/nflath/sudo-edit"
+  :added "2021-09-10"
+  :emacs>= 24
+  :ensure t)
+
+;;;; [Mics]
+(leaf info
+  :tag "builtin"
+  :preface
+  (defvar my/info-ja-alist
+    '(("emacs" . "emacs-ja.info")
+      ("elisp" . "elisp-ja.info"))
+    "Map of Info manual names to Japanese .info filenames.")
+
+  (defun my/info--ja-file (filename)
+    "Return Japanese info filename for FILENAME if available, otherwise nil."
+    (let ((ja (cdr (assoc filename my/info-ja-alist))))
+      (when ja
+        ;; Info-directory-list のどこかに存在するなら採用
+        (catch 'found
+          (dolist (dir Info-directory-list)
+            (when (file-exists-p (expand-file-name ja dir))
+              (throw 'found ja)))
+          nil))))
+
+  (defun my/info-find-node--use-ja (orig-fn filename &rest args)
+    "Advice: prefer Japanese Info manual when available."
+    (let ((ja (and (stringp filename) (my/info--ja-file filename))))
+      (apply orig-fn (or ja filename) args)))
+
+  :init
+  ;; info が使われるまでロードしない：パス追加だけ先に
+  (add-to-list 'Info-directory-list (expand-file-name "info/" user-emacs-directory))
+
+  :config
+  (advice-add 'Info-find-node :around #'my/info-find-node--use-ja))
+(leaf dape
+  :doc "Debug Adapter Protocol for Emacs"
+  :req "emacs-29.1" "jsonrpc-1.0.25"
+  :tag "emacs>=29.1"
+  :url "https://github.com/svaante/dape"
+  :added "2025-02-18"
+  :emacs>= 29.1
+  :ensure t
+  :after jsonrpc
+  :hook ((kill-emacs . dape-breakpoint-save))
+  :custom `((dape-buffer-window-arrangemnt . 'right)
+            (dape-inlay-hints . t)
+            (read-process-output-max . ,(* 1024 1024))
+            )
+  :bind (dape-mode-map
+         ("C-x C-a" . dape-global-map))
+  :config
+  (leaf repeat
+    :doc "convenient way to repeat the previous command"
+    :tag "builtin"
+    :added "2025-02-18"
+    :config (repeat-mode))
+  )
+
+(leaf jupyter
+  :ensure t
+  :defvar jupyter-repl-echo-eval-p
+  :custom ((jupyter-repl-echo-eval-p . t))
+  :hook (jupyter-repl-interaction-mode-hook . (lambda ()
+                                                (setq-local completion-at-point-functions
+                                                            (remove 'jupyter-completion-at-point completion-at-point-functions))))
+  :preface
+  (defun my-image-save ()
+    "Save the image under point to the '.fig' directory with a timestamp filename.
+   Creates the '.fig' directory if it doesn't exist.
+   Copies the full path of the saved image to the clipboard."
+    (interactive)
+    (let* ((fig-dir "figures")
+           (out-f (format-time-string (concat fig-dir "/%Y%m%d-%H%M%S.png")))
+           (full-path (expand-file-name out-f)))
+      ;; Create '.fig' directory if it doesn't exist
+      (unless (file-exists-p fig-dir)
+        (make-directory fig-dir t)
+        (message "Created directory: %s" (expand-file-name fig-dir)))
+      ;; Save the image
+      (image-save-with-arg out-f)
+      ;; Copy the full path to clipboard
+      (kill-new full-path)
+      ;; Message to inform user
+      (message "Image saved and full path copied to clipboard: %s" full-path)
+      ;; Return the full path of the saved image
+      full-path))
+  (defun image-save-with-arg (&optional file)
+    "Save the image under point.
+   This writes the original image data to a file.  Rotating or
+   changing the displayed image size does not affect the saved image.
+   If FILE is provided, save to that file. Otherwise, prompt for a filename."
+    (interactive)
+    (let ((image (image--get-image)))
+      (with-temp-buffer
+        (let ((image-file (plist-get (cdr image) :file)))
+          (if image-file
+              (if (not (file-exists-p image-file))
+                  (error "File %s no longer exists" image-file)
+                (insert-file-contents-literally image-file))
+            (insert (plist-get (cdr image) :data))))
+        (let ((save-file (or file
+                             (read-file-name "Write image to file: "))))
+          (write-region (point-min) (point-max) save-file)
+          (message "Image saved to %s" save-file)))))
+  (defun my-image-yank ()
+    "Insert an Org mode file link for the image path in the clipboard at the current cursor position.
+   Only insert if the file is an image (png, jpg, jpeg, gif, or svg)."
+    (interactive)
+    (let ((file-path (substring-no-properties (current-kill 0))))
+      (if (string-match-p "\\.\\(png\\|jpe?g\\|gif\\|svg\\)$" file-path)
+          (let ((relative-path (file-relative-name file-path)))
+            (insert (format "#+ATTR_HTML: :width 300\n[[file:%s]]" relative-path))
+            (org-redisplay-inline-images))
+        (message "Clipboard content is not a supported image file path. No insertion performed."))))
+  )
+(leaf jedi-core
+  :doc "Common code of jedi.el and company-jedi.el"
+  :req "emacs-24" "epc-0.1.0" "python-environment-0.0.2" "cl-lib-0.5"
+  :tag "emacs>=24"
+  :added "2023-11-12"
+  :emacs>= 24
+  :ensure t
+  :commands (jupyter))
+(leaf company-jedi
+  :doc "Company-mode completion back-end for Python JEDI"
+  :req "emacs-24" "cl-lib-0.5" "company-0.8.11" "jedi-core-0.2.7"
+  :tag "emacs>=24"
+  :url "https://github.com/emacsorphanage/company-jedi"
+  :added "2023-11-12"
+  :emacs>= 24
+  :ensure t
+  :commands (jupyter)
+  )
+
+(leaf transient-dwim
+  :ensure t
+  :bind (("C-=" . transient-dwim-dispatch)))
+(leaf affe
+  :doc "Asynchronous Fuzzy Finder for Emacs"
+  :req "emacs-28.1" "consult-1.7"
+  :tag "completion" "files" "matching" "emacs>=28.1"
+  :url "https://github.com/minad/affe"
+  :added "2025-01-21"
+  :emacs>= 28.1
+  :ensure t
+  :custom ((affe-highlight-function . 'orderless-highlight-matches)
+           (affe-regexp-function . 'orderless-pattern-compiler))
+  )
+
 
 (leaf *emacs
   :preface
@@ -3335,38 +3381,6 @@
   :unless (string-match "RaspberryPi" (system-name))
   :hook ((prog-mode-hook . highlight-indent-guides-mode))
   :custom '((highlight-indent-guides-method . 'column)))
-
-(leaf *hs-minor-mode
-  :hook ((emacs-lisp-mode-hook . hs-minor-mode-active)
-         (yatex-mode-hook . hs-yatex-env-setup))
-  :bind (("C-'" . hs-toggle-hiding))
-  :preface
-  (defun hs-minor-mode-active ()
-    (interactive)
-    (hs-minor-mode 1))
-
-  (defun hs-yatex-env-setup ()
-    "YaTeX用にhs-minor-modeをカスタマイズします。"
-    (interactive)
-    (hs-minor-mode 1)
-    (setq-local hs-special-modes-alist
-                (cons '(yatex-mode
-                        "\\\\begin{[^}]+}" ;; ブロック開始の正規表現
-                        "\\\\end{[^}]+}"   ;; ブロック終了の正規表現
-                        nil
-                        (lambda (arg) (yatex-narrow-to-environment))
-                        nil)
-                      hs-special-modes-alist)))
-  (defun yatex-narrow-to-environment ()
-    "現在のLaTeX環境を狭めます（narrow）。"
-    (interactive)
-    (save-excursion
-      (search-backward "\\begin{")
-      (let ((begin (point)))
-        (search-forward "\\end{")
-        (re-search-forward "}")
-        (narrow-to-region begin (point)))))
-  )
 (leaf *hydra-config
   :doc "Make bindings that stick around."
   :req "cl-lib-0.5" "lv-0"
@@ -3446,24 +3460,6 @@
   :config
   (setq calendar-holidays (append japanese-holidays holiday-local-holidays holiday-other-holidays))
   )
-(leaf online-judge
-  :disabled t
-  :when (executable-find "oj")
-  :vc (:url :url "https://github.com/ROCKTAKEY/emacs-online-judge")
-  :require t
-  :custom ((online-judge-directories . '("~/Dropbox/atcoder/"))
-           (online-judge-command-name . nil)))
-(leaf page-ext
-  :doc "extended page handling commands"
-  :tag "builtin"
-  :added "2021-09-05"
-  :require t)
-(leaf pulseaudio
-  :when (executable-find "pactl")
-  :vc (:url "https://github.com/frenzieddoll/pulseaudio")
-  :unless (string-match "microsoft" (shell-command-to-string "uname -r"))
-  :require t
-  )
 (leaf recentf
   :init
   (leaf recentf-ext
@@ -3497,33 +3493,7 @@
   :doc "Handling capitalized subwords in a nomenclature"
   :tag "builtin"
   :added "2025-03-06")
-(leaf sudo-edit
-  :doc "Open files as another user"
-  :req "emacs-24" "cl-lib-0.5"
-  :tag "convenience" "emacs>=24"
-  :url "https://github.com/nflath/sudo-edit"
-  :added "2021-09-10"
-  :emacs>= 24
-  :ensure t)
-(leaf undo-tree
-  :doc "Treat undo history as a tree"
-  :tag "tree" "history" "redo" "undo" "files" "convenience"
-  :url "http://www.dr-qubit.org/emacs.php"
-  :added "2021-09-05"
-  :ensure t
-  :disabled t
-  :unless (string-match "RaspberryPi" (system-name))
-  :global-minor-mode t)
-(leaf vundo
-  :doc "Visual undo tree"
-  :req "emacs-28.1"
-  :tag "editing" "text" "undo" "emacs>=28.1"
-  :url "https://github.com/casouri/vundo"
-  :added "2024-10-11"
-  :emacs>= 28.1
-  :ensure t
-  :bind (("C-c C-v" . vundo))
-  )
+
 (leaf uniquify
   :doc "unique buffer names dependent on file name"
   :tag "builtin" "files"
@@ -3531,21 +3501,7 @@
   :custom
   ((uniquify-buffer-name-style . 'post-forward-angle-brackets)
    (uniquify-min-dir-content . 1)))
-(leaf visual-regexp-steroids
-  :doc "Extends visual-regexp to support other regexp engines"
-  :req "visual-regexp-1.1"
-  :tag "feedback" "visual" "python" "replace" "regexp" "foreign" "external"
-  :url "https://github.com/benma/visual-regexp-steroids.el/"
-  :added "2021-09-05"
-  :ensure t
-  :after visual-regexp
-  :bind (("M-%" . vr/query-replace)
-         ;; multiple-cursorsを使っているならこれで
-         ("C-c m" . vr/mc-mark)
-         ;; 普段の正規表現isearchにも使いたいならこれを
-         ("C-M-r" . vr/isearch-backward)
-         ("C-M-s" . vr/isearch-forward))
-  :custom `((vr/engine . 'python)))
+
 (leaf which-key
   :doc "Display available keybindings in popup"
   :req "emacs-24.4"
@@ -3558,6 +3514,7 @@
   (which-key-setup-side-window-bottom)
   :global-minor-mode which-key-mode
   )
+
 
 ;; (leaf tree-sitter
 ;;   :doc "Incremental parsing system"
